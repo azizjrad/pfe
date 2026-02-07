@@ -21,6 +21,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'agency_id',
+        'phone',
+        'address',
+        'driver_license',
     ];
 
     /**
@@ -44,5 +49,53 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the agency that the user (agency admin) belongs to.
+     */
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
+    }
+
+    /**
+     * Get all reservations made by this user.
+     */
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
+    /**
+     * Get the reliability score for this user.
+     */
+    public function reliabilityScore()
+    {
+        return $this->hasOne(ClientReliabilityScore::class);
+    }
+
+    /**
+     * Check if user is a super admin.
+     */
+    public function isSuperAdmin()
+    {
+        return $this->role === 'super_admin';
+    }
+
+    /**
+     * Check if user is an agency admin.
+     */
+    public function isAgencyAdmin()
+    {
+        return $this->role === 'agency_admin';
+    }
+
+    /**
+     * Check if user is a client.
+     */
+    public function isClient()
+    {
+        return $this->role === 'client';
     }
 }
