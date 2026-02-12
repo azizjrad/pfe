@@ -12,10 +12,13 @@ class VehicleReturn extends Model
         'reservation_id',
         'return_date',
         'return_mileage',
+        'fuel_level',
         'vehicle_condition',
+        'damage_description',
         'additional_charges',
         'damage_notes',
         'inspection_notes',
+        'notes',
     ];
 
     protected $casts = [

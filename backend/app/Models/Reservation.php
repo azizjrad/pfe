@@ -11,6 +11,8 @@ class Reservation extends Model
         'vehicle_id',
         'start_date',
         'end_date',
+        'pickup_location',
+        'dropoff_location',
         'base_price',
         'discount_amount',
         'additional_charges',

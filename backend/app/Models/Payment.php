@@ -10,12 +10,8 @@ class Payment extends Model
         'reservation_id',
         'amount',
         'payment_date',
-        'payment_method',
         'payment_type',
         'status',
-        'cheque_number',
-        'cheque_deposit_date',
-        'cheque_status',
         'transaction_reference',
         'due_date',
         'is_late',
@@ -25,7 +21,6 @@ class Payment extends Model
     protected $casts = [
         'amount' => 'decimal:2',
         'payment_date' => 'datetime',
-        'cheque_deposit_date' => 'date',
         'due_date' => 'date',
         'is_late' => 'boolean',
     ];
@@ -44,22 +39,6 @@ class Payment extends Model
     public function isCompleted()
     {
         return $this->status === 'completed';
-    }
-
-    /**
-     * Check if payment is by cheque.
-     */
-    public function isCheque()
-    {
-        return $this->payment_method === 'cheque';
-    }
-
-    /**
-     * Check if cheque needs to be deposited.
-     */
-    public function chequeNeedsDeposit()
-    {
-        return $this->isCheque() && $this->cheque_status === 'pending_deposit';
     }
 
     /**

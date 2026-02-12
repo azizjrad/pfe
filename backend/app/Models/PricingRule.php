@@ -8,22 +8,28 @@ class PricingRule extends Model
 {
     protected $fillable = [
         'name',
+        'description',
         'rule_type',
-        'condition_type',
-        'condition_value',
-        'percentage',
+        'adjustment_type',
+        'adjustment_value',
         'start_date',
         'end_date',
-        'is_active',
+        'category_id',
+        'agency_id',
+        'min_rental_days',
+        'max_rental_days',
         'priority',
+        'is_active',
     ];
 
     protected $casts = [
-        'percentage' => 'decimal:2',
+        'adjustment_value' => 'decimal:2',
         'start_date' => 'date',
         'end_date' => 'date',
         'is_active' => 'boolean',
         'priority' => 'integer',
+        'min_rental_days' => 'integer',
+        'max_rental_days' => 'integer',
     ];
 
     /**
@@ -69,12 +75,12 @@ class PricingRule extends Model
      */
     public function applyToPrice($basePrice)
     {
-        if ($this->rule_type === 'discount') {
-            return $basePrice * (1 - ($this->percentage / 100));
+        if ($this->adjustment_type === 'fixed') {
+            return $this->adjustment_value;
         }
 
-        // markup or seasonal
-        return $basePrice * (1 + ($this->percentage / 100));
+        // percentage adjustment
+        return $basePrice * (1 + ($this->adjustment_value / 100));
     }
 
     /**
@@ -83,10 +89,24 @@ class PricingRule extends Model
     public function getTypeLabel()
     {
         return match($this->rule_type) {
-            'discount' => 'Réduction',
-            'markup' => 'Majoration',
-            'seasonal' => 'Saisonnier',
+            'seasonal' => 'Saisonnière',
+            'duration' => 'Durée',
+            'category' => 'Catégorie',
+            'agency' => 'Agence',
             default => $this->rule_type,
         };
+    }
+
+    /**
+     * Get relations for category or agency if specified.
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
     }
 }

@@ -14,18 +14,23 @@ return new class extends Migration
         Schema::create('pricing_rules', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('rule_type', ['discount', 'markup', 'seasonal']);
-            $table->enum('condition_type', ['duration', 'season', 'category', 'agency']);
-            $table->string('condition_value');
-            $table->decimal('percentage', 5, 2)->comment('Percentage to apply (positive or negative)');
+            $table->text('description')->nullable();
+            $table->enum('rule_type', ['seasonal', 'duration', 'category', 'agency'])->comment('Type of pricing rule');
+            $table->enum('adjustment_type', ['percentage', 'fixed'])->comment('How adjustment is applied');
+            $table->decimal('adjustment_value', 10, 2)->comment('Percentage or fixed amount adjustment');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('cascade');
+            $table->foreignId('agency_id')->nullable()->constrained('agencies')->onDelete('cascade');
+            $table->integer('min_rental_days')->nullable();
+            $table->integer('max_rental_days')->nullable();
             $table->integer('priority')->default(0)->comment('Higher priority rules apply first');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
 
             $table->index('is_active');
             $table->index(['start_date', 'end_date']);
+            $table->index('rule_type');
         });
     }
 
