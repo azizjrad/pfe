@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import VehicleCard from "../components/VehicleCard";
 import { Select, MenuItem, FormControl } from "@mui/material";
 import useScrollAnimation from "../hooks/useScrollAnimation";
+import { vehiclesData } from "../data/vehiclesData";
 
 const Home = () => {
   // Scroll animations for sections
@@ -105,44 +106,8 @@ const Home = () => {
     vehicle: "Renault Clio",
   });
 
-  // Featured vehicles data
-  const featuredVehicles = [
-    {
-      id: 1,
-      name: "Mercedes-Benz Classe E",
-      category: "Luxe",
-      price: 150,
-      image:
-        "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=500",
-      features: ["Automatique", "GPS", "Climatisation"],
-    },
-    {
-      id: 2,
-      name: "BMW Série 3",
-      category: "Premium",
-      price: 120,
-      image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=500",
-      features: ["Automatique", "GPS", "Cuir"],
-    },
-    {
-      id: 3,
-      name: "Audi A4",
-      category: "Premium",
-      price: 110,
-      image:
-        "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=500",
-      features: ["Automatique", "GPS", "Sièges chauffants"],
-    },
-    {
-      id: 4,
-      name: "Range Rover Sport",
-      category: "SUV Luxe",
-      price: 200,
-      image:
-        "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=500",
-      features: ["4x4", "Automatique", "Toit panoramique"],
-    },
-  ];
+  // Featured vehicles data - get first 4 vehicles from centralized data
+  const featuredVehicles = Object.values(vehiclesData).slice(0, 4);
 
   const features = [
     {
@@ -719,7 +684,7 @@ const Home = () => {
         </div>
 
         {/* Custom Scrollbar Styles */}
-        <style jsx>{`
+        <style>{`
           .scrollbar-hide::-webkit-scrollbar {
             display: none;
           }
@@ -807,7 +772,7 @@ const Home = () => {
           </div>
         </div>
 
-        <style jsx>{`
+        <style>{`
           @keyframes blob {
             0%,
             100% {
@@ -1038,7 +1003,7 @@ const Home = () => {
           </div>
         </div>
 
-        <style jsx>{`
+        <style>{`
           @keyframes float {
             0%,
             100% {

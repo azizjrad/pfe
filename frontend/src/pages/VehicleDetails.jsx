@@ -36,20 +36,27 @@ const VehicleDetails = () => {
     // Scroll to top when component loads
     window.scrollTo(0, 0);
 
-    const vehicleData = vehiclesData[id];
+    // Convert string id from URL to number
+    const numericId = parseInt(id);
+    const vehicleData = vehiclesData[numericId];
+
     if (vehicleData) {
       setVehicle(vehicleData);
     } else {
-      console.log("Vehicle not found for id:", id);
-      console.log("Available vehicles:", Object.keys(vehiclesData));
-      navigate("/vehicles");
+      console.error("Vehicle not found for id:", id);
+      // Use setTimeout to allow state to settle before navigating
+      setTimeout(() => navigate("/vehicles"), 100);
     }
-  }, [id, navigate]);
+  }, [id]);
 
   if (!vehicle) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-500"></div>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Chargement des détails du véhicule...</p>
+          <p className="text-sm text-gray-400 mt-2">ID: {id}</p>
+        </div>
       </div>
     );
   }
@@ -84,7 +91,7 @@ const VehicleDetails = () => {
 
           <div
             ref={hero.ref}
-            className={`transition-all duration-700 ${hero.isVisible ? "animate-fadeIn" : "opacity-0"}`}
+            className={`transition-all duration-700 ${hero.isVisible ? "animate-fadeIn" : ""}`}
           >
             <div className="grid lg:grid-cols-2 gap-12 items-start">
               {/* Left: Image */}
@@ -200,7 +207,7 @@ const VehicleDetails = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             ref={details.ref}
-            className={`transition-all duration-700 delay-200 ${details.isVisible ? "animate-slideUp" : "opacity-0"}`}
+            className={`transition-all duration-700 delay-200 ${details.isVisible ? "animate-slideUp" : ""}`}
           >
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Description */}
@@ -241,7 +248,7 @@ const VehicleDetails = () => {
               <div className="space-y-8">
                 <div
                   ref={features.ref}
-                  className={`bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-gray-200 shadow-lg transition-all duration-700 delay-300 ${features.isVisible ? "animate-slideInRight" : "opacity-0"}`}
+                  className={`bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-gray-200 shadow-lg transition-all duration-700 delay-300 ${features.isVisible ? "animate-slideInRight" : ""}`}
                 >
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">
                     Équipements inclus
@@ -283,7 +290,7 @@ const VehicleDetails = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             ref={agency.ref}
-            className={`transition-all duration-700 delay-400 ${agency.isVisible ? "animate-slideUp" : "opacity-0"}`}
+            className={`transition-all duration-700 delay-400 ${agency.isVisible ? "animate-slideUp" : ""}`}
           >
             <div className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-3xl p-8 md:p-12 text-white shadow-2xl">
               <div className="flex items-center gap-4 mb-8">

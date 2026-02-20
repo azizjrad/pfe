@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import VehicleCard from "../components/VehicleCard";
 import useScrollAnimation from "../hooks/useScrollAnimation";
+import { vehiclesData } from "../data/vehiclesData";
 
 const Vehicles = () => {
   const [selectedCategory, setSelectedCategory] = useState("Tous");
@@ -113,94 +114,8 @@ const Vehicles = () => {
     },
   ];
 
-  const vehicles = [
-    {
-      id: 1,
-      name: "Mercedes-Benz Classe E",
-      category: "Luxe",
-      price: 150,
-      image:
-        "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=500",
-      features: ["Automatique", "GPS", "Climatisation", "5 places"],
-      transmission: "Automatique",
-      fuel: "Diesel",
-    },
-    {
-      id: 2,
-      name: "BMW Série 3",
-      category: "Luxe",
-      price: 120,
-      image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=500",
-      features: ["Automatique", "GPS", "Cuir", "5 places"],
-      transmission: "Automatique",
-      fuel: "Essence",
-    },
-    {
-      id: 3,
-      name: "Audi A4",
-      category: "Luxe",
-      price: 110,
-      image:
-        "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=500",
-      features: ["Automatique", "GPS", "Sièges chauffants", "5 places"],
-      transmission: "Automatique",
-      fuel: "Diesel",
-    },
-    {
-      id: 4,
-      name: "Range Rover Sport",
-      category: "SUV",
-      price: 200,
-      image:
-        "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=500",
-      features: ["4x4", "Automatique", "Toit panoramique", "7 places"],
-      transmission: "Automatique",
-      fuel: "Diesel",
-    },
-    {
-      id: 5,
-      name: "Renault Clio",
-      category: "Économique",
-      price: 45,
-      image:
-        "https://images.unsplash.com/photo-1583267746897-f5d2c6e49f8b?w=500",
-      features: ["Manuelle", "Climatisation", "5 places", "Bluetooth"],
-      transmission: "Manuelle",
-      fuel: "Essence",
-    },
-    {
-      id: 6,
-      name: "Peugeot 208",
-      category: "Économique",
-      price: 40,
-      image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=500",
-      features: ["Manuelle", "Climatisation", "5 places", "Radio"],
-      transmission: "Manuelle",
-      fuel: "Essence",
-    },
-    {
-      id: 7,
-      name: "Porsche 911",
-      category: "Sport",
-      price: 300,
-      image:
-        "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=500",
-      features: ["Automatique", "GPS", "Cuir sport", "2 places"],
-      transmission: "Automatique",
-      fuel: "Essence",
-    },
-    {
-      id: 8,
-      name: "Toyota RAV4",
-      category: "SUV",
-      price: 90,
-      image:
-        "https://images.unsplash.com/photo-1511527661048-7fe73d85e9a4?w=500",
-      features: ["Automatique", "GPS", "4x4", "5 places"],
-      transmission: "Automatique",
-      fuel: "Hybride",
-    },
-  ];
+  // Convert vehiclesData object to array
+  const vehicles = Object.values(vehiclesData);
 
   const filteredVehicles = useMemo(() => {
     let result = vehicles;
