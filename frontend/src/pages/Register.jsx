@@ -16,8 +16,111 @@ const Register = () => {
     agreeToTerms: false,
   });
 
+  const [errors, setErrors] = useState({
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [showTooltip, setShowTooltip] = useState({
+    password: false,
+    phone: false,
+    client: false,
+    agency: false,
+  });
+
+  // Validation functions
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) return "";
+    if (!emailRegex.test(email)) {
+      return "Adresse e-mail invalide";
+    }
+    return "";
+  };
+
+  const validatePhone = (phone) => {
+    if (!phone) return "";
+    if (!/^\d+$/.test(phone)) {
+      return "Le numéro doit contenir uniquement des chiffres";
+    }
+    if (phone.length !== 8) {
+      return "Le numéro doit contenir exactement 8 chiffres";
+    }
+    return "";
+  };
+
+  const validatePassword = (password) => {
+    if (!password) return "";
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (password.length < 8) {
+      return "Le mot de passe doit contenir au moins 8 caractères";
+    }
+    if (!hasUppercase) {
+      return "Le mot de passe doit contenir au moins une lettre majuscule";
+    }
+    if (!hasSymbol) {
+      return "Le mot de passe doit contenir au moins un symbole (!@#$%^&*...)";
+    }
+    return "";
+  };
+
+  const handleEmailChange = (e) => {
+    const email = e.target.value;
+    setFormData({ ...formData, email });
+    setErrors({ ...errors, email: validateEmail(email) });
+  };
+
+  const handlePhoneChange = (e) => {
+    const phone = e.target.value.replace(/\D/g, "").slice(0, 8);
+    setFormData({ ...formData, phone });
+    setErrors({ ...errors, phone: validatePhone(phone) });
+  };
+
+  const handlePasswordChange = (e) => {
+    const password = e.target.value;
+    setFormData({ ...formData, password });
+    setErrors({ ...errors, password: validatePassword(password) });
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    const confirmPassword = e.target.value;
+    setFormData({ ...formData, confirmPassword });
+    if (confirmPassword && confirmPassword !== formData.password) {
+      setErrors({
+        ...errors,
+        confirmPassword: "Les mots de passe ne correspondent pas",
+      });
+    } else {
+      setErrors({ ...errors, confirmPassword: "" });
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validate all fields
+    const emailError = validateEmail(formData.email);
+    const phoneError = validatePhone(formData.phone);
+    const passwordError = validatePassword(formData.password);
+    const confirmPasswordError =
+      formData.password !== formData.confirmPassword
+        ? "Les mots de passe ne correspondent pas"
+        : "";
+
+    if (emailError || phoneError || passwordError || confirmPasswordError) {
+      setErrors({
+        email: emailError,
+        phone: phoneError,
+        password: passwordError,
+        confirmPassword: confirmPasswordError,
+      });
+      return;
+    }
+
     console.log("Register:", formData);
   };
 
@@ -226,19 +329,30 @@ const Register = () => {
                   type="email"
                   required
                   autoComplete="email"
-                  className="w-full px-5 py-3 rounded-full bg-gray-50 border-2 border-gray-200 focus:outline-none focus:border-primary-500 focus:bg-white transition-all hover:border-primary-300 peer"
+                  className={`w-full px-5 py-3 rounded-full bg-gray-50 border-2 ${
+                    errors.email
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-gray-200 focus:border-primary-500"
+                  } focus:outline-none focus:bg-white transition-all hover:border-primary-300 peer`}
                   placeholder=" "
                   value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
+                  onChange={handleEmailChange}
                 />
                 <label
                   htmlFor="email"
-                  className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
+                  className={`absolute left-5 top-3 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 pointer-events-none ${
+                    errors.email
+                      ? "text-red-500 peer-focus:text-red-500 peer-[:not(:placeholder-shown)]:text-red-500"
+                      : "text-gray-500 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-gray-700"
+                  }`}
                 >
                   Adresse e-mail
                 </label>
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-1 ml-5">
+                    {errors.email}
+                  </p>
+                )}
               </div>
 
               <div className="relative">
@@ -247,19 +361,42 @@ const Register = () => {
                   type="tel"
                   required
                   autoComplete="tel"
-                  className="w-full px-5 py-3 rounded-full bg-gray-50 border-2 border-gray-200 focus:outline-none focus:border-primary-500 focus:bg-white transition-all hover:border-primary-300 peer"
+                  className={`w-full px-5 py-3 rounded-full bg-gray-50 border-2 ${
+                    errors.phone
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-gray-200 focus:border-primary-500"
+                  } focus:outline-none focus:bg-white transition-all hover:border-primary-300 peer`}
                   placeholder=" "
                   value={formData.phone}
-                  onChange={(e) =>
-                    setFormData({ ...formData, phone: e.target.value })
+                  onChange={handlePhoneChange}
+                  onFocus={() =>
+                    setShowTooltip({ ...showTooltip, phone: true })
                   }
+                  onBlur={() =>
+                    setShowTooltip({ ...showTooltip, phone: false })
+                  }
+                  maxLength={8}
                 />
                 <label
                   htmlFor="phone"
-                  className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
+                  className={`absolute left-5 top-3 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 pointer-events-none ${
+                    errors.phone
+                      ? "text-red-500 peer-focus:text-red-500 peer-[:not(:placeholder-shown)]:text-red-500"
+                      : "text-gray-500 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-gray-700"
+                  }`}
                 >
                   Numéro de téléphone
                 </label>
+                {showTooltip.phone && !errors.phone && (
+                  <div className="absolute left-0 -bottom-7 bg-gray-800 text-white text-xs px-3 py-1.5 rounded-lg shadow-lg z-10">
+                    Format: 8 chiffres (ex: 20123456)
+                  </div>
+                )}
+                {errors.phone && (
+                  <p className="text-red-500 text-xs mt-1 ml-5">
+                    {errors.phone}
+                  </p>
+                )}
               </div>
 
               {/* Role Selection */}
@@ -268,119 +405,148 @@ const Register = () => {
                   Type de compte
                 </label>
                 <div className="grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setFormData({ ...formData, role: "client" })}
-                    className={`relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all ${
-                      formData.role === "client"
-                        ? "border-primary-500 bg-primary-50"
-                        : "border-gray-200 bg-gray-50 hover:border-primary-300"
-                    }`}
-                  >
-                    <div
-                      className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFormData({ ...formData, role: "client" })
+                      }
+                      onMouseEnter={() =>
+                        setShowTooltip({ ...showTooltip, client: true })
+                      }
+                      onMouseLeave={() =>
+                        setShowTooltip({ ...showTooltip, client: false })
+                      }
+                      className={`w-full relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all ${
                         formData.role === "client"
-                          ? "bg-primary-500 text-white"
-                          : "bg-gray-200 text-gray-500"
+                          ? "border-primary-500 bg-primary-50"
+                          : "border-gray-200 bg-gray-50 hover:border-primary-300"
                       }`}
                     >
-                      <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                      <div
+                        className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                          formData.role === "client"
+                            ? "bg-primary-500 text-white"
+                            : "bg-gray-200 text-gray-500"
+                        }`}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        />
-                      </svg>
-                    </div>
-                    <span
-                      className={`font-medium ${
-                        formData.role === "client"
-                          ? "text-primary-700"
-                          : "text-gray-600"
-                      }`}
-                    >
-                      Client
-                    </span>
-                    {formData.role === "client" && (
-                      <div className="absolute top-2 right-2 w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center">
                         <svg
-                          className="w-3 h-3 text-white"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
+                          className="w-6 h-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
                         >
                           <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                           />
                         </svg>
                       </div>
+                      <span
+                        className={`font-medium ${
+                          formData.role === "client"
+                            ? "text-primary-700"
+                            : "text-gray-600"
+                        }`}
+                      >
+                        Client
+                      </span>
+                      {formData.role === "client" && (
+                        <div className="absolute top-2 right-2 w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center">
+                          <svg
+                            className="w-3 h-3 text-white"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                      )}
+                    </button>
+                    {showTooltip.client && (
+                      <div className="absolute left-1/2 -translate-x-1/2 -bottom-16 bg-gray-800 text-white text-xs px-3 py-2 rounded-lg shadow-lg z-10 w-56 text-center">
+                        Pour les particuliers souhaitant louer des véhicules
+                      </div>
                     )}
-                  </button>
+                  </div>
 
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setFormData({ ...formData, role: "agency_admin" })
-                    }
-                    className={`relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all ${
-                      formData.role === "agency_admin"
-                        ? "border-primary-500 bg-primary-50"
-                        : "border-gray-200 bg-gray-50 hover:border-primary-300"
-                    }`}
-                  >
-                    <div
-                      className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFormData({ ...formData, role: "agency_admin" })
+                      }
+                      onMouseEnter={() =>
+                        setShowTooltip({ ...showTooltip, agency: true })
+                      }
+                      onMouseLeave={() =>
+                        setShowTooltip({ ...showTooltip, agency: false })
+                      }
+                      className={`w-full relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all ${
                         formData.role === "agency_admin"
-                          ? "bg-primary-500 text-white"
-                          : "bg-gray-200 text-gray-500"
+                          ? "border-primary-500 bg-primary-50"
+                          : "border-gray-200 bg-gray-50 hover:border-primary-300"
                       }`}
                     >
-                      <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                      <div
+                        className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                          formData.role === "agency_admin"
+                            ? "bg-primary-500 text-white"
+                            : "bg-gray-200 text-gray-500"
+                        }`}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                        />
-                      </svg>
-                    </div>
-                    <span
-                      className={`font-medium ${
-                        formData.role === "agency_admin"
-                          ? "text-primary-700"
-                          : "text-gray-600"
-                      }`}
-                    >
-                      Agence
-                    </span>
-                    {formData.role === "agency_admin" && (
-                      <div className="absolute top-2 right-2 w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center">
                         <svg
-                          className="w-3 h-3 text-white"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
+                          className="w-6 h-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
                         >
                           <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
                           />
                         </svg>
                       </div>
+                      <span
+                        className={`font-medium ${
+                          formData.role === "agency_admin"
+                            ? "text-primary-700"
+                            : "text-gray-600"
+                        }`}
+                      >
+                        Agence
+                      </span>
+                      {formData.role === "agency_admin" && (
+                        <div className="absolute top-2 right-2 w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center">
+                          <svg
+                            className="w-3 h-3 text-white"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                      )}
+                    </button>
+                    {showTooltip.agency && (
+                      <div className="absolute left-1/2 -translate-x-1/2 -bottom-16 bg-gray-800 text-white text-xs px-3 py-2 rounded-lg shadow-lg z-10 w-56 text-center">
+                        Pour les agences de location gérant leur flotte de
+                        véhicules
+                      </div>
                     )}
-                  </button>
+                  </div>
                 </div>
               </div>
 
@@ -390,19 +556,48 @@ const Register = () => {
                   type="password"
                   required
                   autoComplete="new-password"
-                  className="w-full px-5 py-3 rounded-full bg-gray-50 border-2 border-gray-200 focus:outline-none focus:border-primary-500 focus:bg-white transition-all hover:border-primary-300 peer"
+                  className={`w-full px-5 py-3 rounded-full bg-gray-50 border-2 ${
+                    errors.password
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-gray-200 focus:border-primary-500"
+                  } focus:outline-none focus:bg-white transition-all hover:border-primary-300 peer`}
                   placeholder=" "
                   value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
+                  onChange={handlePasswordChange}
+                  onFocus={() =>
+                    setShowTooltip({ ...showTooltip, password: true })
+                  }
+                  onBlur={() =>
+                    setShowTooltip({ ...showTooltip, password: false })
                   }
                 />
                 <label
                   htmlFor="password"
-                  className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
+                  className={`absolute left-5 top-3 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 pointer-events-none ${
+                    errors.password
+                      ? "text-red-500 peer-focus:text-red-500 peer-[:not(:placeholder-shown)]:text-red-500"
+                      : "text-gray-500 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-gray-700"
+                  }`}
                 >
                   Mot de passe
                 </label>
+                {showTooltip.password && !errors.password && (
+                  <div className="absolute left-0 -bottom-16 bg-gray-800 text-white text-xs px-3 py-2 rounded-lg shadow-lg z-10 w-64">
+                    <p className="font-semibold mb-1">
+                      Le mot de passe doit contenir:
+                    </p>
+                    <ul className="space-y-0.5">
+                      <li>• Au moins 8 caractères</li>
+                      <li>• Une lettre majuscule</li>
+                      <li>• Un symbole (!@#$%^&*...)</li>
+                    </ul>
+                  </div>
+                )}
+                {errors.password && (
+                  <p className="text-red-500 text-xs mt-1 ml-5">
+                    {errors.password}
+                  </p>
+                )}
               </div>
 
               <div className="relative">
@@ -411,22 +606,30 @@ const Register = () => {
                   type="password"
                   required
                   autoComplete="new-password"
-                  className="w-full px-5 py-3 rounded-full bg-gray-50 border-2 border-gray-200 focus:outline-none focus:border-primary-500 focus:bg-white transition-all hover:border-primary-300 peer"
+                  className={`w-full px-5 py-3 rounded-full bg-gray-50 border-2 ${
+                    errors.confirmPassword
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-gray-200 focus:border-primary-500"
+                  } focus:outline-none focus:bg-white transition-all hover:border-primary-300 peer`}
                   placeholder=" "
                   value={formData.confirmPassword}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      confirmPassword: e.target.value,
-                    })
-                  }
+                  onChange={handleConfirmPasswordChange}
                 />
                 <label
                   htmlFor="confirmPassword"
-                  className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
+                  className={`absolute left-5 top-3 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 pointer-events-none ${
+                    errors.confirmPassword
+                      ? "text-red-500 peer-focus:text-red-500 peer-[:not(:placeholder-shown)]:text-red-500"
+                      : "text-gray-500 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-gray-700"
+                  }`}
                 >
                   Confirmer le mot de passe
                 </label>
+                {errors.confirmPassword && (
+                  <p className="text-red-500 text-xs mt-1 ml-5">
+                    {errors.confirmPassword}
+                  </p>
+                )}
               </div>
 
               <div className="flex items-start">

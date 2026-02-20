@@ -26,6 +26,27 @@ const VehicleCard = ({ vehicle, index = 0, isVisible = true, onClick }) => {
             alt={vehicle.name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
+          {/* Agency Badge */}
+          {vehicle.agency && (
+            <div className="absolute bottom-3 left-3 bg-gray-900/70 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2">
+              <svg
+                className="w-4 h-4 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                />
+              </svg>
+              <span className="text-xs font-medium text-white">
+                {vehicle.agency.name}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Vehicle Name */}
