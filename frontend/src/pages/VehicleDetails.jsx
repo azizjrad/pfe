@@ -1,0 +1,439 @@
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import ReservationModal from "../components/ReservationModal";
+import useScrollAnimation from "../hooks/useScrollAnimation";
+import { vehiclesData } from "../data/vehiclesData";
+
+const VehicleDetails = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [vehicle, setVehicle] = useState(null);
+  const [isReservationOpen, setIsReservationOpen] = useState(false);
+
+  // Scroll animations
+  const hero = useScrollAnimation({ threshold: 0.2 });
+  const details = useScrollAnimation({ threshold: 0.2 });
+  const features = useScrollAnimation({ threshold: 0.2 });
+  const agency = useScrollAnimation({ threshold: 0.2 });
+
+  // Ref for agency section
+  const agencyRef = React.useRef(null);
+
+  const scrollToAgency = () => {
+    agencyRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const handleReservationSubmit = (reservationData) => {
+    // Handle reservation submission
+    console.log("Reservation data:", reservationData);
+    alert("Réservation envoyée avec succès!");
+    setIsReservationOpen(false);
+  };
+
+  useEffect(() => {
+    // Scroll to top when component loads
+    window.scrollTo(0, 0);
+
+    const vehicleData = vehiclesData[id];
+    if (vehicleData) {
+      setVehicle(vehicleData);
+    } else {
+      console.log("Vehicle not found for id:", id);
+      console.log("Available vehicles:", Object.keys(vehiclesData));
+      navigate("/vehicles");
+    }
+  }, [id, navigate]);
+
+  if (!vehicle) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-500"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-50">
+      <Navbar />
+
+      {/* Hero Section with Vehicle Image */}
+      <section className="pt-32 pb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Back Button */}
+          <button
+            onClick={() => navigate("/vehicles")}
+            className="mb-6 flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors group"
+          >
+            <svg
+              className="w-5 h-5 group-hover:-translate-x-1 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            Retour aux véhicules
+          </button>
+
+          <div
+            ref={hero.ref}
+            className={`transition-all duration-700 ${hero.isVisible ? "animate-fadeIn" : "opacity-0"}`}
+          >
+            <div className="grid lg:grid-cols-2 gap-12 items-start">
+              {/* Left: Image */}
+              <div className="relative">
+                <div className="aspect-[4/3] rounded-3xl overflow-hidden bg-white/50 backdrop-blur-sm shadow-2xl">
+                  <img
+                    src={vehicle.image}
+                    alt={vehicle.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                {/* Category Badge */}
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
+                  <span className="text-primary-600 font-semibold">
+                    {vehicle.category}
+                  </span>
+                </div>
+              </div>
+
+              {/* Right: Info */}
+              <div className="space-y-6">
+                <div>
+                  <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                    {vehicle.name}
+                  </h1>
+                  <div className="flex items-baseline gap-3 mb-6">
+                    <span className="text-5xl font-bold text-primary-600">
+                      {vehicle.price} dt
+                    </span>
+                    <span className="text-xl text-gray-600">/jour</span>
+                  </div>
+                </div>
+
+                {/* Quick Stats */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-gray-200">
+                    <div className="text-gray-600 text-sm mb-1">Année</div>
+                    <div className="text-xl font-bold text-gray-900">
+                      {vehicle.year}
+                    </div>
+                  </div>
+                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-gray-200">
+                    <div className="text-gray-600 text-sm mb-1">Places</div>
+                    <div className="text-xl font-bold text-gray-900">
+                      {vehicle.seats}
+                    </div>
+                  </div>
+                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-gray-200">
+                    <div className="text-gray-600 text-sm mb-1">
+                      Transmission
+                    </div>
+                    <div className="text-lg font-bold text-gray-900">
+                      {vehicle.transmission}
+                    </div>
+                  </div>
+                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-gray-200">
+                    <div className="text-gray-600 text-sm mb-1">Carburant</div>
+                    <div className="text-lg font-bold text-gray-900">
+                      {vehicle.fuel}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Reserve Button */}
+                <button
+                  onClick={() => setIsReservationOpen(true)}
+                  className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white px-8 py-4 rounded-2xl hover:from-primary-700 hover:to-primary-800 transition-all font-semibold text-lg shadow-lg hover:shadow-xl hover:scale-[1.02] flex items-center justify-center gap-2"
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  Réserver maintenant
+                </button>
+
+                {/* Contact Agency */}
+                <button
+                  onClick={scrollToAgency}
+                  className="w-full bg-white/60 backdrop-blur-sm border-2 border-primary-200 text-primary-600 px-8 py-4 rounded-2xl hover:bg-primary-50 transition-all font-semibold text-lg flex items-center justify-center gap-2"
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    />
+                  </svg>
+                  Contacter l'agence
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Description & Features */}
+      <section className="py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div
+            ref={details.ref}
+            className={`transition-all duration-700 delay-200 ${details.isVisible ? "animate-slideUp" : "opacity-0"}`}
+          >
+            <div className="grid lg:grid-cols-3 gap-8">
+              {/* Description */}
+              <div className="lg:col-span-2 space-y-8">
+                <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-gray-200 shadow-lg">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                    Description
+                  </h2>
+                  <p className="text-gray-700 leading-relaxed text-lg">
+                    {vehicle.description}
+                  </p>
+                </div>
+
+                {/* Specifications */}
+                <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-gray-200 shadow-lg">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                    Spécifications techniques
+                  </h2>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    {vehicle.specifications.map((spec, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-4 bg-gray-50 rounded-xl"
+                      >
+                        <span className="text-gray-600 font-medium">
+                          {spec.label}
+                        </span>
+                        <span className="text-gray-900 font-bold">
+                          {spec.value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Features Sidebar */}
+              <div className="space-y-8">
+                <div
+                  ref={features.ref}
+                  className={`bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-gray-200 shadow-lg transition-all duration-700 delay-300 ${features.isVisible ? "animate-slideInRight" : "opacity-0"}`}
+                >
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                    Équipements inclus
+                  </h2>
+                  <div className="space-y-3">
+                    {vehicle.features.map((feature, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center gap-3 p-3 bg-primary-50 rounded-xl"
+                      >
+                        <svg
+                          className="w-5 h-5 text-primary-600 flex-shrink-0"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        <span className="text-gray-800 font-medium">
+                          {feature}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Agency Information */}
+      <section ref={agencyRef} className="py-12 pb-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div
+            ref={agency.ref}
+            className={`transition-all duration-700 delay-400 ${agency.isVisible ? "animate-slideUp" : "opacity-0"}`}
+          >
+            <div className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-3xl p-8 md:p-12 text-white shadow-2xl">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                  <svg
+                    className="w-8 h-8"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold">{vehicle.agency.name}</h2>
+                  <p className="text-primary-100">Agence gérant ce véhicule</p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg
+                      className="w-6 h-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="text-sm text-primary-200 mb-1">Adresse</div>
+                    <div className="font-semibold">
+                      {vehicle.agency.address}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg
+                      className="w-6 h-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="text-sm text-primary-200 mb-1">
+                      Téléphone
+                    </div>
+                    <a
+                      href={`tel:${vehicle.agency.phone}`}
+                      className="font-semibold hover:text-primary-100 transition-colors"
+                    >
+                      {vehicle.agency.phone}
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg
+                      className="w-6 h-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="text-sm text-primary-200 mb-1">Email</div>
+                    <a
+                      href={`mailto:${vehicle.agency.email}`}
+                      className="font-semibold hover:text-primary-100 transition-colors"
+                    >
+                      {vehicle.agency.email}
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg
+                      className="w-6 h-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="text-sm text-primary-200 mb-1">
+                      Horaires
+                    </div>
+                    <div className="font-semibold">{vehicle.agency.hours}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <ReservationModal
+        isOpen={isReservationOpen}
+        onClose={() => setIsReservationOpen(false)}
+        vehicle={vehicle}
+        onSubmit={handleReservationSubmit}
+      />
+
+      <Footer />
+    </div>
+  );
+};
+
+export default VehicleDetails;

@@ -1,13 +1,108 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import VehicleCard from "../components/VehicleCard";
+import { Select, MenuItem, FormControl } from "@mui/material";
+import useScrollAnimation from "../hooks/useScrollAnimation";
 
 const Home = () => {
+  // Scroll animations for sections
+  const heroContentAnim = useScrollAnimation({ threshold: 0.2 });
+  const vehiclesAnim = useScrollAnimation({ threshold: 0.2 });
+  const featuresAnim = useScrollAnimation({ threshold: 0.2 });
+  const ctaAnim = useScrollAnimation({ threshold: 0.3 });
+
+  // State for scroll buttons
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  // Handle scroll pagination dots and buttons state
+  useEffect(() => {
+    const scrollContainer = document.getElementById(
+      "vehicles-scroll-container",
+    );
+    if (!scrollContainer) return;
+
+    const handleScroll = () => {
+      const scrollLeft = scrollContainer.scrollLeft;
+      const cardWidth = 340 + 24; // card width + gap
+      const activeIndex = Math.round(scrollLeft / cardWidth);
+
+      // Update dots
+      document.querySelectorAll('[id^="scroll-dot-"]').forEach((dot, index) => {
+        if (index === activeIndex) {
+          dot.className =
+            "h-2 w-8 rounded-full bg-primary-600 transition-all duration-300 cursor-pointer";
+        } else {
+          dot.className =
+            "h-2 w-2 rounded-full bg-gray-300 transition-all duration-300 cursor-pointer hover:bg-gray-400";
+        }
+      });
+
+      // Update scroll button states
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(
+        scrollLeft <
+          scrollContainer.scrollWidth - scrollContainer.clientWidth - 10,
+      );
+    };
+
+    scrollContainer.addEventListener("scroll", handleScroll);
+    // Initial check
+    handleScroll();
+
+    return () => scrollContainer.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Scroll to specific card
+  const scrollToCard = (index) => {
+    const scrollContainer = document.getElementById(
+      "vehicles-scroll-container",
+    );
+    if (!scrollContainer) return;
+
+    const cardWidth = 340 + 24; // card width + gap
+    scrollContainer.scrollTo({
+      left: index * cardWidth,
+      behavior: "smooth",
+    });
+  };
+
+  // Scroll left/right
+  const scrollLeft = () => {
+    const scrollContainer = document.getElementById(
+      "vehicles-scroll-container",
+    );
+    if (!scrollContainer) return;
+
+    const cardWidth = 340 + 24;
+    scrollContainer.scrollBy({
+      left: -cardWidth,
+      behavior: "smooth",
+    });
+  };
+
+  const scrollRight = () => {
+    const scrollContainer = document.getElementById(
+      "vehicles-scroll-container",
+    );
+    if (!scrollContainer) return;
+
+    const cardWidth = 340 + 24;
+    scrollContainer.scrollBy({
+      left: cardWidth,
+      behavior: "smooth",
+    });
+  };
+
   const [searchData, setSearchData] = useState({
-    pickupLocation: "",
+    pickupLocation: "Tunis Carthage aéroport",
     returnLocation: "",
     pickupDate: "",
+    pickupTime: "10:00",
     returnDate: "",
+    returnTime: "10:00",
+    vehicle: "Renault Clio",
   });
 
   // Featured vehicles data
@@ -47,13 +142,6 @@ const Home = () => {
         "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=500",
       features: ["4x4", "Automatique", "Toit panoramique"],
     },
-  ];
-
-  const categories = [
-    { name: "Économique", icon: "💼", count: 12 },
-    { name: "SUV", icon: "🚙", count: 8 },
-    { name: "Luxe", icon: "👑", count: 6 },
-    { name: "Sport", icon: "⚡", count: 4 },
   ];
 
   const features = [
@@ -158,89 +246,16 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Hero Content */}
-            <div className="text-left space-y-8">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
-                Conduisez le
-                <span className="block bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
-                  luxe
-                </span>
-                aujourd'hui
-              </h1>
-
-              <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
-                Découvrez notre sélection de véhicules premium et profitez d'une
-                expérience de location exceptionnelle.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button className="btn-primary flex items-center justify-center gap-2">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
-                  Trouver un véhicule
-                </button>
-                <button className="btn-secondary flex items-center justify-center gap-2">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  En savoir plus
-                </button>
-              </div>
-
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-6 pt-8">
-                <div>
-                  <div className="text-3xl font-bold text-primary-600">30+</div>
-                  <div className="text-sm text-gray-600">Véhicules</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-primary-600">5★</div>
-                  <div className="text-sm text-gray-600">Satisfaction</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-primary-600">
-                    24/7
-                  </div>
-                  <div className="text-sm text-gray-600">Support</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Hero Image */}
-            <div className="relative">
-              <div className="relative z-10">
-                <img
-                  src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&auto=format&fit=crop"
-                  alt="Luxury car"
-                  className="rounded-2xl shadow-2xl"
-                />
-              </div>
-              {/* Floating card */}
-              <div className="absolute -bottom-6 -left-6 bg-white rounded-xl shadow-xl p-6 z-20 hidden lg:block">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+            <div
+              ref={heroContentAnim.ref}
+              className={`text-left space-y-8 transition-all duration-700 ${heroContentAnim.isVisible ? "animate-slideInLeft" : "opacity-0"}`}
+            >
+              {/* Booking Card */}
+              <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-gray-100 p-8 max-w-md hover:shadow-3xl transition-shadow duration-300">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-2 bg-primary-50 rounded-lg">
                     <svg
-                      className="w-6 h-6 text-green-600"
+                      className="w-6 h-6 text-primary-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -249,117 +264,368 @@ const Home = () => {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M5 13l4 4L19 7"
+                        d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
                       />
                     </svg>
                   </div>
-                  <div>
-                    <div className="font-bold text-gray-900">Vérifié & Sûr</div>
-                    <div className="text-sm text-gray-600">
-                      Tous nos véhicules
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
+                    Réserver une voiture
+                  </h2>
+                </div>
+
+                {/* Pick up and return location */}
+                <div className="mb-5">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Lieu de prise en charge et de retour
+                  </label>
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+                      <svg
+                        className="w-5 h-5 text-primary-500 group-focus-within:text-primary-600 transition-colors"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                    </div>
+                    <FormControl fullWidth>
+                      <Select
+                        value={searchData.pickupLocation}
+                        onChange={(e) =>
+                          setSearchData({
+                            ...searchData,
+                            pickupLocation: e.target.value,
+                          })
+                        }
+                        sx={{
+                          borderRadius: "9999px",
+                          backgroundColor: "#f9fafb",
+                          paddingLeft: "2.5rem",
+                          fontSize: "0.875rem",
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderWidth: "2px",
+                            borderColor: "#e5e7eb",
+                          },
+                          "&:hover": {
+                            backgroundColor: "#eff6ff",
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#60a5fa",
+                            },
+                            boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                          },
+                          "&.Mui-focused": {
+                            backgroundColor: "white",
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#3b82f6",
+                              borderWidth: "2px",
+                            },
+                          },
+                          "& .MuiSelect-select": {
+                            paddingTop: "0.75rem",
+                            paddingBottom: "0.75rem",
+                          },
+                        }}
+                      >
+                        <MenuItem value="Tunis Carthage aéroport">
+                          Tunis Carthage aéroport
+                        </MenuItem>
+                        <MenuItem value="Tunis Centre">Tunis Centre</MenuItem>
+                        <MenuItem value="Sfax">Sfax</MenuItem>
+                        <MenuItem value="Sousse">Sousse</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </div>
+                  <div className="mt-3 flex items-center">
+                    <input
+                      type="checkbox"
+                      id="differentLocation"
+                      className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:outline-none cursor-pointer"
+                    />
+                    <label
+                      htmlFor="differentLocation"
+                      className="ml-2 text-sm text-gray-600 cursor-pointer hover:text-gray-900 transition-colors"
+                    >
+                      lieu de retour différent
+                    </label>
+                  </div>
+                </div>
+
+                {/* Pick up date */}
+                <div className="mb-5">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Date de prise en charge
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="relative">
+                      <input
+                        type="date"
+                        className="w-full px-4 py-3 text-sm bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary-500 focus:bg-white transition-all duration-200 cursor-pointer hover:border-gray-300"
+                      />
+                    </div>
+                    <div className="relative group">
+                      <FormControl fullWidth>
+                        <Select
+                          value={searchData.pickupTime}
+                          onChange={(e) =>
+                            setSearchData({
+                              ...searchData,
+                              pickupTime: e.target.value,
+                            })
+                          }
+                          sx={{
+                            borderRadius: "9999px",
+                            backgroundColor: "#f9fafb",
+                            fontSize: "0.875rem",
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderWidth: "2px",
+                              borderColor: "#e5e7eb",
+                            },
+                            "&:hover": {
+                              backgroundColor: "#eff6ff",
+                              "& .MuiOutlinedInput-notchedOutline": {
+                                borderColor: "#60a5fa",
+                              },
+                              boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                            },
+                            "&.Mui-focused": {
+                              backgroundColor: "white",
+                              "& .MuiOutlinedInput-notchedOutline": {
+                                borderColor: "#3b82f6",
+                                borderWidth: "2px",
+                              },
+                            },
+                            "& .MuiSelect-select": {
+                              paddingTop: "0.75rem",
+                              paddingBottom: "0.75rem",
+                            },
+                          }}
+                        >
+                          <MenuItem value="00:00">00:00</MenuItem>
+                          <MenuItem value="01:00">01:00</MenuItem>
+                          <MenuItem value="02:00">02:00</MenuItem>
+                          <MenuItem value="03:00">03:00</MenuItem>
+                          <MenuItem value="04:00">04:00</MenuItem>
+                          <MenuItem value="05:00">05:00</MenuItem>
+                          <MenuItem value="06:00">06:00</MenuItem>
+                          <MenuItem value="07:00">07:00</MenuItem>
+                          <MenuItem value="08:00">08:00</MenuItem>
+                          <MenuItem value="09:00">09:00</MenuItem>
+                          <MenuItem value="10:00">10:00</MenuItem>
+                          <MenuItem value="11:00">11:00</MenuItem>
+                          <MenuItem value="12:00">12:00</MenuItem>
+                          <MenuItem value="13:00">13:00</MenuItem>
+                          <MenuItem value="14:00">14:00</MenuItem>
+                          <MenuItem value="15:00">15:00</MenuItem>
+                          <MenuItem value="16:00">16:00</MenuItem>
+                          <MenuItem value="17:00">17:00</MenuItem>
+                          <MenuItem value="18:00">18:00</MenuItem>
+                          <MenuItem value="19:00">19:00</MenuItem>
+                          <MenuItem value="20:00">20:00</MenuItem>
+                          <MenuItem value="21:00">21:00</MenuItem>
+                          <MenuItem value="22:00">22:00</MenuItem>
+                          <MenuItem value="23:00">23:00</MenuItem>
+                        </Select>
+                      </FormControl>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Search Section */}
-      <section className="relative -mt-16 z-30">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-2xl shadow-2xl p-8">
-            <h3 className="text-2xl font-bold mb-6">Réservez votre véhicule</h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Lieu de prise en charge
-                </label>
-                <select
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  value={searchData.pickupLocation}
-                  onChange={(e) =>
-                    setSearchData({
-                      ...searchData,
-                      pickupLocation: e.target.value,
-                    })
-                  }
-                >
-                  <option value="">Sélectionner une agence</option>
-                  <option value="tunis">Tunis Centre</option>
-                  <option value="sfax">Sfax</option>
-                  <option value="sousse">Sousse</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Date de prise en charge
-                </label>
-                <input
-                  type="date"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  value={searchData.pickupDate}
-                  onChange={(e) =>
-                    setSearchData({ ...searchData, pickupDate: e.target.value })
-                  }
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Date de retour
-                </label>
-                <input
-                  type="date"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  value={searchData.returnDate}
-                  onChange={(e) =>
-                    setSearchData({ ...searchData, returnDate: e.target.value })
-                  }
-                />
-              </div>
-
-              <div className="flex items-end">
-                <button className="w-full btn-primary">Rechercher</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Categories Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">Explorez par catégorie</h2>
-            <p className="text-xl text-gray-600">
-              Trouvez le véhicule parfait pour vos besoins
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {categories.map((category, index) => (
-              <div
-                key={index}
-                className="card group cursor-pointer hover:scale-105 transform transition-all"
-              >
-                <div className="p-8 text-center">
-                  <div className="text-6xl mb-4">{category.icon}</div>
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-primary-600 transition-colors">
-                    {category.name}
-                  </h3>
-                  <p className="text-gray-600">{category.count} véhicules</p>
+                {/* Return date */}
+                <div className="mb-5">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Date de retour
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="relative">
+                      <input
+                        type="date"
+                        className="w-full px-4 py-3 text-sm bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary-500 focus:bg-white transition-all duration-200 cursor-pointer hover:border-gray-300"
+                      />
+                    </div>
+                    <div className="relative group">
+                      <FormControl fullWidth>
+                        <Select
+                          value={searchData.returnTime}
+                          onChange={(e) =>
+                            setSearchData({
+                              ...searchData,
+                              returnTime: e.target.value,
+                            })
+                          }
+                          sx={{
+                            borderRadius: "9999px",
+                            backgroundColor: "#f9fafb",
+                            fontSize: "0.875rem",
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderWidth: "2px",
+                              borderColor: "#e5e7eb",
+                            },
+                            "&:hover": {
+                              backgroundColor: "#eff6ff",
+                              "& .MuiOutlinedInput-notchedOutline": {
+                                borderColor: "#60a5fa",
+                              },
+                              boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                            },
+                            "&.Mui-focused": {
+                              backgroundColor: "white",
+                              "& .MuiOutlinedInput-notchedOutline": {
+                                borderColor: "#3b82f6",
+                                borderWidth: "2px",
+                              },
+                            },
+                            "& .MuiSelect-select": {
+                              paddingTop: "0.75rem",
+                              paddingBottom: "0.75rem",
+                            },
+                          }}
+                        >
+                          <MenuItem value="00:00">00:00</MenuItem>
+                          <MenuItem value="01:00">01:00</MenuItem>
+                          <MenuItem value="02:00">02:00</MenuItem>
+                          <MenuItem value="03:00">03:00</MenuItem>
+                          <MenuItem value="04:00">04:00</MenuItem>
+                          <MenuItem value="05:00">05:00</MenuItem>
+                          <MenuItem value="06:00">06:00</MenuItem>
+                          <MenuItem value="07:00">07:00</MenuItem>
+                          <MenuItem value="08:00">08:00</MenuItem>
+                          <MenuItem value="09:00">09:00</MenuItem>
+                          <MenuItem value="10:00">10:00</MenuItem>
+                          <MenuItem value="11:00">11:00</MenuItem>
+                          <MenuItem value="12:00">12:00</MenuItem>
+                          <MenuItem value="13:00">13:00</MenuItem>
+                          <MenuItem value="14:00">14:00</MenuItem>
+                          <MenuItem value="15:00">15:00</MenuItem>
+                          <MenuItem value="16:00">16:00</MenuItem>
+                          <MenuItem value="17:00">17:00</MenuItem>
+                          <MenuItem value="18:00">18:00</MenuItem>
+                          <MenuItem value="19:00">19:00</MenuItem>
+                          <MenuItem value="20:00">20:00</MenuItem>
+                          <MenuItem value="21:00">21:00</MenuItem>
+                          <MenuItem value="22:00">22:00</MenuItem>
+                          <MenuItem value="23:00">23:00</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </div>
+                  </div>
                 </div>
+
+                {/* Car selection */}
+                <div className="mb-6">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Choisir un véhicule
+                  </label>
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+                      <svg
+                        className="w-5 h-5 text-primary-500 group-focus-within:text-primary-600 transition-colors"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                        />
+                      </svg>
+                    </div>
+                    <FormControl fullWidth>
+                      <Select
+                        value={searchData.vehicle}
+                        onChange={(e) =>
+                          setSearchData({
+                            ...searchData,
+                            vehicle: e.target.value,
+                          })
+                        }
+                        sx={{
+                          borderRadius: "9999px",
+                          backgroundColor: "#f9fafb",
+                          paddingLeft: "2.5rem",
+                          fontSize: "0.875rem",
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderWidth: "2px",
+                            borderColor: "#e5e7eb",
+                          },
+                          "&:hover": {
+                            backgroundColor: "#eff6ff",
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#60a5fa",
+                            },
+                            boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                          },
+                          "&.Mui-focused": {
+                            backgroundColor: "white",
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#3b82f6",
+                              borderWidth: "2px",
+                            },
+                          },
+                          "& .MuiSelect-select": {
+                            paddingTop: "0.75rem",
+                            paddingBottom: "0.75rem",
+                          },
+                        }}
+                      >
+                        <MenuItem value="Suzuki Swift">Suzuki Swift</MenuItem>
+                        <MenuItem value="Renault Clio">Renault Clio</MenuItem>
+                        <MenuItem value="Peugeot 208">Peugeot 208</MenuItem>
+                        <MenuItem value="Mercedes Classe E">
+                          Mercedes Classe E
+                        </MenuItem>
+                      </Select>
+                    </FormControl>
+                  </div>
+                </div>
+
+                {/* Get a quote button */}
+                <button className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 group">
+                  <span>Obtenir un devis</span>
+                  <svg
+                    className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
               </div>
-            ))}
+            </div>
+
+            {/* Hero Image */}
+            <div className="relative">
+              <img src="/clio.png" alt="Renault Clio" className="" />
+            </div>
           </div>
         </div>
       </section>
 
       {/* Featured Vehicles */}
-      <section id="vehicles" className="py-20 bg-gray-50">
+      <section
+        ref={vehiclesAnim.ref}
+        id="vehicles"
+        className={`py-20 bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 transition-all duration-700 ${vehiclesAnim.isVisible ? "animate-slideUp" : "opacity-0"}`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">Véhicules en vedette</h2>
@@ -368,71 +634,279 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {featuredVehicles.map((vehicle) => (
-              <div key={vehicle.id} className="card group">
-                <div className="relative overflow-hidden h-48">
-                  <img
-                    src={vehicle.image}
-                    alt={vehicle.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-sm font-semibold">
-                    {vehicle.category}
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">{vehicle.name}</h3>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {vehicle.features.map((feature, idx) => (
-                      <span
-                        key={idx}
-                        className="text-xs bg-gray-100 px-2 py-1 rounded"
-                      >
-                        {feature}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-2xl font-bold text-primary-600">
-                        {vehicle.price} DT
-                      </span>
-                      <span className="text-gray-600 text-sm">/jour</span>
-                    </div>
-                    <button className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors">
-                      Réserver
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* Horizontal Scrollable Container */}
+          <div className="relative">
+            {/* Left Scroll Button */}
+            <button
+              onClick={scrollLeft}
+              disabled={!canScrollLeft}
+              className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-300 text-gray-900 ${
+                canScrollLeft
+                  ? "opacity-100 hover:bg-primary-600 hover:text-white cursor-pointer"
+                  : "opacity-30 cursor-not-allowed"
+              }`}
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
 
-          <div className="text-center mt-12">
-            <button className="btn-secondary">Voir tous les véhicules</button>
+            {/* Right Scroll Button */}
+            <button
+              onClick={scrollRight}
+              disabled={!canScrollRight}
+              className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-300 text-gray-900 ${
+                canScrollRight
+                  ? "opacity-100 hover:bg-primary-600 hover:text-white cursor-pointer"
+                  : "opacity-30 cursor-not-allowed"
+              }`}
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+
+            <div
+              id="vehicles-scroll-container"
+              className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide scroll-smooth px-12"
+            >
+              {featuredVehicles.map((vehicle, index) => (
+                <VehicleCard
+                  key={vehicle.id}
+                  vehicle={vehicle}
+                  index={index}
+                  isVisible={vehiclesAnim.isVisible}
+                />
+              ))}
+            </div>
+
+            {/* Scroll Indicators */}
+            <div className="flex justify-center gap-2 mt-6">
+              {featuredVehicles.map((_, index) => (
+                <div
+                  key={index}
+                  id={`scroll-dot-${index}`}
+                  onClick={() => scrollToCard(index)}
+                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                    index === 0
+                      ? "w-8 bg-primary-600"
+                      : "w-2 bg-gray-300 hover:bg-gray-400"
+                  }`}
+                ></div>
+              ))}
+            </div>
           </div>
         </div>
+
+        {/* Custom Scrollbar Styles */}
+        <style jsx>{`
+          .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+          }
+          .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+        `}</style>
       </section>
 
       {/* Features Section */}
-      <section id="services" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section
+        ref={featuresAnim.ref}
+        id="services"
+        className={`py-24 bg-gradient-to-br from-gray-50 via-white to-primary-50 relative overflow-hidden transition-all duration-700 ${featuresAnim.isVisible ? "animate-fadeIn" : "opacity-0"}`}
+      >
+        {/* Background decorations */}
+        <div className="absolute top-0 left-0 w-64 h-64 bg-primary-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div className="absolute bottom-0 right-0 w-64 h-64 bg-primary-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Pourquoi nous choisir?</h2>
-            <p className="text-xl text-gray-600">
-              Des services pensés pour votre confort
+            <span className="inline-block px-4 py-2 bg-primary-100 text-primary-600 rounded-full text-sm font-semibold mb-4">
+              Nos avantages
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+              Pourquoi nous choisir?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Des services pensés pour votre confort et votre sérénité
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="text-center group">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 text-primary-600 rounded-xl mb-4 group-hover:bg-primary-600 group-hover:text-white transition-all">
-                  {feature.icon}
+              <div
+                key={index}
+                className="relative group"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary-200 h-full transform hover:-translate-y-2">
+                  {/* Gradient background on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
+
+                  {/* Icon with animated background */}
+                  <div className="relative mb-6">
+                    <div className="absolute inset-0 bg-primary-600 rounded-xl opacity-0 group-hover:opacity-20 blur-xl transition-all duration-500"></div>
+                    <div className="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-100 to-primary-50 text-primary-600 rounded-xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 group-hover:shadow-xl">
+                      {feature.icon}
+                    </div>
+                  </div>
+
+                  <h3 className="text-xl font-bold mb-3 relative group-hover:text-primary-600 transition-colors duration-300">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 relative leading-relaxed">
+                    {feature.description}
+                  </p>
+
+                  {/* Decorative corner */}
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary-100 to-transparent opacity-0 group-hover:opacity-50 rounded-bl-full transition-opacity duration-500"></div>
                 </div>
-                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Stats Section */}
+          <div className="mt-20 grid md:grid-cols-4 gap-8">
+            {[
+              { number: "500+", label: "Clients satisfaits" },
+              { number: "50+", label: "Véhicules disponibles" },
+              { number: "5", label: "Agences en Tunisie" },
+              { number: "24/7", label: "Support client" },
+            ].map((stat, index) => (
+              <div
+                key={index}
+                className="text-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
+              >
+                <div className="text-4xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent mb-2">
+                  {stat.number}
+                </div>
+                <div className="text-gray-600 font-medium">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <style jsx>{`
+          @keyframes blob {
+            0%,
+            100% {
+              transform: translate(0, 0) scale(1);
+            }
+            25% {
+              transform: translate(20px, -20px) scale(1.1);
+            }
+            50% {
+              transform: translate(-20px, 20px) scale(0.9);
+            }
+            75% {
+              transform: translate(20px, 20px) scale(1.05);
+            }
+          }
+          .animate-blob {
+            animation: blob 7s infinite;
+          }
+          .animation-delay-2000 {
+            animation-delay: 2s;
+          }
+        `}</style>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="inline-block px-4 py-2 bg-primary-100 text-primary-600 rounded-full text-sm font-semibold mb-4">
+              Témoignages
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+              Ce que disent nos clients
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              La satisfaction de nos clients est notre priorité
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Ahmed Ben Ali",
+                role: "Entrepreneur",
+                image:
+                  "https://ui-avatars.com/api/?name=Ahmed+Ben+Ali&background=3B82F6&color=fff&size=100",
+                text: "Service impeccable ! La voiture était en parfait état et le processus de réservation très simple. Je recommande vivement.",
+                rating: 5,
+              },
+              {
+                name: "Sarah Mansouri",
+                role: "Architecte",
+                image:
+                  "https://ui-avatars.com/api/?name=Sarah+Mansouri&background=3B82F6&color=fff&size=100",
+                text: "Équipe professionnelle et véhicules de qualité. J'ai loué plusieurs fois et je n'ai jamais été déçue.",
+                rating: 5,
+              },
+              {
+                name: "Karim Trabelsi",
+                role: "Designer",
+                image:
+                  "https://ui-avatars.com/api/?name=Karim+Trabelsi&background=3B82F6&color=fff&size=100",
+                text: "Excellent rapport qualité-prix. Le service client est réactif et les tarifs très compétitifs.",
+                rating: 5,
+              },
+            ].map((testimonial, index) => (
+              <div
+                key={index}
+                className="bg-gradient-to-br from-gray-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 group hover:-translate-y-2"
+              >
+                <div className="flex items-center gap-1 mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <svg
+                      key={i}
+                      className="w-5 h-5 text-yellow-400 fill-current"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-gray-700 mb-6 leading-relaxed italic">
+                  "{testimonial.text}"
+                </p>
+                <div className="flex items-center gap-4">
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="w-12 h-12 rounded-full ring-2 ring-primary-100 group-hover:ring-primary-300 transition-all"
+                  />
+                  <div>
+                    <div className="font-bold text-gray-900">
+                      {testimonial.name}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {testimonial.role}
+                    </div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -440,23 +914,168 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary-600 to-primary-800 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Prêt à prendre la route?
-          </h2>
-          <p className="text-xl mb-8 text-primary-100">
-            Réservez maintenant et profitez de nos offres exceptionnelles
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-primary-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-all shadow-lg">
-              Voir les offres
-            </button>
-            <button className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-primary-600 transition-all">
-              Nous contacter
-            </button>
+      <section
+        ref={ctaAnim.ref}
+        className={`py-24 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-white relative overflow-hidden transition-all duration-700 ${ctaAnim.isVisible ? "animate-scaleIn" : "opacity-0"}`}
+      >
+        {/* Animated background elements */}
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-white rounded-full mix-blend-soft-light opacity-10 animate-float"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-300 rounded-full mix-blend-soft-light opacity-10 animate-float-delayed"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full">
+            <svg
+              className="w-full h-full opacity-5"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+            >
+              <path d="M0,0 L100,0 L100,100 L0,100 Z" fill="url(#grid)" />
+              <defs>
+                <pattern
+                  id="grid"
+                  width="10"
+                  height="10"
+                  patternUnits="userSpaceOnUse"
+                >
+                  <path
+                    d="M 10 0 L 0 0 0 10"
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="0.5"
+                  />
+                </pattern>
+              </defs>
+            </svg>
           </div>
         </div>
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+              Prêt à prendre la route?
+            </h2>
+            <p className="text-xl md:text-2xl mb-10 text-primary-100 max-w-3xl mx-auto leading-relaxed">
+              Réservez maintenant et profitez de nos offres exceptionnelles avec
+              des véhicules premium
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <button className="group bg-white text-primary-600 px-10 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                <span>Voir les offres</span>
+                <svg
+                  className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  />
+                </svg>
+              </button>
+              <button className="group bg-transparent border-2 border-white text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-primary-600 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  />
+                </svg>
+                <span>Nous contacter</span>
+              </button>
+            </div>
+
+            {/* Trust indicators */}
+            <div className="flex flex-wrap justify-center gap-8 items-center opacity-90">
+              <div className="flex items-center gap-2">
+                <svg
+                  className="w-6 h-6"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span className="font-semibold">Paiement sécurisé</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <svg
+                  className="w-6 h-6"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span className="font-semibold">Annulation gratuite</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <svg
+                  className="w-6 h-6"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                </svg>
+                <span className="font-semibold">Support 24/7</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <style jsx>{`
+          @keyframes float {
+            0%,
+            100% {
+              transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+              transform: translate(10px, -10px) rotate(5deg);
+            }
+            50% {
+              transform: translate(-10px, 10px) rotate(-5deg);
+            }
+            75% {
+              transform: translate(10px, 10px) rotate(3deg);
+            }
+          }
+          @keyframes float-delayed {
+            0%,
+            100% {
+              transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+              transform: translate(-15px, 10px) rotate(-3deg);
+            }
+            50% {
+              transform: translate(15px, -10px) rotate(3deg);
+            }
+            75% {
+              transform: translate(-10px, -10px) rotate(-5deg);
+            }
+          }
+          .animate-float {
+            animation: float 8s infinite ease-in-out;
+          }
+          .animate-float-delayed {
+            animation: float-delayed 10s infinite ease-in-out;
+          }
+        `}</style>
       </section>
 
       <Footer />
