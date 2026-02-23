@@ -48,7 +48,6 @@ const Dashboard = () => {
         return [
           { id: "overview", label: "Mes Réservations", icon: "clipboard" },
           { id: "history", label: "Historique", icon: "clock" },
-          { id: "simulator", label: "Simulateur de prix", icon: "calculator" },
         ];
       default:
         return [];
@@ -1286,17 +1285,6 @@ const ClientContent = ({ activeTab, navigate }) => {
               </div>
             </div>
           ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (activeTab === "simulator") {
-    return (
-      <div className="space-y-6">
-        <h2 className="text-xl font-bold text-gray-900">Simulateur de Prix</h2>
-        <div className="bg-white rounded-xl p-6 border border-gray-200">
-          <p className="text-gray-600">Simulateur de tarification à venir...</p>
         </div>
       </div>
     );

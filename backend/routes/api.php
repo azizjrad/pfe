@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\PricingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,11 +20,18 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])
     ->middleware('throttle:5,1');  // Max 5 tentatives par minute (protection brute force)
 
+// Public pricing routes (for transparency)
+Route::get('/pricing/rules', [PricingController::class, 'getPricingRules']);
+Route::get('/vehicles/{vehicleId}/pricing', [PricingController::class, 'getVehiclePricing']);
+
 // Protected routes - All authenticated users
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', [AuthController::class, 'user']);
     Route::put('/profile', [AuthController::class, 'updateProfile']);
+    
+    // Dynamic pricing calculation
+    Route::post('/pricing/calculate', [PricingController::class, 'calculatePrice']);
 });
 
 // Protected routes - Super Admin only

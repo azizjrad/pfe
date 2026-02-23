@@ -112,22 +112,72 @@ const TermsOfService = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 3
               </span>
-              Réservation et paiement
+              Tarification dynamique
             </h2>
-            <div className="ml-11 space-y-3">
-              <p className="text-gray-700 leading-relaxed">
-                Les réservations sont confirmées après réception du paiement
-                complet. Les prix affichés incluent la TVA mais peuvent exclure
-                certains frais supplémentaires tels que :
+            <div className="ml-11 space-y-4">
+              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+                <p className="text-sm font-semibold text-yellow-800 mb-2">
+                  ⚠️ Information importante pour les agences
+                </p>
+                <p className="text-sm text-yellow-700">
+                  Elite Drive utilise un système de tarification dynamique. Le prix final peut varier en fonction de plusieurs facteurs
+                  et ne correspond pas toujours au prix de base affiché initialement.
+                </p>
+              </div>
+              
+              <p className="text-gray-700 leading-relaxed font-semibold">
+                Les prix sont calculés automatiquement selon les règles suivantes :
               </p>
-              <ul className="list-disc list-inside space-y-2 text-gray-700">
-                <li>Assurance complémentaire optionnelle</li>
-                <li>Conducteur additionnel</li>
-                <li>Équipements supplémentaires (GPS, siège enfant, etc.)</li>
-                <li>
-                  Carburant (le véhicule doit être retourné avec le même niveau)
-                </li>
-              </ul>
+              
+              <div className="space-y-3">
+                <div className="bg-blue-50 rounded-lg p-4">
+                  <h4 className="font-semibold text-blue-900 mb-2">1. Tarification saisonnière</h4>
+                  <ul className="text-sm text-blue-800 space-y-1 ml-4">
+                    <li>• Haute saison (Juin-Septembre) : <strong>+25%</strong></li>
+                    <li>• Saison des fêtes (Décembre-Janvier) : <strong>+20%</strong></li>
+                    <li>• Basse saison (Oct-Nov, Fév-Mars) : <strong>-15%</strong></li>
+                    <li>• Saison régulière (Avril-Mai) : Prix de base</li>
+                  </ul>
+                </div>
+
+                <div className="bg-green-50 rounded-lg p-4">
+                  <h4 className="font-semibold text-green-900 mb-2">2. Réservation anticipée</h4>
+                  <ul className="text-sm text-green-800 space-y-1 ml-4">
+                    <li>• 30 jours ou plus à l'avance : <strong>-10%</strong></li>
+                    <li>• 15 à 29 jours : <strong>-5%</strong></li>
+                    <li>• 7 à 14 jours : <strong>-2%</strong></li>
+                    <li>• Dernière minute (moins de 48h) : <strong>+15%</strong></li>
+                  </ul>
+                </div>
+
+                <div className="bg-purple-50 rounded-lg p-4">
+                  <h4 className="font-semibold text-purple-900 mb-2">3. Durée de location</h4>
+                  <ul className="text-sm text-purple-800 space-y-1 ml-4">
+                    <li>• 1-2 jours : Prix de base</li>
+                    <li>• 3-6 jours : <strong>-5%</strong></li>
+                    <li>• 1 semaine (7-13 jours) : <strong>-10%</strong></li>
+                    <li>• 2 semaines (14-20 jours) : <strong>-15%</strong></li>
+                    <li>• 1 mois ou plus (21+ jours) : <strong>-20%</strong></li>
+                  </ul>
+                </div>
+
+                <div className="bg-orange-50 rounded-lg p-4">
+                  <h4 className="font-semibold text-orange-900 mb-2">4. Autres facteurs</h4>
+                  <ul className="text-sm text-orange-800 space-y-1 ml-4">
+                    <li>• Prise en charge weekend (Ven-Dim) : <strong>+15%</strong></li>
+                    <li>• Score de fiabilité excellent (90-100%) : <strong>-5%</strong></li>
+                    <li>• Score de fiabilité bon (75-89%) : <strong>-2%</strong></li>
+                    <li>• Score de fiabilité faible (&lt;60%) : <strong>+5%</strong></li>
+                    <li>• Haute demande (faible disponibilité) : <strong>+15%</strong></li>
+                    <li>• Faible demande (haute disponibilité) : <strong>-10%</strong></li>
+                  </ul>
+                </div>
+              </div>
+
+              <p className="text-sm text-gray-600 italic mt-4">
+                Note : Ces ajustements sont cumulatifs et appliqués séquentiellement. Le prix final affiché lors de la réservation
+                est garanti et ne changera pas après confirmation du paiement.
+              </p>
             </div>
           </section>
 
@@ -136,6 +186,61 @@ const TermsOfService = () => {
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 4
+              </span>
+              Options et services supplémentaires
+            </h2>
+            <div className="ml-11 space-y-3">
+              <p className="text-gray-700 leading-relaxed">
+                Des frais supplémentaires s'appliquent pour les options suivantes :
+              </p>
+              <div className="grid md:grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <p className="font-semibold text-gray-900">Assurance & Protection</p>
+                  <p className="text-sm text-gray-600">Assurance tous risques : +15% du total</p>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <p className="font-semibold text-gray-900">Équipements</p>
+                  <p className="text-sm text-gray-600">GPS : 5 DT/jour</p>
+                  <p className="text-sm text-gray-600">Siège enfant : 3 DT/jour</p>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <p className="font-semibold text-gray-900">Services</p>
+                  <p className="text-sm text-gray-600">Conducteur additionnel : 8 DT/jour</p>
+                  <p className="text-sm text-gray-600">Livraison aéroport : 10 DT</p>
+                  <p className="text-sm text-gray-600">Livraison à domicile : 25 DT</p>
+                  <p className="text-sm text-gray-600">Prise en charge hors horaires : 15 DT</p>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <p className="font-semibold text-gray-900">Kilométrage</p>
+                  <p className="text-sm text-gray-600">200 km/jour : Prix de base</p>
+                  <p className="text-sm text-gray-600">Illimité : +10%</p>
+                  <p className="text-sm text-gray-600">Limite 100 km/jour : -5%</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Section 5 */}
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+              <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
+                5
+              </span>
+              Réservation et paiement
+            </h2>
+            <div className="ml-11 space-y-3">
+              <p className="text-gray-700 leading-relaxed">
+                Les réservations sont confirmées après réception du paiement complet. 
+                Le prix final calculé lors de la réservation inclut tous les ajustements tarifaires et reste garanti.
+              </p>
+            </div>
+          </section>
+
+          {/* Section 6 */}
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+              <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
+                6
               </span>
               Annulation et modification
             </h2>
@@ -158,11 +263,11 @@ const TermsOfService = () => {
             </div>
           </section>
 
-          {/* Section 5 */}
+          {/* Section 7 */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
-                5
+                7
               </span>
               Utilisation du véhicule
             </h2>
@@ -183,11 +288,11 @@ const TermsOfService = () => {
             </div>
           </section>
 
-          {/* Section 6 */}
+          {/* Section 8 */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
-                6
+                8
               </span>
               Assurance et responsabilité
             </h2>
@@ -200,11 +305,11 @@ const TermsOfService = () => {
             </p>
           </section>
 
-          {/* Section 7 */}
+          {/* Section 9 */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
-                7
+                9
               </span>
               Retard et prolongation
             </h2>
@@ -216,11 +321,11 @@ const TermsOfService = () => {
             </p>
           </section>
 
-          {/* Section 8 */}
+          {/* Section 10 */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
-                8
+                10
               </span>
               Modifications des conditions
             </h2>
@@ -232,11 +337,11 @@ const TermsOfService = () => {
             </p>
           </section>
 
-          {/* Section 9 */}
+          {/* Section 11 */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
-                9
+                11
               </span>
               Contact
             </h2>
