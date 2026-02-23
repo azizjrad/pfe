@@ -381,7 +381,7 @@ class PricingService
         // For now, return base multiplier
         // Low availability (< 20% fleet available): +15%
         // High availability (> 60% available): -10%
-        
+
         return 1.0; // Base multiplier for now
     }
 }

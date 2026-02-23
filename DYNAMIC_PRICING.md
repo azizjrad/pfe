@@ -13,6 +13,7 @@ Le système de tarification dynamique calcule automatiquement le prix final des 
 Situé dans `backend/app/Services/PricingService.php`, ce service contient toute la logique de calcul de prix.
 
 **Méthode principale:**
+
 ```php
 public function calculatePrice(
     Vehicle $vehicle,
@@ -24,6 +25,7 @@ public function calculatePrice(
 ```
 
 **Paramètres:**
+
 - `$vehicle`: Modèle Vehicle avec le prix de base journalier
 - `$startDate`: Date de début de location
 - `$endDate`: Date de fin de location
@@ -39,6 +41,7 @@ public function calculatePrice(
   - `mileage_option` (string): '100km', '200km', ou 'unlimited'
 
 **Retour:**
+
 ```php
 [
     'base_price' => 150.00,           // Prix de base journalier
@@ -70,13 +73,14 @@ Situé dans `backend/app/Http/Controllers/Api/PricingController.php`
 
 **Routes disponibles:**
 
-| Méthode | Route | Auth | Description |
-|---------|-------|------|-------------|
-| POST | `/api/pricing/calculate` | Oui | Calcule le prix pour une réservation spécifique |
-| GET | `/api/vehicles/{id}/pricing` | Non | Obtient le prix de base + saison actuelle |
-| GET | `/api/pricing/rules` | Non | Obtient toutes les règles de tarification |
+| Méthode | Route                        | Auth | Description                                     |
+| ------- | ---------------------------- | ---- | ----------------------------------------------- |
+| POST    | `/api/pricing/calculate`     | Oui  | Calcule le prix pour une réservation spécifique |
+| GET     | `/api/vehicles/{id}/pricing` | Non  | Obtient le prix de base + saison actuelle       |
+| GET     | `/api/pricing/rules`         | Non  | Obtient toutes les règles de tarification       |
 
 **Exemple d'appel - Calcul de prix:**
+
 ```bash
 POST /api/pricing/calculate
 Authorization: Bearer {token}
@@ -94,6 +98,7 @@ Authorization: Bearer {token}
 ```
 
 **Réponse:**
+
 ```json
 {
     "success": true,
@@ -114,12 +119,12 @@ Authorization: Bearer {token}
 
 Ajuste le prix selon la période de l'année:
 
-| Saison | Mois | Multiplicateur | Ajustement |
-|--------|------|----------------|------------|
-| Haute saison | Juin-Septembre | 1.25 | +25% |
-| Saison des fêtes | Décembre-Janvier | 1.20 | +20% |
-| Basse saison | Oct-Nov, Fév-Mars | 0.85 | -15% |
-| Saison régulière | Avril-Mai | 1.00 | Base |
+| Saison           | Mois              | Multiplicateur | Ajustement |
+| ---------------- | ----------------- | -------------- | ---------- |
+| Haute saison     | Juin-Septembre    | 1.25           | +25%       |
+| Saison des fêtes | Décembre-Janvier  | 1.20           | +20%       |
+| Basse saison     | Oct-Nov, Fév-Mars | 0.85           | -15%       |
+| Saison régulière | Avril-Mai         | 1.00           | Base       |
 
 **Implémentation:** `getSeasonalMultiplier()`, `getSeasonLabel()`
 
@@ -127,12 +132,12 @@ Ajuste le prix selon la période de l'année:
 
 Encourage les réservations précoces:
 
-| Délai de réservation | Réduction |
-|----------------------|-----------|
-| 30 jours ou plus | -10% |
-| 15-29 jours | -5% |
-| 7-14 jours | -2% |
-| Moins de 2 jours | +15% (dernière minute) |
+| Délai de réservation | Réduction              |
+| -------------------- | ---------------------- |
+| 30 jours ou plus     | -10%                   |
+| 15-29 jours          | -5%                    |
+| 7-14 jours           | -2%                    |
+| Moins de 2 jours     | +15% (dernière minute) |
 
 **Implémentation:** `getAdvanceBookingDiscount()`, `getLastMinutePremium()`
 
@@ -140,13 +145,13 @@ Encourage les réservations précoces:
 
 Réductions pour les locations longues:
 
-| Durée | Réduction |
-|-------|-----------|
-| 21 jours ou plus | -20% |
-| 14-20 jours | -15% |
-| 7-13 jours | -10% |
-| 3-6 jours | -5% |
-| 1-2 jours | Base |
+| Durée            | Réduction |
+| ---------------- | --------- |
+| 21 jours ou plus | -20%      |
+| 14-20 jours      | -15%      |
+| 7-13 jours       | -10%      |
+| 3-6 jours        | -5%       |
+| 1-2 jours        | Base      |
 
 **Implémentation:** `getDurationDiscount()`
 
@@ -163,11 +168,11 @@ Majoration pour les locations weekend:
 
 Récompense les clients fiables:
 
-| Score | Ajustement |
-|-------|------------|
-| 90-100% | -5% |
-| 75-89% | -2% |
-| 60-74% | Base |
+| Score        | Ajustement     |
+| ------------ | -------------- |
+| 90-100%      | -5%            |
+| 75-89%       | -2%            |
+| 60-74%       | Base           |
 | Moins de 60% | +5% (pénalité) |
 
 **Implémentation:** `getLoyaltyDiscount()`
@@ -176,15 +181,16 @@ Récompense les clients fiables:
 
 Ajustement selon la demande (placeholder actuellement):
 
-| Disponibilité | Ajustement |
-|---------------|------------|
-| Moins de 20% | +15% (forte demande) |
-| 20-60% | Base |
-| Plus de 60% | -10% (faible demande) |
+| Disponibilité | Ajustement            |
+| ------------- | --------------------- |
+| Moins de 20%  | +15% (forte demande)  |
+| 20-60%        | Base                  |
+| Plus de 60%   | -10% (faible demande) |
 
 **Implémentation:** `getAvailabilityMultiplier()` - À implémenter
 
 **TODO:**
+
 ```php
 private function getAvailabilityMultiplier(Vehicle $vehicle, Carbon $startDate, Carbon $endDate): float
 {
@@ -197,9 +203,9 @@ private function getAvailabilityMultiplier(Vehicle $vehicle, Carbon $startDate, 
         })
         ->distinct('vehicle_id')
         ->count();
-    
+
     $availabilityRate = ($totalVehicles - $reservedVehicles) / $totalVehicles;
-    
+
     if ($availabilityRate < 0.2) return 1.15; // High demand
     if ($availabilityRate > 0.6) return 0.90; // Low demand
     return 1.0; // Normal
@@ -210,32 +216,32 @@ private function getAvailabilityMultiplier(Vehicle $vehicle, Carbon $startDate, 
 
 Prix fixes par jour:
 
-| Option | Prix |
-|--------|------|
-| Assurance complète | +15% du sous-total |
-| GPS | 5 DT/jour |
-| Siège enfant | 3 DT/jour |
-| Conducteur supplémentaire | 8 DT/jour |
+| Option                    | Prix               |
+| ------------------------- | ------------------ |
+| Assurance complète        | +15% du sous-total |
+| GPS                       | 5 DT/jour          |
+| Siège enfant              | 3 DT/jour          |
+| Conducteur supplémentaire | 8 DT/jour          |
 
 ### 8. Services Spéciaux
 
 Prix fixes uniques:
 
-| Service | Prix |
-|---------|------|
-| Livraison aéroport | 10 DT |
-| Livraison à domicile | 25 DT |
+| Service                       | Prix  |
+| ----------------------------- | ----- |
+| Livraison aéroport            | 10 DT |
+| Livraison à domicile          | 25 DT |
 | Prise en charge hors horaires | 15 DT |
 
 ### 9. Options de Kilométrage
 
 Ajustement selon le plan:
 
-| Option | Ajustement |
-|--------|------------|
-| Kilométrage illimité | +10% |
-| 100 km/jour | -5% |
-| 200 km/jour | Base |
+| Option               | Ajustement |
+| -------------------- | ---------- |
+| Kilométrage illimité | +10%       |
+| 100 km/jour          | -5%        |
+| 200 km/jour          | Base       |
 
 ## Frontend (React)
 
@@ -246,23 +252,24 @@ Situé dans `frontend/src/hooks/usePricing.js`
 **Hooks disponibles:**
 
 #### `useDynamicPricing(vehicleId, startDate, endDate, options)`
+
 Calcule le prix dynamique en temps réel.
 
 ```jsx
-import { useDynamicPricing } from '../hooks/usePricing';
+import { useDynamicPricing } from "../hooks/usePricing";
 
 function ReservationForm() {
   const [options, setOptions] = useState({
     full_insurance: false,
     gps: false,
-    mileage_option: '200km'
+    mileage_option: "200km",
   });
 
   const { pricing, loading, error } = useDynamicPricing(
     vehicleId,
-    '2024-07-15',
-    '2024-07-22',
-    options
+    "2024-07-15",
+    "2024-07-22",
+    options,
   );
 
   if (loading) return <div>Calcul en cours...</div>;
@@ -273,6 +280,7 @@ function ReservationForm() {
 ```
 
 #### `useVehiclePricing(vehicleId)`
+
 Obtient le prix de base + information saisonnière.
 
 ```jsx
@@ -290,6 +298,7 @@ const { pricing, loading } = useVehiclePricing(vehicleId);
 ```
 
 #### `usePricingRules()`
+
 Obtient toutes les règles de tarification.
 
 ```jsx
@@ -303,20 +312,23 @@ const { rules, loading } = usePricingRules();
 Situé dans `frontend/src/components/PriceBreakdown.jsx`
 
 Affiche le détail complet de la tarification avec:
+
 - Prix final en grand
 - Indicateurs visuels (économies/suppléments)
 - Liste détaillée des ajustements
 - Mode compact avec dépliage
 
 **Props:**
+
 ```jsx
-<PriceBreakdown 
-  pricing={pricingData}  // Objet retourné par useDynamicPricing
-  compact={true}         // Mode compact (défaut: false)
+<PriceBreakdown
+  pricing={pricingData} // Objet retourné par useDynamicPricing
+  compact={true} // Mode compact (défaut: false)
 />
 ```
 
 **Caractéristiques:**
+
 - ✅ Affichage professionnel avec gradient
 - ✅ Ajustements colorés (vert = réduction, orange = supplément)
 - ✅ Badge "Prix garanti"
@@ -328,17 +340,17 @@ Affiche le détail complet de la tarification avec:
 ### Étape 1: Modifier ReservationModal.jsx
 
 ```jsx
-import { useState, useEffect } from 'react';
-import { useDynamicPricing } from '../hooks/usePricing';
-import PriceBreakdown from './PriceBreakdown';
+import { useState, useEffect } from "react";
+import { useDynamicPricing } from "../hooks/usePricing";
+import PriceBreakdown from "./PriceBreakdown";
 
 const ReservationModal = ({ vehicle, isOpen, onClose }) => {
   const [formData, setFormData] = useState({
-    startDate: '',
-    endDate: '',
-    fullName: '',
-    email: '',
-    phone: ''
+    startDate: "",
+    endDate: "",
+    fullName: "",
+    email: "",
+    phone: "",
   });
 
   const [options, setOptions] = useState({
@@ -349,7 +361,7 @@ const ReservationModal = ({ vehicle, isOpen, onClose }) => {
     airport_delivery: false,
     home_delivery: false,
     after_hours_pickup: false,
-    mileage_option: '200km'
+    mileage_option: "200km",
   });
 
   // Calculer le prix dynamiquement
@@ -357,34 +369,38 @@ const ReservationModal = ({ vehicle, isOpen, onClose }) => {
     vehicle.id,
     formData.startDate,
     formData.endDate,
-    options
+    options,
   );
 
   const handleOptionChange = (option, value) => {
-    setOptions(prev => ({ ...prev, [option]: value }));
+    setOptions((prev) => ({ ...prev, [option]: value }));
   };
 
   return (
     <div className="modal">
       <h2>Réserver {vehicle.name}</h2>
-      
+
       {/* Formulaire de dates */}
       <div>
         <label>Date de début</label>
-        <input 
-          type="date" 
+        <input
+          type="date"
           value={formData.startDate}
-          onChange={(e) => setFormData({...formData, startDate: e.target.value})}
-          min={new Date().toISOString().split('T')[0]}
+          onChange={(e) =>
+            setFormData({ ...formData, startDate: e.target.value })
+          }
+          min={new Date().toISOString().split("T")[0]}
         />
       </div>
 
       <div>
         <label>Date de fin</label>
-        <input 
-          type="date" 
+        <input
+          type="date"
           value={formData.endDate}
-          onChange={(e) => setFormData({...formData, endDate: e.target.value})}
+          onChange={(e) =>
+            setFormData({ ...formData, endDate: e.target.value })
+          }
           min={formData.startDate}
         />
       </div>
@@ -392,55 +408,63 @@ const ReservationModal = ({ vehicle, isOpen, onClose }) => {
       {/* Options */}
       <div className="grid grid-cols-2 gap-4">
         <label className="flex items-center gap-2">
-          <input 
+          <input
             type="checkbox"
             checked={options.full_insurance}
-            onChange={(e) => handleOptionChange('full_insurance', e.target.checked)}
+            onChange={(e) =>
+              handleOptionChange("full_insurance", e.target.checked)
+            }
           />
           Assurance complète (+15%)
         </label>
 
         <label className="flex items-center gap-2">
-          <input 
+          <input
             type="checkbox"
             checked={options.gps}
-            onChange={(e) => handleOptionChange('gps', e.target.checked)}
+            onChange={(e) => handleOptionChange("gps", e.target.checked)}
           />
           GPS (5 DT/jour)
         </label>
 
         <label className="flex items-center gap-2">
-          <input 
+          <input
             type="checkbox"
             checked={options.child_seat}
-            onChange={(e) => handleOptionChange('child_seat', e.target.checked)}
+            onChange={(e) => handleOptionChange("child_seat", e.target.checked)}
           />
           Siège enfant (3 DT/jour)
         </label>
 
         <label className="flex items-center gap-2">
-          <input 
+          <input
             type="checkbox"
             checked={options.additional_driver}
-            onChange={(e) => handleOptionChange('additional_driver', e.target.checked)}
+            onChange={(e) =>
+              handleOptionChange("additional_driver", e.target.checked)
+            }
           />
           Conducteur supplémentaire (8 DT/jour)
         </label>
 
         <label className="flex items-center gap-2">
-          <input 
+          <input
             type="checkbox"
             checked={options.airport_delivery}
-            onChange={(e) => handleOptionChange('airport_delivery', e.target.checked)}
+            onChange={(e) =>
+              handleOptionChange("airport_delivery", e.target.checked)
+            }
           />
           Livraison aéroport (10 DT)
         </label>
 
         <label className="flex items-center gap-2">
-          <input 
+          <input
             type="checkbox"
             checked={options.home_delivery}
-            onChange={(e) => handleOptionChange('home_delivery', e.target.checked)}
+            onChange={(e) =>
+              handleOptionChange("home_delivery", e.target.checked)
+            }
           />
           Livraison à domicile (25 DT)
         </label>
@@ -449,9 +473,9 @@ const ReservationModal = ({ vehicle, isOpen, onClose }) => {
       {/* Kilométrage */}
       <div>
         <label>Plan kilométrage</label>
-        <select 
+        <select
           value={options.mileage_option}
-          onChange={(e) => handleOptionChange('mileage_option', e.target.value)}
+          onChange={(e) => handleOptionChange("mileage_option", e.target.value)}
         >
           <option value="100km">100 km/jour (-5%)</option>
           <option value="200km">200 km/jour (base)</option>
@@ -466,20 +490,24 @@ const ReservationModal = ({ vehicle, isOpen, onClose }) => {
 
       {/* Informations client */}
       <div>
-        <input 
+        <input
           type="text"
           value={formData.fullName}
-          onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+          onChange={(e) =>
+            setFormData({ ...formData, fullName: e.target.value })
+          }
           placeholder="Nom complet"
         />
       </div>
 
       {/* Bouton de réservation */}
-      <button 
+      <button
         disabled={!pricing || loading}
         onClick={() => handleReservation({ ...formData, pricing })}
       >
-        {loading ? 'Calcul...' : `Réserver pour ${pricing?.total.toFixed(2)} DT`}
+        {loading
+          ? "Calcul..."
+          : `Réserver pour ${pricing?.total.toFixed(2)} DT`}
       </button>
     </div>
   );
@@ -517,6 +545,7 @@ public function store(Request $request)
 ```
 
 **Migration à créer:**
+
 ```php
 Schema::table('reservations', function (Blueprint $table) {
     $table->json('pricing_details')->nullable();
@@ -554,7 +583,7 @@ public function test_seasonal_pricing_high_season()
 {
     $vehicle = Vehicle::factory()->create(['daily_price' => 100]);
     $service = new PricingService();
-    
+
     $result = $service->calculatePrice(
         $vehicle,
         Carbon::parse('2024-07-15'), // Juillet = haute saison
@@ -562,10 +591,10 @@ public function test_seasonal_pricing_high_season()
         null,
         []
     );
-    
+
     $seasonalAdj = collect($result['adjustments'])
         ->firstWhere('type', 'seasonal');
-    
+
     $this->assertEquals(25.00, $seasonalAdj['amount']); // 100 * 1.25 = 125, +25 DT
 }
 ```
@@ -573,9 +602,11 @@ public function test_seasonal_pricing_high_season()
 ## Documentation Utilisateur
 
 La documentation complète est disponible pour les utilisateurs dans:
+
 - **frontend/src/pages/TermsOfService.jsx** - Section 3: "Tarification dynamique"
 
 Cette section explique:
+
 - ✅ Toutes les règles avec pourcentages exacts
 - ✅ Prix des options et services
 - ✅ Avertissement clair pour les agences
@@ -584,6 +615,7 @@ Cette section explique:
 ## Checklist d'Implémentation
 
 ### Backend ✅
+
 - [x] PricingService.php créé avec 9 règles
 - [x] PricingController.php créé
 - [x] Routes API ajoutées
@@ -594,6 +626,7 @@ Cette section explique:
 - [ ] Tests unitaires pour chaque règle
 
 ### Frontend ✅
+
 - [x] Hook usePricing.js créé
 - [x] Composant PriceBreakdown.jsx créé
 - [x] Documentation Terms & Conditions mise à jour
@@ -604,6 +637,7 @@ Cette section explique:
 - [ ] Tests E2E pour le flux de réservation
 
 ### Documentation ✅
+
 - [x] DYNAMIC_PRICING.md créé
 - [x] Explications détaillées des 9 règles
 - [x] Exemples d'utilisation frontend
@@ -613,7 +647,9 @@ Cette section explique:
 ## Performance et Optimisation
 
 ### Caching
+
 Considérer le caching pour:
+
 - Règles de pricing (changent rarement)
 - Multiplicateurs saisonniers (par mois)
 - Disponibilité de la flotte (cache 5-10 min)
@@ -626,6 +662,7 @@ $rules = Cache::remember('pricing_rules', 3600, function () {
 ```
 
 ### Base de données
+
 - Index sur `reservations.start_date` et `end_date` pour calcul disponibilité
 - Index sur `vehicles.agency_id` pour requêtes de flotte
 
@@ -640,6 +677,7 @@ $rules = Cache::remember('pricing_rules', 3600, function () {
 ## Support et Questions
 
 Pour toute question sur le système de tarification:
+
 1. Consulter ce document
 2. Vérifier les Terms & Conditions (Section 3)
 3. Examiner le code de PricingService.php

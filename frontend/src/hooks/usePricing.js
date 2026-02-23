@@ -1,12 +1,17 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 /**
  * Custom hook for fetching dynamic pricing
  */
-export const useDynamicPricing = (vehicleId, startDate, endDate, options = {}) => {
+export const useDynamicPricing = (
+  vehicleId,
+  startDate,
+  endDate,
+  options = {},
+) => {
   const [pricing, setPricing] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -22,7 +27,7 @@ export const useDynamicPricing = (vehicleId, startDate, endDate, options = {}) =
     const start = new Date(startDate);
     const end = new Date(endDate);
     if (isNaN(start.getTime()) || isNaN(end.getTime()) || start >= end) {
-      setError('Dates invalides');
+      setError("Dates invalides");
       return;
     }
 
@@ -31,29 +36,31 @@ export const useDynamicPricing = (vehicleId, startDate, endDate, options = {}) =
       setError(null);
 
       try {
-        const token = localStorage.getItem('token');
-        
+        const token = localStorage.getItem("token");
+
         const response = await axios.post(
           `${API_URL}/pricing/calculate`,
           {
             vehicle_id: vehicleId,
             start_date: startDate,
             end_date: endDate,
-            options: options
+            options: options,
           },
           {
-            headers: token ? { Authorization: `Bearer ${token}` } : {}
-          }
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          },
         );
 
         if (response.data.success) {
           setPricing(response.data.data);
         } else {
-          setError(response.data.message || 'Erreur lors du calcul du prix');
+          setError(response.data.message || "Erreur lors du calcul du prix");
         }
       } catch (err) {
-        console.error('Pricing calculation error:', err);
-        setError(err.response?.data?.message || 'Impossible de calculer le prix');
+        console.error("Pricing calculation error:", err);
+        setError(
+          err.response?.data?.message || "Impossible de calculer le prix",
+        );
       } finally {
         setLoading(false);
       }
@@ -85,16 +92,22 @@ export const useVehiclePricing = (vehicleId) => {
       setError(null);
 
       try {
-        const response = await axios.get(`${API_URL}/vehicles/${vehicleId}/pricing`);
+        const response = await axios.get(
+          `${API_URL}/vehicles/${vehicleId}/pricing`,
+        );
 
         if (response.data.success) {
           setPricing(response.data.data);
         } else {
-          setError(response.data.message || 'Erreur lors de la récupération du prix');
+          setError(
+            response.data.message || "Erreur lors de la récupération du prix",
+          );
         }
       } catch (err) {
-        console.error('Vehicle pricing error:', err);
-        setError(err.response?.data?.message || 'Impossible de récupérer le prix');
+        console.error("Vehicle pricing error:", err);
+        setError(
+          err.response?.data?.message || "Impossible de récupérer le prix",
+        );
       } finally {
         setLoading(false);
       }
@@ -125,11 +138,16 @@ export const usePricingRules = () => {
         if (response.data.success) {
           setRules(response.data.data);
         } else {
-          setError(response.data.message || 'Erreur lors de la récupération des règles');
+          setError(
+            response.data.message ||
+              "Erreur lors de la récupération des règles",
+          );
         }
       } catch (err) {
-        console.error('Pricing rules error:', err);
-        setError(err.response?.data?.message || 'Impossible de récupérer les règles');
+        console.error("Pricing rules error:", err);
+        setError(
+          err.response?.data?.message || "Impossible de récupérer les règles",
+        );
       } finally {
         setLoading(false);
       }
@@ -144,21 +162,26 @@ export const usePricingRules = () => {
 /**
  * Utility function to manually trigger price calculation
  */
-export const calculatePrice = async (vehicleId, startDate, endDate, options = {}) => {
+export const calculatePrice = async (
+  vehicleId,
+  startDate,
+  endDate,
+  options = {},
+) => {
   try {
-    const token = localStorage.getItem('token');
-    
+    const token = localStorage.getItem("token");
+
     const response = await axios.post(
       `${API_URL}/pricing/calculate`,
       {
         vehicle_id: vehicleId,
         start_date: startDate,
         end_date: endDate,
-        options: options
+        options: options,
       },
       {
-        headers: token ? { Authorization: `Bearer ${token}` } : {}
-      }
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      },
     );
 
     if (response.data.success) {
@@ -167,10 +190,10 @@ export const calculatePrice = async (vehicleId, startDate, endDate, options = {}
       return { success: false, error: response.data.message };
     }
   } catch (err) {
-    console.error('Price calculation error:', err);
-    return { 
-      success: false, 
-      error: err.response?.data?.message || 'Erreur lors du calcul du prix' 
+    console.error("Price calculation error:", err);
+    return {
+      success: false,
+      error: err.response?.data?.message || "Erreur lors du calcul du prix",
     };
   }
 };
@@ -182,27 +205,27 @@ export const getSeasonalBadge = (seasonLabel) => {
   if (!seasonLabel) return null;
 
   const badgeConfig = {
-    'Haute saison (+25%)': { 
-      bg: 'bg-orange-100', 
-      text: 'text-orange-800', 
-      icon: '🔥' 
+    "Haute saison (+25%)": {
+      bg: "bg-orange-100",
+      text: "text-orange-800",
+      icon: "🔥",
     },
-    'Saison des fêtes (+20%)': { 
-      bg: 'bg-red-100', 
-      text: 'text-red-800', 
-      icon: '🎄' 
+    "Saison des fêtes (+20%)": {
+      bg: "bg-red-100",
+      text: "text-red-800",
+      icon: "🎄",
     },
-    'Basse saison (-15%)': { 
-      bg: 'bg-green-100', 
-      text: 'text-green-800', 
-      icon: '💰' 
+    "Basse saison (-15%)": {
+      bg: "bg-green-100",
+      text: "text-green-800",
+      icon: "💰",
     },
-    'Saison régulière': { 
-      bg: 'bg-blue-100', 
-      text: 'text-blue-800', 
-      icon: '📅' 
-    }
+    "Saison régulière": {
+      bg: "bg-blue-100",
+      text: "text-blue-800",
+      icon: "📅",
+    },
   };
 
-  return badgeConfig[seasonLabel] || badgeConfig['Saison régulière'];
+  return badgeConfig[seasonLabel] || badgeConfig["Saison régulière"];
 };

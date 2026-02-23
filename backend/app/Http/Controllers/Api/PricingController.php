@@ -42,7 +42,7 @@ class PricingController extends Controller
 
         try {
             $vehicle = Vehicle::findOrFail($validated['vehicle_id']);
-            
+
             // Get authenticated user's reliability score if available
             $reliabilityScore = null;
             if (auth()->check()) {
@@ -84,12 +84,12 @@ class PricingController extends Controller
     {
         try {
             $vehicle = Vehicle::findOrFail($vehicleId);
-            
+
             // Get current seasonal information
             $today = Carbon::now();
             $seasonalMultiplier = $this->pricingService->getSeasonalMultiplier($today);
             $seasonLabel = $this->pricingService->getSeasonLabel($today);
-            
+
             // Calculate approximate daily rate for current season
             $estimatedDailyRate = round($vehicle->daily_price * $seasonalMultiplier, 2);
 

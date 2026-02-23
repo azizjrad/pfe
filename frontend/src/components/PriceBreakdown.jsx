@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { 
-  ChevronDownIcon, 
+import React, { useState } from "react";
+import {
+  ChevronDownIcon,
   ChevronUpIcon,
   CheckCircleIcon,
-  InformationCircleIcon 
-} from '@heroicons/react/24/outline';
+  InformationCircleIcon,
+} from "@heroicons/react/24/outline";
 
 /**
  * PriceBreakdown Component
@@ -23,15 +23,18 @@ const PriceBreakdown = ({ pricing, compact = false }) => {
     subtotal: initialSubtotal,
     adjustments = [],
     total,
-    average_daily_rate
+    average_daily_rate,
   } = pricing;
 
   // Separate adjustments into discounts and premiums
-  const discounts = adjustments.filter(adj => adj.amount < 0);
-  const premiums = adjustments.filter(adj => adj.amount > 0);
+  const discounts = adjustments.filter((adj) => adj.amount < 0);
+  const premiums = adjustments.filter((adj) => adj.amount > 0);
 
   // Calculate total discount and premium amounts
-  const totalDiscount = discounts.reduce((sum, adj) => sum + Math.abs(adj.amount), 0);
+  const totalDiscount = discounts.reduce(
+    (sum, adj) => sum + Math.abs(adj.amount),
+    0,
+  );
   const totalPremium = premiums.reduce((sum, adj) => sum + adj.amount, 0);
 
   return (
@@ -41,7 +44,9 @@ const PriceBreakdown = ({ pricing, compact = false }) => {
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <CheckCircleIcon className="h-5 w-5 text-primary-600" />
-            <h3 className="text-lg font-semibold text-gray-900">Prix final garanti</h3>
+            <h3 className="text-lg font-semibold text-gray-900">
+              Prix final garanti
+            </h3>
           </div>
           <div className="text-right">
             <div className="text-3xl font-bold text-primary-600">
@@ -67,13 +72,13 @@ const PriceBreakdown = ({ pricing, compact = false }) => {
               </span>
             )}
           </div>
-          
+
           {compact && (
             <button
               onClick={() => setIsExpanded(!isExpanded)}
               className="flex items-center gap-1 text-primary-600 hover:text-primary-700 font-medium"
             >
-              {isExpanded ? 'Masquer' : 'Voir'} les détails
+              {isExpanded ? "Masquer" : "Voir"} les détails
               {isExpanded ? (
                 <ChevronUpIcon className="h-4 w-4" />
               ) : (
@@ -92,7 +97,8 @@ const PriceBreakdown = ({ pricing, compact = false }) => {
             <div>
               <div className="font-medium text-gray-900">Prix de base</div>
               <div className="text-sm text-gray-500">
-                {base_price.toFixed(2)} DT × {rental_days} jour{rental_days > 1 ? 's' : ''}
+                {base_price.toFixed(2)} DT × {rental_days} jour
+                {rental_days > 1 ? "s" : ""}
               </div>
             </div>
             <div className="text-lg font-semibold text-gray-900">
@@ -113,19 +119,24 @@ const PriceBreakdown = ({ pricing, compact = false }) => {
                   key={index}
                   className={`flex items-center justify-between py-2 px-3 rounded-lg ${
                     adjustment.amount < 0
-                      ? 'bg-green-50 border border-green-200'
-                      : 'bg-orange-50 border border-orange-200'
+                      ? "bg-green-50 border border-green-200"
+                      : "bg-orange-50 border border-orange-200"
                   }`}
                 >
                   <div className="flex-1">
-                    <div className={`text-sm font-medium ${
-                      adjustment.amount < 0 ? 'text-green-800' : 'text-orange-800'
-                    }`}>
+                    <div
+                      className={`text-sm font-medium ${
+                        adjustment.amount < 0
+                          ? "text-green-800"
+                          : "text-orange-800"
+                      }`}
+                    >
                       {adjustment.label}
                     </div>
                     {adjustment.percentage && (
                       <div className="text-xs text-gray-600">
-                        {adjustment.amount < 0 ? '-' : '+'}{adjustment.percentage}%
+                        {adjustment.amount < 0 ? "-" : "+"}
+                        {adjustment.percentage}%
                       </div>
                     )}
                     {adjustment.multiplier && (
@@ -134,10 +145,15 @@ const PriceBreakdown = ({ pricing, compact = false }) => {
                       </div>
                     )}
                   </div>
-                  <div className={`text-sm font-bold ${
-                    adjustment.amount < 0 ? 'text-green-700' : 'text-orange-700'
-                  }`}>
-                    {adjustment.amount < 0 ? '' : '+'}{adjustment.amount.toFixed(2)} DT
+                  <div
+                    className={`text-sm font-bold ${
+                      adjustment.amount < 0
+                        ? "text-green-700"
+                        : "text-orange-700"
+                    }`}
+                  >
+                    {adjustment.amount < 0 ? "" : "+"}
+                    {adjustment.amount.toFixed(2)} DT
                   </div>
                 </div>
               ))}
@@ -163,7 +179,8 @@ const PriceBreakdown = ({ pricing, compact = false }) => {
       {/* Info footer */}
       <div className="bg-gray-50 px-4 py-2 border-t border-gray-200">
         <p className="text-xs text-gray-600 text-center">
-          Les ajustements sont appliqués séquentiellement selon notre politique de tarification dynamique.
+          Les ajustements sont appliqués séquentiellement selon notre politique
+          de tarification dynamique.
         </p>
       </div>
     </div>
