@@ -1,9 +1,31 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import useScrollAnimation from "../hooks/useScrollAnimation";
 
 const Login = () => {
   const formAnim = useScrollAnimation({ threshold: 0.2 });
+  const navigate = useNavigate();
+  const { login, error, user, isAuthenticated } = useAuth();
+
+  // Rediriger si déjà connecté (persistence de session)
+  useEffect(() => {
+    if (user && isAuthenticated) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [user, isAuthenticated, navigate]);
+
+  // Load remembered email on mount
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem("rememberedEmail");
+    if (rememberedEmail) {
+      setFormData((prev) => ({
+        ...prev,
+        email: rememberedEmail,
+        rememberMe: true,
+      }));
+    }
+  }, []);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -11,9 +33,64 @@ const Login = () => {
     rememberMe: false,
   });
 
-  const handleSubmit = (e) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+  const [loginError, setLoginError] = useState("");
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login:", formData);
+    setLoading(true);
+    setLoginError("");
+    setErrors({ email: "", password: "" });
+
+    // Handle remember me
+    if (formData.rememberMe) {
+      localStorage.setItem("rememberedEmail", formData.email);
+    } else {
+      localStorage.removeItem("rememberedEmail");
+    }
+
+    try {
+      const response = await login({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      // Redirection vers le dashboard universel
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Erreur de connexion:", err);
+
+      // Gérer les erreurs de validation Laravel (422)
+      if (err.response?.status === 422 && err.response?.data?.errors) {
+        const validationErrors = err.response.data.errors;
+        setErrors({
+          email: validationErrors.email?.[0] || "",
+          password: validationErrors.password?.[0] || "",
+        });
+      }
+      // Gérer les erreurs d'authentification (401)
+      else if (err.response?.status === 401) {
+        setErrors({
+          email: "Email ou mot de passe incorrect",
+          password: "",
+        });
+      }
+      // Gérer les autres erreurs
+      else {
+        setLoginError(
+          err.response?.data?.message ||
+            "Une erreur est survenue. Veuillez réessayer.",
+        );
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -174,46 +251,137 @@ const Login = () => {
 
           <div className="bg-white rounded-3xl shadow-2xl border border-gray-100">
             <form className="p-8 space-y-6" onSubmit={handleSubmit}>
+              {/* Messages d'erreur */}
+              {(loginError || error) && (
+                <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
+                  <div className="flex items-center">
+                    <svg
+                      className="w-5 h-5 text-red-500 mr-2"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <p className="text-sm text-red-700 font-medium">
+                      {loginError || error}
+                    </p>
+                  </div>
+                </div>
+              )}
+
               <div className="relative">
                 <input
                   id="email"
                   type="email"
                   required
                   autoComplete="email"
-                  className="w-full px-5 py-3 rounded-full bg-gray-50 border-2 border-gray-200 focus:outline-none focus:border-primary-500 focus:bg-white transition-all hover:border-primary-300 peer"
+                  className={`w-full px-5 py-3 rounded-full bg-gray-50 border-2 ${
+                    errors.email
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-gray-200 focus:border-primary-500"
+                  } focus:outline-none focus:bg-white transition-all hover:border-primary-300 peer`}
                   placeholder=" "
                   value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
+                  onChange={(e) => {
+                    setFormData({ ...formData, email: e.target.value });
+                    if (errors.email) setErrors({ ...errors, email: "" });
+                  }}
                 />
                 <label
                   htmlFor="email"
-                  className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
+                  className={`absolute left-5 top-3 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 pointer-events-none ${
+                    errors.email
+                      ? "text-red-500 peer-focus:text-red-500 peer-[:not(:placeholder-shown)]:text-red-500"
+                      : "text-gray-500 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-gray-700"
+                  }`}
                 >
                   Adresse e-mail
                 </label>
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-1 ml-5">
+                    {errors.email}
+                  </p>
+                )}
               </div>
 
               <div className="relative">
                 <input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   autoComplete="current-password"
-                  className="w-full px-5 py-3 rounded-full bg-gray-50 border-2 border-gray-200 focus:outline-none focus:border-primary-500 focus:bg-white transition-all hover:border-primary-300 peer"
+                  className={`w-full px-5 py-3 pr-12 rounded-full bg-gray-50 border-2 ${
+                    errors.password
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-gray-200 focus:border-primary-500"
+                  } focus:outline-none focus:bg-white transition-all hover:border-primary-300 peer`}
                   placeholder=" "
                   value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
+                  onChange={(e) => {
+                    setFormData({ ...formData, password: e.target.value });
+                    if (errors.password) setErrors({ ...errors, password: "" });
+                  }}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-3 text-gray-500 hover:text-primary-600 transition-colors"
+                >
+                  {showPassword ? (
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      />
+                    </svg>
+                  )}
+                </button>
                 <label
                   htmlFor="password"
-                  className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
+                  className={`absolute left-5 top-3 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 pointer-events-none ${
+                    errors.password
+                      ? "text-red-500 peer-focus:text-red-500 peer-[:not(:placeholder-shown)]:text-red-500"
+                      : "text-gray-500 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-gray-700"
+                  }`}
                 >
                   Mot de passe
                 </label>
+                {errors.password && (
+                  <p className="text-red-500 text-xs mt-1 ml-5">
+                    {errors.password}
+                  </p>
+                )}
               </div>
 
               <div className="flex items-center justify-between">
@@ -221,11 +389,11 @@ const Login = () => {
                   <input
                     id="remember-me"
                     type="checkbox"
-                    className="h-4 w-4 text-primary-600 focus:outline-none border-gray-300 rounded"
                     checked={formData.rememberMe}
                     onChange={(e) =>
                       setFormData({ ...formData, rememberMe: e.target.checked })
                     }
+                    className="h-4 w-4 text-primary-600 focus:outline-none border-gray-300 rounded"
                   />
                   <label
                     htmlFor="remember-me"
@@ -244,9 +412,36 @@ const Login = () => {
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
-                Se connecter
+                {loading ? (
+                  <span className="flex items-center justify-center">
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Connexion en cours...
+                  </span>
+                ) : (
+                  "Se connecter"
+                )}
               </button>
 
               <div className="relative my-6">

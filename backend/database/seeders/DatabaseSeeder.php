@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         // Seeders dans l'ordre des dépendances de clés étrangères
         $this->call([
+            SuperAdminSeeder::class,       // 0. Créer le super admin (compte plateforme)
             AgencySeeder::class,           // 1. Créer les agences
             CategorySeeder::class,         // 2. Créer les catégories
             UserSeeder::class,             // 3. Créer les utilisateurs (dépend des agences)

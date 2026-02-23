@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
+import DashboardHeader from "../components/DashboardHeader";
 
 const ClientDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Mock user data - replace with actual API call
   const user = {
@@ -75,6 +77,12 @@ const ClientDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-50">
+      {/* Dashboard Header */}
+      <DashboardHeader
+        title="Tableau de bord Client"
+        subtitle={`Bienvenue, ${user.name}`}
+      />
+
       <div className="pt-8 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Home Button */}
@@ -98,21 +106,14 @@ const ClientDashboard = () => {
             <span className="font-medium">Accueil</span>
           </button>
 
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
-              Tableau de bord Client
-            </h1>
-            <p className="text-gray-600">Bienvenue, {user.name}</p>
-          </div>
-
-          {/* Stats Cards */}
+          {/* Enhanced Stats Cards with Glassmorphism */}
           <div className="grid md:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-lg">
+            {/* Total Reservations */}
+            <div className="group bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-xl rounded-3xl p-6 border border-white/60 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
+                <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                   <svg
-                    className="w-6 h-6 text-primary-600"
+                    className="w-7 h-7 text-white"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -126,17 +127,20 @@ const ClientDashboard = () => {
                   </svg>
                 </div>
               </div>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-3xl font-bold text-gray-900 mb-1">
                 {user.reservations}
               </p>
-              <p className="text-sm text-gray-600">Réservations totales</p>
+              <p className="text-sm text-gray-600 font-medium">
+                Réservations totales
+              </p>
             </div>
 
-            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-lg">
+            {/* Total Spent */}
+            <div className="group bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-xl rounded-3xl p-6 border border-white/60 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                   <svg
-                    className="w-6 h-6 text-green-600"
+                    className="w-7 h-7 text-white"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -150,17 +154,20 @@ const ClientDashboard = () => {
                   </svg>
                 </div>
               </div>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-3xl font-bold text-gray-900 mb-1">
                 {user.totalSpent} DT
               </p>
-              <p className="text-sm text-gray-600">Dépenses totales</p>
+              <p className="text-sm text-gray-600 font-medium">
+                Dépenses totales
+              </p>
             </div>
 
-            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-lg">
+            {/* Client Score */}
+            <div className="group bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-xl rounded-3xl p-6 border border-white/60 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
+                <div className="w-14 h-14 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                   <svg
-                    className="w-6 h-6 text-yellow-600"
+                    className="w-7 h-7 text-white"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -173,18 +180,26 @@ const ClientDashboard = () => {
                     />
                   </svg>
                 </div>
+                <div className="flex items-center gap-1 px-3 py-1 bg-yellow-100 rounded-full">
+                  <span className="text-xs font-bold text-yellow-700">
+                    Excellent
+                  </span>
+                </div>
               </div>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-3xl font-bold text-gray-900 mb-1">
                 {user.clientScore}/100
               </p>
-              <p className="text-sm text-gray-600">Score de fiabilité</p>
+              <p className="text-sm text-gray-600 font-medium">
+                Score de fiabilité
+              </p>
             </div>
 
-            <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl p-6 shadow-lg text-white">
+            {/* CTA Card */}
+            <div className="group bg-gradient-to-br from-primary-600 to-primary-700 backdrop-blur-xl rounded-3xl p-6 shadow-2xl text-white hover:shadow-3xl transition-all duration-300 hover:-translate-y-1 hover:from-primary-700 hover:to-primary-800">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
                   <svg
-                    className="w-6 h-6"
+                    className="w-7 h-7"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -198,68 +213,269 @@ const ClientDashboard = () => {
                   </svg>
                 </div>
               </div>
-              <p className="text-2xl font-bold mb-1">Nouvelle réservation</p>
+              <p className="text-2xl font-bold mb-2">Nouvelle réservation</p>
               <button
                 onClick={() => navigate("/vehicles")}
-                className="mt-2 text-sm bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors"
+                className="mt-2 w-full text-sm bg-white/20 hover:bg-white/30 backdrop-blur-sm px-5 py-3 rounded-xl transition-all duration-300 font-bold flex items-center justify-center gap-2 border border-white/30"
               >
-                Réserver maintenant →
+                Réserver maintenant
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  />
+                </svg>
               </button>
             </div>
           </div>
 
-          {/* Tabs */}
-          <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
-            <div className="border-b border-gray-200">
+          {/* Enhanced Tabs with Glassmorphism */}
+          <div className="bg-gradient-to-br from-white/90 to-white/50 backdrop-blur-2xl rounded-3xl border border-white/60 shadow-2xl overflow-hidden">
+            {/* Mobile Hamburger Button */}
+            <div className="lg:hidden flex items-center justify-between border-b border-white/40 bg-white/30 px-4 py-3">
+              <button
+                onClick={() => setIsSidebarOpen(true)}
+                className="p-2 rounded-lg hover:bg-white/40 transition-colors"
+              >
+                <svg
+                  className="w-6 h-6 text-gray-700"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
+              <span className="text-sm font-semibold text-gray-700">
+                {activeTab === "overview" && "Mes Réservations"}
+                {activeTab === "history" && "Historique"}
+                {activeTab === "simulator" && "Simulateur de prix"}
+                {activeTab === "profile" && "Mon Profil"}
+              </span>
+              <div className="w-10"></div>
+            </div>
+
+            {/* Desktop Tabs */}
+            <div className="hidden lg:block border-b border-white/40 bg-white/30">
               <nav className="flex">
                 <button
                   onClick={() => setActiveTab("overview")}
-                  className={`flex-1 px-6 py-4 text-sm font-medium transition-colors ${
+                  className={`flex-1 px-6 py-5 text-sm font-semibold transition-all duration-300 relative ${
                     activeTab === "overview"
-                      ? "text-primary-600 border-b-2 border-primary-600 bg-primary-50"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                      ? "text-primary-700 bg-white/60"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-white/30"
                   }`}
                 >
+                  {activeTab === "overview" && (
+                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 to-primary-600 rounded-t-full" />
+                  )}
                   Mes Réservations
                 </button>
                 <button
                   onClick={() => setActiveTab("history")}
-                  className={`flex-1 px-6 py-4 text-sm font-medium transition-colors ${
+                  className={`flex-1 px-6 py-5 text-sm font-semibold transition-all duration-300 relative ${
                     activeTab === "history"
-                      ? "text-primary-600 border-b-2 border-primary-600 bg-primary-50"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                      ? "text-primary-700 bg-white/60"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-white/30"
                   }`}
                 >
+                  {activeTab === "history" && (
+                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 to-primary-600 rounded-t-full" />
+                  )}
                   Historique
                 </button>
                 <button
                   onClick={() => setActiveTab("simulator")}
-                  className={`flex-1 px-6 py-4 text-sm font-medium transition-colors ${
+                  className={`flex-1 px-6 py-5 text-sm font-semibold transition-all duration-300 relative ${
                     activeTab === "simulator"
-                      ? "text-primary-600 border-b-2 border-primary-600 bg-primary-50"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                      ? "text-primary-700 bg-white/60"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-white/30"
                   }`}
                 >
+                  {activeTab === "simulator" && (
+                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 to-primary-600 rounded-t-full" />
+                  )}
                   Simulateur de prix
                 </button>
                 <button
                   onClick={() => setActiveTab("profile")}
-                  className={`flex-1 px-6 py-4 text-sm font-medium transition-colors ${
+                  className={`flex-1 px-6 py-5 text-sm font-semibold transition-all duration-300 relative ${
                     activeTab === "profile"
-                      ? "text-primary-600 border-b-2 border-primary-600 bg-primary-50"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                      ? "text-primary-700 bg-white/60"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-white/30"
                   }`}
                 >
+                  {activeTab === "profile" && (
+                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 to-primary-600 rounded-t-full" />
+                  )}
                   Mon Profil
                 </button>
               </nav>
             </div>
 
-            <div className="p-6">
+            {/* Mobile Sidebar */}
+            {isSidebarOpen && (
+              <>
+                <div
+                  className="lg:hidden fixed inset-0 bg-black/50 z-40"
+                  onClick={() => setIsSidebarOpen(false)}
+                ></div>
+
+                <div className="lg:hidden fixed left-0 top-0 bottom-0 w-72 z-50 animate-slideInLeft">
+                  <div className="h-full bg-gradient-to-br from-white/95 to-white/80 backdrop-blur-2xl border-r border-white/60 shadow-2xl rounded-r-3xl flex flex-col">
+                    <div className="flex items-center justify-between p-6 border-b border-white/40">
+                      <h3 className="text-lg font-bold text-gray-900">Menu</h3>
+                      <button
+                        onClick={() => setIsSidebarOpen(false)}
+                        className="p-2 rounded-lg hover:bg-white/60 transition-colors"
+                      >
+                        <svg
+                          className="w-5 h-5 text-gray-700"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+
+                    <nav className="flex-1 p-4 space-y-2">
+                      <button
+                        onClick={() => {
+                          setActiveTab("overview");
+                          setIsSidebarOpen(false);
+                        }}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left font-medium transition-all ${
+                          activeTab === "overview"
+                            ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg"
+                            : "text-gray-700 hover:bg-white/60"
+                        }`}
+                      >
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                          />
+                        </svg>
+                        Mes Réservations
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setActiveTab("history");
+                          setIsSidebarOpen(false);
+                        }}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left font-medium transition-all ${
+                          activeTab === "history"
+                            ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg"
+                            : "text-gray-700 hover:bg-white/60"
+                        }`}
+                      >
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        Historique
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setActiveTab("simulator");
+                          setIsSidebarOpen(false);
+                        }}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left font-medium transition-all ${
+                          activeTab === "simulator"
+                            ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg"
+                            : "text-gray-700 hover:bg-white/60"
+                        }`}
+                      >
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                          />
+                        </svg>
+                        Simulateur de prix
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setActiveTab("profile");
+                          setIsSidebarOpen(false);
+                        }}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left font-medium transition-all ${
+                          activeTab === "profile"
+                            ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg"
+                            : "text-gray-700 hover:bg-white/60"
+                        }`}
+                      >
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                          />
+                        </svg>
+                        Mon Profil
+                      </button>
+                    </nav>
+                  </div>
+                </div>
+              </>
+            )}
+
+            <div className="p-8">
               {/* Reservations Tab */}
               {activeTab === "overview" && (
-                <div className="space-y-4">
-                  <h2 className="text-xl font-bold text-gray-900 mb-4">
+                <div className="space-y-5">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
                     Réservations en cours
                   </h2>
                   {reservations
@@ -267,19 +483,19 @@ const ClientDashboard = () => {
                     .map((reservation) => (
                       <div
                         key={reservation.id}
-                        className="bg-gray-50 rounded-xl p-6 border border-gray-200"
+                        className="group bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-lg rounded-2xl p-6 border border-white/60 shadow-lg hover:shadow-xl transition-all duration-300"
                       >
                         <div className="flex items-start justify-between mb-4">
                           <div>
-                            <h3 className="text-lg font-bold text-gray-900">
+                            <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary-600 transition-colors">
                               {reservation.vehicle}
                             </h3>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 font-medium">
                               {reservation.agency}
                             </p>
                           </div>
                           <span
-                            className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                            className={`px-4 py-1.5 rounded-full text-xs font-bold shadow-sm ${getStatusColor(
                               reservation.status,
                             )}`}
                           >
@@ -287,36 +503,40 @@ const ClientDashboard = () => {
                           </span>
                         </div>
                         <div className="grid md:grid-cols-3 gap-4 mb-4">
-                          <div>
-                            <p className="text-xs text-gray-500 mb-1">Début</p>
-                            <p className="text-sm font-medium text-gray-900">
+                          <div className="bg-white/50 rounded-xl p-3">
+                            <p className="text-xs text-gray-500 mb-1 font-semibold">
+                              Début
+                            </p>
+                            <p className="text-sm font-bold text-gray-900">
                               {new Date(
                                 reservation.startDate,
                               ).toLocaleDateString("fr-FR")}
                             </p>
                           </div>
-                          <div>
-                            <p className="text-xs text-gray-500 mb-1">Fin</p>
-                            <p className="text-sm font-medium text-gray-900">
+                          <div className="bg-white/50 rounded-xl p-3">
+                            <p className="text-xs text-gray-500 mb-1 font-semibold">
+                              Fin
+                            </p>
+                            <p className="text-sm font-bold text-gray-900">
                               {new Date(reservation.endDate).toLocaleDateString(
                                 "fr-FR",
                               )}
                             </p>
                           </div>
-                          <div>
-                            <p className="text-xs text-gray-500 mb-1">
+                          <div className="bg-white/50 rounded-xl p-3">
+                            <p className="text-xs text-gray-500 mb-1 font-semibold">
                               Prix total
                             </p>
-                            <p className="text-sm font-bold text-primary-600">
+                            <p className="text-lg font-bold text-primary-600">
                               {reservation.price} DT
                             </p>
                           </div>
                         </div>
-                        <div className="flex gap-2">
-                          <button className="flex-1 bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium">
+                        <div className="flex gap-3">
+                          <button className="flex-1 bg-gradient-to-r from-primary-600 to-primary-700 text-white px-4 py-3 rounded-xl hover:from-primary-700 hover:to-primary-800 transition-all duration-300 text-sm font-bold shadow-lg hover:shadow-xl">
                             Télécharger contrat
                           </button>
-                          <button className="flex-1 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium">
+                          <button className="flex-1 bg-white/80 backdrop-blur-sm border border-white/60 text-gray-700 px-4 py-3 rounded-xl hover:bg-white transition-all duration-300 text-sm font-bold shadow-md hover:shadow-lg">
                             Voir détails
                           </button>
                         </div>
@@ -327,26 +547,26 @@ const ClientDashboard = () => {
 
               {/* History Tab */}
               {activeTab === "history" && (
-                <div className="space-y-4">
-                  <h2 className="text-xl font-bold text-gray-900 mb-4">
+                <div className="space-y-5">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
                     Historique complet
                   </h2>
                   {reservations.map((reservation) => (
                     <div
                       key={reservation.id}
-                      className="bg-gray-50 rounded-xl p-6 border border-gray-200"
+                      className="group bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-lg rounded-2xl p-6 border border-white/60 shadow-lg hover:shadow-xl transition-all duration-300"
                     >
                       <div className="flex items-start justify-between mb-4">
                         <div>
-                          <h3 className="text-lg font-bold text-gray-900">
+                          <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary-600 transition-colors">
                             {reservation.vehicle}
                           </h3>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm text-gray-600 font-medium">
                             {reservation.agency}
                           </p>
                         </div>
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                          className={`px-4 py-1.5 rounded-full text-xs font-bold shadow-sm ${getStatusColor(
                             reservation.status,
                           )}`}
                         >
@@ -354,27 +574,31 @@ const ClientDashboard = () => {
                         </span>
                       </div>
                       <div className="grid md:grid-cols-3 gap-4">
-                        <div>
-                          <p className="text-xs text-gray-500 mb-1">Début</p>
-                          <p className="text-sm font-medium text-gray-900">
+                        <div className="bg-white/50 rounded-xl p-3">
+                          <p className="text-xs text-gray-500 mb-1 font-semibold">
+                            Début
+                          </p>
+                          <p className="text-sm font-bold text-gray-900">
                             {new Date(reservation.startDate).toLocaleDateString(
                               "fr-FR",
                             )}
                           </p>
                         </div>
-                        <div>
-                          <p className="text-xs text-gray-500 mb-1">Fin</p>
-                          <p className="text-sm font-medium text-gray-900">
+                        <div className="bg-white/50 rounded-xl p-3">
+                          <p className="text-xs text-gray-500 mb-1 font-semibold">
+                            Fin
+                          </p>
+                          <p className="text-sm font-bold text-gray-900">
                             {new Date(reservation.endDate).toLocaleDateString(
                               "fr-FR",
                             )}
                           </p>
                         </div>
-                        <div>
-                          <p className="text-xs text-gray-500 mb-1">
+                        <div className="bg-white/50 rounded-xl p-3">
+                          <p className="text-xs text-gray-500 mb-1 font-semibold">
                             Prix total
                           </p>
-                          <p className="text-sm font-bold text-primary-600">
+                          <p className="text-lg font-bold text-primary-600">
                             {reservation.price} DT
                           </p>
                         </div>
@@ -387,16 +611,16 @@ const ClientDashboard = () => {
               {/* Price Simulator Tab */}
               {activeTab === "simulator" && (
                 <div>
-                  <h2 className="text-xl font-bold text-gray-900 mb-4">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
                     Simuler le prix de location
                   </h2>
-                  <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                    <div className="grid md:grid-cols-2 gap-6 mb-6">
+                  <div className="bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-lg rounded-2xl p-8 border border-white/60 shadow-xl">
+                    <div className="grid md:grid-cols-2 gap-6 mb-8">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-bold text-gray-700 mb-3">
                           Catégorie de véhicule
                         </label>
-                        <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-primary-500 focus:outline-none bg-white">
+                        <select className="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none bg-white/80 backdrop-blur-sm font-medium shadow-sm hover:shadow-md transition-all">
                           <option>Économique</option>
                           <option>SUV</option>
                           <option>Luxe</option>
@@ -404,29 +628,42 @@ const ClientDashboard = () => {
                         </select>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-bold text-gray-700 mb-3">
                           Nombre de jours
                         </label>
                         <input
                           type="number"
                           min="1"
                           defaultValue="3"
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-primary-500 focus:outline-none"
+                          className="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none bg-white/80 backdrop-blur-sm font-medium shadow-sm hover:shadow-md transition-all"
                         />
                       </div>
                     </div>
-                    <div className="bg-white rounded-lg p-6 border-2 border-primary-200">
+                    <div className="bg-gradient-to-br from-primary-50 to-blue-50 backdrop-blur-sm rounded-2xl p-8 border-2 border-primary-200 shadow-lg">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm text-gray-600 mb-1">
+                          <p className="text-sm text-gray-600 mb-2 font-semibold">
                             Prix estimé
                           </p>
-                          <p className="text-3xl font-bold text-primary-600">
+                          <p className="text-4xl font-bold text-primary-600">
                             135 DT
                           </p>
                         </div>
-                        <button className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                        <button className="bg-gradient-to-r from-primary-600 to-primary-700 text-white px-8 py-4 rounded-xl hover:from-primary-700 hover:to-primary-800 transition-all duration-300 font-bold shadow-lg hover:shadow-xl flex items-center gap-2">
                           Réserver maintenant
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M13 7l5 5m0 0l-5 5m5-5H6"
+                            />
+                          </svg>
                         </button>
                       </div>
                     </div>
@@ -437,58 +674,58 @@ const ClientDashboard = () => {
               {/* Profile Tab */}
               {activeTab === "profile" && (
                 <div>
-                  <h2 className="text-xl font-bold text-gray-900 mb-4">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
                     Gérer mon profil
                   </h2>
-                  <div className="space-y-4">
-                    <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                  <div className="space-y-6">
+                    <div className="bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-lg rounded-2xl p-8 border border-white/60 shadow-xl">
                       <div className="grid md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-bold text-gray-700 mb-3">
                             Nom complet
                           </label>
                           <input
                             type="text"
                             defaultValue={user.name}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-primary-500 focus:outline-none bg-white"
+                            className="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none bg-white/80 backdrop-blur-sm font-medium shadow-sm hover:shadow-md transition-all"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-bold text-gray-700 mb-3">
                             Email
                           </label>
                           <input
                             type="email"
                             defaultValue={user.email}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-primary-500 focus:outline-none bg-white"
+                            className="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none bg-white/80 backdrop-blur-sm font-medium shadow-sm hover:shadow-md transition-all"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-bold text-gray-700 mb-3">
                             Téléphone
                           </label>
                           <input
                             type="tel"
                             defaultValue={user.phone}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-primary-500 focus:outline-none bg-white"
+                            className="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none bg-white/80 backdrop-blur-sm font-medium shadow-sm hover:shadow-md transition-all"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label className="block text-sm font-bold text-gray-700 mb-3">
                             Permis de conduire
                           </label>
                           <input
                             type="text"
                             placeholder="Numéro de permis"
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-primary-500 focus:outline-none bg-white"
+                            className="w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none bg-white/80 backdrop-blur-sm font-medium shadow-sm hover:shadow-md transition-all"
                           />
                         </div>
                       </div>
-                      <div className="mt-6 flex gap-3">
-                        <button className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                      <div className="mt-8 flex gap-4">
+                        <button className="bg-gradient-to-r from-primary-600 to-primary-700 text-white px-8 py-4 rounded-xl hover:from-primary-700 hover:to-primary-800 transition-all duration-300 font-bold shadow-lg hover:shadow-xl">
                           Enregistrer les modifications
                         </button>
-                        <button className="bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors font-medium">
+                        <button className="bg-white/80 backdrop-blur-sm border-2 border-gray-200 text-gray-700 px-8 py-4 rounded-xl hover:bg-white transition-all duration-300 font-bold shadow-md hover:shadow-lg">
                           Annuler
                         </button>
                       </div>
@@ -502,6 +739,22 @@ const ClientDashboard = () => {
       </div>
 
       <Footer />
+
+      <style>{`
+        @keyframes slideInLeft {
+          from {
+            transform: translateX(-100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+        .animate-slideInLeft {
+          animation: slideInLeft 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 };

@@ -1,9 +1,24 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import useScrollAnimation from "../hooks/useScrollAnimation";
 
 const Register = () => {
   const formAnim = useScrollAnimation({ threshold: 0.2 });
+  const navigate = useNavigate();
+  const {
+    register: registerUser,
+    error: authError,
+    user,
+    isAuthenticated,
+  } = useAuth();
+
+  // Rediriger si déjà connecté
+  useEffect(() => {
+    if (user && isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [user, isAuthenticated, navigate]);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -14,6 +29,10 @@ const Register = () => {
     password: "",
     confirmPassword: "",
     agreeToTerms: false,
+    address: "",
+    driverLicense: "",
+    agencyName: "",
+    agencyLocation: "",
   });
 
   const [errors, setErrors] = useState({
@@ -22,6 +41,11 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const [loading, setLoading] = useState(false);
+  const [registerError, setRegisterError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [showTooltip, setShowTooltip] = useState({
     password: false,
@@ -99,8 +123,9 @@ const Register = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setRegisterError("");
 
     // Validate all fields
     const emailError = validateEmail(formData.email);
@@ -121,7 +146,44 @@ const Register = () => {
       return;
     }
 
-    console.log("Register:", formData);
+    if (!formData.agreeToTerms) {
+      setRegisterError("Vous devez accepter les conditions d'utilisation");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Préparer les données pour l'API
+      const registrationData = {
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        password: formData.password,
+        password_confirmation: formData.confirmPassword,
+        role: formData.role,
+        phone: formData.phone,
+        address: formData.address,
+        driver_license: formData.driverLicense,
+      };
+
+      // Ajouter les champs spécifiques pour les agences
+      if (formData.role === "agency_admin") {
+        registrationData.agency_name = formData.agencyName;
+        registrationData.agency_location = formData.agencyLocation;
+      }
+
+      const response = await registerUser(registrationData);
+
+      // Redirection vers le dashboard universel
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Erreur d'inscription:", err);
+      setRegisterError(
+        err.response?.data?.message || "Erreur lors de l'inscription",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -282,6 +344,28 @@ const Register = () => {
 
           <div className="bg-white rounded-3xl shadow-2xl border border-gray-100">
             <form className="p-8 space-y-5" onSubmit={handleSubmit}>
+              {/* Messages d'erreur */}
+              {(registerError || authError) && (
+                <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
+                  <div className="flex items-center">
+                    <svg
+                      className="w-5 h-5 text-red-500 mr-2"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <p className="text-sm text-red-700 font-medium">
+                      {registerError || authError}
+                    </p>
+                  </div>
+                </div>
+              )}
+
               <div className="grid grid-cols-2 gap-4">
                 <div className="relative">
                   <input
@@ -550,13 +634,126 @@ const Register = () => {
                 </div>
               </div>
 
+              {/* Champs conditionnels pour Client */}
+              {formData.role === "client" && (
+                <>
+                  <div className="relative">
+                    <input
+                      id="address"
+                      type="text"
+                      className="w-full px-5 py-3 rounded-full bg-gray-50 border-2 border-gray-200 focus:outline-none focus:border-primary-500 focus:bg-white transition-all hover:border-primary-300 peer"
+                      placeholder=" "
+                      value={formData.address}
+                      onChange={(e) =>
+                        setFormData({ ...formData, address: e.target.value })
+                      }
+                    />
+                    <label
+                      htmlFor="address"
+                      className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
+                    >
+                      Adresse (optionnel)
+                    </label>
+                  </div>
+
+                  <div className="relative">
+                    <input
+                      id="driverLicense"
+                      type="text"
+                      className="w-full px-5 py-3 rounded-full bg-gray-50 border-2 border-gray-200 focus:outline-none focus:border-primary-500 focus:bg-white transition-all hover:border-primary-300 peer"
+                      placeholder=" "
+                      value={formData.driverLicense}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          driverLicense: e.target.value,
+                        })
+                      }
+                    />
+                    <label
+                      htmlFor="driverLicense"
+                      className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
+                    >
+                      Permis de conduire (optionnel)
+                    </label>
+                  </div>
+                </>
+              )}
+
+              {/* Champs conditionnels pour Agence */}
+              {formData.role === "agency_admin" && (
+                <>
+                  <div className="relative">
+                    <input
+                      id="agencyName"
+                      type="text"
+                      required
+                      className="w-full px-5 py-3 rounded-full bg-gray-50 border-2 border-gray-200 focus:outline-none focus:border-primary-500 focus:bg-white transition-all hover:border-primary-300 peer"
+                      placeholder=" "
+                      value={formData.agencyName}
+                      onChange={(e) =>
+                        setFormData({ ...formData, agencyName: e.target.value })
+                      }
+                    />
+                    <label
+                      htmlFor="agencyName"
+                      className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
+                    >
+                      Nom de l'agence *
+                    </label>
+                  </div>
+
+                  <div className="relative">
+                    <input
+                      id="agencyLocation"
+                      type="text"
+                      required
+                      className="w-full px-5 py-3 rounded-full bg-gray-50 border-2 border-gray-200 focus:outline-none focus:border-primary-500 focus:bg-white transition-all hover:border-primary-300 peer"
+                      placeholder=" "
+                      value={formData.agencyLocation}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          agencyLocation: e.target.value,
+                        })
+                      }
+                    />
+                    <label
+                      htmlFor="agencyLocation"
+                      className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
+                    >
+                      Localisation de l'agence *
+                    </label>
+                  </div>
+
+                  <div className="relative">
+                    <input
+                      id="agencyAddress"
+                      type="text"
+                      className="w-full px-5 py-3 rounded-full bg-gray-50 border-2 border-gray-200 focus:outline-none focus:border-primary-500 focus:bg-white transition-all hover:border-primary-300 peer"
+                      placeholder=" "
+                      value={formData.address}
+                      onChange={(e) =>
+                        setFormData({ ...formData, address: e.target.value })
+                      }
+                    />
+                    <label
+                      htmlFor="agencyAddress"
+                      className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
+                    >
+                      Adresse complète (optionnel)
+                    </label>
+                  </div>
+                </>
+              )}
+
               <div className="relative">
                 <input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   autoComplete="new-password"
-                  className={`w-full px-5 py-3 rounded-full bg-gray-50 border-2 ${
+                  className={`w-full px-5 py-3 pr-12 rounded-full bg-gray-50 border-2 ${
                     errors.password
                       ? "border-red-500 focus:border-red-500"
                       : "border-gray-200 focus:border-primary-500"
@@ -571,6 +768,47 @@ const Register = () => {
                     setShowTooltip({ ...showTooltip, password: false })
                   }
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-3 text-gray-500 hover:text-primary-600 transition-colors"
+                >
+                  {showPassword ? (
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      />
+                    </svg>
+                  )}
+                </button>
                 <label
                   htmlFor="password"
                   className={`absolute left-5 top-3 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 pointer-events-none ${
@@ -603,10 +841,10 @@ const Register = () => {
               <div className="relative">
                 <input
                   id="confirmPassword"
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
                   required
                   autoComplete="new-password"
-                  className={`w-full px-5 py-3 rounded-full bg-gray-50 border-2 ${
+                  className={`w-full px-5 py-3 pr-12 rounded-full bg-gray-50 border-2 ${
                     errors.confirmPassword
                       ? "border-red-500 focus:border-red-500"
                       : "border-gray-200 focus:border-primary-500"
@@ -615,6 +853,47 @@ const Register = () => {
                   value={formData.confirmPassword}
                   onChange={handleConfirmPasswordChange}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-4 top-3 text-gray-500 hover:text-primary-600 transition-colors"
+                >
+                  {showConfirmPassword ? (
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      />
+                    </svg>
+                  )}
+                </button>
                 <label
                   htmlFor="confirmPassword"
                   className={`absolute left-5 top-3 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 pointer-events-none ${
@@ -670,9 +949,36 @@ const Register = () => {
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
-                Créer mon compte
+                {loading ? (
+                  <span className="flex items-center justify-center">
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Inscription en cours...
+                  </span>
+                ) : (
+                  "Créer mon compte"
+                )}
               </button>
 
               <div className="relative my-6">

@@ -1,0 +1,92 @@
+### 🧪 Tests API Authentication
+### Documentation: backend/AUTHENTICATION_SYSTEM.md
+
+@baseUrl = http://localhost:8000/api
+@token = YOUR_TOKEN_HERE
+
+###########################################
+# 1. INSCRIPTION CLIENT
+###########################################
+
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+    "name": "Ahmed Ben Ali",
+    "email": "ahmed@example.com",
+    "password": "Password123!",
+    "password_confirmation": "Password123!",
+    "role": "client",
+    "phone": "20123456",
+    "address": "Tunis Centre",
+    "driver_license": "TN123456"
+}
+
+
+###########################################
+# 2. INSCRIPTION AGENCY ADMIN
+###########################################
+
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+    "name": "Sami Mansour",
+    "email": "sami@agence.com",
+    "password": "Admin2024!",
+    "password_confirmation": "Admin2024!",
+    "role": "agency_admin",
+    "phone": "70123456",
+    "address": "Sousse Jawhara",
+    "agency_name": "Elite Cars Sousse",
+    "agency_location": "Avenue Hedi Chaker, Sousse"
+}
+
+
+###########################################
+# 3. CONNEXION
+###########################################
+
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+    "email": "ahmed@example.com",
+    "password": "Password123!"
+}
+
+
+###########################################
+# 4. GET USER AUTHENTIFIÉ (Protégé)
+###########################################
+
+GET {{baseUrl}}/user
+Authorization: Bearer {{token}}
+
+
+###########################################
+# 5. DÉCONNEXION (Protégé)
+###########################################
+
+POST {{baseUrl}}/logout
+Authorization: Bearer {{token}}
+
+
+###########################################
+# 6. TEST ERREUR - Connexion invalide
+###########################################
+
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+    "email": "ahmed@example.com",
+    "password": "WrongPassword"
+}
+
+
+###########################################
+# 7. TEST ERREUR - Route protégée sans token
+###########################################
+
+GET {{baseUrl}}/user
