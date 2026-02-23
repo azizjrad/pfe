@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('vehicle_id')->constrained('vehicles')->onDelete('cascade');
             $table->date('start_date');
             $table->date('end_date');
+            $table->string('pickup_location')->nullable()->comment('Where customer picks up vehicle');
+            $table->string('dropoff_location')->nullable()->comment('Where customer returns vehicle');
             $table->decimal('base_price', 10, 2)->comment('Base rental cost before adjustments');
             $table->decimal('discount_amount', 10, 2)->default(0)->comment('Discounts applied');
             $table->decimal('additional_charges', 10, 2)->default(0)->comment('Late fees, damages, etc');

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['client', 'agency_admin', 'super_admin'])->default('client');
-            $table->foreignId('agency_id')->nullable()->constrained('agencies')->onDelete('set null');
+            $table->unsignedBigInteger('agency_id')->nullable();
             $table->string('phone')->nullable();
             $table->text('address')->nullable();
             $table->string('driver_license')->nullable();

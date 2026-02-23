@@ -1,0 +1,51 @@
+### 🔐 TEST CONNEXION SUPER ADMIN
+### Documentation: backend/SUPER_ADMIN_SETUP.md
+
+@baseUrl = http://localhost:8000/api
+
+###########################################
+# 1. LOGIN SUPER ADMIN
+###########################################
+
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+    "email": "admin@elitedrive.com",
+    "password": "Admin2024!"
+}
+
+### Response attendue :
+### {
+###   "message": "Connexion réussie",
+###   "user": {
+###     "id": 8,
+###     "name": "Elite Drive Admin",
+###     "email": "admin@elitedrive.com",
+###     "role": "super_admin",
+###     "phone": "70000000",
+###     "agency": null,
+###     "client_score": null
+###   },
+###   "access_token": "token...",
+###   "token_type": "Bearer"
+### }
+
+
+###########################################
+# 2. GET USER INFO (après login)
+###########################################
+
+### ⚠️ Remplacer YOUR_TOKEN par le token reçu du login
+@token = YOUR_TOKEN_HERE
+
+GET {{baseUrl}}/user
+Authorization: Bearer {{token}}
+
+
+###########################################
+# 3. LOGOUT SUPER ADMIN
+###########################################
+
+POST {{baseUrl}}/logout
+Authorization: Bearer {{token}}
