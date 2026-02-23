@@ -1,8 +1,11 @@
 import axios from "axios";
 
+// Get API URL from environment variable (fallback to localhost for development)
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+
 // Configuration de l'instance axios
 const api = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
