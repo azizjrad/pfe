@@ -25,6 +25,7 @@ class Reservation extends Model
         'is_late_return',
         'cancellation_reason',
         'notes',
+        'pricing_details',
     ];
 
     protected $casts = [
@@ -38,6 +39,7 @@ class Reservation extends Model
         'paid_amount' => 'decimal:2',
         'remaining_amount' => 'decimal:2',
         'is_late_return' => 'boolean',
+        'pricing_details' => 'array',
     ];
 
     /**

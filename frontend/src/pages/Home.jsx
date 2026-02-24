@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import VehicleCard from "../components/VehicleCard";
@@ -7,6 +8,8 @@ import useScrollAnimation from "../hooks/useScrollAnimation";
 import { vehiclesData } from "../data/vehiclesData";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   // Scroll animations for sections
   const heroContentAnim = useScrollAnimation({ threshold: 0.2 });
   const vehiclesAnim = useScrollAnimation({ threshold: 0.2 });
@@ -105,6 +108,18 @@ const Home = () => {
     returnTime: "10:00",
     vehicle: "Renault Clio",
   });
+
+  // Handle search form submission
+  const handleSearchSubmit = () => {
+    // Validate dates are selected
+    if (!searchData.pickupDate || !searchData.returnDate) {
+      alert("Veuillez sélectionner les dates de prise en charge et de retour");
+      return;
+    }
+
+    // Navigate to vehicles page
+    navigate("/vehicles");
+  };
 
   // Featured vehicles data - get first 4 vehicles from centralized data
   const featuredVehicles = Object.values(vehiclesData).slice(0, 4);
@@ -336,6 +351,13 @@ const Home = () => {
                     <div className="relative">
                       <input
                         type="date"
+                        value={searchData.pickupDate}
+                        onChange={(e) =>
+                          setSearchData({
+                            ...searchData,
+                            pickupDate: e.target.value,
+                          })
+                        }
                         className="w-full px-4 py-3 text-sm bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary-500 focus:bg-white transition-all duration-200 cursor-pointer hover:border-gray-300"
                       />
                     </div>
@@ -416,6 +438,13 @@ const Home = () => {
                     <div className="relative">
                       <input
                         type="date"
+                        value={searchData.returnDate}
+                        onChange={(e) =>
+                          setSearchData({
+                            ...searchData,
+                            returnDate: e.target.value,
+                          })
+                        }
                         className="w-full px-4 py-3 text-sm bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary-500 focus:bg-white transition-all duration-200 cursor-pointer hover:border-gray-300"
                       />
                     </div>
@@ -558,7 +587,10 @@ const Home = () => {
                 </div>
 
                 {/* Get a quote button */}
-                <button className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 group">
+                <button 
+                  onClick={handleSearchSubmit}
+                  className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 group"
+                >
                   <span>Obtenir un devis</span>
                   <svg
                     className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200"

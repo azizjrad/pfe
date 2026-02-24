@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import ReservationModal from "../components/ReservationModal";
 import useScrollAnimation from "../hooks/useScrollAnimation";
 import { vehiclesData } from "../data/vehiclesData";
+import api from "../services/api";
 
 const VehicleDetails = () => {
   const { id } = useParams();
@@ -25,11 +26,45 @@ const VehicleDetails = () => {
     agencyRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const handleReservationSubmit = (reservationData) => {
-    // Handle reservation submission
-    console.log("Reservation data:", reservationData);
-    alert("Réservation envoyée avec succès!");
-    setIsReservationOpen(false);
+  const handleReservationSubmit = async (reservationData) => {
+    try {
+      // Prepare submission data for backend
+      const submissionPayload = {
+        vehicle_id: vehicle.id,
+        start_date: reservationData.startDate,
+        end_date: reservationData.endDate,
+        pickup_location: vehicle.agency?.location || "Tunis",
+        dropoff_location: vehicle.agency?.location || "Tunis",
+        full_name: reservationData.fullName,
+        email: reservationData.email,
+        phone: reservationData.phone,
+        notes: "",
+        options: reservationData.options,
+        pricing_breakdown: reservationData.pricing_breakdown,
+      };
+
+      // Call the backend API
+      const response = await api.post("/reservations", submissionPayload);
+
+      if (response.data.success) {
+        alert(response.data.message || "Réservation créée avec succès! Nous vous contacterons bientôt.");
+        setIsReservationOpen(false);
+        
+        // Optional: Navigate to my-reservations page
+        // navigate("/dashboard");
+      }
+    } catch (error) {
+      console.error("Reservation error:", error);
+      
+      if (error.response?.data?.message) {
+        alert(error.response.data.message);
+      } else if (error.response?.status === 401) {
+        alert("Vous devez être connecté pour réserver un véhicule.");
+        navigate("/login");
+      } else {
+        alert("Erreur lors de la réservation. Veuillez réessayer.");
+      }
+    }
   };
 
   useEffect(() => {

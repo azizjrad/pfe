@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PricingController;
+use App\Http\Controllers\Api\ReservationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,14 +58,16 @@ Route::middleware(['auth:sanctum', 'role:agency_admin,super_admin'])->group(func
     // Route::delete('/vehicles/{id}', [VehicleController::class, 'destroy']);
 
     // Gestion des réservations de l'agence
-    // Route::get('/agency/reservations', [ReservationController::class, 'agencyIndex']);
+    Route::get('/agency/reservations', [ReservationController::class, 'agencyIndex']);
 });
 
 // Protected routes - Client only
 Route::middleware(['auth:sanctum', 'role:client'])->group(function () {
     // Réservations du client
-    // Route::get('/my-reservations', [ReservationController::class, 'clientIndex']);
-    // Route::post('/reservations', [ReservationController::class, 'store']);
+    Route::get('/my-reservations', [ReservationController::class, 'clientIndex']);
+    Route::post('/reservations', [ReservationController::class, 'store']);
+    Route::get('/reservations/{id}', [ReservationController::class, 'show']);
+    Route::post('/reservations/{id}/cancel', [ReservationController::class, 'cancel']);
 
     // Score de fiabilité
     // Route::get('/my-score', [ClientScoreController::class, 'show']);
