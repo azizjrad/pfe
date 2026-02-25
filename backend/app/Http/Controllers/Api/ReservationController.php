@@ -97,7 +97,7 @@ class ReservationController extends Controller
             // Recalculate pricing on backend for security validation
             $startDate = Carbon::parse($validated['start_date']);
             $endDate = Carbon::parse($validated['end_date']);
-            
+
             $reliabilityScore = auth()->check() && auth()->user()->clientScore
                 ? auth()->user()->clientScore->total_score
                 : null;
@@ -131,6 +131,16 @@ class ReservationController extends Controller
             }
 
             // Create reservation with backend-calculated pricing (security)
+            // Calculate platform commission (8%)
+            $commissionRate = config('pfe.commission.platform_rate', 0.08);
+            $minCommission = config('pfe.commission.min_commission', 5);
+
+            $platformCommission = max(
+                $backendPricing['total_price'] * $commissionRate,
+                $minCommission
+            );
+            $agencyPayout = $backendPricing['total_price'] - $platformCommission;
+
             $reservation = Reservation::create([
                 'user_id' => auth()->id(),
                 'vehicle_id' => $vehicle->id,
@@ -142,6 +152,9 @@ class ReservationController extends Controller
                 'discount_amount' => $this->calculateTotalDiscounts($backendPricing['adjustments']),
                 'additional_charges' => $this->calculateTotalCharges($backendPricing['adjustments']),
                 'total_price' => $backendPricing['total_price'],
+                'platform_commission_rate' => $commissionRate,
+                'platform_commission' => $platformCommission,
+                'agency_payout' => $agencyPayout,
                 'paid_amount' => 0,
                 'remaining_amount' => $backendPricing['total_price'],
                 'payment_status' => 'pending',

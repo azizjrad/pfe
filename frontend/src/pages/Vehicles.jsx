@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useMemo, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import VehicleCard from "../components/VehicleCard";
@@ -7,6 +7,7 @@ import useScrollAnimation from "../hooks/useScrollAnimation";
 import { vehiclesData } from "../data/vehiclesData";
 
 const Vehicles = () => {
+  const [searchParams] = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState("Tous");
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState([0, 500]);
@@ -15,6 +16,39 @@ const Vehicles = () => {
   const [sortBy, setSortBy] = useState("default");
   const [showFilters, setShowFilters] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+
+  // Search criteria from hero section
+  const [searchCriteria, setSearchCriteria] = useState(null);
+
+  // Read search parameters from URL (from hero section)
+  useEffect(() => {
+    const location = searchParams.get("location");
+    const startDate = searchParams.get("startDate");
+    const endDate = searchParams.get("endDate");
+    const startTime = searchParams.get("startTime");
+    const endTime = searchParams.get("endTime");
+    const category = searchParams.get("category");
+
+    if (location && startDate && endDate) {
+      setSearchCriteria({
+        location,
+        startDate,
+        endDate,
+        startTime: startTime || "10:00",
+        endTime: endTime || "10:00",
+      });
+
+      // Set category filter if provided
+      if (category) {
+        setSelectedCategory(category);
+      }
+
+      // Scroll to vehicles section
+      setTimeout(() => {
+        window.scrollTo({ top: 400, behavior: "smooth" });
+      }, 100);
+    }
+  }, [searchParams]);
 
   // Scroll animations
   const hero = useScrollAnimation({ threshold: 0.2 });
@@ -252,6 +286,139 @@ const Vehicles = () => {
                 )}
               </div>
             </div>
+
+            {/* Search Results Banner (from hero section) */}
+            {searchCriteria && (
+              <div className="max-w-7xl mx-auto mb-8">
+                <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl p-6 text-white shadow-lg">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-3">
+                        <svg
+                          className="w-6 h-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                          />
+                        </svg>
+                        <h3 className="text-xl font-bold">
+                          Résultats de recherche
+                        </h3>
+                      </div>
+                      <div className="grid sm:grid-cols-3 gap-4 text-sm">
+                        <div className="flex items-center gap-2">
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                          </svg>
+                          <div>
+                            <div className="text-primary-100 text-xs">Lieu</div>
+                            <div className="font-semibold">
+                              {searchCriteria.location}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            />
+                          </svg>
+                          <div>
+                            <div className="text-primary-100 text-xs">
+                              Début
+                            </div>
+                            <div className="font-semibold">
+                              {new Date(
+                                searchCriteria.startDate,
+                              ).toLocaleDateString("fr-FR")}{" "}
+                              à {searchCriteria.startTime}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            />
+                          </svg>
+                          <div>
+                            <div className="text-primary-100 text-xs">Fin</div>
+                            <div className="font-semibold">
+                              {new Date(
+                                searchCriteria.endDate,
+                              ).toLocaleDateString("fr-FR")}{" "}
+                              à {searchCriteria.endTime}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="mt-3 text-primary-100 text-sm">
+                        Affichage de {filteredVehicles.length} véhicule
+                        {filteredVehicles.length > 1 ? "s" : ""} disponible
+                        {filteredVehicles.length > 1 ? "s" : ""} pour vos dates
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setSearchCriteria(null)}
+                      className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+                      title="Effacer la recherche"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Filter Toggle & Sort */}
             <div className="flex flex-wrap justify-center gap-4 mb-6">

@@ -16,6 +16,7 @@ import VehicleDetails from "./pages/VehicleDetails";
 import Services from "./pages/Services";
 import About from "./pages/About";
 import Dashboard from "./pages/Dashboard";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -45,6 +46,9 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+            {/* 404 - Catch all undefined routes */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
           <Chatbot />
         </div>

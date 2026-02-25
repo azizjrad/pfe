@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import {
@@ -20,12 +20,170 @@ import {
 } from "recharts";
 import Footer from "../components/Footer";
 import DashboardHeader from "../components/DashboardHeader";
+import ConfirmationModal from "../components/ConfirmationModal";
+import EditModal from "../components/EditModal";
+import Toast from "../components/Toast";
+import { adminService } from "../services/api";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // State for API data
+  const [platformStats, setPlatformStats] = useState({
+    totalAgencies: 0,
+    totalUsers: 0,
+    totalVehicles: 0,
+    totalReservations: 0,
+    monthlyRevenue: 0,
+    activeReservations: 0,
+  });
+  const [agencies, setAgencies] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Modal states
+  const [deleteModal, setDeleteModal] = useState({
+    isOpen: false,
+    type: null,
+    item: null,
+  });
+  const [editModal, setEditModal] = useState({
+    isOpen: false,
+    type: null,
+    item: null,
+  });
+
+  // Toast notification state
+  const [toast, setToast] = useState({
+    isVisible: false,
+    message: "",
+    type: "success",
+  });
+
+  const showToast = (message, type = "success") => {
+    setToast({ isVisible: true, message, type });
+  };
+
+  const hideToast = () => {
+    setToast({ isVisible: false, message: "", type: "success" });
+  };
+
+  // Fetch data on component mount (only for super_admin)
+  useEffect(() => {
+    if (user?.role === "super_admin") {
+      fetchDashboardData();
+    } else {
+      setLoading(false);
+    }
+  }, [user]);
+
+  const fetchDashboardData = async () => {
+    setLoading(true);
+    try {
+      const [statsRes, agenciesRes, usersRes] = await Promise.all([
+        adminService.getDashboardStats(),
+        adminService.getAgencies(),
+        adminService.getUsers(),
+      ]);
+
+      setPlatformStats(statsRes.data);
+      setAgencies(agenciesRes.data);
+      setUsers(usersRes.data);
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+      console.error("Error response:", error.response);
+
+      // Show more specific error message
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Erreur lors du chargement des données";
+      showToast(errorMessage, "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Delete handlers
+  const handleDeleteAgency = async (id) => {
+    try {
+      await adminService.deleteAgency(id);
+      setAgencies(agencies.filter((a) => a.id !== id));
+      setPlatformStats((prev) => ({
+        ...prev,
+        totalAgencies: prev.totalAgencies - 1,
+      }));
+      showToast("Agence supprimée avec succès", "success");
+    } catch (error) {
+      showToast(
+        error.response?.data?.message || "Erreur lors de la suppression",
+        "error",
+      );
+    }
+  };
+
+  const handleDeleteUser = async (id) => {
+    try {
+      await adminService.deleteUser(id);
+      setUsers(users.filter((u) => u.id !== id));
+      setPlatformStats((prev) => ({
+        ...prev,
+        totalUsers: prev.totalUsers - 1,
+      }));
+      showToast("Utilisateur supprimé avec succès", "success");
+    } catch (error) {
+      showToast(
+        error.response?.data?.message || "Erreur lors de la suppression",
+        "error",
+      );
+    }
+  };
+
+  // Edit handlers
+  const handleEditAgency = async (updatedData) => {
+    try {
+      const response = await adminService.updateAgency(
+        updatedData.id,
+        updatedData,
+      );
+      setAgencies(
+        agencies.map((a) =>
+          a.id === updatedData.id ? { ...a, ...response.data } : a,
+        ),
+      );
+      showToast("Agence modifiée avec succès", "success");
+    } catch (error) {
+      showToast(
+        error.response?.data?.message || "Erreur lors de la modification",
+        "error",
+      );
+      throw error;
+    }
+  };
+
+  const handleEditUser = async (updatedData) => {
+    try {
+      const response = await adminService.updateUser(
+        updatedData.id,
+        updatedData,
+      );
+      setUsers(
+        users.map((u) =>
+          u.id === updatedData.id ? { ...u, ...response.data } : u,
+        ),
+      );
+      showToast("Utilisateur modifié avec succès", "success");
+    } catch (error) {
+      showToast(
+        error.response?.data?.message || "Erreur lors de la modification",
+        "error",
+      );
+      throw error;
+    }
+  };
 
   // Role-based tab configuration
   const getTabsConfig = () => {
@@ -88,32 +246,34 @@ const Dashboard = () => {
         return [
           {
             title: "Agences",
-            value: "12",
-            change: "+2 ce mois",
-            trend: "up",
+            value: platformStats.totalAgencies?.toString() || "0",
+            change: "Total",
+            trend: "neutral",
             icon: "building",
             color: "blue",
           },
           {
             title: "Utilisateurs",
-            value: "487",
-            change: "+15 aujourd'hui",
+            value: platformStats.totalUsers?.toString() || "0",
+            change: "Inscrits",
             trend: "up",
             icon: "users",
             color: "green",
           },
           {
             title: "Véhicules",
-            value: "156",
-            change: "8 disponibles",
+            value: platformStats.totalVehicles?.toString() || "0",
+            change: "Total",
             trend: "neutral",
             icon: "car",
             color: "purple",
           },
           {
             title: "Revenu Mensuel",
-            value: "145 890 DT",
-            change: "+12.5%",
+            value: platformStats.monthlyRevenue
+              ? `${platformStats.monthlyRevenue.toLocaleString()} DT`
+              : "0 DT",
+            change: "Ce mois",
             trend: "up",
             icon: "money",
             color: "emerald",
@@ -439,7 +599,35 @@ const Dashboard = () => {
     const role = user?.role;
 
     if (role === "super_admin") {
-      return <AdminContent activeTab={activeTab} />;
+      return (
+        <AdminContent
+          activeTab={activeTab}
+          platformStats={platformStats}
+          agencies={agencies}
+          users={users}
+          loading={loading}
+          onDeleteAgency={(id) => {
+            setDeleteModal({
+              isOpen: true,
+              type: "agency",
+              item: agencies.find((a) => a.id === id),
+            });
+          }}
+          onEditAgency={(item) => {
+            setEditModal({ isOpen: true, type: "agency", item });
+          }}
+          onDeleteUser={(id) => {
+            setDeleteModal({
+              isOpen: true,
+              type: "user",
+              item: users.find((u) => u.id === id),
+            });
+          }}
+          onEditUser={(item) => {
+            setEditModal({ isOpen: true, type: "user", item });
+          }}
+        />
+      );
     } else if (role === "agency_admin") {
       return <AgencyContent activeTab={activeTab} />;
     } else if (role === "client") {
@@ -651,6 +839,49 @@ const Dashboard = () => {
 
       <Footer />
 
+      {/* Modals */}
+      <ConfirmationModal
+        isOpen={deleteModal.isOpen}
+        onClose={() =>
+          setDeleteModal({ isOpen: false, type: null, item: null })
+        }
+        onConfirm={() => {
+          if (deleteModal.type === "agency") {
+            handleDeleteAgency(deleteModal.item.id);
+          } else if (deleteModal.type === "user") {
+            handleDeleteUser(deleteModal.item.id);
+          }
+          setDeleteModal({ isOpen: false, type: null, item: null });
+        }}
+        title={`Supprimer ${deleteModal.type === "agency" ? "l'agence" : "l'utilisateur"}`}
+        message={`Êtes-vous sûr de vouloir supprimer ${deleteModal.type === "agency" ? `l'agence "${deleteModal.item?.name}"` : `l'utilisateur "${deleteModal.item?.name}"`} ? Cette action est irréversible.`}
+        confirmText="Supprimer"
+        cancelText="Annuler"
+        danger
+      />
+
+      <EditModal
+        isOpen={editModal.isOpen}
+        onClose={() => setEditModal({ isOpen: false, type: null, item: null })}
+        onSave={async (updatedData) => {
+          if (editModal.type === "agency") {
+            await handleEditAgency(updatedData);
+          } else if (editModal.type === "user") {
+            await handleEditUser(updatedData);
+          }
+          setEditModal({ isOpen: false, type: null, item: null });
+        }}
+        type={editModal.type}
+        item={editModal.item}
+      />
+
+      <Toast
+        isVisible={toast.isVisible}
+        message={toast.message}
+        type={toast.type}
+        onClose={hideToast}
+      />
+
       <style>{`
         @keyframes slideInLeft {
           from {
@@ -671,68 +902,25 @@ const Dashboard = () => {
 };
 
 // Super Admin Content Component
-const AdminContent = ({ activeTab }) => {
-  // Mock data (same as AdminDashboard)
-  const platformStats = {
-    totalAgencies: 12,
-    totalUsers: 487,
-    totalVehicles: 156,
-    totalReservations: 1234,
-    monthlyRevenue: 145890,
-    activeReservations: 89,
-  };
-
-  const agencies = [
-    {
-      id: 1,
-      name: "Elite Drive Centre-Ville",
-      location: "Tunis",
-      vehicles: 15,
-      revenue: 12450,
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Elite Drive La Marsa",
-      location: "La Marsa",
-      vehicles: 12,
-      revenue: 10230,
-      status: "active",
-    },
-    {
-      id: 3,
-      name: "Elite Drive Sousse",
-      location: "Sousse",
-      vehicles: 8,
-      revenue: 5890,
-      status: "inactive",
-    },
-  ];
-
-  const users = [
-    {
-      id: 1,
-      name: "Ahmed Ben Salem",
-      email: "ahmed@example.com",
-      role: "client",
-      registeredAt: "2025-12-15",
-    },
-    {
-      id: 2,
-      name: "Mohamed Trabelsi",
-      email: "mohamed@example.com",
-      role: "agency_admin",
-      agency: "Elite Drive Centre-Ville",
-      registeredAt: "2025-11-10",
-    },
-    {
-      id: 3,
-      name: "Fatma Jrad",
-      email: "fatma@example.com",
-      role: "client",
-      registeredAt: "2026-01-20",
-    },
-  ];
+const AdminContent = ({
+  activeTab,
+  platformStats,
+  agencies,
+  users,
+  loading,
+  onDeleteAgency,
+  onEditAgency,
+  onDeleteUser,
+  onEditUser,
+}) => {
+  // Loading state
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      </div>
+    );
+  }
 
   const getStatusColor = (status) =>
     status === "active"
@@ -870,10 +1058,16 @@ const AdminContent = ({ activeTab }) => {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button className="text-primary-600 hover:text-primary-900 mr-3">
+                    <button
+                      onClick={() => onEditAgency(agency)}
+                      className="text-primary-600 hover:text-primary-900 mr-3"
+                    >
                       Modifier
                     </button>
-                    <button className="text-red-600 hover:text-red-900">
+                    <button
+                      onClick={() => onDeleteAgency(agency.id)}
+                      className="text-red-600 hover:text-red-900"
+                    >
                       Supprimer
                     </button>
                   </td>
@@ -942,10 +1136,16 @@ const AdminContent = ({ activeTab }) => {
                     {user.registeredAt}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button className="text-primary-600 hover:text-primary-900 mr-3">
+                    <button
+                      onClick={() => onEditUser(user)}
+                      className="text-primary-600 hover:text-primary-900 mr-3"
+                    >
                       Modifier
                     </button>
-                    <button className="text-red-600 hover:text-red-900">
+                    <button
+                      onClick={() => onDeleteUser(user.id)}
+                      className="text-red-600 hover:text-red-900"
+                    >
                       Supprimer
                     </button>
                   </td>

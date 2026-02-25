@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ReservationModal from "../components/ReservationModal";
+import Toast from "../components/Toast";
 import useScrollAnimation from "../hooks/useScrollAnimation";
 import { vehiclesData } from "../data/vehiclesData";
 import api from "../services/api";
@@ -12,6 +13,19 @@ const VehicleDetails = () => {
   const navigate = useNavigate();
   const [vehicle, setVehicle] = useState(null);
   const [isReservationOpen, setIsReservationOpen] = useState(false);
+  const [toast, setToast] = useState({
+    isVisible: false,
+    message: "",
+    type: "success",
+  });
+
+  const showToast = (message, type = "success") => {
+    setToast({ isVisible: true, message, type });
+  };
+
+  const hideToast = () => {
+    setToast({ isVisible: false, message: "", type: "success" });
+  };
 
   // Scroll animations
   const hero = useScrollAnimation({ threshold: 0.2 });
@@ -47,22 +61,32 @@ const VehicleDetails = () => {
       const response = await api.post("/reservations", submissionPayload);
 
       if (response.data.success) {
-        alert(response.data.message || "Réservation créée avec succès! Nous vous contacterons bientôt.");
+        showToast(
+          response.data.message ||
+            "Réservation créée avec succès! Nous vous contacterons bientôt.",
+          "success",
+        );
         setIsReservationOpen(false);
-        
+
         // Optional: Navigate to my-reservations page
         // navigate("/dashboard");
       }
     } catch (error) {
       console.error("Reservation error:", error);
-      
+
       if (error.response?.data?.message) {
-        alert(error.response.data.message);
+        showToast(error.response.data.message, "error");
       } else if (error.response?.status === 401) {
-        alert("Vous devez être connecté pour réserver un véhicule.");
+        showToast(
+          "Vous devez être connecté pour réserver un véhicule.",
+          "error",
+        );
         navigate("/login");
       } else {
-        alert("Erreur lors de la réservation. Veuillez réessayer.");
+        showToast(
+          "Erreur lors de la réservation. Veuillez réessayer.",
+          "error",
+        );
       }
     }
   };
@@ -471,6 +495,13 @@ const VehicleDetails = () => {
         onClose={() => setIsReservationOpen(false)}
         vehicle={vehicle}
         onSubmit={handleReservationSubmit}
+      />
+
+      <Toast
+        isVisible={toast.isVisible}
+        message={toast.message}
+        type={toast.type}
+        onClose={hideToast}
       />
 
       <Footer />

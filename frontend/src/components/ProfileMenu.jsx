@@ -27,9 +27,13 @@ const ProfileMenu = () => {
 
   const handleLogout = async () => {
     try {
-      await logout();
       setIsOpen(false);
+
+      // Navigate first to prevent ProtectedRoute redirect
       navigate("/");
+
+      // Then logout
+      await logout();
     } catch (error) {
       console.error("Erreur de déconnexion:", error);
     }

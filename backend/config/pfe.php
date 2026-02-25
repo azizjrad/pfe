@@ -26,6 +26,11 @@ return [
         'default_daily_price' => 150,
     ],
 
+    'commission' => [
+        'platform_rate' => 0.08, // 8% platform commission
+        'min_commission' => 5, // Minimum commission in DT
+    ],
+
     'reliability_scoring' => [
         'cancelled_penalty' => 5,
         'late_return_penalty' => 10,

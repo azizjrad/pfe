@@ -149,4 +149,64 @@ export const agencyService = {
   delete: (id) => api.delete(`/agencies/${id}`),
 };
 
+// ==================== Admin Services ====================
+
+export const adminService = {
+  /**
+   * Get platform-wide statistics for admin dashboard
+   */
+  getDashboardStats: async () => {
+    const response = await api.get("/admin/stats");
+    return response.data;
+  },
+
+  /**
+   * Get all agencies with statistics
+   */
+  getAgencies: async () => {
+    const response = await api.get("/admin/agencies");
+    return response.data;
+  },
+
+  /**
+   * Get all users
+   */
+  getUsers: async () => {
+    const response = await api.get("/admin/users");
+    return response.data;
+  },
+
+  /**
+   * Update agency
+   */
+  updateAgency: async (id, data) => {
+    const response = await api.put(`/admin/agencies/${id}`, data);
+    return response.data;
+  },
+
+  /**
+   * Delete agency
+   */
+  deleteAgency: async (id) => {
+    const response = await api.delete(`/admin/agencies/${id}`);
+    return response.data;
+  },
+
+  /**
+   * Update user
+   */
+  updateUser: async (id, data) => {
+    const response = await api.put(`/admin/users/${id}`, data);
+    return response.data;
+  },
+
+  /**
+   * Delete user
+   */
+  deleteUser: async (id) => {
+    const response = await api.delete(`/admin/users/${id}`);
+    return response.data;
+  },
+};
+
 export default api;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import useScrollAnimation from "../hooks/useScrollAnimation";
+import Toast from "../components/Toast";
 
 const Login = () => {
   const formAnim = useScrollAnimation({ threshold: 0.2 });
@@ -42,6 +43,20 @@ const Login = () => {
     password: "",
   });
 
+  const [toast, setToast] = useState({
+    isVisible: false,
+    message: "",
+    type: "success",
+  });
+
+  const showToast = (message, type = "success") => {
+    setToast({ isVisible: true, message, type });
+  };
+
+  const hideToast = () => {
+    setToast({ isVisible: false, message: "", type: "success" });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -61,7 +76,7 @@ const Login = () => {
         password: formData.password,
       });
 
-      // Redirection vers le dashboard universel
+      // Redirect to dashboard
       navigate("/dashboard");
     } catch (err) {
       console.error("Erreur de connexion:", err);
@@ -78,7 +93,7 @@ const Login = () => {
       else if (err.response?.status === 401) {
         setErrors({
           email: "Email ou mot de passe incorrect",
-          password: "",
+          password: "Email ou mot de passe incorrect",
         });
       }
       // Gérer les autres erreurs
@@ -530,6 +545,13 @@ const Login = () => {
           </div>
         </div>
       </div>
+
+      <Toast
+        isVisible={toast.isVisible}
+        message={toast.message}
+        type={toast.type}
+        onClose={hideToast}
+      />
     </div>
   );
 };

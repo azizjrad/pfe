@@ -290,11 +290,98 @@ const TermsOfService = () => {
             </div>
           </section>
 
-          {/* Section 5 */}
+          {/* Section 5 - Platform Commission */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 5
+              </span>
+              Commission de la plateforme
+            </h2>
+            <div className="ml-11 space-y-4">
+              <div className="bg-gradient-to-r from-primary-50 to-blue-50 border-l-4 border-primary-500 p-4 rounded-r-lg">
+                <p className="text-sm font-semibold text-primary-900 mb-2">
+                  💼 Pour les agences partenaires
+                </p>
+                <p className="text-sm text-primary-800 leading-relaxed">
+                  Elite Drive prélève une commission de <strong>8%</strong> sur
+                  chaque réservation confirmée et payée. Cette commission couvre
+                  les frais de plateforme, le traitement des paiements, le
+                  support client et le marketing.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h4 className="font-semibold text-gray-900 mb-2">
+                    Comment fonctionne la commission ?
+                  </h4>
+                  <div className="text-sm text-gray-700 space-y-2">
+                    <p>
+                      • <strong>Taux de commission :</strong> 8% du montant
+                      total de la réservation
+                    </p>
+                    <p>
+                      • <strong>Commission minimale :</strong> 5 DT par
+                      réservation
+                    </p>
+                    <p>
+                      • <strong>Calcul :</strong> Commission = max(Total × 8%, 5
+                      DT)
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h4 className="font-semibold text-gray-900 mb-2">
+                    Exemple de calcul
+                  </h4>
+                  <div className="text-sm text-gray-700 space-y-1 bg-white rounded p-3">
+                    <div className="flex justify-between font-mono">
+                      <span>Prix total payé par le client :</span>
+                      <span className="font-semibold">245.00 DT</span>
+                    </div>
+                    <div className="flex justify-between font-mono text-red-600">
+                      <span>Commission Elite Drive (8%) :</span>
+                      <span className="font-semibold">- 19.60 DT</span>
+                    </div>
+                    <div className="border-t border-gray-300 my-2"></div>
+                    <div className="flex justify-between font-mono text-green-600">
+                      <span>Montant versé à l'agence :</span>
+                      <span className="font-bold text-lg">225.40 DT</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-blue-50 rounded-lg p-4">
+                  <h4 className="font-semibold text-blue-900 mb-2">
+                    Ce qui est inclus dans la commission
+                  </h4>
+                  <ul className="text-sm text-blue-800 space-y-1 ml-4">
+                    <li>✓ Visibilité sur la plateforme</li>
+                    <li>✓ Système de réservation en ligne</li>
+                    <li>✓ Traitement sécurisé des paiements</li>
+                    <li>✓ Support client 24/7</li>
+                    <li>✓ Marketing et publicité</li>
+                    <li>✓ Gestion des avis et notations</li>
+                    <li>✓ Outils d'analyse et statistiques</li>
+                  </ul>
+                </div>
+              </div>
+
+              <p className="text-sm text-gray-600 italic mt-4">
+                Note : La commission est automatiquement déduite du montant de
+                chaque réservation avant le versement à l'agence. Les relevés
+                détaillés sont disponibles dans l'espace agence.
+              </p>
+            </div>
+          </section>
+
+          {/* Section 6 */}
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+              <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
+                6
               </span>
               Réservation et paiement
             </h2>
@@ -307,11 +394,11 @@ const TermsOfService = () => {
             </div>
           </section>
 
-          {/* Section 6 */}
+          {/* Section 7 */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
-                6
+                7
               </span>
               Annulation et modification
             </h2>
@@ -334,11 +421,11 @@ const TermsOfService = () => {
             </div>
           </section>
 
-          {/* Section 7 */}
+          {/* Section 8 */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
-                7
+                8
               </span>
               Utilisation du véhicule
             </h2>
@@ -359,11 +446,11 @@ const TermsOfService = () => {
             </div>
           </section>
 
-          {/* Section 8 */}
+          {/* Section 9 */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
-                8
+                9
               </span>
               Assurance et responsabilité
             </h2>
@@ -376,11 +463,11 @@ const TermsOfService = () => {
             </p>
           </section>
 
-          {/* Section 9 */}
+          {/* Section 10 */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
-                9
+                10
               </span>
               Retard et prolongation
             </h2>
@@ -392,11 +479,11 @@ const TermsOfService = () => {
             </p>
           </section>
 
-          {/* Section 10 */}
+          {/* Section 11 */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
-                10
+                11
               </span>
               Modifications des conditions
             </h2>
@@ -408,11 +495,11 @@ const TermsOfService = () => {
             </p>
           </section>
 
-          {/* Section 11 */}
+          {/* Section 12 */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
-                11
+                12
               </span>
               Contact
             </h2>

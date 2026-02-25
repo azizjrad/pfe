@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import Toast from "../components/Toast";
 import useScrollAnimation from "../hooks/useScrollAnimation";
 
 const Register = () => {
@@ -46,6 +47,19 @@ const Register = () => {
   const [registerError, setRegisterError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [toast, setToast] = useState({
+    isVisible: false,
+    message: "",
+    type: "success",
+  });
+
+  const showToast = (message, type = "success") => {
+    setToast({ isVisible: true, message, type });
+  };
+
+  const hideToast = () => {
+    setToast({ isVisible: false, message: "", type: "success" });
+  };
 
   const [showTooltip, setShowTooltip] = useState({
     password: false,
@@ -174,13 +188,22 @@ const Register = () => {
 
       const response = await registerUser(registrationData);
 
-      // Redirection vers le dashboard universel
-      navigate("/dashboard");
+      // Show success toast
+      showToast(
+        "Compte créé avec succès! Bienvenue chez Elite Drive.",
+        "success",
+      );
+
+      // Redirection vers le dashboard universel après un court délai
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1500);
     } catch (err) {
       console.error("Erreur d'inscription:", err);
-      setRegisterError(
-        err.response?.data?.message || "Erreur lors de l'inscription",
-      );
+      const errorMessage =
+        err.response?.data?.message || "Erreur lors de l'inscription";
+      setRegisterError(errorMessage);
+      showToast(errorMessage, "error");
     } finally {
       setLoading(false);
     }
@@ -1067,6 +1090,13 @@ const Register = () => {
           </div>
         </div>
       </div>
+
+      <Toast
+        isVisible={toast.isVisible}
+        message={toast.message}
+        type={toast.type}
+        onClose={hideToast}
+      />
     </div>
   );
 };

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PricingController;
 use App\Http\Controllers\Api\ReservationController;
+use App\Http\Controllers\Api\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,16 +38,18 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // Protected routes - Super Admin only
 Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
-    // Gestion des agences (admin only)
-    // Route::get('/agencies', [AgencyController::class, 'index']);
-    // Route::post('/agencies', [AgencyController::class, 'store']);
-    // Route::put('/agencies/{id}', [AgencyController::class, 'update']);
-    // Route::delete('/agencies/{id}', [AgencyController::class, 'destroy']);
+    // Admin dashboard statistics
+    Route::get('/admin/stats', [AdminController::class, 'getDashboardStats']);
 
-    // Gestion des utilisateurs (admin only)
-    // Route::get('/users', [UserController::class, 'index']);
-    // Route::put('/users/{id}', [UserController::class, 'update']);
-    // Route::delete('/users/{id}', [UserController::class, 'destroy']);
+    // Gestion des agences
+    Route::get('/admin/agencies', [AdminController::class, 'getAgencies']);
+    Route::put('/admin/agencies/{id}', [AdminController::class, 'updateAgency']);
+    Route::delete('/admin/agencies/{id}', [AdminController::class, 'deleteAgency']);
+
+    // Gestion des utilisateurs
+    Route::get('/admin/users', [AdminController::class, 'getUsers']);
+    Route::put('/admin/users/{id}', [AdminController::class, 'updateUser']);
+    Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser']);
 });
 
 // Protected routes - Agency Admin & Super Admin

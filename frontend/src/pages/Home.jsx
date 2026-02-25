@@ -106,7 +106,7 @@ const Home = () => {
     pickupTime: "10:00",
     returnDate: "",
     returnTime: "10:00",
-    vehicle: "Renault Clio",
+    category: "Tous",
   });
 
   // Handle search form submission
@@ -117,8 +117,21 @@ const Home = () => {
       return;
     }
 
-    // Navigate to vehicles page
-    navigate("/vehicles");
+    // Navigate to vehicles page with search parameters
+    const searchParams = new URLSearchParams({
+      location: searchData.pickupLocation,
+      startDate: searchData.pickupDate,
+      endDate: searchData.returnDate,
+      startTime: searchData.pickupTime,
+      endTime: searchData.returnTime,
+    });
+
+    // Add category if not "Tous"
+    if (searchData.category && searchData.category !== "Tous") {
+      searchParams.append("category", searchData.category);
+    }
+
+    navigate(`/vehicles?${searchParams.toString()}`);
   };
 
   // Featured vehicles data - get first 4 vehicles from centralized data
@@ -244,12 +257,12 @@ const Home = () => {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                       />
                     </svg>
                   </div>
                   <h2 className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
-                    Réserver une voiture
+                    Rechercher un véhicule
                   </h2>
                 </div>
 
@@ -516,10 +529,10 @@ const Home = () => {
                   </div>
                 </div>
 
-                {/* Car selection */}
+                {/* Category selection */}
                 <div className="mb-6">
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Choisir un véhicule
+                    Type de véhicule (optionnel)
                   </label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
@@ -539,11 +552,11 @@ const Home = () => {
                     </div>
                     <FormControl fullWidth>
                       <Select
-                        value={searchData.vehicle}
+                        value={searchData.category}
                         onChange={(e) =>
                           setSearchData({
                             ...searchData,
-                            vehicle: e.target.value,
+                            category: e.target.value,
                           })
                         }
                         sx={{
@@ -575,23 +588,22 @@ const Home = () => {
                           },
                         }}
                       >
-                        <MenuItem value="Suzuki Swift">Suzuki Swift</MenuItem>
-                        <MenuItem value="Renault Clio">Renault Clio</MenuItem>
-                        <MenuItem value="Peugeot 208">Peugeot 208</MenuItem>
-                        <MenuItem value="Mercedes Classe E">
-                          Mercedes Classe E
-                        </MenuItem>
+                        <MenuItem value="Tous">Tous les véhicules</MenuItem>
+                        <MenuItem value="Économique">Économique</MenuItem>
+                        <MenuItem value="SUV">SUV</MenuItem>
+                        <MenuItem value="Luxe">Luxe</MenuItem>
+                        <MenuItem value="Sport">Sport</MenuItem>
                       </Select>
                     </FormControl>
                   </div>
                 </div>
 
-                {/* Get a quote button */}
-                <button 
+                {/* Search button */}
+                <button
                   onClick={handleSearchSubmit}
                   className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 group"
                 >
-                  <span>Obtenir un devis</span>
+                  <span>Rechercher des véhicules</span>
                   <svg
                     className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200"
                     fill="none"
