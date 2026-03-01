@@ -123,9 +123,20 @@ export const authService = {
 
 export const reservationService = {
   getAll: () => api.get("/reservations"),
+  getMy: () => api.get("/my-reservations"),
+  getAgency: () => api.get("/agency/reservations"),
   getById: (id) => api.get(`/reservations/${id}`),
   create: (data) => api.post("/reservations", data),
   update: (id, data) => api.put(`/reservations/${id}`, data),
+  updateStatus: (id, status) =>
+    api.patch(`/reservations/${id}/status`, { status }),
+  pickup: (id, notes = null) =>
+    api.post(`/reservations/${id}/pickup`, { notes }),
+  return: (id, data) => api.post(`/reservations/${id}/return`, data),
+  cancel: (id, reason = null) =>
+    api.post(`/reservations/${id}/cancel`, {
+      cancellation_reason: reason,
+    }),
   delete: (id) => api.delete(`/reservations/${id}`),
 };
 

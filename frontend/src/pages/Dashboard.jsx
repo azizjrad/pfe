@@ -23,7 +23,9 @@ import DashboardHeader from "../components/DashboardHeader";
 import ConfirmationModal from "../components/ConfirmationModal";
 import EditModal from "../components/EditModal";
 import Toast from "../components/Toast";
-import { adminService } from "../services/api";
+import ClientReservationDetailsModal from "../components/ClientReservationDetailsModal";
+import AgencyReservationDetailsModal from "../components/AgencyReservationDetailsModal";
+import { adminService, reservationService } from "../services/api";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -197,8 +199,9 @@ const Dashboard = () => {
         ];
       case "agency_admin":
         return [
-          { id: "overview", label: "Réservations", icon: "clipboard" },
-          { id: "vehicles", label: "Gérer Véhicules", icon: "car" },
+          { id: "overview", label: "Actives", icon: "clipboard" },
+          { id: "reservations", label: "Toutes", icon: "list" },
+          { id: "vehicles", label: "Véhicules", icon: "car" },
           { id: "alerts", label: "Alertes", icon: "bell" },
           { id: "statistics", label: "Statistiques", icon: "chart" },
         ];
@@ -1212,50 +1215,302 @@ const AdminContent = ({
 // Agency Admin Content Component
 const AgencyContent = ({ activeTab }) => {
   const COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"];
+  const [reservations, setReservations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [detailsModal, setDetailsModal] = useState({
+    isOpen: false,
+    reservation: null,
+  });
+  const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
-  const revenueData = [
-    { month: "Août", revenue: 8200 },
-    { month: "Sept", revenue: 9500 },
-    { month: "Oct", revenue: 11200 },
-    { month: "Nov", revenue: 10800 },
-    { month: "Déc", revenue: 15890 },
-    { month: "Jan", revenue: 10230 },
-    { month: "Fév", revenue: 12450 },
-  ];
+  // Fetch reservations on mount
+  useEffect(() => {
+    fetchReservations();
+  }, []);
 
-  const vehicles = [
-    {
-      id: 1,
-      name: "Mercedes-Benz Classe E",
-      category: "Luxe",
-      price: 150,
-      status: "available",
-    },
-    {
-      id: 2,
-      name: "BMW Série 3",
-      category: "Luxe",
-      price: 120,
-      status: "rented",
-    },
-    {
-      id: 3,
-      name: "Renault Clio",
-      category: "Économique",
-      price: 45,
-      status: "available",
-    },
-  ];
+  const fetchReservations = async () => {
+    setLoading(true);
+    try {
+      const response = await reservationService.getAgency();
+      setReservations(response.data.data);
+    } catch (error) {
+      setToast({
+        show: true,
+        message: "Erreur lors du chargement des réservations",
+        type: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleStatusUpdate = async (id, newStatus) => {
+    try {
+      await reservationService.updateStatus(id, newStatus);
+      setToast({
+        show: true,
+        message: "Statut mis à jour avec succès",
+        type: "success",
+      });
+      fetchReservations();
+      setDetailsModal({ isOpen: false, reservation: null });
+    } catch (error) {
+      setToast({
+        show: true,
+        message:
+          error.response?.data?.message || "Erreur lors de la mise à jour",
+        type: "error",
+      });
+    }
+  };
+
+  const handlePickup = async (id, notes) => {
+    try {
+      await reservationService.pickup(id, notes);
+      setToast({
+        show: true,
+        message: "Véhicule retiré avec succès",
+        type: "success",
+      });
+      fetchReservations();
+      setDetailsModal({ isOpen: false, reservation: null });
+    } catch (error) {
+      setToast({
+        show: true,
+        message: error.response?.data?.message || "Erreur lors du retrait",
+        type: "error",
+      });
+    }
+  };
+
+  const handleReturn = async (id, returnData) => {
+    try {
+      await reservationService.return(id, returnData);
+      setToast({
+        show: true,
+        message: "Véhicule retourné avec succès",
+        type: "success",
+      });
+      fetchReservations();
+      setDetailsModal({ isOpen: false, reservation: null });
+    } catch (error) {
+      setToast({
+        show: true,
+        message: error.response?.data?.message || "Erreur lors du retour",
+        type: "error",
+      });
+    }
+  };
+
+  const handleCancelReservation = async (id, reason) => {
+    try {
+      await reservationService.cancel(id, reason);
+      setToast({
+        show: true,
+        message: "Réservation annulée avec succès",
+        type: "success",
+      });
+      fetchReservations();
+      setDetailsModal({ isOpen: false, reservation: null });
+    } catch (error) {
+      setToast({
+        show: true,
+        message: error.response?.data?.message || "Erreur lors de l'annulation",
+        type: "error",
+      });
+    }
+  };
+
+  const getStatusBadge = (status) => {
+    const statusConfig = {
+      pending: { label: "En attente", class: "bg-yellow-100 text-yellow-700" },
+      confirmed: { label: "Confirmée", class: "bg-blue-100 text-blue-700" },
+      ongoing: { label: "En cours", class: "bg-purple-100 text-purple-700" },
+      completed: { label: "Terminée", class: "bg-green-100 text-green-700" },
+      cancelled: { label: "Annulée", class: "bg-red-100 text-red-700" },
+    };
+    const config = statusConfig[status] || statusConfig.pending;
+    return (
+      <span
+        className={`px-2 py-1 rounded-full text-xs font-medium ${config.class}`}
+      >
+        {config.label}
+      </span>
+    );
+  };
 
   if (activeTab === "overview") {
+    const activeReservations = reservations.filter((r) =>
+      ["pending", "confirmed", "ongoing"].includes(r.status),
+    );
+
     return (
       <div className="space-y-6">
         <h2 className="text-xl font-bold text-gray-900">
           Réservations Actives
         </h2>
-        <div className="text-center py-8 text-gray-500">
-          Aucune réservation active pour le moment
-        </div>
+        {loading ? (
+          <div className="flex justify-center py-8">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+          </div>
+        ) : activeReservations.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">
+            Aucune réservation active pour le moment
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {activeReservations.map((reservation) => (
+              <div
+                key={reservation.id}
+                className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow cursor-pointer"
+                onClick={() => setDetailsModal({ isOpen: true, reservation })}
+              >
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="font-semibold text-gray-900">
+                      {reservation.vehicle?.name || "Véhicule"}
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Client: {reservation.user?.name || "N/A"}
+                    </p>
+                  </div>
+                  {getStatusBadge(reservation.status)}
+                </div>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span className="text-gray-600">Du:</span>{" "}
+                    {new Date(reservation.start_date).toLocaleDateString()}
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Au:</span>{" "}
+                    {new Date(reservation.end_date).toLocaleDateString()}
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Montant:</span>{" "}
+                    <span className="font-semibold text-primary-600">
+                      {reservation.total_price} DT
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Paiement:</span>{" "}
+                    {reservation.payment_status === "paid"
+                      ? "Payé"
+                      : "En attente"}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Agency Reservation Details Modal */}
+        {detailsModal.isOpen && detailsModal.reservation && (
+          <AgencyReservationDetailsModal
+            reservation={detailsModal.reservation}
+            onClose={() =>
+              setDetailsModal({ isOpen: false, reservation: null })
+            }
+            onStatusUpdate={handleStatusUpdate}
+            onPickup={handlePickup}
+            onReturn={handleReturn}
+            onCancel={handleCancelReservation}
+          />
+        )}
+
+        {/* Toast Notification */}
+        {toast.show && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast({ show: false, message: "", type: "" })}
+          />
+        )}
+      </div>
+    );
+  }
+
+  if (activeTab === "reservations") {
+    return (
+      <div className="space-y-6">
+        <h2 className="text-xl font-bold text-gray-900">
+          Toutes les Réservations
+        </h2>
+        {loading ? (
+          <div className="flex justify-center py-8">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+          </div>
+        ) : reservations.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">
+            Aucune réservation pour le moment
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {reservations.map((reservation) => (
+              <div
+                key={reservation.id}
+                className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow cursor-pointer"
+                onClick={() => setDetailsModal({ isOpen: true, reservation })}
+              >
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="font-semibold text-gray-900">
+                      {reservation.vehicle?.name || "Véhicule"}
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Client: {reservation.user?.name || "N/A"}
+                    </p>
+                  </div>
+                  {getStatusBadge(reservation.status)}
+                </div>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span className="text-gray-600">Du:</span>{" "}
+                    {new Date(reservation.start_date).toLocaleDateString()}
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Au:</span>{" "}
+                    {new Date(reservation.end_date).toLocaleDateString()}
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Montant:</span>{" "}
+                    <span className="font-semibold text-primary-600">
+                      {reservation.total_price} DT
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Paiement:</span>{" "}
+                    {reservation.payment_status === "paid"
+                      ? "Payé"
+                      : "En attente"}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Agency Reservation Details Modal */}
+        {detailsModal.isOpen && detailsModal.reservation && (
+          <AgencyReservationDetailsModal
+            reservation={detailsModal.reservation}
+            onClose={() =>
+              setDetailsModal({ isOpen: false, reservation: null })
+            }
+            onStatusUpdate={handleStatusUpdate}
+            onPickup={handlePickup}
+            onReturn={handleReturn}
+            onCancel={handleCancelReservation}
+          />
+        )}
+
+        {/* Toast Notification */}
+        {toast.show && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast({ show: false, message: "", type: "" })}
+          />
+        )}
       </div>
     );
   }
@@ -1266,30 +1521,8 @@ const AgencyContent = ({ activeTab }) => {
         <h2 className="text-xl font-bold text-gray-900">
           Gestion des Véhicules
         </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {vehicles.map((vehicle) => (
-            <div
-              key={vehicle.id}
-              className="bg-gray-50 rounded-xl p-6 border border-gray-200"
-            >
-              <h3 className="font-semibold text-gray-900 mb-2">
-                {vehicle.name}
-              </h3>
-              <p className="text-sm text-gray-600 mb-2">{vehicle.category}</p>
-              <p className="text-lg font-bold text-primary-600 mb-3">
-                {vehicle.price} DT/jour
-              </p>
-              <span
-                className={`px-2 py-1 rounded-full text-xs font-medium ${
-                  vehicle.status === "available"
-                    ? "bg-green-100 text-green-600"
-                    : "bg-red-100 text-red-600"
-                }`}
-              >
-                {vehicle.status === "available" ? "Disponible" : "Loué"}
-              </span>
-            </div>
-          ))}
+        <div className="text-center py-8 text-gray-500">
+          Fonctionnalité en développement
         </div>
       </div>
     );
@@ -1309,29 +1542,43 @@ const AgencyContent = ({ activeTab }) => {
   }
 
   if (activeTab === "statistics") {
+    // Calculate statistics from reservations
+    const completedReservations = reservations.filter(
+      (r) => r.status === "completed",
+    );
+    const totalRevenue = completedReservations.reduce(
+      (sum, r) => sum + parseFloat(r.agency_payout || 0),
+      0,
+    );
+    const avgReservationValue =
+      completedReservations.length > 0
+        ? totalRevenue / completedReservations.length
+        : 0;
+
     return (
       <div className="space-y-6">
         <h2 className="text-xl font-bold text-gray-900">
           Statistiques de l'Agence
         </h2>
-        <div className="bg-white p-6 rounded-xl border border-gray-200">
-          <h3 className="text-lg font-semibold mb-4">Évolution du Revenu</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={revenueData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="revenue"
-                stroke="#3B82F6"
-                strokeWidth={2}
-                name="Revenu (DT)"
-              />
-            </LineChart>
-          </ResponsiveContainer>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white p-6 rounded-xl border border-gray-200">
+            <p className="text-sm text-gray-600 mb-2">Réservations Totales</p>
+            <p className="text-3xl font-bold text-primary-600">
+              {reservations.length}
+            </p>
+          </div>
+          <div className="bg-white p-6 rounded-xl border border-gray-200">
+            <p className="text-sm text-gray-600 mb-2">Réservations Terminées</p>
+            <p className="text-3xl font-bold text-green-600">
+              {completedReservations.length}
+            </p>
+          </div>
+          <div className="bg-white p-6 rounded-xl border border-gray-200">
+            <p className="text-sm text-gray-600 mb-2">Revenu Total</p>
+            <p className="text-3xl font-bold text-primary-600">
+              {totalRevenue.toFixed(2)} DT
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -1342,26 +1589,61 @@ const AgencyContent = ({ activeTab }) => {
 
 // Client Content Component
 const ClientContent = ({ activeTab, navigate }) => {
-  const reservations = [
-    {
-      id: 1,
-      vehicle: "Mercedes-Benz Classe E",
-      startDate: "2026-03-01",
-      endDate: "2026-03-05",
-      status: "confirmed",
-      price: 600,
-      agency: "Elite Drive Centre-Ville",
-    },
-    {
-      id: 2,
-      vehicle: "BMW Série 3",
-      startDate: "2026-02-15",
-      endDate: "2026-02-18",
-      status: "completed",
-      price: 360,
-      agency: "Elite Drive La Marsa",
-    },
-  ];
+  const [reservations, setReservations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [cancelModal, setCancelModal] = useState({
+    isOpen: false,
+    reservationId: null,
+  });
+  const [detailsModal, setDetailsModal] = useState({
+    isOpen: false,
+    reservation: null,
+  });
+  const [toast, setToast] = useState({
+    isVisible: false,
+    message: "",
+    type: "success",
+  });
+
+  const showToast = (message, type = "success") => {
+    setToast({ isVisible: true, message, type });
+  };
+
+  const hideToast = () => {
+    setToast({ isVisible: false, message: "", type: "success" });
+  };
+
+  useEffect(() => {
+    fetchReservations();
+  }, []);
+
+  const fetchReservations = async () => {
+    try {
+      const response = await reservationService.getMy();
+      setReservations(response.data.data || []);
+    } catch (error) {
+      console.error("Error fetching reservations:", error);
+      showToast("Erreur lors du chargement des réservations", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancelReservation = async (id) => {
+    try {
+      const response = await reservationService.cancel(id);
+      if (response.data.success) {
+        showToast(response.data.message, "success");
+        fetchReservations(); // Refresh list
+        setCancelModal({ isOpen: false, reservationId: null });
+      }
+    } catch (error) {
+      showToast(
+        error.response?.data?.message || "Erreur lors de l'annulation",
+        "error",
+      );
+    }
+  };
 
   const getStatusColor = (status) => {
     const colors = {
@@ -1396,10 +1678,23 @@ const ClientContent = ({ activeTab, navigate }) => {
           </button>
         </div>
 
-        <div className="grid gap-5">
-          {reservations
-            .filter((r) => r.status === "confirmed")
-            .map((reservation) => (
+        {loading ? (
+          <div className="flex items-center justify-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+          </div>
+        ) : reservations.length === 0 ? (
+          <div className="bg-white rounded-xl p-12 text-center border border-gray-200">
+            <p className="text-gray-500">Aucune réservation pour le moment</p>
+            <button
+              onClick={() => navigate("/vehicles")}
+              className="mt-4 px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+            >
+              Parcourir les véhicules
+            </button>
+          </div>
+        ) : (
+          <div className="grid gap-5">
+            {reservations.map((reservation) => (
               <div
                 key={reservation.id}
                 className="bg-white rounded-xl p-6 border border-gray-200 hover:shadow-lg transition-shadow"
@@ -1407,19 +1702,23 @@ const ClientContent = ({ activeTab, navigate }) => {
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-gray-900">
-                      {reservation.vehicle}
+                      {reservation.vehicle?.name || "Véhicule"}
                     </h3>
                     <p className="text-sm text-gray-500 mt-1">
-                      {reservation.agency}
+                      {reservation.vehicle?.agency?.name || "Agence"}
                     </p>
                     <div className="flex gap-4 mt-3 text-sm text-gray-600">
                       <div>
                         <span className="font-medium">Début:</span>{" "}
-                        {reservation.startDate}
+                        {new Date(reservation.start_date).toLocaleDateString(
+                          "fr-FR",
+                        )}
                       </div>
                       <div>
                         <span className="font-medium">Fin:</span>{" "}
-                        {reservation.endDate}
+                        {new Date(reservation.end_date).toLocaleDateString(
+                          "fr-FR",
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1430,13 +1729,75 @@ const ClientContent = ({ activeTab, navigate }) => {
                       {getStatusText(reservation.status)}
                     </span>
                     <p className="text-lg font-bold text-primary-600 mt-3">
-                      {reservation.price} DT
+                      {reservation.total_price} DT
                     </p>
+                    <div className="flex flex-col gap-2 mt-3">
+                      <button
+                        onClick={() =>
+                          setDetailsModal({
+                            isOpen: true,
+                            reservation: reservation,
+                          })
+                        }
+                        className="px-4 py-2 bg-primary-100 text-primary-600 rounded-lg hover:bg-primary-200 transition-colors text-sm font-medium"
+                      >
+                        Voir détails
+                      </button>
+                      {reservation.status === "pending" && (
+                        <button
+                          onClick={() =>
+                            setCancelModal({
+                              isOpen: true,
+                              reservationId: reservation.id,
+                            })
+                          }
+                          className="px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors text-sm"
+                        >
+                          Annuler
+                        </button>
+                      )}
+                      {reservation.status === "confirmed" && (
+                        <p className="text-xs text-gray-500">
+                          Contactez l'agence pour annuler
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
-        </div>
+          </div>
+        )}
+
+        {/* Client Reservation Details Modal */}
+        {detailsModal.isOpen && detailsModal.reservation && (
+          <ClientReservationDetailsModal
+            reservation={detailsModal.reservation}
+            onClose={() =>
+              setDetailsModal({ isOpen: false, reservation: null })
+            }
+          />
+        )}
+
+        {/* Cancel Confirmation Modal */}
+        <ConfirmationModal
+          isOpen={cancelModal.isOpen}
+          onClose={() => setCancelModal({ isOpen: false, reservationId: null })}
+          onConfirm={() => handleCancelReservation(cancelModal.reservationId)}
+          title="Annuler la réservation"
+          message="Êtes-vous sûr de vouloir annuler cette réservation ?"
+          confirmText="Annuler la réservation"
+          cancelText="Retour"
+          danger={true}
+        />
+
+        {/* Toast Notification */}
+        <Toast
+          isVisible={toast.isVisible}
+          message={toast.message}
+          type={toast.type}
+          onClose={hideToast}
+        />
       </div>
     );
   }
@@ -1447,45 +1808,80 @@ const ClientContent = ({ activeTab, navigate }) => {
         <h2 className="text-xl font-bold text-gray-900">
           Historique des Réservations
         </h2>
-        <div className="grid gap-5">
-          {reservations.map((reservation) => (
-            <div
-              key={reservation.id}
-              className="bg-white rounded-xl p-6 border border-gray-200"
-            >
-              <div className="flex justify-between items-start">
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    {reservation.vehicle}
-                  </h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    {reservation.agency}
-                  </p>
-                  <div className="flex gap-4 mt-3 text-sm text-gray-600">
-                    <div>
-                      <span className="font-medium">Début:</span>{" "}
-                      {reservation.startDate}
-                    </div>
-                    <div>
-                      <span className="font-medium">Fin:</span>{" "}
-                      {reservation.endDate}
+        {loading ? (
+          <div className="flex items-center justify-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+          </div>
+        ) : reservations.length === 0 ? (
+          <div className="bg-white rounded-xl p-12 text-center border border-gray-200">
+            <p className="text-gray-500">Aucune réservation</p>
+          </div>
+        ) : (
+          <div className="grid gap-5">
+            {reservations.map((reservation) => (
+              <div
+                key={reservation.id}
+                className="bg-white rounded-xl p-6 border border-gray-200"
+              >
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {reservation.vehicle?.name || "Véhicule"}
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-1">
+                      {reservation.vehicle?.agency?.name || "Agence"}
+                    </p>
+                    <div className="flex gap-4 mt-3 text-sm text-gray-600">
+                      <div>
+                        <span className="font-medium">Début:</span>{" "}
+                        {new Date(reservation.start_date).toLocaleDateString(
+                          "fr-FR",
+                        )}
+                      </div>
+                      <div>
+                        <span className="font-medium">Fin:</span>{" "}
+                        {new Date(reservation.end_date).toLocaleDateString(
+                          "fr-FR",
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="text-right">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(reservation.status)}`}
-                  >
-                    {getStatusText(reservation.status)}
-                  </span>
-                  <p className="text-lg font-bold text-primary-600 mt-3">
-                    {reservation.price} DT
-                  </p>
+                  <div className="text-right">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(reservation.status)}`}
+                    >
+                      {getStatusText(reservation.status)}
+                    </span>
+                    <p className="text-lg font-bold text-primary-600 mt-3">
+                      {reservation.total_price} DT
+                    </p>
+                    <button
+                      onClick={() =>
+                        setDetailsModal({
+                          isOpen: true,
+                          reservation: reservation,
+                        })
+                      }
+                      className="mt-3 px-4 py-2 bg-primary-100 text-primary-600 rounded-lg hover:bg-primary-200 transition-colors text-sm font-medium"
+                    >
+                      Voir détails
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
+
+        {/* Client Reservation Details Modal */}
+        {detailsModal.isOpen && detailsModal.reservation && (
+          <ClientReservationDetailsModal
+            reservation={detailsModal.reservation}
+            onClose={() =>
+              setDetailsModal({ isOpen: false, reservation: null })
+            }
+          />
+        )}
       </div>
     );
   }

@@ -34,13 +34,9 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
   // Pricing options state (sent to PricingService)
   const [options, setOptions] = useState({
     full_insurance: false,
-    gps: false,
-    child_seat: false,
-    additional_driver: false,
     airport_delivery: false,
     home_delivery: false,
     after_hours_pickup: false,
-    mileage_option: "200km", // Default: 200km/day (base price)
   });
 
   const [touched, setTouched] = useState({});
@@ -102,13 +98,9 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
     });
     setOptions({
       full_insurance: false,
-      gps: false,
-      child_seat: false,
-      additional_driver: false,
       airport_delivery: false,
       home_delivery: false,
       after_hours_pickup: false,
-      mileage_option: "200km",
     });
     setTouched({});
     setFocused({});
@@ -124,13 +116,9 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
     });
     setOptions({
       full_insurance: false,
-      gps: false,
-      child_seat: false,
-      additional_driver: false,
       airport_delivery: false,
       home_delivery: false,
       after_hours_pickup: false,
-      mileage_option: "200km",
     });
     setTouched({});
     setFocused({});
@@ -160,7 +148,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-primary-600 to-primary-700 text-white p-6 rounded-t-3xl flex items-center justify-between">
+        <div className="sticky top-0 z-10 bg-gradient-to-r from-primary-600 to-primary-700 text-white p-6 rounded-t-3xl flex items-center justify-between">
           <div>
             <h3 className="text-2xl font-bold">Réserver votre véhicule</h3>
             <p className="text-primary-100 mt-1">{vehicle.name}</p>
@@ -244,7 +232,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                     placeholder=" "
                   />
                   <label
-                    className={`absolute text-xs -top-2 left-2 bg-white px-2 transition-colors duration-300 pointer-events-none ${
+                    className={`absolute text-xs -top-2 left-2 bg-white px-2 z-0 transition-colors duration-300 pointer-events-none ${
                       focused.startDate ? "text-primary-500" : "text-gray-600"
                     }`}
                   >
@@ -265,8 +253,16 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                     onFocus={() => handleFocus("endDate")}
                     onBlur={() => handleBlur("endDate")}
                     min={
-                      reservationData.startDate ||
-                      new Date().toISOString().split("T")[0]
+                      reservationData.startDate
+                        ? new Date(
+                            new Date(reservationData.startDate).getTime() +
+                              86400000,
+                          )
+                            .toISOString()
+                            .split("T")[0]
+                        : new Date(new Date().getTime() + 86400000)
+                            .toISOString()
+                            .split("T")[0]
                     }
                     required
                     className={`w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black focus:text-primary-500 peer focus:outline-none ${
@@ -277,7 +273,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                     placeholder=" "
                   />
                   <label
-                    className={`absolute text-xs -top-2 left-2 bg-white px-2 transition-colors duration-300 pointer-events-none ${
+                    className={`absolute text-xs -top-2 left-2 bg-white px-2 z-0 transition-colors duration-300 pointer-events-none ${
                       focused.endDate ? "text-primary-500" : "text-gray-600"
                     }`}
                   >
@@ -331,77 +327,6 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                       </div>
                     </div>
                   </label>
-                </div>
-
-                {/* Equipment */}
-                <div>
-                  <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                    <svg
-                      className="w-5 h-5 text-primary-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-                      />
-                    </svg>
-                    Équipements
-                  </h4>
-                  <div className="grid md:grid-cols-2 gap-3">
-                    <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors">
-                      <input
-                        type="checkbox"
-                        checked={options.gps}
-                        onChange={(e) =>
-                          handleOptionChange("gps", e.target.checked)
-                        }
-                        className="w-5 h-5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
-                      />
-                      <div className="flex-1">
-                        <div className="font-medium text-gray-900">GPS</div>
-                        <div className="text-sm text-gray-600">5 DT/jour</div>
-                      </div>
-                    </label>
-                    <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors">
-                      <input
-                        type="checkbox"
-                        checked={options.child_seat}
-                        onChange={(e) =>
-                          handleOptionChange("child_seat", e.target.checked)
-                        }
-                        className="w-5 h-5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
-                      />
-                      <div className="flex-1">
-                        <div className="font-medium text-gray-900">
-                          Siège enfant
-                        </div>
-                        <div className="text-sm text-gray-600">3 DT/jour</div>
-                      </div>
-                    </label>
-                    <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors md:col-span-2">
-                      <input
-                        type="checkbox"
-                        checked={options.additional_driver}
-                        onChange={(e) =>
-                          handleOptionChange(
-                            "additional_driver",
-                            e.target.checked,
-                          )
-                        }
-                        className="w-5 h-5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
-                      />
-                      <div className="flex-1">
-                        <div className="font-medium text-gray-900">
-                          Conducteur supplémentaire
-                        </div>
-                        <div className="text-sm text-gray-600">8 DT/jour</div>
-                      </div>
-                    </label>
-                  </div>
                 </div>
 
                 {/* Services */}
@@ -484,39 +409,6 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                       </div>
                     </label>
                   </div>
-                </div>
-
-                {/* Mileage Options */}
-                <div>
-                  <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                    <svg
-                      className="w-5 h-5 text-primary-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 10V3L4 14h7v7l9-11h-7z"
-                      />
-                    </svg>
-                    Plan kilométrage
-                  </h4>
-                  <select
-                    value={options.mileage_option}
-                    onChange={(e) =>
-                      handleOptionChange("mileage_option", e.target.value)
-                    }
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-primary-500 focus:outline-none bg-gray-50 focus:bg-white text-gray-900"
-                  >
-                    <option value="100km">100 km/jour (-5%)</option>
-                    <option value="200km">200 km/jour (prix de base)</option>
-                    <option value="unlimited">
-                      Kilométrage illimité (+10%)
-                    </option>
-                  </select>
                 </div>
 
                 {/* Dynamic Price Breakdown */}

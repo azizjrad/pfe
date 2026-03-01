@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ReservationModal from "../components/ReservationModal";
@@ -11,6 +12,8 @@ import api from "../services/api";
 const VehicleDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { user, isAuthenticated } = useAuth();
   const [vehicle, setVehicle] = useState(null);
   const [isReservationOpen, setIsReservationOpen] = useState(false);
   const [toast, setToast] = useState({
@@ -63,7 +66,7 @@ const VehicleDetails = () => {
       if (response.data.success) {
         showToast(
           response.data.message ||
-            "Réservation créée avec succès! Nous vous contacterons bientôt.",
+            "Réservation confirmée! Vous recevrez un email de confirmation ou un appel de l'agence bientôt.",
           "success",
         );
         setIsReservationOpen(false);
@@ -81,7 +84,7 @@ const VehicleDetails = () => {
           "Vous devez être connecté pour réserver un véhicule.",
           "error",
         );
-        navigate("/login");
+        navigate(`/login?returnTo=/vehicles/${id}&openModal=reservation`);
       } else {
         showToast(
           "Erreur lors de la réservation. Veuillez réessayer.",
@@ -89,6 +92,16 @@ const VehicleDetails = () => {
         );
       }
     }
+  };
+
+  // Handle reserve button click with authentication check
+  const handleReserveClick = () => {
+    if (!isAuthenticated) {
+      showToast("Vous devez être connecté pour réserver un véhicule.", "error");
+      navigate(`/login?returnTo=/vehicles/${id}&openModal=reservation`);
+      return;
+    }
+    setIsReservationOpen(true);
   };
 
   useEffect(() => {
@@ -106,7 +119,16 @@ const VehicleDetails = () => {
       // Use setTimeout to allow state to settle before navigating
       setTimeout(() => navigate("/vehicles"), 100);
     }
-  }, [id]);
+
+    // Check if we should auto-open the reservation modal
+    const openModal = searchParams.get("openModal");
+    if (openModal === "reservation" && isAuthenticated) {
+      setIsReservationOpen(true);
+      // Remove the query parameter after opening modal
+      searchParams.delete("openModal");
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [id, searchParams, isAuthenticated]);
 
   if (!vehicle) {
     return (
@@ -216,7 +238,7 @@ const VehicleDetails = () => {
 
                 {/* Reserve Button */}
                 <button
-                  onClick={() => setIsReservationOpen(true)}
+                  onClick={handleReserveClick}
                   className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white px-8 py-4 rounded-2xl hover:from-primary-700 hover:to-primary-800 transition-all font-semibold text-lg shadow-lg hover:shadow-xl hover:scale-[1.02] flex items-center justify-center gap-2"
                 >
                   <svg

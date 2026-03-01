@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import useScrollAnimation from "../hooks/useScrollAnimation";
 import Toast from "../components/Toast";
@@ -7,14 +7,17 @@ import Toast from "../components/Toast";
 const Login = () => {
   const formAnim = useScrollAnimation({ threshold: 0.2 });
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { login, error, user, isAuthenticated } = useAuth();
+  const returnTo = searchParams.get("returnTo");
 
   // Rediriger si déjà connecté (persistence de session)
   useEffect(() => {
     if (user && isAuthenticated) {
-      navigate("/dashboard", { replace: true });
+      const destination = returnTo || "/dashboard";
+      navigate(destination, { replace: true });
     }
-  }, [user, isAuthenticated, navigate]);
+  }, [user, isAuthenticated, navigate, returnTo]);
 
   // Load remembered email on mount
   useEffect(() => {
@@ -76,8 +79,9 @@ const Login = () => {
         password: formData.password,
       });
 
-      // Redirect to dashboard
-      navigate("/dashboard");
+      // Redirect to returnTo URL or dashboard
+      const destination = returnTo || "/dashboard";
+      navigate(destination);
     } catch (err) {
       console.error("Erreur de connexion:", err);
 
