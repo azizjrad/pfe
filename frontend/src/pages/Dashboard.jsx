@@ -23,8 +23,12 @@ import DashboardHeader from "../components/DashboardHeader";
 import ConfirmationModal from "../components/ConfirmationModal";
 import EditModal from "../components/EditModal";
 import Toast from "../components/Toast";
-import ClientReservationDetailsModal from "../components/ClientReservationDetailsModal";
-import AgencyReservationDetailsModal from "../components/AgencyReservationDetailsModal";
+import ReservationDetailsModal from "../components/ReservationDetailsModal";
+import DetailsModal from "../components/DetailsModal";
+import ReportDetailsModal from "../components/ReportDetailsModal";
+import Pagination from "../components/Pagination";
+import NotificationButton from "../components/NotificationButton";
+import VehicleCard from "../components/VehicleCard";
 import { adminService, reservationService } from "../services/api";
 
 const Dashboard = () => {
@@ -44,6 +48,7 @@ const Dashboard = () => {
   });
   const [agencies, setAgencies] = useState([]);
   const [users, setUsers] = useState([]);
+  const [allReservations, setAllReservations] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Modal states
@@ -57,6 +62,18 @@ const Dashboard = () => {
     type: null,
     item: null,
   });
+  const [detailsModal, setDetailsModal] = useState({
+    isOpen: false,
+    type: null, // 'agency' or 'user'
+    item: null,
+  });
+  const [reportDetailsModal, setReportDetailsModal] = useState({
+    isOpen: false,
+    report: null,
+  });
+  const [reports, setReports] = useState([]);
+  const [agencyReviews, setAgencyReviews] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
   // Toast notification state
   const [toast, setToast] = useState({
@@ -77,6 +94,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (user?.role === "super_admin") {
       fetchDashboardData();
+      initializeMockReviews();
     } else {
       setLoading(false);
     }
@@ -94,6 +112,11 @@ const Dashboard = () => {
       setPlatformStats(statsRes.data);
       setAgencies(agenciesRes.data);
       setUsers(usersRes.data);
+
+      // Initialize mock data (TODO: Replace with API calls)
+      initializeMockReports();
+      initializeMockReviews();
+      initializeMockNotifications();
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
       console.error("Error response:", error.response);
@@ -106,6 +129,305 @@ const Dashboard = () => {
       showToast(errorMessage, "error");
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Initialize mock agency reviews (TODO: Replace with API call)
+  const initializeMockReviews = () => {
+    const mockReviews = [
+      {
+        id: 1,
+        agency_id: 1,
+        user_id: 5,
+        user_name: "Sophie Martin",
+        rating: 5,
+        comment:
+          "Excellent service ! Voiture impeccable et personnel très accueillant. Je recommande vivement cette agence.",
+        created_at: new Date(
+          Date.now() - 5 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+      },
+      {
+        id: 2,
+        agency_id: 1,
+        user_id: 6,
+        user_name: "Thomas Dubois",
+        rating: 4,
+        comment:
+          "Très bonne expérience. La voiture était propre et bien entretenue. Un petit délai à la prise en charge mais rien de grave.",
+        created_at: new Date(
+          Date.now() - 10 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+      },
+      {
+        id: 3,
+        agency_id: 1,
+        user_id: 7,
+        user_name: "Marie Leclerc",
+        rating: 5,
+        comment:
+          "Service irréprochable ! L'équipe est professionnelle et à l'écoute. Les prix sont compétitifs.",
+        created_at: new Date(
+          Date.now() - 15 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+      },
+      {
+        id: 4,
+        agency_id: 2,
+        user_id: 8,
+        user_name: "Pierre Bernard",
+        rating: 3,
+        comment:
+          "Agence correcte mais j'ai trouvé la voiture avec quelques rayures non mentionnées. Le reste était bien.",
+        created_at: new Date(
+          Date.now() - 7 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+      },
+      {
+        id: 5,
+        agency_id: 3,
+        user_id: 9,
+        user_name: "Julie Rousseau",
+        rating: 5,
+        comment:
+          "Parfait ! Personnel sympathique, voiture neuve et propre. Je reviendrai sans hésiter.",
+        created_at: new Date(
+          Date.now() - 20 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+      },
+    ];
+    setAgencyReviews(mockReviews);
+  };
+
+  // Initialize mock notifications (TODO: Replace with API call)
+  const initializeMockNotifications = () => {
+    const baseNotifications =
+      user?.role === "agency_admin"
+        ? [
+            {
+              id: 1,
+              type: "reservation",
+              title: "Nouvelle réservation",
+              message:
+                "Jean Dupont a réservé une Mercedes Classe E pour 3 jours",
+              created_at: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
+              is_read: false,
+            },
+            {
+              id: 2,
+              type: "payment",
+              title: "Paiement reçu",
+              message: "Paiement de 450 DT reçu pour la réservation #1234",
+              created_at: new Date(
+                Date.now() - 2 * 60 * 60 * 1000,
+              ).toISOString(),
+              is_read: false,
+            },
+            {
+              id: 3,
+              type: "review",
+              title: "Nouvel avis",
+              message: "Sophie Martin a laissé un avis 5 étoiles",
+              created_at: new Date(
+                Date.now() - 5 * 60 * 60 * 1000,
+              ).toISOString(),
+              is_read: true,
+            },
+            {
+              id: 4,
+              type: "vehicle",
+              title: "Retour de véhicule",
+              message: "BMW X5 retourné avec succès",
+              created_at: new Date(
+                Date.now() - 1 * 24 * 60 * 60 * 1000,
+              ).toISOString(),
+              is_read: true,
+            },
+          ]
+        : user?.role === "client"
+          ? [
+              {
+                id: 1,
+                type: "reservation",
+                title: "Réservation confirmée",
+                message: "Votre réservation #1234 a été confirmée par l'agence",
+                created_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+                is_read: false,
+              },
+              {
+                id: 2,
+                type: "vehicle",
+                title: "Véhicule prêt",
+                message: "Votre Mercedes Classe E est prête pour le retrait",
+                created_at: new Date(
+                  Date.now() - 3 * 60 * 60 * 1000,
+                ).toISOString(),
+                is_read: false,
+              },
+              {
+                id: 3,
+                type: "payment",
+                title: "Paiement confirmé",
+                message: "Votre paiement de 450 DT a été traité avec succès",
+                created_at: new Date(
+                  Date.now() - 6 * 60 * 60 * 1000,
+                ).toISOString(),
+                is_read: true,
+              },
+            ]
+          : [];
+
+    setNotifications(baseNotifications);
+  };
+
+  // Initialize mock reports (TODO: Replace with API call)
+  const initializeMockReports = () => {
+    const mockReports = [
+      {
+        id: 1,
+        reportType: "vehicle",
+        targetId: 1,
+        targetName: "Mercedes-Benz Classe E",
+        reason: "Informations incorrectes",
+        description:
+          "Le véhicule affiché a des spécifications qui ne correspondent pas à la réalité. Le kilométrage indiqué est faux.",
+        reportedBy: "Jean Dupont",
+        reportedAt: new Date(
+          Date.now() - 2 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+        status: "pending",
+        adminNotes: null,
+      },
+      {
+        id: 2,
+        reportType: "agency",
+        targetId: 1,
+        targetName: "Elite Drive Centre-Ville",
+        reason: "Service client médiocre",
+        description:
+          "L'agence ne répond pas aux appels téléphoniques et ignore les emails. Service très décevant.",
+        reportedBy: "Marie Martin",
+        reportedAt: new Date(
+          Date.now() - 5 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+        status: "pending",
+        adminNotes: null,
+      },
+      {
+        id: 3,
+        reportType: "client",
+        targetId: 5,
+        targetName: "Pierre Dubois",
+        reason: "Dommages au véhicule",
+        description:
+          "Le client a rendu le véhicule avec des rayures importantes sur la portière droite sans les signaler.",
+        reportedBy: "Elite Drive La Marsa",
+        reportedAt: new Date(
+          Date.now() - 1 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+        status: "pending",
+        adminNotes: null,
+      },
+      {
+        id: 4,
+        reportType: "vehicle",
+        targetId: 4,
+        targetName: "Range Rover Sport",
+        reason: "État du véhicule non conforme",
+        description:
+          "Le véhicule était sale à l'intérieur et sentait la cigarette, malgré l'interdiction de fumer.",
+        reportedBy: "Sophie Leroux",
+        reportedAt: new Date(
+          Date.now() - 10 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+        status: "resolved",
+        adminNotes:
+          "Véhicule nettoyé en profondeur. Client remboursé partiellement.",
+      },
+      {
+        id: 5,
+        reportType: "agency",
+        targetId: 2,
+        targetName: "Elite Drive La Marsa",
+        reason: "Pratiques commerciales douteuses",
+        description:
+          "L'agence a facturé des frais supplémentaires non mentionnés lors de la réservation.",
+        reportedBy: "Thomas Bernard",
+        reportedAt: new Date(
+          Date.now() - 15 * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+        status: "dismissed",
+        adminNotes:
+          "Après vérification, les frais étaient justifiés et mentionnés dans les conditions générales.",
+      },
+    ];
+    setReports(mockReports);
+  };
+
+  // Report handlers
+  const handleResolveReport = async (report) => {
+    try {
+      // TODO: Replace with API call
+      setReports(
+        reports.map((r) =>
+          r.id === report.id
+            ? { ...r, status: "resolved", resolvedAt: new Date().toISOString() }
+            : r,
+        ),
+      );
+      showToast("Signalement marqué comme résolu", "success");
+    } catch (error) {
+      showToast("Erreur lors de la résolution du signalement", "error");
+    }
+  };
+
+  const handleDismissReport = async (report) => {
+    try {
+      // TODO: Replace with API call
+      setReports(
+        reports.map((r) =>
+          r.id === report.id
+            ? {
+                ...r,
+                status: "dismissed",
+                dismissedAt: new Date().toISOString(),
+              }
+            : r,
+        ),
+      );
+      showToast("Signalement rejeté", "success");
+    } catch (error) {
+      showToast("Erreur lors du rejet du signalement", "error");
+    }
+  };
+
+  const handleDeleteReport = async (report) => {
+    try {
+      // TODO: Replace with API call
+      setReports(reports.filter((r) => r.id !== report.id));
+      showToast("Signalement supprimé", "success");
+    } catch (error) {
+      showToast("Erreur lors de la suppression du signalement", "error");
+    }
+  };
+
+  // Handle agency review submission
+  const handleSubmitReview = async (reviewData) => {
+    try {
+      // TODO: Replace with API call
+      const newReview = {
+        id: agencyReviews.length + 1,
+        ...reviewData,
+        user_id: user.id,
+        user_name: user.name,
+        created_at: new Date().toISOString(),
+      };
+      setAgencyReviews((prev) => [newReview, ...prev]);
+      showToast("Avis publié avec succès");
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      showToast("Erreur lors de la publication de l'avis", "error");
+      throw error;
     }
   };
 
@@ -195,6 +517,8 @@ const Dashboard = () => {
           { id: "overview", label: "Vue d'ensemble", icon: "home" },
           { id: "agencies", label: "Gérer Agences", icon: "building" },
           { id: "users", label: "Gérer Utilisateurs", icon: "users" },
+          { id: "financial", label: "Finances", icon: "credit-card" },
+          { id: "reports", label: "Signalements", icon: "flag" },
           { id: "statistics", label: "Statistiques", icon: "chart" },
         ];
       case "agency_admin":
@@ -202,12 +526,14 @@ const Dashboard = () => {
           { id: "overview", label: "Actives", icon: "clipboard" },
           { id: "reservations", label: "Toutes", icon: "list" },
           { id: "vehicles", label: "Véhicules", icon: "car" },
+          { id: "financial", label: "Finances", icon: "credit-card" },
           { id: "alerts", label: "Alertes", icon: "bell" },
           { id: "statistics", label: "Statistiques", icon: "chart" },
         ];
       case "client":
         return [
           { id: "overview", label: "Mes Réservations", icon: "clipboard" },
+          { id: "saved", label: "Véhicules Sauvegardés", icon: "heart" },
           { id: "history", label: "Historique", icon: "clock" },
         ];
       default:
@@ -585,12 +911,44 @@ const Dashboard = () => {
           d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
         />
       ),
+      flag: (
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"
+        />
+      ),
+      list: (
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M4 6h16M4 10h16M4 14h16M4 18h16"
+        />
+      ),
       calculator: (
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={2}
           d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+        />
+      ),
+      heart: (
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+        />
+      ),
+      "credit-card": (
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
         />
       ),
     };
@@ -608,6 +966,7 @@ const Dashboard = () => {
           platformStats={platformStats}
           agencies={agencies}
           users={users}
+          reports={reports}
           loading={loading}
           onDeleteAgency={(id) => {
             setDeleteModal({
@@ -629,6 +988,30 @@ const Dashboard = () => {
           onEditUser={(item) => {
             setEditModal({ isOpen: true, type: "user", item });
           }}
+          onSuspendUser={async (user) => {
+            try {
+              await adminService.suspendUser(user.id, !user.is_suspended);
+              showToast(
+                user.is_suspended
+                  ? "Utilisateur réactivé avec succès"
+                  : "Utilisateur suspendu avec succès",
+                "success",
+              );
+              fetchDashboardData();
+            } catch (error) {
+              console.error("Error suspending user:", error);
+              showToast("Erreur lors de la modification du statut", "error");
+            }
+          }}
+          onViewUserDetails={(user) => {
+            setDetailsModal({ isOpen: true, type: "user", item: user });
+          }}
+          onResolveReport={handleResolveReport}
+          onDismissReport={handleDismissReport}
+          onDeleteReport={handleDeleteReport}
+          onViewReportDetails={(report) => {
+            setReportDetailsModal({ isOpen: true, report });
+          }}
         />
       );
     } else if (role === "agency_admin") {
@@ -646,7 +1029,12 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-gray-50">
-      <DashboardHeader title={title} subtitle={subtitle} />
+      <DashboardHeader title={title} subtitle={subtitle}>
+        <NotificationButton
+          userRole={user?.role}
+          notifications={notifications}
+        />
+      </DashboardHeader>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-8">
@@ -876,6 +1264,74 @@ const Dashboard = () => {
         }}
         type={editModal.type}
         item={editModal.item}
+        agencies={agencies}
+        reviews={
+          editModal.type === "agency" && editModal.item?.id
+            ? agencyReviews.filter((r) => r.agency_id === editModal.item.id)
+            : []
+        }
+        userRole={user?.role}
+        userId={user?.id}
+        userReservations={allReservations.filter(
+          (r) => r.user_id === user?.id || r.client_id === user?.id,
+        )}
+        onSubmitReview={handleSubmitReview}
+      />
+
+      <DetailsModal
+        isOpen={detailsModal.isOpen}
+        onClose={() =>
+          setDetailsModal({ isOpen: false, type: null, item: null })
+        }
+        type={detailsModal.type}
+        item={detailsModal.item}
+        reviews={
+          detailsModal.type === "agency" && detailsModal.item?.id
+            ? agencyReviews.filter((r) => r.agency_id === detailsModal.item.id)
+            : []
+        }
+        reservations={allReservations}
+        onEdit={(item) => {
+          setDetailsModal({ isOpen: false, type: null, item: null });
+          setEditModal({ isOpen: true, type: detailsModal.type, item });
+        }}
+        onDelete={(itemId) => {
+          const item =
+            detailsModal.type === "agency"
+              ? agencies.find((a) => a.id === itemId)
+              : users.find((u) => u.id === itemId);
+          setDetailsModal({ isOpen: false, type: null, item: null });
+          setDeleteModal({
+            isOpen: true,
+            type: detailsModal.type,
+            item,
+          });
+        }}
+        onSuspend={async (user) => {
+          try {
+            await adminService.suspendUser(user.id, !user.is_suspended);
+            showToast(
+              user.is_suspended
+                ? "Utilisateur réactivé avec succès"
+                : "Utilisateur suspendu avec succès",
+              "success",
+            );
+            fetchDashboardData();
+            setDetailsModal({ isOpen: false, type: null, item: null });
+          } catch (error) {
+            console.error("Error suspending user:", error);
+            showToast("Erreur lors de la modification du statut", "error");
+          }
+        }}
+      />
+
+      <ReportDetailsModal
+        isOpen={reportDetailsModal.isOpen}
+        onClose={() => setReportDetailsModal({ isOpen: false, report: null })}
+        report={reportDetailsModal.report}
+        onResolve={handleResolveReport}
+        onDismiss={handleDismissReport}
+        onDelete={handleDeleteReport}
       />
 
       <Toast
@@ -910,12 +1366,23 @@ const AdminContent = ({
   platformStats,
   agencies,
   users,
+  reports,
   loading,
   onDeleteAgency,
   onEditAgency,
   onDeleteUser,
   onEditUser,
+  onSuspendUser,
+  onViewUserDetails,
+  onResolveReport,
+  onDismissReport,
+  onDeleteReport,
+  onViewReportDetails,
 }) => {
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   // Loading state
   if (loading) {
     return (
@@ -1009,9 +1476,46 @@ const AdminContent = ({
   }
 
   if (activeTab === "agencies") {
+    const totalPages = Math.ceil((agencies || []).length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedAgencies = (agencies || []).slice(startIndex, endIndex);
+
     return (
       <div className="space-y-5">
-        <h2 className="text-xl font-bold text-gray-900">Gestion des Agences</h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold text-gray-900">
+            Gestion des Agences
+          </h2>
+          <button
+            onClick={() =>
+              onEditAgency({
+                id: null,
+                name: "",
+                address: "",
+                phone: "",
+                email: "",
+                location: "",
+              })
+            }
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-medium rounded-lg hover:from-primary-700 hover:to-primary-800 transition-all shadow-lg"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Ajouter une agence
+          </button>
+        </div>
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white rounded-lg overflow-hidden">
             <thead className="bg-gray-50 border-b border-gray-200">
@@ -1037,8 +1541,18 @@ const AdminContent = ({
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {agencies.map((agency) => (
-                <tr key={agency.id} className="hover:bg-gray-50">
+              {paginatedAgencies.map((agency) => (
+                <tr
+                  key={agency.id}
+                  className="hover:bg-gray-50 cursor-pointer"
+                  onClick={() =>
+                    setDetailsModal({
+                      isOpen: true,
+                      type: "agency",
+                      item: agency,
+                    })
+                  }
+                >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="font-medium text-gray-900">
                       {agency.name}
@@ -1062,13 +1576,19 @@ const AdminContent = ({
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button
-                      onClick={() => onEditAgency(agency)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEditAgency(agency);
+                      }}
                       className="text-primary-600 hover:text-primary-900 mr-3"
                     >
                       Modifier
                     </button>
                     <button
-                      onClick={() => onDeleteAgency(agency.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDeleteAgency(agency.id);
+                      }}
                       className="text-red-600 hover:text-red-900"
                     >
                       Supprimer
@@ -1079,16 +1599,62 @@ const AdminContent = ({
             </tbody>
           </table>
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+            itemsPerPage={itemsPerPage}
+            totalItems={(agencies || []).length}
+          />
+        )}
       </div>
     );
   }
 
   if (activeTab === "users") {
+    const totalPages = Math.ceil((users || []).length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedUsers = (users || []).slice(startIndex, endIndex);
+
     return (
       <div className="space-y-5">
-        <h2 className="text-xl font-bold text-gray-900">
-          Gestion des Utilisateurs
-        </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold text-gray-900">
+            Gestion des Utilisateurs
+          </h2>
+          <button
+            onClick={() =>
+              onEditUser({
+                id: null,
+                name: "",
+                email: "",
+                phone: "",
+                role: "client",
+                agency_id: null,
+              })
+            }
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-medium rounded-lg hover:from-primary-700 hover:to-primary-800 transition-all shadow-lg"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Ajouter un utilisateur
+          </button>
+        </div>
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white rounded-lg overflow-hidden">
             <thead className="bg-gray-50 border-b border-gray-200">
@@ -1111,8 +1677,12 @@ const AdminContent = ({
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {users.map((user) => (
-                <tr key={user.id} className="hover:bg-gray-50">
+              {paginatedUsers.map((user) => (
+                <tr
+                  key={user.id}
+                  onClick={() => onViewUserDetails && onViewUserDetails(user)}
+                  className="hover:bg-gray-50 cursor-pointer transition-colors"
+                >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div>
                       <div className="font-medium text-gray-900">
@@ -1140,13 +1710,32 @@ const AdminContent = ({
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button
-                      onClick={() => onEditUser(user)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEditUser(user);
+                      }}
                       className="text-primary-600 hover:text-primary-900 mr-3"
                     >
                       Modifier
                     </button>
                     <button
-                      onClick={() => onDeleteUser(user.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSuspendUser && onSuspendUser(user);
+                      }}
+                      className={`mr-3 ${
+                        user.is_suspended
+                          ? "text-green-600 hover:text-green-900"
+                          : "text-orange-600 hover:text-orange-900"
+                      }`}
+                    >
+                      {user.is_suspended ? "Réactiver" : "Suspendre"}
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDeleteUser(user.id);
+                      }}
                       className="text-red-600 hover:text-red-900"
                     >
                       Supprimer
@@ -1157,6 +1746,650 @@ const AdminContent = ({
             </tbody>
           </table>
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+            itemsPerPage={itemsPerPage}
+            totalItems={(users || []).length}
+          />
+        )}
+      </div>
+    );
+  }
+
+  if (activeTab === "reports") {
+    const totalPages = Math.ceil((reports || []).length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedReports = (reports || []).slice(startIndex, endIndex);
+
+    return (
+      <div className="space-y-5">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold text-gray-900">Signalements</h2>
+          <div className="flex gap-2 text-sm">
+            <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full font-medium">
+              {(reports || []).filter((r) => r.status === "pending").length} En
+              attente
+            </span>
+            <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full font-medium">
+              {(reports || []).filter((r) => r.status === "resolved").length}{" "}
+              Résolus
+            </span>
+            <span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full font-medium">
+              {(reports || []).filter((r) => r.status === "dismissed").length}{" "}
+              Rejetés
+            </span>
+          </div>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white rounded-lg overflow-hidden">
+            <thead className="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Type
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Signalé
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Raison
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Date
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Statut
+                </th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {paginatedReports.map((report) => (
+                <tr
+                  key={report.id}
+                  onClick={() =>
+                    onViewReportDetails && onViewReportDetails(report)
+                  }
+                  className={`cursor-pointer transition-colors ${
+                    report.status === "pending"
+                      ? "bg-yellow-50/50 hover:bg-yellow-100/70"
+                      : "hover:bg-gray-50"
+                  }`}
+                >
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      {report.reportType === "vehicle"
+                        ? "Véhicule"
+                        : report.reportType === "agency"
+                          ? "Agence"
+                          : "Client"}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="font-medium text-gray-900">
+                      {report.targetName}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      Par: {report.reportedBy}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="text-sm text-gray-900 max-w-xs truncate">
+                      {report.reason}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {new Date(
+                      report.reportedAt || report.created_at,
+                    ).toLocaleDateString("fr-FR")}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center gap-2">
+                      {report.status === "pending" && (
+                        <span className="flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-yellow-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
+                        </span>
+                      )}
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          report.status === "pending"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : report.status === "resolved"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {report.status === "pending"
+                          ? "En attente"
+                          : report.status === "resolved"
+                            ? "Résolu"
+                            : "Rejeté"}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    {report.status === "pending" && (
+                      <>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onResolveReport && onResolveReport(report);
+                          }}
+                          className="text-green-600 hover:text-green-900 mr-3"
+                        >
+                          Résoudre
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDismissReport && onDismissReport(report);
+                          }}
+                          className="text-gray-600 hover:text-gray-900 mr-3"
+                        >
+                          Rejeter
+                        </button>
+                      </>
+                    )}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (
+                          confirm(
+                            "Êtes-vous sûr de vouloir supprimer ce signalement ?",
+                          )
+                        ) {
+                          onDeleteReport && onDeleteReport(report);
+                        }
+                      }}
+                      className="text-red-600 hover:text-red-900"
+                    >
+                      Supprimer
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+            itemsPerPage={itemsPerPage}
+            totalItems={(reports || []).length}
+          />
+        )}
+      </div>
+    );
+  }
+
+  if (activeTab === "financial") {
+    // Mock financial data (TODO: Replace with API call)
+    const monthlyRevenue = [
+      {
+        month: "Jan",
+        revenue: 45000,
+        expenses: 28000,
+        profit: 17000,
+        commission: 6750,
+      },
+      {
+        month: "Fév",
+        revenue: 52000,
+        expenses: 31000,
+        profit: 21000,
+        commission: 7800,
+      },
+      {
+        month: "Mar",
+        revenue: 48000,
+        expenses: 29000,
+        profit: 19000,
+        commission: 7200,
+      },
+      {
+        month: "Avr",
+        revenue: 61000,
+        expenses: 35000,
+        profit: 26000,
+        commission: 9150,
+      },
+      {
+        month: "Mai",
+        revenue: 58000,
+        expenses: 33000,
+        profit: 25000,
+        commission: 8700,
+      },
+      {
+        month: "Juin",
+        revenue: 67000,
+        expenses: 38000,
+        profit: 29000,
+        commission: 10050,
+      },
+    ];
+
+    const revenueByAgency = agencies.slice(0, 5).map((agency) => ({
+      name:
+        agency.name.length > 20
+          ? agency.name.substring(0, 20) + "..."
+          : agency.name,
+      revenue: agency.revenue || 0,
+      commission: (agency.revenue || 0) * 0.15,
+    }));
+
+    const paymentMethods = [
+      { name: "Carte Bancaire", value: 65, color: "#3B82F6" },
+      { name: "Espèces", value: 20, color: "#10B981" },
+      { name: "Virement", value: 10, color: "#F59E0B" },
+      { name: "Autre", value: 5, color: "#8B5CF6" },
+    ];
+
+    const totalRevenue = monthlyRevenue.reduce((acc, m) => acc + m.revenue, 0);
+    const totalProfit = monthlyRevenue.reduce((acc, m) => acc + m.profit, 0);
+    const totalCommission = monthlyRevenue.reduce(
+      (acc, m) => acc + m.commission,
+      0,
+    );
+    const avgMonthlyRevenue = totalRevenue / monthlyRevenue.length;
+
+    return (
+      <div className="space-y-6 animate-fadeIn">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-gray-900">
+            💰 Tableau de Bord Financier
+          </h2>
+          <button className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            Exporter Rapport
+          </button>
+        </div>
+
+        {/* Key Financial Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div
+            className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
+            style={{ animationDelay: "0ms" }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
+                +12.5%
+              </span>
+            </div>
+            <p className="text-blue-100 text-sm font-medium mb-1">
+              Revenu Total
+            </p>
+            <p className="text-3xl font-bold">
+              {totalRevenue.toLocaleString()} DT
+            </p>
+            <p className="text-blue-100 text-xs mt-2">Derniers 6 mois</p>
+          </div>
+
+          <div
+            className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
+            style={{ animationDelay: "100ms" }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                  />
+                </svg>
+              </div>
+              <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
+                +8.3%
+              </span>
+            </div>
+            <p className="text-green-100 text-sm font-medium mb-1">
+              Profit Net
+            </p>
+            <p className="text-3xl font-bold">
+              {totalProfit.toLocaleString()} DT
+            </p>
+            <p className="text-green-100 text-xs mt-2">
+              Marge: {((totalProfit / totalRevenue) * 100).toFixed(1)}%
+            </p>
+          </div>
+
+          <div
+            className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
+            style={{ animationDelay: "200ms" }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                  />
+                </svg>
+              </div>
+              <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
+                15%
+              </span>
+            </div>
+            <p className="text-purple-100 text-sm font-medium mb-1">
+              Commission Platform
+            </p>
+            <p className="text-3xl font-bold">
+              {totalCommission.toLocaleString()} DT
+            </p>
+            <p className="text-purple-100 text-xs mt-2">Sur le revenu total</p>
+          </div>
+
+          <div
+            className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
+            style={{ animationDelay: "300ms" }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  />
+                </svg>
+              </div>
+              <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
+                Moy.
+              </span>
+            </div>
+            <p className="text-orange-100 text-sm font-medium mb-1">
+              Revenu Mensuel Moy.
+            </p>
+            <p className="text-3xl font-bold">
+              {avgMonthlyRevenue.toLocaleString()} DT
+            </p>
+            <p className="text-orange-100 text-xs mt-2">Tendance croissante</p>
+          </div>
+        </div>
+
+        {/* Charts Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Revenue Trend Chart */}
+          <div
+            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
+            style={{ animationDelay: "400ms" }}
+          >
+            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+              Évolution du Revenu
+            </h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart data={monthlyRevenue}>
+                <defs>
+                  <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.1} />
+                  </linearGradient>
+                  <linearGradient id="colorProfit" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10B981" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#10B981" stopOpacity={0.1} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                <XAxis dataKey="month" stroke="#6B7280" />
+                <YAxis stroke="#6B7280" />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "rgba(255, 255, 255, 0.95)",
+                    border: "1px solid #E5E7EB",
+                    borderRadius: "12px",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                  }}
+                />
+                <Legend />
+                <Area
+                  type="monotone"
+                  dataKey="revenue"
+                  stroke="#3B82F6"
+                  fillOpacity={1}
+                  fill="url(#colorRevenue)"
+                  name="Revenu"
+                />
+                <Area
+                  type="monotone"
+                  dataKey="profit"
+                  stroke="#10B981"
+                  fillOpacity={1}
+                  fill="url(#colorProfit)"
+                  name="Profit"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Payment Methods Distribution */}
+          <div
+            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
+            style={{ animationDelay: "500ms" }}
+          >
+            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <span className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></span>
+              Méthodes de Paiement
+            </h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={paymentMethods}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, value }) => `${name}: ${value}%`}
+                  outerRadius={100}
+                  fill="#8884d8"
+                  dataKey="value"
+                  animationBegin={0}
+                  animationDuration={800}
+                >
+                  {paymentMethods.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Revenue by Agency */}
+        <div
+          className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
+          style={{ animationDelay: "600ms" }}
+        >
+          <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            Performance des Agences (Top 5)
+          </h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={revenueByAgency}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+              <XAxis dataKey="name" stroke="#6B7280" />
+              <YAxis stroke="#6B7280" />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "rgba(255, 255, 255, 0.95)",
+                  border: "1px solid #E5E7EB",
+                  borderRadius: "12px",
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                }}
+              />
+              <Legend />
+              <Bar
+                dataKey="revenue"
+                fill="#3B82F6"
+                name="Revenu"
+                radius={[8, 8, 0, 0]}
+              />
+              <Bar
+                dataKey="commission"
+                fill="#10B981"
+                name="Commission"
+                radius={[8, 8, 0, 0]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Financial Summary Table */}
+        <div
+          className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
+          style={{ animationDelay: "700ms" }}
+        >
+          <h3 className="text-lg font-bold text-gray-900 mb-4">
+            Détails Mensuels
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
+                    Mois
+                  </th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
+                    Revenu
+                  </th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
+                    Dépenses
+                  </th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
+                    Profit
+                  </th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
+                    Commission
+                  </th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
+                    Marge
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {monthlyRevenue.map((month, index) => (
+                  <tr
+                    key={month.month}
+                    className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                  >
+                    <td className="py-3 px-4 font-medium text-gray-900">
+                      {month.month}
+                    </td>
+                    <td className="text-right py-3 px-4 text-blue-600 font-semibold">
+                      {month.revenue.toLocaleString()} DT
+                    </td>
+                    <td className="text-right py-3 px-4 text-red-600">
+                      {month.expenses.toLocaleString()} DT
+                    </td>
+                    <td className="text-right py-3 px-4 text-green-600 font-semibold">
+                      {month.profit.toLocaleString()} DT
+                    </td>
+                    <td className="text-right py-3 px-4 text-purple-600">
+                      {month.commission.toLocaleString()} DT
+                    </td>
+                    <td className="text-right py-3 px-4">
+                      <span
+                        className={`px-3 py-1 rounded-full text-sm font-medium ${
+                          (month.profit / month.revenue) * 100 > 35
+                            ? "bg-green-100 text-green-700"
+                            : "bg-yellow-100 text-yellow-700"
+                        }`}
+                      >
+                        {((month.profit / month.revenue) * 100).toFixed(1)}%
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <style>{`
+          @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+          }
+          
+          @keyframes slideUp {
+            from { 
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to { 
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          .animate-fadeIn {
+            animation: fadeIn 0.5s ease-out;
+          }
+          
+          .animate-slideUp {
+            animation: slideUp 0.6s ease-out both;
+          }
+        `}</style>
       </div>
     );
   }
@@ -1403,13 +2636,14 @@ const AgencyContent = ({ activeTab }) => {
           </div>
         )}
 
-        {/* Agency Reservation Details Modal */}
+        {/* Reservation Details Modal */}
         {detailsModal.isOpen && detailsModal.reservation && (
-          <AgencyReservationDetailsModal
+          <ReservationDetailsModal
             reservation={detailsModal.reservation}
             onClose={() =>
               setDetailsModal({ isOpen: false, reservation: null })
             }
+            userRole="agency_admin"
             onStatusUpdate={handleStatusUpdate}
             onPickup={handlePickup}
             onReturn={handleReturn}
@@ -1489,13 +2723,14 @@ const AgencyContent = ({ activeTab }) => {
           </div>
         )}
 
-        {/* Agency Reservation Details Modal */}
+        {/* Reservation Details Modal */}
         {detailsModal.isOpen && detailsModal.reservation && (
-          <AgencyReservationDetailsModal
+          <ReservationDetailsModal
             reservation={detailsModal.reservation}
             onClose={() =>
               setDetailsModal({ isOpen: false, reservation: null })
             }
+            userRole="agency_admin"
             onStatusUpdate={handleStatusUpdate}
             onPickup={handlePickup}
             onReturn={handleReturn}
@@ -1537,6 +2772,479 @@ const AgencyContent = ({ activeTab }) => {
         <div className="text-center py-8 text-gray-500">
           Aucune alerte pour le moment
         </div>
+      </div>
+    );
+  }
+
+  if (activeTab === "financial") {
+    // Mock financial data for agency (TODO: Replace with API call)
+    const monthlyRevenue = [
+      {
+        month: "Jan",
+        revenue: 12000,
+        expenses: 7500,
+        profit: 4500,
+        commission: 1800,
+      },
+      {
+        month: "Fév",
+        revenue: 14500,
+        expenses: 8200,
+        profit: 6300,
+        commission: 2175,
+      },
+      {
+        month: "Mar",
+        revenue: 13200,
+        expenses: 7800,
+        profit: 5400,
+        commission: 1980,
+      },
+      {
+        month: "Avr",
+        revenue: 16800,
+        expenses: 9200,
+        profit: 7600,
+        commission: 2520,
+      },
+      {
+        month: "Mai",
+        revenue: 15600,
+        expenses: 8800,
+        profit: 6800,
+        commission: 2340,
+      },
+      {
+        month: "Juin",
+        revenue: 18200,
+        expenses: 9800,
+        profit: 8400,
+        commission: 2730,
+      },
+    ];
+
+    const vehiclePerformance = [
+      { vehicle: "Mercedes E-Class", revenue: 8500, bookings: 12 },
+      { vehicle: "BMW Série 5", revenue: 7200, bookings: 10 },
+      { vehicle: "Audi A6", revenue: 6800, bookings: 9 },
+      { vehicle: "Range Rover", revenue: 9500, bookings: 8 },
+      { vehicle: "Tesla Model 3", revenue: 5200, bookings: 15 },
+    ];
+
+    const paymentStatus = [
+      { name: "Payé", value: 75, color: "#10B981" },
+      { name: "En attente", value: 15, color: "#F59E0B" },
+      { name: "Retard", value: 8, color: "#EF4444" },
+      { name: "Autre", value: 2, color: "#6B7280" },
+    ];
+
+    const totalRevenue = monthlyRevenue.reduce((acc, m) => acc + m.revenue, 0);
+    const totalProfit = monthlyRevenue.reduce((acc, m) => acc + m.profit, 0);
+    const totalCommission = monthlyRevenue.reduce(
+      (acc, m) => acc + m.commission,
+      0,
+    );
+    const netIncome = totalProfit - totalCommission;
+
+    return (
+      <div className="space-y-6 animate-fadeIn">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-gray-900">
+            💰 Finances de l'Agence
+          </h2>
+          <div className="flex gap-3">
+            <button className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all shadow-sm flex items-center gap-2">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+              Période
+            </button>
+            <button className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+              Exporter
+            </button>
+          </div>
+        </div>
+
+        {/* Key Financial Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div
+            className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
+            style={{ animationDelay: "0ms" }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
+                +14.2%
+              </span>
+            </div>
+            <p className="text-blue-100 text-sm font-medium mb-1">
+              Revenu Total
+            </p>
+            <p className="text-3xl font-bold">
+              {totalRevenue.toLocaleString()} DT
+            </p>
+            <p className="text-blue-100 text-xs mt-2">6 derniers mois</p>
+          </div>
+
+          <div
+            className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
+            style={{ animationDelay: "100ms" }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+                  />
+                </svg>
+              </div>
+              <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
+                Après frais
+              </span>
+            </div>
+            <p className="text-green-100 text-sm font-medium mb-1">
+              Revenu Net
+            </p>
+            <p className="text-3xl font-bold">
+              {netIncome.toLocaleString()} DT
+            </p>
+            <p className="text-green-100 text-xs mt-2">Après commission 15%</p>
+          </div>
+
+          <div
+            className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
+            style={{ animationDelay: "200ms" }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                  />
+                </svg>
+              </div>
+              <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
+                -15%
+              </span>
+            </div>
+            <p className="text-purple-100 text-sm font-medium mb-1">
+              Commission Payée
+            </p>
+            <p className="text-3xl font-bold">
+              {totalCommission.toLocaleString()} DT
+            </p>
+            <p className="text-purple-100 text-xs mt-2">À la plateforme</p>
+          </div>
+
+          <div
+            className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
+            style={{ animationDelay: "300ms" }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                  />
+                </svg>
+              </div>
+              <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
+                Marge
+              </span>
+            </div>
+            <p className="text-orange-100 text-sm font-medium mb-1">
+              Profit Brut
+            </p>
+            <p className="text-3xl font-bold">
+              {totalProfit.toLocaleString()} DT
+            </p>
+            <p className="text-orange-100 text-xs mt-2">
+              {((totalProfit / totalRevenue) * 100).toFixed(1)}% du revenu
+            </p>
+          </div>
+        </div>
+
+        {/* Charts Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Revenue & Profit Trend */}
+          <div
+            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
+            style={{ animationDelay: "400ms" }}
+          >
+            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+              Performance Financière
+            </h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={monthlyRevenue}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                <XAxis dataKey="month" stroke="#6B7280" />
+                <YAxis stroke="#6B7280" />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "rgba(255, 255, 255, 0.95)",
+                    border: "1px solid #E5E7EB",
+                    borderRadius: "12px",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                  }}
+                />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="revenue"
+                  stroke="#3B82F6"
+                  strokeWidth={3}
+                  name="Revenu"
+                  dot={{ r: 6 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="profit"
+                  stroke="#10B981"
+                  strokeWidth={3}
+                  name="Profit"
+                  dot={{ r: 6 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="commission"
+                  stroke="#8B5CF6"
+                  strokeWidth={2}
+                  strokeDasharray="5 5"
+                  name="Commission"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Payment Status */}
+          <div
+            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
+            style={{ animationDelay: "500ms" }}
+          >
+            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              Statut des Paiements
+            </h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={paymentStatus}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, value }) => `${name}: ${value}%`}
+                  outerRadius={100}
+                  fill="#8884d8"
+                  dataKey="value"
+                  animationBegin={0}
+                  animationDuration={800}
+                >
+                  {paymentStatus.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Vehicle Performance */}
+        <div
+          className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
+          style={{ animationDelay: "600ms" }}
+        >
+          <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <span className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></span>
+            Performance par Véhicule
+          </h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={vehiclePerformance} layout="vertical">
+              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+              <XAxis type="number" stroke="#6B7280" />
+              <YAxis
+                dataKey="vehicle"
+                type="category"
+                stroke="#6B7280"
+                width={120}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "rgba(255, 255, 255, 0.95)",
+                  border: "1px solid #E5E7EB",
+                  borderRadius: "12px",
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                }}
+              />
+              <Legend />
+              <Bar
+                dataKey="revenue"
+                fill="#3B82F6"
+                name="Revenu (DT)"
+                radius={[0, 8, 8, 0]}
+              />
+              <Bar
+                dataKey="bookings"
+                fill="#10B981"
+                name="Réservations"
+                radius={[0, 8, 8, 0]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Financial Details Table */}
+        <div
+          className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
+          style={{ animationDelay: "700ms" }}
+        >
+          <h3 className="text-lg font-bold text-gray-900 mb-4">
+            Détails Mensuels
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
+                    Mois
+                  </th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
+                    Revenu
+                  </th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
+                    Dépenses
+                  </th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
+                    Profit
+                  </th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
+                    Commission
+                  </th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
+                    Net
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {monthlyRevenue.map((month) => (
+                  <tr
+                    key={month.month}
+                    className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                  >
+                    <td className="py-3 px-4 font-medium text-gray-900">
+                      {month.month}
+                    </td>
+                    <td className="text-right py-3 px-4 text-blue-600 font-semibold">
+                      {month.revenue.toLocaleString()} DT
+                    </td>
+                    <td className="text-right py-3 px-4 text-red-600">
+                      {month.expenses.toLocaleString()} DT
+                    </td>
+                    <td className="text-right py-3 px-4 text-orange-600 font-semibold">
+                      {month.profit.toLocaleString()} DT
+                    </td>
+                    <td className="text-right py-3 px-4 text-purple-600">
+                      {month.commission.toLocaleString()} DT
+                    </td>
+                    <td className="text-right py-3 px-4">
+                      <span className="px-3 py-1 rounded-full text-sm font-bold bg-green-100 text-green-700">
+                        {(month.profit - month.commission).toLocaleString()} DT
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <style>{`
+          @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+          }
+          
+          @keyframes slideUp {
+            from { 
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to { 
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          .animate-fadeIn {
+            animation: fadeIn 0.5s ease-out;
+          }
+          
+          .animate-slideUp {
+            animation: slideUp 0.6s ease-out both;
+          }
+        `}</style>
       </div>
     );
   }
@@ -1769,13 +3477,15 @@ const ClientContent = ({ activeTab, navigate }) => {
           </div>
         )}
 
-        {/* Client Reservation Details Modal */}
+        {/* Reservation Details Modal */}
         {detailsModal.isOpen && detailsModal.reservation && (
-          <ClientReservationDetailsModal
+          <ReservationDetailsModal
             reservation={detailsModal.reservation}
             onClose={() =>
               setDetailsModal({ isOpen: false, reservation: null })
             }
+            userRole="client"
+            onCancel={handleCancelReservation}
           />
         )}
 
@@ -1798,6 +3508,88 @@ const ClientContent = ({ activeTab, navigate }) => {
           type={toast.type}
           onClose={hideToast}
         />
+      </div>
+    );
+  }
+
+  if (activeTab === "saved") {
+    const [savedVehicles, setSavedVehicles] = useState([]);
+    const [refreshSaved, setRefreshSaved] = useState(0);
+
+    useEffect(() => {
+      if (user) {
+        const saved = JSON.parse(
+          localStorage.getItem(`savedVehicles_${user.id}`) || "[]",
+        );
+        setSavedVehicles(saved);
+      }
+    }, [user, refreshSaved]);
+
+    const handleRemoveSaved = (vehicleId) => {
+      const saved = JSON.parse(
+        localStorage.getItem(`savedVehicles_${user.id}`) || "[]",
+      );
+      const updated = saved.filter((v) => v.id !== vehicleId);
+      localStorage.setItem(`savedVehicles_${user.id}`, JSON.stringify(updated));
+      setRefreshSaved((prev) => prev + 1);
+    };
+
+    return (
+      <div className="space-y-5">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold text-gray-900">
+            Véhicules Sauvegardés
+          </h2>
+          <span className="text-sm text-gray-500">
+            {savedVehicles.length} véhicule{savedVehicles.length > 1 ? "s" : ""}
+          </span>
+        </div>
+
+        {loading ? (
+          <div className="flex items-center justify-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+          </div>
+        ) : savedVehicles.length === 0 ? (
+          <div className="bg-white rounded-xl p-12 text-center border border-gray-200">
+            <svg
+              className="w-16 h-16 mx-auto text-gray-300 mb-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+              />
+            </svg>
+            <p className="text-gray-500 mb-2">Aucun véhicule sauvegardé</p>
+            <p className="text-sm text-gray-400 mb-6">
+              Parcourez nos véhicules et cliquez sur l'icône de sauvegarde pour
+              les retrouver ici
+            </p>
+            <button
+              onClick={() => (window.location.href = "/vehicles")}
+              className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-semibold"
+            >
+              Découvrir les véhicules
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {savedVehicles.map((vehicle, index) => (
+              <div key={vehicle.id} className="relative">
+                <VehicleCard
+                  vehicle={vehicle}
+                  index={index}
+                  isVisible={true}
+                  onSaveToggle={() => handleRemoveSaved(vehicle.id)}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     );
   }
@@ -1873,13 +3665,15 @@ const ClientContent = ({ activeTab, navigate }) => {
           </div>
         )}
 
-        {/* Client Reservation Details Modal */}
+        {/* Reservation Details Modal */}
         {detailsModal.isOpen && detailsModal.reservation && (
-          <ClientReservationDetailsModal
+          <ReservationDetailsModal
             reservation={detailsModal.reservation}
             onClose={() =>
               setDetailsModal({ isOpen: false, reservation: null })
             }
+            userRole="client"
+            onCancel={handleCancelReservation}
           />
         )}
       </div>

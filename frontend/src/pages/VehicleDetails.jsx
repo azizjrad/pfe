@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ReservationModal from "../components/ReservationModal";
+import ReportButton from "../components/ReportButton";
 import Toast from "../components/Toast";
 import useScrollAnimation from "../hooks/useScrollAnimation";
 import { vehiclesData } from "../data/vehiclesData";
@@ -28,6 +29,23 @@ const VehicleDetails = () => {
 
   const hideToast = () => {
     setToast({ isVisible: false, message: "", type: "success" });
+  };
+
+  const handleReportSubmit = async (reportData) => {
+    try {
+      // TODO: Replace with actual API call when backend is ready
+      console.log("Vehicle report submitted:", reportData);
+      showToast(
+        "Signalement envoyé avec succès. Notre équipe examinera votre rapport.",
+        "success",
+      );
+    } catch (error) {
+      console.error("Report submission error:", error);
+      showToast(
+        "Erreur lors de l'envoi du signalement. Veuillez réessayer.",
+        "error",
+      );
+    }
   };
 
   // Scroll animations
@@ -195,9 +213,17 @@ const VehicleDetails = () => {
               {/* Right: Info */}
               <div className="space-y-6">
                 <div>
-                  <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                    {vehicle.name}
-                  </h1>
+                  <div className="flex items-start justify-between mb-4">
+                    <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
+                      {vehicle.name}
+                    </h1>
+                    <ReportButton
+                      reportType="vehicle"
+                      reportTarget={{ id: vehicle.id, name: vehicle.name }}
+                      variant="icon"
+                      onReportSubmit={handleReportSubmit}
+                    />
+                  </div>
                   <div className="flex items-baseline gap-3 mb-6">
                     <span className="text-5xl font-bold text-primary-600">
                       {vehicle.price} dt
@@ -277,6 +303,16 @@ const VehicleDetails = () => {
                   </svg>
                   Contacter l'agence
                 </button>
+
+                {/* Report Vehicle - Text variant */}
+                <div className="flex justify-center pt-2">
+                  <ReportButton
+                    reportType="vehicle"
+                    reportTarget={{ id: vehicle.id, name: vehicle.name }}
+                    variant="text"
+                    onReportSubmit={handleReportSubmit}
+                  />
+                </div>
               </div>
             </div>
           </div>

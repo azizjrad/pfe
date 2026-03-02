@@ -13,6 +13,8 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Contact from "./pages/Contact";
 import Vehicles from "./pages/Vehicles";
 import VehicleDetails from "./pages/VehicleDetails";
+import Agencies from "./pages/Agencies";
+import AgencyDetails from "./pages/AgencyDetails";
 import Services from "./pages/Services";
 import About from "./pages/About";
 import Dashboard from "./pages/Dashboard";
@@ -34,6 +36,8 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/vehicles" element={<Vehicles />} />
             <Route path="/vehicle/:id" element={<VehicleDetails />} />
+            <Route path="/agencies" element={<Agencies />} />
+            <Route path="/agency/:id" element={<AgencyDetails />} />
             <Route path="/services" element={<Services />} />
             <Route path="/about" element={<About />} />
 

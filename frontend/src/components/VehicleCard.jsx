@@ -1,11 +1,64 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
-const VehicleCard = ({ vehicle, index = 0, isVisible = true, onClick }) => {
+const VehicleCard = ({
+  vehicle,
+  index = 0,
+  isVisible = true,
+  onClick,
+  onSaveToggle,
+}) => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [isSaved, setIsSaved] = useState(false);
+
+  useEffect(() => {
+    // Check if vehicle is already saved
+    if (user && user.role === "client") {
+      const savedVehicles = JSON.parse(
+        localStorage.getItem(`savedVehicles_${user.id}`) || "[]",
+      );
+      setIsSaved(savedVehicles.some((v) => v.id === vehicle.id));
+    }
+  }, [user, vehicle.id]);
 
   const handleCardClick = () => {
     navigate(`/vehicle/${vehicle.id}`);
+  };
+
+  const handleSaveToggle = (e) => {
+    e.stopPropagation();
+
+    if (!user || user.role !== "client") {
+      // Redirect to login if not authenticated
+      navigate("/login");
+      return;
+    }
+
+    const savedVehicles = JSON.parse(
+      localStorage.getItem(`savedVehicles_${user.id}`) || "[]",
+    );
+
+    if (isSaved) {
+      // Remove from saved
+      const updated = savedVehicles.filter((v) => v.id !== vehicle.id);
+      localStorage.setItem(`savedVehicles_${user.id}`, JSON.stringify(updated));
+      setIsSaved(false);
+    } else {
+      // Add to saved
+      savedVehicles.push(vehicle);
+      localStorage.setItem(
+        `savedVehicles_${user.id}`,
+        JSON.stringify(savedVehicles),
+      );
+      setIsSaved(true);
+    }
+
+    // Notify parent component if callback provided
+    if (onSaveToggle) {
+      onSaveToggle(vehicle.id, !isSaved);
+    }
   };
 
   return (
@@ -26,6 +79,32 @@ const VehicleCard = ({ vehicle, index = 0, isVisible = true, onClick }) => {
             alt={vehicle.name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
+          {/* Save Button */}
+          {user && user.role === "client" && (
+            <button
+              onClick={handleSaveToggle}
+              className="absolute top-3 right-3 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-all flex items-center justify-center group/save z-10"
+              title={isSaved ? "Retirer des favoris" : "Ajouter aux favoris"}
+            >
+              <svg
+                className={`w-6 h-6 transition-all ${
+                  isSaved
+                    ? "text-primary-600 fill-current"
+                    : "text-gray-700 group-hover/save:text-primary-600 group-hover/save:scale-110"
+                }`}
+                fill={isSaved ? "currentColor" : "none"}
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+                />
+              </svg>
+            </button>
+          )}
           {/* Agency Badge */}
           {vehicle.agency && (
             <div className="absolute bottom-3 left-3 bg-gray-900/70 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2">

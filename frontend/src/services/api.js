@@ -218,6 +218,16 @@ export const adminService = {
     const response = await api.delete(`/admin/users/${id}`);
     return response.data;
   },
+
+  /**
+   * Suspend or unsuspend a user
+   */
+  suspendUser: async (id, suspend = true) => {
+    const response = await api.put(`/admin/users/${id}`, {
+      is_suspended: suspend,
+    });
+    return response.data;
+  },
 };
 
 export default api;

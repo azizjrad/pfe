@@ -72,11 +72,11 @@ class AdminController extends Controller
      */
     public function getUsers()
     {
-        $users = User::with('agency:id,name')
+        $users = User::with(['agency:id,name', 'reliabilityScore'])
             ->withCount('reservations')
             ->get()
             ->map(function ($user) {
-                return [
+                $userData = [
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
@@ -85,8 +85,29 @@ class AdminController extends Controller
                     'agency' => $user->agency ? $user->agency->name : null,
                     'agency_id' => $user->agency_id,
                     'reservations_count' => $user->reservations_count,
+                    'is_suspended' => $user->is_suspended ?? false,
                     'created_at' => $user->created_at,
+                    'registeredAt' => $user->created_at->format('d/m/Y'),
                 ];
+
+                // Add reliability score for clients
+                if ($user->role === 'client' && $user->reliabilityScore) {
+                    $userData['reliability_score'] = [
+                        'score' => $user->reliabilityScore->reliability_score,
+                        'risk_level' => $user->reliabilityScore->risk_level,
+                        'total_reservations' => $user->reliabilityScore->total_reservations,
+                        'completed_reservations' => $user->reliabilityScore->completed_reservations,
+                        'cancelled_reservations' => $user->reliabilityScore->cancelled_reservations,
+                        'late_returns' => $user->reliabilityScore->late_returns,
+                        'payment_delays' => $user->reliabilityScore->payment_delays,
+                        'damage_incidents' => $user->reliabilityScore->damage_incidents,
+                        'total_unpaid_amount' => $user->reliabilityScore->total_unpaid_amount,
+                        'admin_notes' => $user->reliabilityScore->admin_notes,
+                        'last_calculated_at' => $user->reliabilityScore->last_calculated_at,
+                    ];
+                }
+
+                return $userData;
             });
 
         return response()->json([
@@ -159,6 +180,7 @@ class AdminController extends Controller
             'phone' => 'sometimes|string|max:20',
             'role' => 'sometimes|in:client,agency_admin,super_admin',
             'agency_id' => 'sometimes|nullable|exists:agencies,id',
+            'is_suspended' => 'sometimes|boolean',
         ]);
 
         $user = User::findOrFail($id);

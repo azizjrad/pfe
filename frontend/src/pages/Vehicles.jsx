@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import VehicleCard from "../components/VehicleCard";
+import Pagination from "../components/Pagination";
 import useScrollAnimation from "../hooks/useScrollAnimation";
 import { vehiclesData } from "../data/vehiclesData";
 
@@ -16,6 +17,10 @@ const Vehicles = () => {
   const [sortBy, setSortBy] = useState("default");
   const [showFilters, setShowFilters] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(9); // 9 vehicles per page (3x3 grid)
 
   // Search criteria from hero section
   const [searchCriteria, setSearchCriteria] = useState(null);
@@ -207,6 +212,31 @@ const Vehicles = () => {
     sortBy,
   ]);
 
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredVehicles.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedVehicles = filteredVehicles.slice(startIndex, endIndex);
+
+  // Handle page change
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    // Scroll to top of vehicles section
+    window.scrollTo({ top: 400, behavior: "smooth" });
+  };
+
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [
+    selectedCategory,
+    searchQuery,
+    priceRange,
+    selectedTransmission,
+    selectedFuel,
+    sortBy,
+  ]);
+
   const resetFilters = () => {
     setSelectedCategory("Tous");
     setSearchQuery("");
@@ -214,6 +244,7 @@ const Vehicles = () => {
     setSelectedTransmission("Tous");
     setSelectedFuel("Tous");
     setSortBy("default");
+    setCurrentPage(1);
   };
 
   return (
@@ -659,7 +690,7 @@ const Vehicles = () => {
             ref={vehiclesGrid.ref}
             className={`flex flex-wrap justify-center gap-8 transition-all duration-700 ${vehiclesGrid.isVisible ? "animate-fadeIn" : "opacity-0"}`}
           >
-            {filteredVehicles.map((vehicle, index) => (
+            {paginatedVehicles.map((vehicle, index) => (
               <VehicleCard
                 key={vehicle.id}
                 vehicle={vehicle}
@@ -668,6 +699,17 @@ const Vehicles = () => {
               />
             ))}
           </div>
+
+          {/* Pagination */}
+          {filteredVehicles.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              itemsPerPage={itemsPerPage}
+              totalItems={filteredVehicles.length}
+            />
+          )}
 
           {filteredVehicles.length === 0 && (
             <div className="text-center py-20 bg-white rounded-2xl shadow-lg">
