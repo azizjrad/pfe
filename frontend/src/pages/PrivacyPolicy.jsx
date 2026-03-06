@@ -58,9 +58,6 @@ const PrivacyPolicy = () => {
           <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent mb-4">
             Politique de confidentialité
           </h1>
-          <p className="text-gray-600">
-            Dernière mise à jour : {new Date().toLocaleDateString("fr-FR")}
-          </p>
         </div>
 
         {/* Main content */}
@@ -406,7 +403,7 @@ const PrivacyPolicy = () => {
                   <span className="font-semibold">Adresse :</span> Elite Drive -
                   Service Protection des Données
                   <br />
-                  Casablanca, Maroc
+                  Hammamet, Nabeul, Tunisia
                 </p>
               </div>
             </div>

@@ -26,10 +26,16 @@ import Toast from "../components/Toast";
 import ReservationDetailsModal from "../components/ReservationDetailsModal";
 import DetailsModal from "../components/DetailsModal";
 import ReportDetailsModal from "../components/ReportDetailsModal";
+import ResolveReportModal from "../components/ResolveReportModal";
+import ReportsHistoryModal from "../components/ReportsHistoryModal";
 import Pagination from "../components/Pagination";
 import NotificationButton from "../components/NotificationButton";
 import VehicleCard from "../components/VehicleCard";
-import { adminService, reservationService } from "../services/api";
+import {
+  adminService,
+  reservationService,
+  reportService,
+} from "../services/api";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -71,9 +77,22 @@ const Dashboard = () => {
     isOpen: false,
     report: null,
   });
+  const [historyModal, setHistoryModal] = useState({
+    isOpen: false,
+    resolvedReports: [],
+  });
   const [reports, setReports] = useState([]);
+  const [trashedReports, setTrashedReports] = useState([]);
+  const [reportsView, setReportsView] = useState("active"); // 'active' or 'trash'
+  const [reportsFilter, setReportsFilter] = useState("all"); // 'all', 'pending', 'resolved', 'dismissed'
   const [agencyReviews, setAgencyReviews] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const [financialStats, setFinancialStats] = useState({
+    monthly: [],
+    byAgency: [],
+    paymentMethods: [],
+    totals: { revenue: 0, commission: 0, profit: 0, avgMonthly: 0 },
+  });
 
   // Toast notification state
   const [toast, setToast] = useState({
@@ -89,6 +108,13 @@ const Dashboard = () => {
   const hideToast = () => {
     setToast({ isVisible: false, message: "", type: "success" });
   };
+
+  // Fetch financial stats when financial tab is opened
+  useEffect(() => {
+    if (user?.role === "super_admin" && activeTab === "financial") {
+      fetchFinancialStats();
+    }
+  }, [activeTab, user]);
 
   // Fetch data on component mount (only for super_admin)
   useEffect(() => {
@@ -113,8 +139,8 @@ const Dashboard = () => {
       setAgencies(agenciesRes.data);
       setUsers(usersRes.data);
 
-      // Initialize mock data (TODO: Replace with API calls)
-      initializeMockReports();
+      // Fetch reports and other data
+      await fetchReports();
       initializeMockReviews();
       initializeMockNotifications();
     } catch (error) {
@@ -280,136 +306,219 @@ const Dashboard = () => {
     setNotifications(baseNotifications);
   };
 
-  // Initialize mock reports (TODO: Replace with API call)
-  const initializeMockReports = () => {
-    const mockReports = [
-      {
-        id: 1,
-        reportType: "vehicle",
-        targetId: 1,
-        targetName: "Mercedes-Benz Classe E",
-        reason: "Informations incorrectes",
-        description:
-          "Le véhicule affiché a des spécifications qui ne correspondent pas à la réalité. Le kilométrage indiqué est faux.",
-        reportedBy: "Jean Dupont",
-        reportedAt: new Date(
-          Date.now() - 2 * 24 * 60 * 60 * 1000,
-        ).toISOString(),
-        status: "pending",
-        adminNotes: null,
-      },
-      {
-        id: 2,
-        reportType: "agency",
-        targetId: 1,
-        targetName: "Elite Drive Centre-Ville",
-        reason: "Service client médiocre",
-        description:
-          "L'agence ne répond pas aux appels téléphoniques et ignore les emails. Service très décevant.",
-        reportedBy: "Marie Martin",
-        reportedAt: new Date(
-          Date.now() - 5 * 24 * 60 * 60 * 1000,
-        ).toISOString(),
-        status: "pending",
-        adminNotes: null,
-      },
-      {
-        id: 3,
-        reportType: "client",
-        targetId: 5,
-        targetName: "Pierre Dubois",
-        reason: "Dommages au véhicule",
-        description:
-          "Le client a rendu le véhicule avec des rayures importantes sur la portière droite sans les signaler.",
-        reportedBy: "Elite Drive La Marsa",
-        reportedAt: new Date(
-          Date.now() - 1 * 24 * 60 * 60 * 1000,
-        ).toISOString(),
-        status: "pending",
-        adminNotes: null,
-      },
-      {
-        id: 4,
-        reportType: "vehicle",
-        targetId: 4,
-        targetName: "Range Rover Sport",
-        reason: "État du véhicule non conforme",
-        description:
-          "Le véhicule était sale à l'intérieur et sentait la cigarette, malgré l'interdiction de fumer.",
-        reportedBy: "Sophie Leroux",
-        reportedAt: new Date(
-          Date.now() - 10 * 24 * 60 * 60 * 1000,
-        ).toISOString(),
-        status: "resolved",
-        adminNotes:
-          "Véhicule nettoyé en profondeur. Client remboursé partiellement.",
-      },
-      {
-        id: 5,
-        reportType: "agency",
-        targetId: 2,
-        targetName: "Elite Drive La Marsa",
-        reason: "Pratiques commerciales douteuses",
-        description:
-          "L'agence a facturé des frais supplémentaires non mentionnés lors de la réservation.",
-        reportedBy: "Thomas Bernard",
-        reportedAt: new Date(
-          Date.now() - 15 * 24 * 60 * 60 * 1000,
-        ).toISOString(),
-        status: "dismissed",
-        adminNotes:
-          "Après vérification, les frais étaient justifiés et mentionnés dans les conditions générales.",
-      },
-    ];
-    setReports(mockReports);
+  // Fetch reports from API
+  const fetchReports = async () => {
+    try {
+      const [activeReports, trashedReports] = await Promise.all([
+        reportService.getAll(),
+        reportService.getTrashed(),
+      ]);
+
+      // Map API response to frontend format
+      const mappedActiveReports = activeReports.data.map((report) => ({
+        id: report.id,
+        reportType: report.report_type,
+        targetId: report.target_id,
+        targetName: report.target_name,
+        reason: report.reason,
+        description: report.description,
+        reportedBy: report.reported_by_name,
+        reportedAt: report.created_at,
+        status: report.status,
+        adminNotes: report.admin_notes,
+        resolvedAt: report.resolved_at,
+      }));
+
+      const mappedTrashedReports = trashedReports.data.map((report) => ({
+        id: report.id,
+        reportType: report.report_type,
+        targetId: report.target_id,
+        targetName: report.target_name,
+        reason: report.reason,
+        description: report.description,
+        reportedBy: report.reported_by_name,
+        reportedAt: report.created_at,
+        status: report.status,
+        adminNotes: report.admin_notes,
+        resolvedAt: report.resolved_at,
+        autoDeleteAt: report.auto_delete_at,
+      }));
+
+      setReports(mappedActiveReports);
+      setTrashedReports(mappedTrashedReports);
+    } catch (error) {
+      console.error("Error fetching reports:", error);
+      showToast(
+        error.response?.data?.message ||
+          "Erreur lors du chargement des signalements",
+        "error",
+      );
+    }
+  };
+
+  // Fetch financial statistics from API
+  const fetchFinancialStats = async () => {
+    try {
+      const response = await adminService.getFinancialStats();
+      setFinancialStats(response.data);
+    } catch (error) {
+      console.error("Error fetching financial stats:", error);
+      showToast(
+        error.response?.data?.message ||
+          "Erreur lors du chargement des statistiques financières",
+        "error",
+      );
+    }
   };
 
   // Report handlers
-  const handleResolveReport = async (report) => {
+  const handleResolveReport = async (report, notes) => {
     try {
-      // TODO: Replace with API call
+      await reportService.resolve(report.id, notes);
+
+      // Update local state
       setReports(
         reports.map((r) =>
           r.id === report.id
-            ? { ...r, status: "resolved", resolvedAt: new Date().toISOString() }
+            ? {
+                ...r,
+                status: "resolved",
+                resolvedAt: new Date().toISOString(),
+                adminNotes: notes,
+              }
             : r,
         ),
       );
       showToast("Signalement marqué comme résolu", "success");
     } catch (error) {
-      showToast("Erreur lors de la résolution du signalement", "error");
+      console.error("Error resolving report:", error);
+      showToast(
+        error.response?.data?.message ||
+          "Erreur lors de la résolution du signalement",
+        "error",
+      );
     }
   };
 
-  const handleDismissReport = async (report) => {
+  const handleDismissReport = async (report, notes) => {
     try {
-      // TODO: Replace with API call
+      await reportService.dismiss(report.id, notes);
+
+      // Update local state
       setReports(
         reports.map((r) =>
           r.id === report.id
             ? {
                 ...r,
                 status: "dismissed",
-                dismissedAt: new Date().toISOString(),
+                resolvedAt: new Date().toISOString(),
+                adminNotes: notes,
               }
             : r,
         ),
       );
       showToast("Signalement rejeté", "success");
     } catch (error) {
-      showToast("Erreur lors du rejet du signalement", "error");
+      console.error("Error dismissing report:", error);
+      showToast(
+        error.response?.data?.message || "Erreur lors du rejet du signalement",
+        "error",
+      );
     }
   };
 
   const handleDeleteReport = async (report) => {
     try {
-      // TODO: Replace with API call
+      await reportService.moveToTrash(report.id);
+
+      // Move to trash locally with auto-delete date
+      const trashedReport = {
+        ...report,
+        autoDeleteAt: new Date(
+          Date.now() + 30 * 24 * 60 * 60 * 1000,
+        ).toISOString(), // 30 days from now
+      };
+
       setReports(reports.filter((r) => r.id !== report.id));
-      showToast("Signalement supprimé", "success");
+      setTrashedReports([...trashedReports, trashedReport]);
+      showToast("Signalement déplacé vers la corbeille", "success");
     } catch (error) {
-      showToast("Erreur lors de la suppression du signalement", "error");
+      console.error("Error deleting report:", error);
+      showToast(
+        error.response?.data?.message ||
+          "Erreur lors de la suppression du signalement",
+        "error",
+      );
     }
   };
+
+  const handleRestoreReport = async (report) => {
+    try {
+      await reportService.restore(report.id);
+
+      // Restore from trash locally
+      const { autoDeleteAt, ...restoredReport } = report;
+
+      setTrashedReports(trashedReports.filter((r) => r.id !== report.id));
+      setReports([...reports, restoredReport]);
+      showToast("Signalement restauré", "success");
+    } catch (error) {
+      console.error("Error restoring report:", error);
+      showToast(
+        error.response?.data?.message ||
+          "Erreur lors de la restauration du signalement",
+        "error",
+      );
+    }
+  };
+
+  const handlePermanentDeleteReport = async (report) => {
+    try {
+      await reportService.forceDelete(report.id);
+
+      // Remove from trash locally
+      setTrashedReports(trashedReports.filter((r) => r.id !== report.id));
+      showToast("Signalement supprimé définitivement", "success");
+    } catch (error) {
+      console.error("Error permanently deleting report:", error);
+      showToast(
+        error.response?.data?.message ||
+          "Erreur lors de la suppression définitive",
+        "error",
+      );
+    }
+  };
+
+  // Auto-delete reports older than 30 days from trash
+  useEffect(() => {
+    const checkAndDeleteOldReports = () => {
+      setTrashedReports((currentTrashedReports) => {
+        const now = new Date().getTime();
+        const filtered = currentTrashedReports.filter((report) => {
+          const autoDeleteTime = new Date(report.autoDeleteAt).getTime();
+          return autoDeleteTime > now;
+        });
+
+        if (filtered.length !== currentTrashedReports.length) {
+          const deletedCount = currentTrashedReports.length - filtered.length;
+          if (deletedCount > 0) {
+            showToast(
+              `${deletedCount} signalement(s) supprimé(s) automatiquement après 30 jours`,
+              "info",
+            );
+          }
+          return filtered;
+        }
+        return currentTrashedReports;
+      });
+    };
+
+    // Check on mount and every hour
+    checkAndDeleteOldReports();
+    const interval = setInterval(checkAndDeleteOldReports, 60 * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Handle agency review submission
   const handleSubmitReview = async (reviewData) => {
@@ -968,6 +1077,12 @@ const Dashboard = () => {
           users={users}
           reports={reports}
           loading={loading}
+          trashedReports={trashedReports}
+          reportsView={reportsView}
+          reportsFilter={reportsFilter}
+          setReportsView={setReportsView}
+          setReportsFilter={setReportsFilter}
+          setHistoryModal={setHistoryModal}
           onDeleteAgency={(id) => {
             setDeleteModal({
               isOpen: true,
@@ -1009,6 +1124,8 @@ const Dashboard = () => {
           onResolveReport={handleResolveReport}
           onDismissReport={handleDismissReport}
           onDeleteReport={handleDeleteReport}
+          onRestoreReport={handleRestoreReport}
+          onPermanentDeleteReport={handlePermanentDeleteReport}
           onViewReportDetails={(report) => {
             setReportDetailsModal({ isOpen: true, report });
           }}
@@ -1334,6 +1451,12 @@ const Dashboard = () => {
         onDelete={handleDeleteReport}
       />
 
+      <ReportsHistoryModal
+        isOpen={historyModal.isOpen}
+        onClose={() => setHistoryModal({ isOpen: false, resolvedReports: [] })}
+        resolvedReports={historyModal.resolvedReports}
+      />
+
       <Toast
         isVisible={toast.isVisible}
         message={toast.message}
@@ -1368,6 +1491,12 @@ const AdminContent = ({
   users,
   reports,
   loading,
+  trashedReports,
+  reportsView,
+  reportsFilter,
+  setReportsView,
+  setReportsFilter,
+  setHistoryModal,
   onDeleteAgency,
   onEditAgency,
   onDeleteUser,
@@ -1377,11 +1506,26 @@ const AdminContent = ({
   onResolveReport,
   onDismissReport,
   onDeleteReport,
+  onRestoreReport,
+  onPermanentDeleteReport,
   onViewReportDetails,
 }) => {
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  // Resolve/Dismiss modal state
+  const [resolveModal, setResolveModal] = useState({
+    isOpen: false,
+    type: null,
+    report: null,
+  });
+
+  // Permanent delete confirmation modal state
+  const [deleteConfirmModal, setDeleteConfirmModal] = useState({
+    isOpen: false,
+    report: null,
+  });
 
   // Loading state
   if (loading) {
@@ -1762,164 +1906,469 @@ const AdminContent = ({
   }
 
   if (activeTab === "reports") {
-    const totalPages = Math.ceil((reports || []).length / itemsPerPage);
+    // Get the correct reports list based on view
+    const currentReports = reportsView === "active" ? reports : trashedReports;
+
+    // Filter reports based on selected filter (only for active view)
+    const filteredReports =
+      reportsView === "active"
+        ? reportsFilter === "all"
+          ? currentReports
+          : currentReports.filter((r) => r.status === reportsFilter)
+        : currentReports;
+
+    const totalPages = Math.ceil((filteredReports || []).length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const paginatedReports = (reports || []).slice(startIndex, endIndex);
+    const paginatedReports = (filteredReports || []).slice(
+      startIndex,
+      endIndex,
+    );
+
+    // Get resolved reports for history
+    const resolvedReports = reports.filter((r) => r.status === "resolved");
 
     return (
       <div className="space-y-5">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-gray-900">Signalements</h2>
-          <div className="flex gap-2 text-sm">
-            <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full font-medium">
-              {(reports || []).filter((r) => r.status === "pending").length} En
-              attente
-            </span>
-            <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full font-medium">
-              {(reports || []).filter((r) => r.status === "resolved").length}{" "}
-              Résolus
-            </span>
-            <span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full font-medium">
-              {(reports || []).filter((r) => r.status === "dismissed").length}{" "}
-              Rejetés
-            </span>
+        {/* Header with Actions */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">
+              {reportsView === "active" ? "Signalements" : "Corbeille"}
+            </h2>
+            {reportsView === "trash" && (
+              <p className="text-sm text-gray-500 mt-1">
+                Suppression automatique après 30 jours
+              </p>
+            )}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => {
+                setHistoryModal({
+                  isOpen: true,
+                  resolvedReports: resolvedReports,
+                });
+              }}
+              className="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors font-medium flex items-center gap-2"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              Historique ({resolvedReports.length})
+            </button>
+            <button
+              onClick={() => {
+                setReportsView(reportsView === "active" ? "trash" : "active");
+                setCurrentPage(1);
+              }}
+              className={`px-4 py-2 rounded-lg transition-colors font-medium flex items-center gap-2 ${
+                reportsView === "trash"
+                  ? "bg-primary-600 text-white hover:bg-primary-700"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                {reportsView === "trash" ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                )}
+              </svg>
+              {reportsView === "trash"
+                ? "Retour"
+                : `Corbeille (${trashedReports.length})`}
+            </button>
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white rounded-lg overflow-hidden">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Type
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Signalé
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Raison
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Date
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Statut
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {paginatedReports.map((report) => (
-                <tr
-                  key={report.id}
-                  onClick={() =>
-                    onViewReportDetails && onViewReportDetails(report)
-                  }
-                  className={`cursor-pointer transition-colors ${
-                    report.status === "pending"
-                      ? "bg-yellow-50/50 hover:bg-yellow-100/70"
-                      : "hover:bg-gray-50"
-                  }`}
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                      {report.reportType === "vehicle"
-                        ? "Véhicule"
-                        : report.reportType === "agency"
-                          ? "Agence"
-                          : "Client"}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="font-medium text-gray-900">
-                      {report.targetName}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      Par: {report.reportedBy}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900 max-w-xs truncate">
-                      {report.reason}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    {new Date(
-                      report.reportedAt || report.created_at,
-                    ).toLocaleDateString("fr-FR")}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center gap-2">
-                      {report.status === "pending" && (
-                        <span className="flex h-2 w-2">
-                          <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-yellow-400 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
-                        </span>
-                      )}
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          report.status === "pending"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : report.status === "resolved"
-                              ? "bg-green-100 text-green-800"
-                              : "bg-gray-100 text-gray-800"
-                        }`}
-                      >
-                        {report.status === "pending"
-                          ? "En attente"
-                          : report.status === "resolved"
-                            ? "Résolu"
-                            : "Rejeté"}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    {report.status === "pending" && (
-                      <>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onResolveReport && onResolveReport(report);
-                          }}
-                          className="text-green-600 hover:text-green-900 mr-3"
-                        >
-                          Résoudre
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onDismissReport && onDismissReport(report);
-                          }}
-                          className="text-gray-600 hover:text-gray-900 mr-3"
-                        >
-                          Rejeter
-                        </button>
-                      </>
-                    )}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (
-                          confirm(
-                            "Êtes-vous sûr de vouloir supprimer ce signalement ?",
-                          )
-                        ) {
-                          onDeleteReport && onDeleteReport(report);
-                        }
-                      }}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      Supprimer
-                    </button>
-                  </td>
+        {/* Filter Buttons (only for active view) */}
+        {reportsView === "active" && (
+          <div className="flex flex-wrap items-center gap-3 bg-white p-4 rounded-xl shadow-sm">
+            <span className="text-sm font-medium text-gray-700">Filtrer:</span>
+            <button
+              onClick={() => {
+                setReportsFilter("all");
+                setCurrentPage(1);
+              }}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                reportsFilter === "all"
+                  ? "bg-primary-600 text-white shadow-md"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
+            >
+              Tous ({reports.length})
+            </button>
+            <button
+              onClick={() => {
+                setReportsFilter("pending");
+                setCurrentPage(1);
+              }}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                reportsFilter === "pending"
+                  ? "bg-yellow-600 text-white shadow-md"
+                  : "bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
+              }`}
+            >
+              En attente ({reports.filter((r) => r.status === "pending").length}
+              )
+            </button>
+            <button
+              onClick={() => {
+                setReportsFilter("resolved");
+                setCurrentPage(1);
+              }}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                reportsFilter === "resolved"
+                  ? "bg-green-600 text-white shadow-md"
+                  : "bg-green-100 text-green-700 hover:bg-green-200"
+              }`}
+            >
+              Résolus ({reports.filter((r) => r.status === "resolved").length})
+            </button>
+            <button
+              onClick={() => {
+                setReportsFilter("dismissed");
+                setCurrentPage(1);
+              }}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                reportsFilter === "dismissed"
+                  ? "bg-gray-600 text-white shadow-md"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
+            >
+              Rejetés ({reports.filter((r) => r.status === "dismissed").length})
+            </button>
+          </div>
+        )}
+
+        {/* Trash Info Banner */}
+        {reportsView === "trash" && trashedReports.length > 0 && (
+          <div className="bg-orange-50 border-l-4 border-orange-500 p-4 rounded-lg">
+            <div className="flex items-start gap-3">
+              <svg
+                className="w-6 h-6 text-orange-500 flex-shrink-0 mt-0.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              <div>
+                <p className="text-sm font-medium text-orange-800">
+                  Suppression automatique après 30 jours
+                </p>
+                <p className="text-xs text-orange-600 mt-1">
+                  Les signalements dans la corbeille seront automatiquement
+                  supprimés définitivement après 30 jours. Vous pouvez restaurer
+                  ou supprimer manuellement les signalements ci-dessous.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Empty State */}
+        {paginatedReports.length === 0 && (
+          <div className="bg-white rounded-xl p-12 text-center border border-gray-200">
+            <svg
+              className="w-16 h-16 mx-auto text-gray-300 mb-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={
+                  reportsView === "trash"
+                    ? "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    : "M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"
+                }
+              />
+            </svg>
+            <p className="text-gray-500 text-lg">
+              {reportsView === "trash"
+                ? "La corbeille est vide"
+                : reportsFilter === "all"
+                  ? "Aucun signalement pour le moment"
+                  : `Aucun signalement ${
+                      reportsFilter === "pending"
+                        ? "en attente"
+                        : reportsFilter === "resolved"
+                          ? "résolu"
+                          : "rejeté"
+                    }`}
+            </p>
+            {reportsView === "trash" && (
+              <p className="text-gray-400 text-sm mt-2">
+                Les signalements supprimés sont automatiquement effacés après 30
+                jours
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Reports Table */}
+        {paginatedReports.length > 0 && (
+          <div className="overflow-x-auto bg-white rounded-xl shadow-sm">
+            <table className="min-w-full">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Type
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Signalé
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Raison
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Date
+                  </th>
+                  {reportsView === "active" && (
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Statut
+                    </th>
+                  )}
+                  {reportsView === "trash" && (
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Suppression auto
+                    </th>
+                  )}
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                    Actions
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {paginatedReports.map((report) => (
+                  <tr
+                    key={report.id}
+                    onClick={() =>
+                      reportsView === "active" &&
+                      setReportDetailsModal({ isOpen: true, report })
+                    }
+                    className={`${
+                      reportsView === "active" ? "cursor-pointer" : ""
+                    } transition-colors ${
+                      report.status === "pending"
+                        ? "bg-yellow-50/50 hover:bg-yellow-100/70"
+                        : "hover:bg-gray-50"
+                    }`}
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        {report.reportType === "vehicle"
+                          ? "Véhicule"
+                          : report.reportType === "agency"
+                            ? "Agence"
+                            : "Client"}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="font-medium text-gray-900">
+                        {report.targetName}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        Par: {report.reportedBy}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm text-gray-900 max-w-xs truncate">
+                        {report.reason}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                      {new Date(
+                        report.reportedAt || report.created_at,
+                      ).toLocaleDateString("fr-FR")}
+                    </td>
+                    {reportsView === "active" && (
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center gap-2">
+                          {report.status === "pending" && (
+                            <span className="flex h-2 w-2">
+                              <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-yellow-400 opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
+                            </span>
+                          )}
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              report.status === "pending"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : report.status === "resolved"
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-gray-100 text-gray-800"
+                            }`}
+                          >
+                            {report.status === "pending"
+                              ? "En attente"
+                              : report.status === "resolved"
+                                ? "Résolu"
+                                : "Rejeté"}
+                          </span>
+                        </div>
+                      </td>
+                    )}
+                    {reportsView === "trash" && (
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        {Math.ceil(
+                          (new Date(report.autoDeleteAt).getTime() -
+                            Date.now()) /
+                            (1000 * 60 * 60 * 24),
+                        )}{" "}
+                        jours
+                      </td>
+                    )}
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      {reportsView === "active" ? (
+                        <>
+                          {report.status === "pending" && (
+                            <>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setResolveModal({
+                                    isOpen: true,
+                                    type: "resolve",
+                                    report: report,
+                                  });
+                                }}
+                                className="text-green-600 hover:text-green-900 mr-3"
+                              >
+                                Résoudre
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setResolveModal({
+                                    isOpen: true,
+                                    type: "dismiss",
+                                    report: report,
+                                  });
+                                }}
+                                className="text-gray-600 hover:text-gray-900 mr-3"
+                              >
+                                Rejeter
+                              </button>
+                            </>
+                          )}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onDeleteReport(report);
+                            }}
+                            className="text-red-600 hover:text-red-900"
+                            title="Déplacer vers la corbeille"
+                          >
+                            <svg
+                              className="w-5 h-5 inline"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                              />
+                            </svg>
+                          </button>
+                        </>
+                      ) : (
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onRestoreReport(report);
+                            }}
+                            className="text-blue-600 hover:text-blue-900 font-medium"
+                            title="Restaurer"
+                          >
+                            <svg
+                              className="w-5 h-5 inline mr-1"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                              />
+                            </svg>
+                            Restaurer
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setDeleteConfirmModal({
+                                isOpen: true,
+                                report: report,
+                              });
+                            }}
+                            className="text-red-600 hover:text-red-900 font-medium"
+                            title="Supprimer définitivement"
+                          >
+                            <svg
+                              className="w-5 h-5 inline mr-1"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                            Supprimer
+                          </button>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
 
         {/* Pagination */}
         {totalPages > 1 && (
@@ -1928,83 +2377,80 @@ const AdminContent = ({
             totalPages={totalPages}
             onPageChange={(page) => setCurrentPage(page)}
             itemsPerPage={itemsPerPage}
-            totalItems={(reports || []).length}
+            totalItems={(filteredReports || []).length}
           />
         )}
+
+        {/* Resolve/Dismiss Modal */}
+        <ResolveReportModal
+          isOpen={resolveModal.isOpen}
+          onClose={() =>
+            setResolveModal({ isOpen: false, type: null, report: null })
+          }
+          report={resolveModal.report}
+          type={resolveModal.type}
+          onConfirm={(report, notes) => {
+            if (resolveModal.type === "resolve") {
+              onResolveReport && onResolveReport(report, notes);
+            } else if (resolveModal.type === "dismiss") {
+              onDismissReport && onDismissReport(report, notes);
+            }
+            setResolveModal({ isOpen: false, type: null, report: null });
+          }}
+        />
+
+        {/* Permanent Delete Confirmation Modal */}
+        <ConfirmationModal
+          isOpen={deleteConfirmModal.isOpen}
+          onClose={() => setDeleteConfirmModal({ isOpen: false, report: null })}
+          onConfirm={() => {
+            if (deleteConfirmModal.report) {
+              onPermanentDeleteReport(deleteConfirmModal.report);
+              setDeleteConfirmModal({ isOpen: false, report: null });
+            }
+          }}
+          title="Supprimer définitivement ?"
+          message={`Êtes-vous sûr de vouloir supprimer définitivement le signalement "${deleteConfirmModal.report?.targetName}" ? Cette action est irréversible et le signalement sera perdu à jamais.`}
+          confirmText="Supprimer définitivement"
+          cancelText="Annuler"
+          danger={true}
+        />
       </div>
     );
   }
 
   if (activeTab === "financial") {
-    // Mock financial data (TODO: Replace with API call)
-    const monthlyRevenue = [
-      {
-        month: "Jan",
-        revenue: 45000,
-        expenses: 28000,
-        profit: 17000,
-        commission: 6750,
+    // Use data from API
+    const monthlyRevenue = financialStats.monthly;
+    const revenueByAgency = financialStats.byAgency;
+    const paymentMethods = financialStats.paymentMethods.map(
+      (method, index) => {
+        const colors = ["#3B82F6", "#10B981", "#F59E0B", "#8B5CF6", "#EF4444"];
+        return {
+          name: method.name,
+          value: method.value,
+          color: colors[index % colors.length],
+        };
       },
-      {
-        month: "Fév",
-        revenue: 52000,
-        expenses: 31000,
-        profit: 21000,
-        commission: 7800,
-      },
-      {
-        month: "Mar",
-        revenue: 48000,
-        expenses: 29000,
-        profit: 19000,
-        commission: 7200,
-      },
-      {
-        month: "Avr",
-        revenue: 61000,
-        expenses: 35000,
-        profit: 26000,
-        commission: 9150,
-      },
-      {
-        month: "Mai",
-        revenue: 58000,
-        expenses: 33000,
-        profit: 25000,
-        commission: 8700,
-      },
-      {
-        month: "Juin",
-        revenue: 67000,
-        expenses: 38000,
-        profit: 29000,
-        commission: 10050,
-      },
-    ];
-
-    const revenueByAgency = agencies.slice(0, 5).map((agency) => ({
-      name:
-        agency.name.length > 20
-          ? agency.name.substring(0, 20) + "..."
-          : agency.name,
-      revenue: agency.revenue || 0,
-      commission: (agency.revenue || 0) * 0.15,
-    }));
-
-    const paymentMethods = [
-      { name: "Carte Bancaire", value: 65, color: "#3B82F6" },
-      { name: "Espèces", value: 20, color: "#10B981" },
-      { name: "Virement", value: 10, color: "#F59E0B" },
-      { name: "Autre", value: 5, color: "#8B5CF6" },
-    ];
-
-    const totalRevenue = monthlyRevenue.reduce((acc, m) => acc + m.revenue, 0);
-    const totalProfit = monthlyRevenue.reduce((acc, m) => acc + m.profit, 0);
-    const totalCommission = monthlyRevenue.reduce(
-      (acc, m) => acc + m.commission,
-      0,
     );
-    const avgMonthlyRevenue = totalRevenue / monthlyRevenue.length;
+
+    const totalRevenue = financialStats.totals.revenue;
+    const totalProfit = financialStats.totals.profit;
+    const totalCommission = financialStats.totals.commission;
+    const avgMonthlyRevenue = financialStats.totals.avgMonthly;
+
+    if (monthlyRevenue.length === 0) {
+      return (
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
+            <p className="text-gray-600">
+              Chargement des données financières...
+            </p>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div className="space-y-6 animate-fadeIn">
@@ -2310,16 +2756,13 @@ const AdminContent = ({
                     Mois
                   </th>
                   <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Revenu
+                    Revenu Total
                   </th>
                   <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Dépenses
+                    Commission (8%)
                   </th>
                   <th className="text-right py-3 px-4 font-semibold text-gray-900">
                     Profit
-                  </th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Commission
                   </th>
                   <th className="text-right py-3 px-4 font-semibold text-gray-900">
                     Marge
@@ -2338,24 +2781,25 @@ const AdminContent = ({
                     <td className="text-right py-3 px-4 text-blue-600 font-semibold">
                       {month.revenue.toLocaleString()} DT
                     </td>
-                    <td className="text-right py-3 px-4 text-red-600">
-                      {month.expenses.toLocaleString()} DT
+                    <td className="text-right py-3 px-4 text-purple-600">
+                      {month.commission.toLocaleString()} DT
                     </td>
                     <td className="text-right py-3 px-4 text-green-600 font-semibold">
                       {month.profit.toLocaleString()} DT
                     </td>
-                    <td className="text-right py-3 px-4 text-purple-600">
-                      {month.commission.toLocaleString()} DT
-                    </td>
                     <td className="text-right py-3 px-4">
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          (month.profit / month.revenue) * 100 > 35
+                          month.revenue > 0 &&
+                          (month.profit / month.revenue) * 100 > 5
                             ? "bg-green-100 text-green-700"
                             : "bg-yellow-100 text-yellow-700"
                         }`}
                       >
-                        {((month.profit / month.revenue) * 100).toFixed(1)}%
+                        {month.revenue > 0
+                          ? ((month.profit / month.revenue) * 100).toFixed(1)
+                          : 0}
+                        %
                       </span>
                     </td>
                   </tr>

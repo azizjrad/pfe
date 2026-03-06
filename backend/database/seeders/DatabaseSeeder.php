@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             VehicleReturnSeeder::class,    // 7. Créer les retours (dépend des réservations)
             ClientReliabilityScoreSeeder::class, // 8. Créer les scores clients (dépend des users)
             PricingRuleSeeder::class,      // 9. Créer les règles de tarification
+            ReportSeeder::class,           // 10. Créer les signalements (dépend des users)
         ]);
     }
 }

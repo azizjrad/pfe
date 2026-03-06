@@ -20,11 +20,21 @@ export default function EditModal({
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [reviewData, setReviewData] = useState({ rating: 5, comment: "" });
   const [submittingReview, setSubmittingReview] = useState(false);
+  const [focusedFields, setFocusedFields] = useState({});
+
+  const handleFocus = (fieldName) => {
+    setFocusedFields((prev) => ({ ...prev, [fieldName]: true }));
+  };
+
+  const handleBlur = (fieldName) => {
+    setFocusedFields((prev) => ({ ...prev, [fieldName]: false }));
+  };
 
   useEffect(() => {
     if (item) {
       setFormData({ ...item });
       setOriginalData({ ...item });
+      setFocusedFields({}); // Reset focused fields when modal opens
     }
   }, [item]);
 
@@ -107,8 +117,14 @@ export default function EditModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn">
-      <div className="bg-gradient-to-br from-white/95 to-white/80 backdrop-blur-xl border border-white/60 rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-scaleIn">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn"
+      onClick={onClose}
+    >
+      <div
+        className="bg-gradient-to-br from-white/95 to-white/80 backdrop-blur-xl border border-white/60 rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-scaleIn"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="sticky top-0 bg-gradient-to-br from-white/95 to-white/80 backdrop-blur-xl p-6 border-b border-white/40 z-10 rounded-t-3xl">
           <div className="flex items-center justify-between">
@@ -178,94 +194,184 @@ export default function EditModal({
           {type === "user" ? (
             <>
               {/* User Fields */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Nom complet
-                </label>
+              <div className="relative">
                 <input
+                  id="user-name"
                   type="text"
                   name="name"
                   value={formData.name || ""}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2.5 rounded-lg border ${
-                    errors.name ? "border-red-500" : "border-gray-300"
-                  } focus:outline-none focus:ring-2 focus:ring-primary-500`}
+                  onFocus={() => handleFocus("name")}
+                  onBlur={() => handleBlur("name")}
+                  className={`w-full px-5 py-3 rounded-full bg-gray-50 border-2 ${
+                    errors.name
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-gray-200 focus:border-primary-500"
+                  } focus:outline-none focus:bg-white transition-all hover:border-primary-300`}
+                  placeholder=" "
                 />
+                <label
+                  htmlFor="user-name"
+                  className={`absolute left-5 transition-all duration-300 pointer-events-none ${
+                    focusedFields.name || formData.name
+                      ? "text-xs -top-2 left-3 bg-white px-2"
+                      : "text-sm top-3"
+                  } ${
+                    errors.name
+                      ? "text-red-500"
+                      : focusedFields.name
+                        ? "text-primary-500"
+                        : formData.name
+                          ? "text-gray-700"
+                          : "text-gray-500"
+                  }`}
+                >
+                  Nom complet
+                </label>
                 {errors.name && (
-                  <p className="text-red-500 text-xs mt-1">{errors.name}</p>
+                  <p className="text-red-500 text-xs mt-1 ml-5">
+                    {errors.name}
+                  </p>
                 )}
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email
-                </label>
+              <div className="relative">
                 <input
+                  id="user-email"
                   type="email"
                   name="email"
                   value={formData.email || ""}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2.5 rounded-lg border ${
-                    errors.email ? "border-red-500" : "border-gray-300"
-                  } focus:outline-none focus:ring-2 focus:ring-primary-500`}
+                  onFocus={() => handleFocus("email")}
+                  onBlur={() => handleBlur("email")}
+                  className={`w-full px-5 py-3 rounded-full bg-gray-50 border-2 ${
+                    errors.email
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-gray-200 focus:border-primary-500"
+                  } focus:outline-none focus:bg-white transition-all hover:border-primary-300`}
+                  placeholder=" "
                 />
+                <label
+                  htmlFor="user-email"
+                  className={`absolute left-5 transition-all duration-300 pointer-events-none ${
+                    focusedFields.email || formData.email
+                      ? "text-xs -top-2 left-3 bg-white px-2"
+                      : "text-sm top-3"
+                  } ${
+                    errors.email
+                      ? "text-red-500"
+                      : focusedFields.email
+                        ? "text-primary-500"
+                        : formData.email
+                          ? "text-gray-700"
+                          : "text-gray-500"
+                  }`}
+                >
+                  Email
+                </label>
                 {errors.email && (
-                  <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                  <p className="text-red-500 text-xs mt-1 ml-5">
+                    {errors.email}
+                  </p>
                 )}
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Téléphone
-                </label>
+              <div className="relative">
                 <input
+                  id="user-phone"
                   type="tel"
                   name="phone"
                   value={formData.phone || ""}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2.5 rounded-lg border ${
-                    errors.phone ? "border-red-500" : "border-gray-300"
-                  } focus:outline-none focus:ring-2 focus:ring-primary-500`}
+                  onFocus={() => handleFocus("phone")}
+                  onBlur={() => handleBlur("phone")}
+                  className={`w-full px-5 py-3 rounded-full bg-gray-50 border-2 ${
+                    errors.phone
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-gray-200 focus:border-primary-500"
+                  } focus:outline-none focus:bg-white transition-all hover:border-primary-300`}
+                  placeholder=" "
                 />
+                <label
+                  htmlFor="user-phone"
+                  className={`absolute left-5 transition-all duration-300 pointer-events-none ${
+                    focusedFields.phone || formData.phone
+                      ? "text-xs -top-2 left-3 bg-white px-2"
+                      : "text-sm top-3"
+                  } ${
+                    errors.phone
+                      ? "text-red-500"
+                      : focusedFields.phone
+                        ? "text-primary-500"
+                        : formData.phone
+                          ? "text-gray-700"
+                          : "text-gray-500"
+                  }`}
+                >
+                  Téléphone
+                </label>
                 {errors.phone && (
-                  <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
+                  <p className="text-red-500 text-xs mt-1 ml-5">
+                    {errors.phone}
+                  </p>
                 )}
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Rôle
-                </label>
+              <div className="relative">
                 <select
+                  id="user-role"
                   name="role"
                   value={formData.role || ""}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2.5 rounded-lg border ${
-                    errors.role ? "border-red-500" : "border-gray-300"
-                  } focus:outline-none focus:ring-2 focus:ring-primary-500`}
+                  className={`w-full px-5 py-3 rounded-full bg-gray-50 border-2 ${
+                    errors.role
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-gray-200 focus:border-primary-500"
+                  } focus:outline-none focus:bg-white transition-all hover:border-primary-300 appearance-none cursor-pointer`}
                 >
                   <option value="">Sélectionner un rôle</option>
                   <option value="client">Client</option>
                   <option value="agency_admin">Admin d'agence</option>
                   <option value="super_admin">Super Admin</option>
                 </select>
+                <label
+                  htmlFor="user-role"
+                  className="absolute left-5 -top-2 text-xs bg-white px-2 text-gray-700 pointer-events-none"
+                >
+                  Rôle
+                </label>
+                <svg
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
                 {errors.role && (
-                  <p className="text-red-500 text-xs mt-1">{errors.role}</p>
+                  <p className="text-red-500 text-xs mt-1 ml-5">
+                    {errors.role}
+                  </p>
                 )}
               </div>
 
               {formData.role === "agency_admin" && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Agence
-                  </label>
+                <div className="relative">
                   <select
+                    id="user-agency"
                     name="agency_id"
                     value={formData.agency_id || ""}
                     onChange={handleChange}
-                    className={`w-full px-4 py-2.5 rounded-lg border ${
-                      errors.agency_id ? "border-red-500" : "border-gray-300"
-                    } focus:outline-none focus:ring-2 focus:ring-primary-500`}
+                    className={`w-full px-5 py-3 rounded-full bg-gray-50 border-2 ${
+                      errors.agency_id
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-gray-200 focus:border-primary-500"
+                    } focus:outline-none focus:bg-white transition-all hover:border-primary-300 appearance-none cursor-pointer`}
                   >
                     <option value="">Sélectionner une agence</option>
                     {agencies.map((agency) => (
@@ -274,8 +380,27 @@ export default function EditModal({
                       </option>
                     ))}
                   </select>
+                  <label
+                    htmlFor="user-agency"
+                    className="absolute left-5 -top-2 text-xs bg-white px-2 text-gray-700 pointer-events-none"
+                  >
+                    Agence
+                  </label>
+                  <svg
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
                   {errors.agency_id && (
-                    <p className="text-red-500 text-xs mt-1">
+                    <p className="text-red-500 text-xs mt-1 ml-5">
                       {errors.agency_id}
                     </p>
                   )}
@@ -285,75 +410,167 @@ export default function EditModal({
           ) : (
             <>
               {/* Agency Fields */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Nom de l'agence
-                </label>
+              <div className="relative">
                 <input
+                  id="agency-name"
                   type="text"
                   name="name"
                   value={formData.name || ""}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2.5 rounded-lg border ${
-                    errors.name ? "border-red-500" : "border-gray-300"
-                  } focus:outline-none focus:ring-2 focus:ring-primary-500`}
+                  onFocus={() => handleFocus("name")}
+                  onBlur={() => handleBlur("name")}
+                  className={`w-full px-5 py-3 rounded-full bg-gray-50 border-2 ${
+                    errors.name
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-gray-200 focus:border-primary-500"
+                  } focus:outline-none focus:bg-white transition-all hover:border-primary-300`}
+                  placeholder=" "
                 />
+                <label
+                  htmlFor="agency-name"
+                  className={`absolute left-5 transition-all duration-300 pointer-events-none ${
+                    focusedFields.name || formData.name
+                      ? "text-xs -top-2 left-3 bg-white px-2"
+                      : "text-sm top-3"
+                  } ${
+                    errors.name
+                      ? "text-red-500"
+                      : focusedFields.name
+                        ? "text-primary-500"
+                        : formData.name
+                          ? "text-gray-700"
+                          : "text-gray-500"
+                  }`}
+                >
+                  Nom de l'agence
+                </label>
                 {errors.name && (
-                  <p className="text-red-500 text-xs mt-1">{errors.name}</p>
+                  <p className="text-red-500 text-xs mt-1 ml-5">
+                    {errors.name}
+                  </p>
                 )}
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Adresse
-                </label>
+              <div className="relative">
                 <input
+                  id="agency-address"
                   type="text"
                   name="address"
                   value={formData.address || ""}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2.5 rounded-lg border ${
-                    errors.address ? "border-red-500" : "border-gray-300"
-                  } focus:outline-none focus:ring-2 focus:ring-primary-500`}
+                  onFocus={() => handleFocus("address")}
+                  onBlur={() => handleBlur("address")}
+                  className={`w-full px-5 py-3 rounded-full bg-gray-50 border-2 ${
+                    errors.address
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-gray-200 focus:border-primary-500"
+                  } focus:outline-none focus:bg-white transition-all hover:border-primary-300`}
+                  placeholder=" "
                 />
+                <label
+                  htmlFor="agency-address"
+                  className={`absolute left-5 transition-all duration-300 pointer-events-none ${
+                    focusedFields.address || formData.address
+                      ? "text-xs -top-2 left-3 bg-white px-2"
+                      : "text-sm top-3"
+                  } ${
+                    errors.address
+                      ? "text-red-500"
+                      : focusedFields.address
+                        ? "text-primary-500"
+                        : formData.address
+                          ? "text-gray-700"
+                          : "text-gray-500"
+                  }`}
+                >
+                  Adresse
+                </label>
                 {errors.address && (
-                  <p className="text-red-500 text-xs mt-1">{errors.address}</p>
+                  <p className="text-red-500 text-xs mt-1 ml-5">
+                    {errors.address}
+                  </p>
                 )}
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Téléphone
-                </label>
+              <div className="relative">
                 <input
+                  id="agency-phone"
                   type="tel"
                   name="phone"
                   value={formData.phone || ""}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2.5 rounded-lg border ${
-                    errors.phone ? "border-red-500" : "border-gray-300"
-                  } focus:outline-none focus:ring-2 focus:ring-primary-500`}
+                  onFocus={() => handleFocus("phone")}
+                  onBlur={() => handleBlur("phone")}
+                  className={`w-full px-5 py-3 rounded-full bg-gray-50 border-2 ${
+                    errors.phone
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-gray-200 focus:border-primary-500"
+                  } focus:outline-none focus:bg-white transition-all hover:border-primary-300`}
+                  placeholder=" "
                 />
+                <label
+                  htmlFor="agency-phone"
+                  className={`absolute left-5 transition-all duration-300 pointer-events-none ${
+                    focusedFields.phone || formData.phone
+                      ? "text-xs -top-2 left-3 bg-white px-2"
+                      : "text-sm top-3"
+                  } ${
+                    errors.phone
+                      ? "text-red-500"
+                      : focusedFields.phone
+                        ? "text-primary-500"
+                        : formData.phone
+                          ? "text-gray-700"
+                          : "text-gray-500"
+                  }`}
+                >
+                  Téléphone
+                </label>
                 {errors.phone && (
-                  <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
+                  <p className="text-red-500 text-xs mt-1 ml-5">
+                    {errors.phone}
+                  </p>
                 )}
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email
-                </label>
+              <div className="relative">
                 <input
+                  id="agency-email"
                   type="email"
                   name="email"
                   value={formData.email || ""}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2.5 rounded-lg border ${
-                    errors.email ? "border-red-500" : "border-gray-300"
-                  } focus:outline-none focus:ring-2 focus:ring-primary-500`}
+                  onFocus={() => handleFocus("email")}
+                  onBlur={() => handleBlur("email")}
+                  className={`w-full px-5 py-3 rounded-full bg-gray-50 border-2 ${
+                    errors.email
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-gray-200 focus:border-primary-500"
+                  } focus:outline-none focus:bg-white transition-all hover:border-primary-300`}
+                  placeholder=" "
                 />
+                <label
+                  htmlFor="agency-email"
+                  className={`absolute left-5 transition-all duration-300 pointer-events-none ${
+                    focusedFields.email || formData.email
+                      ? "text-xs -top-2 left-3 bg-white px-2"
+                      : "text-sm top-3"
+                  } ${
+                    errors.email
+                      ? "text-red-500"
+                      : focusedFields.email
+                        ? "text-primary-500"
+                        : formData.email
+                          ? "text-gray-700"
+                          : "text-gray-500"
+                  }`}
+                >
+                  Email
+                </label>
                 {errors.email && (
-                  <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                  <p className="text-red-500 text-xs mt-1 ml-5">
+                    {errors.email}
+                  </p>
                 )}
               </div>
 

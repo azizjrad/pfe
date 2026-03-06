@@ -227,4 +227,101 @@ class AdminController extends Controller
             'message' => 'Utilisateur supprimé avec succès',
         ]);
     }
+
+    /**
+     * Get financial statistics with monthly breakdown
+     */
+    public function getFinancialStats()
+    {
+        // Get the last 6 months of data
+        $monthlyData = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $startDate = now()->subMonths($i)->startOfMonth();
+            $endDate = now()->subMonths($i)->endOfMonth();
+
+            // Get reservations for this month
+            $reservations = Reservation::whereBetween('created_at', [$startDate, $endDate])
+                ->whereIn('status', ['confirmed', 'ongoing', 'completed'])
+                ->get();
+
+            $revenue = $reservations->sum('total_amount');
+            $commission = $reservations->sum('platform_commission');
+
+            $monthlyData[] = [
+                'month' => $startDate->locale('fr')->isoFormat('MMM'),
+                'revenue' => round($revenue, 2),
+                'commission' => round($commission, 2),
+                'profit' => round($commission, 2), // Profit = Commission for platform
+            ];
+        }
+
+        // Get revenue by agency
+        $revenueByAgency = Agency::withCount('vehicles')
+            ->get()
+            ->map(function ($agency) {
+                $monthlyRevenue = Reservation::whereHas('vehicle', function ($query) use ($agency) {
+                    $query->where('agency_id', $agency->id);
+                })
+                    ->where('created_at', '>=', now()->startOfMonth())
+                    ->whereIn('status', ['confirmed', 'ongoing', 'completed'])
+                    ->sum('agency_payout');
+
+                $monthlyCommission = Reservation::whereHas('vehicle', function ($query) use ($agency) {
+                    $query->where('agency_id', $agency->id);
+                })
+                    ->where('created_at', '>=', now()->startOfMonth())
+                    ->whereIn('status', ['confirmed', 'ongoing', 'completed'])
+                    ->sum('platform_commission');
+
+                return [
+                    'name' => $agency->name,
+                    'revenue' => round($monthlyRevenue, 2),
+                    'commission' => round($monthlyCommission, 2),
+                ];
+            })
+            ->filter(function ($agency) {
+                return $agency['revenue'] > 0;
+            })
+            ->sortByDesc('revenue')
+            ->take(5)
+            ->values();
+
+        // Get payment method statistics
+        $paymentStats = Reservation::where('created_at', '>=', now()->subMonths(6))
+            ->whereIn('status', ['confirmed', 'ongoing', 'completed'])
+            ->select('payment_method', DB::raw('COUNT(*) as count'))
+            ->groupBy('payment_method')
+            ->get()
+            ->map(function ($stat) {
+                $total = Reservation::where('created_at', '>=', now()->subMonths(6))
+                    ->whereIn('status', ['confirmed', 'ongoing', 'completed'])
+                    ->count();
+
+                return [
+                    'name' => $stat->payment_method ?? 'Non spécifié',
+                    'value' => $total > 0 ? round(($stat->count / $total) * 100, 1) : 0,
+                ];
+            });
+
+        // Calculate totals
+        $totalRevenue = collect($monthlyData)->sum('revenue');
+        $totalCommission = collect($monthlyData)->sum('commission');
+        $totalProfit = collect($monthlyData)->sum('profit');
+        $avgMonthlyRevenue = count($monthlyData) > 0 ? $totalRevenue / count($monthlyData) : 0;
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'monthly' => $monthlyData,
+                'byAgency' => $revenueByAgency,
+                'paymentMethods' => $paymentStats,
+                'totals' => [
+                    'revenue' => round($totalRevenue, 2),
+                    'commission' => round($totalCommission, 2),
+                    'profit' => round($totalProfit, 2),
+                    'avgMonthly' => round($avgMonthlyRevenue, 2),
+                ],
+            ],
+        ]);
+    }
 }

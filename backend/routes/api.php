@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PricingController;
 use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,12 +35,16 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Dynamic pricing calculation
     Route::post('/pricing/calculate', [PricingController::class, 'calculatePrice']);
+
+    // Reports - Create (all authenticated users can report)
+    Route::post('/reports', [ReportController::class, 'store']);
 });
 
 // Protected routes - Super Admin only
 Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
     // Admin dashboard statistics
     Route::get('/admin/stats', [AdminController::class, 'getDashboardStats']);
+    Route::get('/admin/financial-stats', [AdminController::class, 'getFinancialStats']);
 
     // Gestion des agences
     Route::get('/admin/agencies', [AdminController::class, 'getAgencies']);
@@ -50,6 +55,16 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
     Route::get('/admin/users', [AdminController::class, 'getUsers']);
     Route::put('/admin/users/{id}', [AdminController::class, 'updateUser']);
     Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser']);
+
+    // Gestion des signalements
+    Route::get('/admin/reports', [ReportController::class, 'index']);
+    Route::get('/admin/reports/trashed', [ReportController::class, 'getTrashed']);
+    Route::post('/admin/reports/{id}/resolve', [ReportController::class, 'resolve']);
+    Route::post('/admin/reports/{id}/dismiss', [ReportController::class, 'dismiss']);
+    Route::delete('/admin/reports/{id}', [ReportController::class, 'destroy']); // Move to trash
+    Route::post('/admin/reports/{id}/restore', [ReportController::class, 'restore']);
+    Route::delete('/admin/reports/{id}/force', [ReportController::class, 'forceDelete']); // Permanent delete
+    Route::post('/admin/reports/clean-trash', [ReportController::class, 'cleanOldTrash']);
 });
 
 // Protected routes - Agency Admin & Super Admin

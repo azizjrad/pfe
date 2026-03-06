@@ -1,25 +1,19 @@
-import React, { useState } from "react";
-import { useDynamicPricing } from "../hooks/usePricing";
-import PriceBreakdown from "./PriceBreakdown";
+import React, { useState, useMemo } from "react";
 
 /**
- * ReservationModal Component with Dynamic Pricing Integration
+ * ReservationModal Component with Simple Pricing
  *
- * This component integrates the Elite Drive dynamic pricing system with the reservation flow.
- * It calculates prices in real-time based on dates and selected options using 9 professional rules.
+ * This component calculates prices based on daily rate × days + selected options.
  *
- * Integration Mechanism:
- * 1. User selects dates (startDate, endDate)
- * 2. User toggles options (insurance, equipment, services, mileage)
- * 3. useDynamicPricing hook triggers API call to POST /api/pricing/calculate
- * 4. Backend PricingService calculates price with all 9 rules
- * 5. PriceBreakdown component displays transparent breakdown
- * 6. On submit, full pricing details are included in reservation data
+ * Pricing Calculation:
+ * 1. Base price: vehicle daily rate × rental days
+ * 2. Optional services (insurance, delivery, etc.)
+ * 3. Total: base + options
  *
  * @param {boolean} isOpen - Modal visibility state
  * @param {function} onClose - Callback to close modal
  * @param {object} vehicle - Vehicle object with id, name, category, image, price, agency
- * @param {function} onSubmit - Callback with reservation data including pricing breakdown
+ * @param {function} onSubmit - Callback with reservation data including final price
  */
 const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
   // Personal information state
@@ -31,7 +25,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
     phone: "",
   });
 
-  // Pricing options state (sent to PricingService)
+  // Pricing options state
   const [options, setOptions] = useState({
     full_insurance: false,
     airport_delivery: false,
@@ -42,18 +36,45 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
   const [touched, setTouched] = useState({});
   const [focused, setFocused] = useState({});
 
-  // Dynamic pricing calculation hook
-  // Recalculates whenever vehicle.id, dates, or options change
-  const {
-    pricing,
-    loading: pricingLoading,
-    error: pricingError,
-  } = useDynamicPricing(
-    vehicle?.id,
+  // Simple pricing calculation
+  const pricing = useMemo(() => {
+    if (
+      !vehicle?.price ||
+      !reservationData.startDate ||
+      !reservationData.endDate
+    ) {
+      return null;
+    }
+
+    const start = new Date(reservationData.startDate);
+    const end = new Date(reservationData.endDate);
+    const days = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
+
+    const basePrice = vehicle.price * days;
+    const insurance = options.full_insurance ? basePrice * 0.15 : 0;
+    const airportDelivery = options.airport_delivery ? 10 : 0;
+    const homeDelivery = options.home_delivery ? 25 : 0;
+    const afterHours = options.after_hours_pickup ? 15 : 0;
+
+    const total =
+      basePrice + insurance + airportDelivery + homeDelivery + afterHours;
+
+    return {
+      days,
+      base_price: vehicle.price,
+      base_total: basePrice,
+      insurance,
+      airport_delivery: airportDelivery,
+      home_delivery: homeDelivery,
+      after_hours: afterHours,
+      total,
+    };
+  }, [
+    vehicle?.price,
     reservationData.startDate,
     reservationData.endDate,
     options,
-  );
+  ]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,12 +98,10 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Include pricing breakdown in submission
-    // This ensures the exact calculated price is saved with the reservation
+    // Include pricing details in submission
     const submissionData = {
       ...reservationData,
       options,
-      pricing_breakdown: pricing, // Full breakdown from PricingService
       total_price: pricing?.total || 0,
     };
 
@@ -411,27 +430,94 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                   </div>
                 </div>
 
-                {/* Dynamic Price Breakdown */}
-                <div>
-                  {pricingLoading && (
-                    <div className="bg-gray-50 rounded-lg p-6 text-center">
-                      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-500 mx-auto mb-3"></div>
-                      <p className="text-gray-600">
-                        Calcul du prix en cours...
-                      </p>
-                    </div>
-                  )}
+                {/* Price Summary */}
+                {pricing && (
+                  <div className="bg-gradient-to-br from-primary-50 to-primary-100/50 rounded-2xl p-6 space-y-3">
+                    <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                      <svg
+                        className="w-5 h-5 text-primary-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                        />
+                      </svg>
+                      Détail du prix
+                    </h4>
 
-                  {pricingError && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                      <p className="text-red-800 text-sm">⚠️ {pricingError}</p>
-                    </div>
-                  )}
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">
+                          {vehicle?.price} DT/jour × {pricing.days} jour
+                          {pricing.days > 1 ? "s" : ""}
+                        </span>
+                        <span className="font-medium text-gray-900">
+                          {pricing.base_total.toFixed(2)} DT
+                        </span>
+                      </div>
 
-                  {pricing && !pricingLoading && !pricingError && (
-                    <PriceBreakdown pricing={pricing} compact={false} />
-                  )}
-                </div>
+                      {pricing.insurance > 0 && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">
+                            Assurance complète (+15%)
+                          </span>
+                          <span className="font-medium text-gray-900">
+                            +{pricing.insurance.toFixed(2)} DT
+                          </span>
+                        </div>
+                      )}
+
+                      {pricing.airport_delivery > 0 && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">
+                            Livraison aéroport
+                          </span>
+                          <span className="font-medium text-gray-900">
+                            +{pricing.airport_delivery} DT
+                          </span>
+                        </div>
+                      )}
+
+                      {pricing.home_delivery > 0 && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">
+                            Livraison à domicile
+                          </span>
+                          <span className="font-medium text-gray-900">
+                            +{pricing.home_delivery} DT
+                          </span>
+                        </div>
+                      )}
+
+                      {pricing.after_hours > 0 && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">
+                            Prise en charge hors horaires
+                          </span>
+                          <span className="font-medium text-gray-900">
+                            +{pricing.after_hours} DT
+                          </span>
+                        </div>
+                      )}
+
+                      <div className="border-t border-primary-200 my-3 pt-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-lg font-bold text-gray-900">
+                            Total
+                          </span>
+                          <span className="text-2xl font-bold text-primary-600">
+                            {pricing.total.toFixed(2)} DT
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </>
             )}
 

@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import ResolveReportModal from "./ResolveReportModal";
+import ConfirmationModal from "./ConfirmationModal";
 
 const ReportDetailsModal = ({
   isOpen,
@@ -8,6 +10,13 @@ const ReportDetailsModal = ({
   onDismiss,
   onDelete,
 }) => {
+  const [resolveModal, setResolveModal] = useState({
+    isOpen: false,
+    type: null,
+  });
+
+  const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
+
   if (!isOpen || !report) return null;
 
   const handleBackdropClick = (e) => {
@@ -222,8 +231,7 @@ const ReportDetailsModal = ({
             <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t">
               <button
                 onClick={() => {
-                  onResolve && onResolve(report);
-                  onClose();
+                  setResolveModal({ isOpen: true, type: "resolve" });
                 }}
                 className="flex-1 px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-medium rounded-lg hover:from-green-700 hover:to-green-800 transition-all shadow-lg flex items-center justify-center gap-2"
               >
@@ -244,8 +252,7 @@ const ReportDetailsModal = ({
               </button>
               <button
                 onClick={() => {
-                  onDismiss && onDismiss(report);
-                  onClose();
+                  setResolveModal({ isOpen: true, type: "dismiss" });
                 }}
                 className="flex-1 px-6 py-3 bg-gradient-to-r from-gray-600 to-gray-700 text-white font-medium rounded-lg hover:from-gray-700 hover:to-gray-800 transition-all shadow-lg flex items-center justify-center gap-2"
               >
@@ -266,14 +273,7 @@ const ReportDetailsModal = ({
               </button>
               <button
                 onClick={() => {
-                  if (
-                    confirm(
-                      "Êtes-vous sûr de vouloir supprimer ce signalement ?",
-                    )
-                  ) {
-                    onDelete && onDelete(report);
-                    onClose();
-                  }
+                  setDeleteConfirmModal(true);
                 }}
                 className="flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white font-medium rounded-lg hover:from-red-700 hover:to-red-800 transition-all shadow-lg flex items-center justify-center gap-2"
               >
@@ -308,6 +308,38 @@ const ReportDetailsModal = ({
           )}
         </div>
       </div>
+
+      {/* Resolve/Dismiss Modal */}
+      <ResolveReportModal
+        isOpen={resolveModal.isOpen}
+        onClose={() => setResolveModal({ isOpen: false, type: null })}
+        report={report}
+        type={resolveModal.type}
+        onConfirm={(report, notes) => {
+          if (resolveModal.type === "resolve") {
+            onResolve && onResolve(report, notes);
+          } else if (resolveModal.type === "dismiss") {
+            onDismiss && onDismiss(report, notes);
+          }
+          onClose();
+        }}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={deleteConfirmModal}
+        onClose={() => setDeleteConfirmModal(false)}
+        onConfirm={() => {
+          onDelete && onDelete(report);
+          setDeleteConfirmModal(false);
+          onClose();
+        }}
+        title="Déplacer vers la corbeille ?"
+        message={`Êtes-vous sûr de vouloir déplacer le signalement "${report?.targetName}" vers la corbeille ? Il sera automatiquement supprimé après 30 jours.`}
+        confirmText="Déplacer vers la corbeille"
+        cancelText="Annuler"
+        danger={true}
+      />
     </div>
   );
 };

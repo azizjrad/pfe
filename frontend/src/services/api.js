@@ -228,6 +228,94 @@ export const adminService = {
     });
     return response.data;
   },
+
+  /**
+   * Get financial statistics with monthly breakdown
+   */
+  getFinancialStats: async () => {
+    const response = await api.get("/admin/financial-stats");
+    return response.data;
+  },
+};
+
+// ==================== Report Services ====================
+
+export const reportService = {
+  /**
+   * Create a new report (all authenticated users)
+   */
+  create: async (data) => {
+    const response = await api.post("/reports", data);
+    return response.data;
+  },
+
+  /**
+   * Get all active reports (super_admin only)
+   */
+  getAll: async () => {
+    const response = await api.get("/admin/reports");
+    return response.data;
+  },
+
+  /**
+   * Get trashed reports (super_admin only)
+   */
+  getTrashed: async () => {
+    const response = await api.get("/admin/reports/trashed");
+    return response.data;
+  },
+
+  /**
+   * Resolve a report (super_admin only)
+   */
+  resolve: async (id, adminNotes) => {
+    const response = await api.post(`/admin/reports/${id}/resolve`, {
+      admin_notes: adminNotes,
+    });
+    return response.data;
+  },
+
+  /**
+   * Dismiss a report (super_admin only)
+   */
+  dismiss: async (id, adminNotes) => {
+    const response = await api.post(`/admin/reports/${id}/dismiss`, {
+      admin_notes: adminNotes,
+    });
+    return response.data;
+  },
+
+  /**
+   * Move report to trash (soft delete) (super_admin only)
+   */
+  moveToTrash: async (id) => {
+    const response = await api.delete(`/admin/reports/${id}`);
+    return response.data;
+  },
+
+  /**
+   * Restore a trashed report (super_admin only)
+   */
+  restore: async (id) => {
+    const response = await api.post(`/admin/reports/${id}/restore`);
+    return response.data;
+  },
+
+  /**
+   * Permanently delete a report (super_admin only)
+   */
+  forceDelete: async (id) => {
+    const response = await api.delete(`/admin/reports/${id}/force`);
+    return response.data;
+  },
+
+  /**
+   * Clean old trashed reports (30+ days) (super_admin only)
+   */
+  cleanOldTrash: async () => {
+    const response = await api.post("/admin/reports/clean-trash");
+    return response.data;
+  },
 };
 
 export default api;
