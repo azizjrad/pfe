@@ -39,8 +39,8 @@ const ProtectedRoute = ({
     const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
 
     if (!roles.includes(user?.role)) {
-      // Rediriger vers le dashboard universel
-      return <Navigate to="/dashboard" replace />;
+      // Rediriger vers la page 403
+      return <Navigate to="/forbidden" replace />;
     }
   }
 

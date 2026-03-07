@@ -158,6 +158,18 @@ export const agencyService = {
   create: (data) => api.post("/agencies", data),
   update: (id, data) => api.put(`/agencies/${id}`, data),
   delete: (id) => api.delete(`/agencies/${id}`),
+  // Agency admin dashboard
+  getStats: () => api.get("/agency/stats"),
+  getFinancialStats: () => api.get("/agency/financial-stats"),
+  getReviews: () => api.get("/agency/reviews"),
+};
+
+// ==================== Client Services ====================
+
+export const clientService = {
+  getStats: () => api.get("/client/stats"),
+  submitReview: (data) => api.post("/reviews", data),
+  getNotifications: () => api.get("/user/notifications"),
 };
 
 // ==================== Admin Services ====================
@@ -234,6 +246,19 @@ export const adminService = {
    */
   getFinancialStats: async () => {
     const response = await api.get("/admin/financial-stats");
+    return response.data;
+  },
+
+  /**
+   * Get agency reviews (super admin sees all)
+   */
+  getReviews: () => api.get("/admin/reviews"),
+
+  /**
+   * Delete a review (super admin only)
+   */
+  deleteReview: async (id) => {
+    const response = await api.delete(`/admin/reviews/${id}`);
     return response.data;
   },
 };

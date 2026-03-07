@@ -396,8 +396,8 @@ const PrivacyPolicy = () => {
                   </a>
                 </p>
                 <p className="text-gray-700">
-                  <span className="font-semibold">Téléphone :</span> +212
-                  5XX-XXXXXX
+                  <span className="font-semibold">Téléphone :</span> +216 XX XXX
+                  XXX
                 </p>
                 <p className="text-gray-700">
                   <span className="font-semibold">Adresse :</span> Elite Drive -

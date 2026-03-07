@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\PricingController;
 use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\AgencyController;
+use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\ReportController;
+use App\Http\Controllers\Api\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,21 +25,17 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])
     ->middleware('throttle:5,1');  // Max 5 tentatives par minute (protection brute force)
 
-// Public pricing routes (for transparency)
-Route::get('/pricing/rules', [PricingController::class, 'getPricingRules']);
-Route::get('/vehicles/{vehicleId}/pricing', [PricingController::class, 'getVehiclePricing']);
-
 // Protected routes - All authenticated users
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', [AuthController::class, 'user']);
     Route::put('/profile', [AuthController::class, 'updateProfile']);
 
-    // Dynamic pricing calculation
-    Route::post('/pricing/calculate', [PricingController::class, 'calculatePrice']);
-
     // Reports - Create (all authenticated users can report)
     Route::post('/reports', [ReportController::class, 'store']);
+
+    // Notifications dérivées des réservations (agency_admin + client)
+    Route::get('/user/notifications', [ClientController::class, 'getNotifications']);
 });
 
 // Protected routes - Super Admin only
@@ -61,10 +59,14 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
     Route::get('/admin/reports/trashed', [ReportController::class, 'getTrashed']);
     Route::post('/admin/reports/{id}/resolve', [ReportController::class, 'resolve']);
     Route::post('/admin/reports/{id}/dismiss', [ReportController::class, 'dismiss']);
-    Route::delete('/admin/reports/{id}', [ReportController::class, 'destroy']); // Move to trash
+    Route::delete('/admin/reports/{id}', [ReportController::class, 'destroy']);
     Route::post('/admin/reports/{id}/restore', [ReportController::class, 'restore']);
-    Route::delete('/admin/reports/{id}/force', [ReportController::class, 'forceDelete']); // Permanent delete
+    Route::delete('/admin/reports/{id}/force', [ReportController::class, 'forceDelete']);
     Route::post('/admin/reports/clean-trash', [ReportController::class, 'cleanOldTrash']);
+
+    // Gestion des avis (lecture + suppression pour super_admin)
+    Route::get('/admin/reviews', [ReviewController::class, 'index']);
+    Route::delete('/admin/reviews/{id}', [ReviewController::class, 'destroy']);
 });
 
 // Protected routes - Agency Admin & Super Admin
@@ -74,6 +76,13 @@ Route::middleware(['auth:sanctum', 'role:agency_admin,super_admin'])->group(func
     // Route::post('/vehicles', [VehicleController::class, 'store']);
     // Route::put('/vehicles/{id}', [VehicleController::class, 'update']);
     // Route::delete('/vehicles/{id}', [VehicleController::class, 'destroy']);
+
+    // Statistiques de l'agence
+    Route::get('/agency/stats', [AgencyController::class, 'getStats']);
+    Route::get('/agency/financial-stats', [AgencyController::class, 'getFinancialStats']);
+
+    // Avis de l'agence (lecture)
+    Route::get('/agency/reviews', [ReviewController::class, 'index']);
 
     // Gestion des réservations de l'agence
     Route::get('/agency/reservations', [ReservationController::class, 'agencyIndex']);
@@ -85,6 +94,12 @@ Route::middleware(['auth:sanctum', 'role:agency_admin,super_admin'])->group(func
 
 // Protected routes - Client only
 Route::middleware(['auth:sanctum', 'role:client'])->group(function () {
+    // Statistiques client
+    Route::get('/client/stats', [ClientController::class, 'getStats']);
+
+    // Avis - soumettre
+    Route::post('/reviews', [ReviewController::class, 'store']);
+
     // Réservations du client
     Route::get('/my-reservations', [ReservationController::class, 'clientIndex']);
     Route::post('/reservations', [ReservationController::class, 'store']);

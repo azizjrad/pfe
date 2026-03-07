@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             ClientReliabilityScoreSeeder::class, // 8. Créer les scores clients (dépend des users)
             PricingRuleSeeder::class,      // 9. Créer les règles de tarification
             ReportSeeder::class,           // 10. Créer les signalements (dépend des users)
+            ReviewSeeder::class,           // 11. Créer les avis agences (dépend des users et agences)
         ]);
     }
 }

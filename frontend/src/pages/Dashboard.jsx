@@ -33,6 +33,8 @@ import NotificationButton from "../components/NotificationButton";
 import VehicleCard from "../components/VehicleCard";
 import {
   adminService,
+  agencyService,
+  clientService,
   reservationService,
   reportService,
 } from "../services/api";
@@ -93,6 +95,21 @@ const Dashboard = () => {
     paymentMethods: [],
     totals: { revenue: 0, commission: 0, profit: 0, avgMonthly: 0 },
   });
+  const [agencyStats, setAgencyStats] = useState({
+    totalVehicles: 0,
+    availableVehicles: 0,
+    maintenanceVehicles: 0,
+    activeReservations: 0,
+    monthlyRevenue: 0,
+    alertsCount: 0,
+  });
+  const [clientStats, setClientStats] = useState({
+    activeReservations: 0,
+    completedReservations: 0,
+    totalSpend: 0,
+    reliabilityScore: 100,
+    riskLabel: "Excellent",
+  });
 
   // Toast notification state
   const [toast, setToast] = useState({
@@ -120,7 +137,12 @@ const Dashboard = () => {
   useEffect(() => {
     if (user?.role === "super_admin") {
       fetchDashboardData();
-      initializeMockReviews();
+    } else if (user?.role === "agency_admin") {
+      fetchAgencyStats();
+      fetchNotifications();
+    } else if (user?.role === "client") {
+      fetchClientStats();
+      fetchNotifications();
     } else {
       setLoading(false);
     }
@@ -141,8 +163,8 @@ const Dashboard = () => {
 
       // Fetch reports and other data
       await fetchReports();
-      initializeMockReviews();
-      initializeMockNotifications();
+      await fetchAgencyReviews();
+      await fetchNotifications();
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
       console.error("Error response:", error.response);
@@ -158,153 +180,51 @@ const Dashboard = () => {
     }
   };
 
-  // Initialize mock agency reviews (TODO: Replace with API call)
-  const initializeMockReviews = () => {
-    const mockReviews = [
-      {
-        id: 1,
-        agency_id: 1,
-        user_id: 5,
-        user_name: "Sophie Martin",
-        rating: 5,
-        comment:
-          "Excellent service ! Voiture impeccable et personnel très accueillant. Je recommande vivement cette agence.",
-        created_at: new Date(
-          Date.now() - 5 * 24 * 60 * 60 * 1000,
-        ).toISOString(),
-      },
-      {
-        id: 2,
-        agency_id: 1,
-        user_id: 6,
-        user_name: "Thomas Dubois",
-        rating: 4,
-        comment:
-          "Très bonne expérience. La voiture était propre et bien entretenue. Un petit délai à la prise en charge mais rien de grave.",
-        created_at: new Date(
-          Date.now() - 10 * 24 * 60 * 60 * 1000,
-        ).toISOString(),
-      },
-      {
-        id: 3,
-        agency_id: 1,
-        user_id: 7,
-        user_name: "Marie Leclerc",
-        rating: 5,
-        comment:
-          "Service irréprochable ! L'équipe est professionnelle et à l'écoute. Les prix sont compétitifs.",
-        created_at: new Date(
-          Date.now() - 15 * 24 * 60 * 60 * 1000,
-        ).toISOString(),
-      },
-      {
-        id: 4,
-        agency_id: 2,
-        user_id: 8,
-        user_name: "Pierre Bernard",
-        rating: 3,
-        comment:
-          "Agence correcte mais j'ai trouvé la voiture avec quelques rayures non mentionnées. Le reste était bien.",
-        created_at: new Date(
-          Date.now() - 7 * 24 * 60 * 60 * 1000,
-        ).toISOString(),
-      },
-      {
-        id: 5,
-        agency_id: 3,
-        user_id: 9,
-        user_name: "Julie Rousseau",
-        rating: 5,
-        comment:
-          "Parfait ! Personnel sympathique, voiture neuve et propre. Je reviendrai sans hésiter.",
-        created_at: new Date(
-          Date.now() - 20 * 24 * 60 * 60 * 1000,
-        ).toISOString(),
-      },
-    ];
-    setAgencyReviews(mockReviews);
+  // Fetch agency reviews from API
+  const fetchAgencyReviews = async () => {
+    try {
+      const response = await adminService.getReviews();
+      setAgencyReviews(response.data);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    }
+  };
+
+  // Fetch agency stats for agency_admin dashboard
+  const fetchAgencyStats = async () => {
+    try {
+      const response = await agencyService.getStats();
+      setAgencyStats(response.data.data);
+    } catch (error) {
+      console.error("Error fetching agency stats:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch client stats for client dashboard
+  const fetchClientStats = async () => {
+    try {
+      const response = await clientService.getStats();
+      setClientStats(response.data.data);
+    } catch (error) {
+      console.error("Error fetching client stats:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch notifications derived from reservation events
+  const fetchNotifications = async () => {
+    try {
+      const response = await clientService.getNotifications();
+      setNotifications(response.data.data);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
   };
 
   // Initialize mock notifications (TODO: Replace with API call)
-  const initializeMockNotifications = () => {
-    const baseNotifications =
-      user?.role === "agency_admin"
-        ? [
-            {
-              id: 1,
-              type: "reservation",
-              title: "Nouvelle réservation",
-              message:
-                "Jean Dupont a réservé une Mercedes Classe E pour 3 jours",
-              created_at: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
-              is_read: false,
-            },
-            {
-              id: 2,
-              type: "payment",
-              title: "Paiement reçu",
-              message: "Paiement de 450 DT reçu pour la réservation #1234",
-              created_at: new Date(
-                Date.now() - 2 * 60 * 60 * 1000,
-              ).toISOString(),
-              is_read: false,
-            },
-            {
-              id: 3,
-              type: "review",
-              title: "Nouvel avis",
-              message: "Sophie Martin a laissé un avis 5 étoiles",
-              created_at: new Date(
-                Date.now() - 5 * 60 * 60 * 1000,
-              ).toISOString(),
-              is_read: true,
-            },
-            {
-              id: 4,
-              type: "vehicle",
-              title: "Retour de véhicule",
-              message: "BMW X5 retourné avec succès",
-              created_at: new Date(
-                Date.now() - 1 * 24 * 60 * 60 * 1000,
-              ).toISOString(),
-              is_read: true,
-            },
-          ]
-        : user?.role === "client"
-          ? [
-              {
-                id: 1,
-                type: "reservation",
-                title: "Réservation confirmée",
-                message: "Votre réservation #1234 a été confirmée par l'agence",
-                created_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-                is_read: false,
-              },
-              {
-                id: 2,
-                type: "vehicle",
-                title: "Véhicule prêt",
-                message: "Votre Mercedes Classe E est prête pour le retrait",
-                created_at: new Date(
-                  Date.now() - 3 * 60 * 60 * 1000,
-                ).toISOString(),
-                is_read: false,
-              },
-              {
-                id: 3,
-                type: "payment",
-                title: "Paiement confirmé",
-                message: "Votre paiement de 450 DT a été traité avec succès",
-                created_at: new Date(
-                  Date.now() - 6 * 60 * 60 * 1000,
-                ).toISOString(),
-                is_read: true,
-              },
-            ]
-          : [];
-
-    setNotifications(baseNotifications);
-  };
 
   // Fetch reports from API
   const fetchReports = async () => {
@@ -721,33 +641,33 @@ const Dashboard = () => {
         return [
           {
             title: "Véhicules Totaux",
-            value: "24",
-            change: "18 disponibles",
+            value: agencyStats.totalVehicles.toString(),
+            change: `${agencyStats.availableVehicles} disponibles`,
             trend: "neutral",
             icon: "car",
             color: "blue",
           },
           {
             title: "Réservations Actives",
-            value: "12",
-            change: "+3 cette semaine",
+            value: agencyStats.activeReservations.toString(),
+            change: "En cours",
             trend: "up",
             icon: "clipboard",
             color: "green",
           },
           {
             title: "Revenu du Mois",
-            value: "12 450 DT",
-            change: "+8.3%",
+            value: `${agencyStats.monthlyRevenue.toLocaleString()} DT`,
+            change: "Ce mois",
             trend: "up",
             icon: "money",
             color: "emerald",
           },
           {
             title: "Alertes",
-            value: "3",
-            change: "2 maintenances",
-            trend: "warning",
+            value: agencyStats.alertsCount.toString(),
+            change: `${agencyStats.maintenanceVehicles} maintenances`,
+            trend: agencyStats.alertsCount > 0 ? "warning" : "neutral",
             icon: "bell",
             color: "yellow",
           },
@@ -756,7 +676,7 @@ const Dashboard = () => {
         return [
           {
             title: "Réservations Actives",
-            value: "1",
+            value: clientStats.activeReservations.toString(),
             change: "En cours",
             trend: "neutral",
             icon: "clipboard",
@@ -764,7 +684,7 @@ const Dashboard = () => {
           },
           {
             title: "Historique Total",
-            value: "8",
+            value: clientStats.completedReservations.toString(),
             change: "Locations complétées",
             trend: "neutral",
             icon: "clock",
@@ -772,7 +692,7 @@ const Dashboard = () => {
           },
           {
             title: "Dépenses Totales",
-            value: "3 240 DT",
+            value: `${Number(clientStats.totalSpend).toLocaleString()} DT`,
             change: "Cette année",
             trend: "neutral",
             icon: "money",
@@ -780,8 +700,8 @@ const Dashboard = () => {
           },
           {
             title: "Score Fiabilité",
-            value: "95%",
-            change: "Excellent",
+            value: `${clientStats.reliabilityScore}%`,
+            change: clientStats.riskLabel,
             trend: "up",
             icon: "star",
             color: "yellow",
@@ -2899,11 +2819,45 @@ const AgencyContent = ({ activeTab }) => {
     reservation: null,
   });
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
+  const [agencyFinancialStats, setAgencyFinancialStats] = useState({
+    monthly: [],
+    vehiclePerformance: [],
+    paymentStatus: [
+      { name: "Payé", value: 0, color: "#10B981" },
+      { name: "En attente", value: 0, color: "#F59E0B" },
+      { name: "Retard", value: 0, color: "#EF4444" },
+    ],
+    totals: { revenue: 0, commission: 0, payout: 0, netIncome: 0 },
+  });
+  const [loadingFinancial, setLoadingFinancial] = useState(false);
 
   // Fetch reservations on mount
   useEffect(() => {
     fetchReservations();
   }, []);
+
+  // Fetch financial stats when financial tab opens
+  useEffect(() => {
+    if (activeTab === "financial") {
+      fetchFinancialStats();
+    }
+  }, [activeTab]);
+
+  const fetchFinancialStats = async () => {
+    setLoadingFinancial(true);
+    try {
+      const response = await agencyService.getFinancialStats();
+      setAgencyFinancialStats(response.data.data);
+    } catch (error) {
+      setToast({
+        show: true,
+        message: "Erreur lors du chargement des données financières",
+        type: "error",
+      });
+    } finally {
+      setLoadingFinancial(false);
+    }
+  };
 
   const fetchReservations = async () => {
     setLoading(true);
@@ -3221,74 +3175,35 @@ const AgencyContent = ({ activeTab }) => {
   }
 
   if (activeTab === "financial") {
-    // Mock financial data for agency (TODO: Replace with API call)
-    const monthlyRevenue = [
-      {
-        month: "Jan",
-        revenue: 12000,
-        expenses: 7500,
-        profit: 4500,
-        commission: 1800,
-      },
-      {
-        month: "Fév",
-        revenue: 14500,
-        expenses: 8200,
-        profit: 6300,
-        commission: 2175,
-      },
-      {
-        month: "Mar",
-        revenue: 13200,
-        expenses: 7800,
-        profit: 5400,
-        commission: 1980,
-      },
-      {
-        month: "Avr",
-        revenue: 16800,
-        expenses: 9200,
-        profit: 7600,
-        commission: 2520,
-      },
-      {
-        month: "Mai",
-        revenue: 15600,
-        expenses: 8800,
-        profit: 6800,
-        commission: 2340,
-      },
-      {
-        month: "Juin",
-        revenue: 18200,
-        expenses: 9800,
-        profit: 8400,
-        commission: 2730,
-      },
-    ];
+    const monthlyRevenue = agencyFinancialStats.monthly;
+    const vehiclePerformance = agencyFinancialStats.vehiclePerformance;
+    const paymentStatus = agencyFinancialStats.paymentStatus;
+    const totalRevenue = agencyFinancialStats.totals.revenue;
+    const totalCommission = agencyFinancialStats.totals.commission;
+    const totalProfit = agencyFinancialStats.totals.payout;
+    const netIncome = agencyFinancialStats.totals.netIncome;
 
-    const vehiclePerformance = [
-      { vehicle: "Mercedes E-Class", revenue: 8500, bookings: 12 },
-      { vehicle: "BMW Série 5", revenue: 7200, bookings: 10 },
-      { vehicle: "Audi A6", revenue: 6800, bookings: 9 },
-      { vehicle: "Range Rover", revenue: 9500, bookings: 8 },
-      { vehicle: "Tesla Model 3", revenue: 5200, bookings: 15 },
-    ];
+    if (loadingFinancial) {
+      return (
+        <div className="flex flex-col items-center justify-center py-20 gap-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+          <p className="text-gray-500">Chargement des données financières...</p>
+        </div>
+      );
+    }
 
-    const paymentStatus = [
-      { name: "Payé", value: 75, color: "#10B981" },
-      { name: "En attente", value: 15, color: "#F59E0B" },
-      { name: "Retard", value: 8, color: "#EF4444" },
-      { name: "Autre", value: 2, color: "#6B7280" },
-    ];
-
-    const totalRevenue = monthlyRevenue.reduce((acc, m) => acc + m.revenue, 0);
-    const totalProfit = monthlyRevenue.reduce((acc, m) => acc + m.profit, 0);
-    const totalCommission = monthlyRevenue.reduce(
-      (acc, m) => acc + m.commission,
-      0,
-    );
-    const netIncome = totalProfit - totalCommission;
+    if (monthlyRevenue.length === 0) {
+      return (
+        <div className="text-center py-20 text-gray-500">
+          <p className="text-lg font-medium">
+            Aucune donnée financière disponible.
+          </p>
+          <p className="text-sm mt-2">
+            Les données apparaîtront dès que des réservations seront confirmées.
+          </p>
+        </div>
+      );
+    }
 
     return (
       <div className="space-y-6 animate-fadeIn">
@@ -3615,19 +3530,13 @@ const AgencyContent = ({ activeTab }) => {
                     Mois
                   </th>
                   <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Revenu
+                    Revenu Total
                   </th>
                   <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Dépenses
+                    Commission (8%)
                   </th>
                   <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Profit
-                  </th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Commission
-                  </th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Net
+                    Revenu Net
                   </th>
                 </tr>
               </thead>
@@ -3643,18 +3552,12 @@ const AgencyContent = ({ activeTab }) => {
                     <td className="text-right py-3 px-4 text-blue-600 font-semibold">
                       {month.revenue.toLocaleString()} DT
                     </td>
-                    <td className="text-right py-3 px-4 text-red-600">
-                      {month.expenses.toLocaleString()} DT
-                    </td>
-                    <td className="text-right py-3 px-4 text-orange-600 font-semibold">
-                      {month.profit.toLocaleString()} DT
-                    </td>
                     <td className="text-right py-3 px-4 text-purple-600">
                       {month.commission.toLocaleString()} DT
                     </td>
                     <td className="text-right py-3 px-4">
                       <span className="px-3 py-1 rounded-full text-sm font-bold bg-green-100 text-green-700">
-                        {(month.profit - month.commission).toLocaleString()} DT
+                        {month.profit.toLocaleString()} DT
                       </span>
                     </td>
                   </tr>

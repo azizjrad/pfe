@@ -19,6 +19,7 @@ import Services from "./pages/Services";
 import About from "./pages/About";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import Forbidden from "./pages/Forbidden";
 
 function App() {
   return (
@@ -50,6 +51,9 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+            {/* 403 - Forbidden */}
+            <Route path="/forbidden" element={<Forbidden />} />
 
             {/* 404 - Catch all undefined routes */}
             <Route path="*" element={<NotFound />} />
