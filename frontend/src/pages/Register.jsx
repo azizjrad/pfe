@@ -14,7 +14,7 @@ const Register = () => {
     isAuthenticated,
   } = useAuth();
 
-  // Rediriger si déjà connecté
+  // Redirect if already logged in
   useEffect(() => {
     if (user && isAuthenticated) {
       navigate("/dashboard");
@@ -168,7 +168,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      // Préparer les données pour l'API
+      // Prepare data for API (transform form structure to match backend expectations)
       const registrationData = {
         name: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
@@ -180,7 +180,7 @@ const Register = () => {
         driver_license: formData.driverLicense,
       };
 
-      // Ajouter les champs spécifiques pour les agences
+      // Add agency-specific fields if registering as agency admin
       if (formData.role === "agency_admin") {
         registrationData.agency_name = formData.agencyName;
         registrationData.agency_location = formData.agencyLocation;
@@ -194,14 +194,13 @@ const Register = () => {
         "success",
       );
 
-      // Redirection vers le dashboard universel après un court délai
+      // Redirect to universal dashboard after brief delay for toast visibility
       setTimeout(() => {
         navigate("/dashboard");
       }, 1500);
     } catch (err) {
-      console.error("Erreur d'inscription:", err);
-      const errorMessage =
-        err.response?.data?.message || "Erreur lors de l'inscription";
+      console.error("Registration error:", err);
+      const errorMessage = err.response?.data?.message || "Registration failed";
       setRegisterError(errorMessage);
       showToast(errorMessage, "error");
     } finally {

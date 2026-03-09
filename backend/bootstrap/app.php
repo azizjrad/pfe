@@ -12,13 +12,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // CORS pour permettre les requêtes depuis React
+        // CORS middleware handles cross-origin requests from React frontend
+        // AuthenticateFromCookie extracts token from HttpOnly cookie for Sanctum
         $middleware->api(prepend: [
             \Illuminate\Http\Middleware\HandleCors::class,
             \App\Http\Middleware\AuthenticateFromCookie::class,
         ]);
 
-        // Enregistrer l'alias du middleware de rôle
+        // Register role middleware alias for route protection
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,
         ]);

@@ -12,21 +12,21 @@ class CheckRole
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     * @param  string  ...$roles - Roles autorisés (client, agency_admin, super_admin)
+     * @param  string  ...$roles - Allowed roles (client, agency_admin, super_admin)
      */
     public function handle(Request $request, Closure $next, string ...$roles): Response
     {
-        // Vérifier si l'utilisateur est authentifié
+        // Reject unauthenticated requests immediately
         if (!$request->user()) {
             return response()->json([
-                'message' => 'Non authentifié',
+                'message' => 'Unauthenticated',
             ], 401);
         }
 
-        // Vérifier si l'utilisateur a l'un des rôles autorisés
+        // Verify user has at least one of the required roles (authorization check)
         if (!in_array($request->user()->role, $roles)) {
             return response()->json([
-                'message' => 'Accès refusé. Permissions insuffisantes.',
+                'message' => 'Access denied. Insufficient permissions.',
                 'required_roles' => $roles,
                 'user_role' => $request->user()->role,
             ], 403);

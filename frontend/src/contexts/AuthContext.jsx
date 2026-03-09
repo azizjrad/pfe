@@ -8,24 +8,25 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Charger l'utilisateur au montage du composant (persistence de session)
+  // Initialize authentication state on app mount
+  // Uses a two-phase loading strategy: cached data first, then validate
   useEffect(() => {
     const initAuth = async () => {
       try {
-        // 1. Charger immédiatement depuis localStorage (feedback instantané)
+        // Phase 1: Load cached user immediately for instant UI rendering
         const cachedUser = authService.getCurrentUser();
 
         if (cachedUser) {
           setUser(cachedUser);
-          setLoading(false); // Afficher l'UI tout de suite
+          setLoading(false);
 
-          // 2. Valider le cookie avec l'API en arrière-plan
+          // Phase 2: Validate cookie in background and refresh user data
           try {
             const freshUserData = await authService.getUser();
-            setUser(freshUserData); // Mettre à jour avec les données fraîches
+            setUser(freshUserData);
           } catch (error) {
-            // Cookie expiré ou invalide
-            console.warn("Cookie invalide ou expiré, déconnexion...");
+            // Cookie expired or invalid - logout user
+            console.warn("Cookie expired or invalid, logging out...");
             await authService.logout();
             setUser(null);
           }
@@ -33,7 +34,7 @@ export const AuthProvider = ({ children }) => {
           setLoading(false);
         }
       } catch (error) {
-        console.error("Erreur lors de l'initialisation:", error);
+        console.error("Error during authentication initialization:", error);
         setLoading(false);
       }
     };
@@ -42,7 +43,8 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   /**
-   * Inscription
+   * Register a new user
+   * Creates account and automatically logs them in
    */
   const register = async (userData) => {
     setError(null);
@@ -51,15 +53,15 @@ export const AuthProvider = ({ children }) => {
       setUser(response.user);
       return response;
     } catch (err) {
-      const errorMessage =
-        err.response?.data?.message || "Erreur lors de l'inscription";
+      const errorMessage = err.response?.data?.message || "Registration failed";
       setError(errorMessage);
       throw err;
     }
   };
 
   /**
-   * Connexion
+   * Login user with credentials
+   * Stores auth cookie and user data
    */
   const login = async (credentials) => {
     setError(null);
@@ -68,15 +70,15 @@ export const AuthProvider = ({ children }) => {
       setUser(response.user);
       return response;
     } catch (err) {
-      const errorMessage =
-        err.response?.data?.message || "Identifiants incorrects";
+      const errorMessage = err.response?.data?.message || "Invalid credentials";
       setError(errorMessage);
       throw err;
     }
   };
 
   /**
-   * Déconnexion
+   * Logout user
+   * Clears cookie and local user data
    */
   const logout = async () => {
     try {
@@ -87,26 +89,27 @@ export const AuthProvider = ({ children }) => {
   };
 
   /**
-   * Rafraîchir les données utilisateur
+   * Refresh user data from API
+   * Useful after profile updates or permission changes
    */
   const refreshUser = async () => {
     try {
       const userData = await authService.getUser();
       setUser(userData);
     } catch (err) {
-      console.error("Erreur lors du rafraîchissement:", err);
+      console.error("Error refreshing user data:", err);
     }
   };
 
   /**
-   * Vérifier si l'utilisateur a un rôle spécifique
+   * Check if user has a specific role
    */
   const hasRole = (role) => {
     return user?.role === role;
   };
 
   /**
-   * Vérifier si l'utilisateur a l'un des rôles
+   * Check if user has any of the provided roles
    */
   const hasAnyRole = (roles) => {
     return roles.includes(user?.role);

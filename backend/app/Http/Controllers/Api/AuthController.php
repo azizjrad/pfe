@@ -13,10 +13,12 @@ class AuthController extends Controller
 {
     /**
      * Register a new user.
+     *
+     * Supports both client and agency_admin roles. Agency admins automatically
+     * get an agency created and linked to their account.
      */
     public function register(Request $request)
     {
-        // Validation avec support des rôles (client ou agency_admin)
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -31,14 +33,13 @@ class AuthController extends Controller
             'phone' => 'required|string|size:8',
             'address' => 'nullable|string|max:500',
             'driver_license' => 'nullable|string|max:50',
-            // Champs spécifiques pour les admins d'agence
+            // Agency-specific fields (required only when role is agency_admin)
             'agency_name' => 'required_if:role,agency_admin|string|max:255',
             'agency_location' => 'required_if:role,agency_admin|string|max:255',
         ], [
-            'password.regex' => 'Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&).',
+            'password.regex' => 'Password must contain at least one lowercase, one uppercase, one digit and one special character (@$!%*?&).',
         ]);
 
-        // Création de l'utilisateur
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -49,7 +50,7 @@ class AuthController extends Controller
             'driver_license' => $validated['driver_license'] ?? null,
         ]);
 
-        // Si c'est un admin d'agence, créer l'agence
+        // Auto-create agency for agency_admin users to streamline onboarding
         if ($validated['role'] === 'agency_admin') {
             $agency = \App\Models\Agency::create([
                 'name' => $validated['agency_name'],
@@ -59,28 +60,28 @@ class AuthController extends Controller
                 'address' => $validated['address'] ?? '',
             ]);
 
-            // Lier l'utilisateur à l'agence
             $user->agency_id = $agency->id;
             $user->save();
         }
 
-        // Créer le score de fiabilité pour les clients
+        // Initialize reliability score for clients (starts at perfect 100)
+        // This enables immediate rental eligibility for new users
         if ($validated['role'] === 'client') {
             \App\Models\ClientReliabilityScore::create([
                 'user_id' => $user->id,
-                'score' => 100, // Score initial parfait
+                'score' => 100,
                 'last_calculated_at' => now(),
             ]);
         }
 
-        // Générer le token d'authentification Sanctum
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        // Définir la durée du cookie (30 jours par défaut pour inscription)
-        $cookieExpiration = 60 * 24 * 30; // 30 jours en minutes
+        // Default to 30-day cookie for registration (auto-remember me)
+        // This improves UX by keeping new users logged in
+        $cookieExpiration = 60 * 24 * 30; // 30 days in minutes
 
         return response()->json([
-            'message' => 'Inscription réussie',
+            'message' => 'Registration successful',
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
@@ -106,6 +107,9 @@ class AuthController extends Controller
 
     /**
      * Login user and create token.
+     *
+     * Implements session limiting (max 3 devices) and remember me functionality
+     * with dynamic cookie expiration (2h vs 30d).
      */
     public function login(Request $request)
     {
@@ -114,15 +118,13 @@ class AuthController extends Controller
             'password' => 'required',
             'remember_me' => 'sometimes|boolean',
         ], [
-            'email.required' => 'L\'adresse e-mail est requise.',
-            'email.email' => 'L\'adresse e-mail doit être valide.',
-            'password.required' => 'Le mot de passe est requis.',
+            'email.required' => 'Email address is required.',
+            'email.email' => 'Email address must be valid.',
+            'password.required' => 'Password is required.',
         ]);
 
-        // Chercher l'utilisateur avec ses relations
         $user = User::where('email', $request->email)->first();
 
-        // Vérifier si l'utilisateur existe
         if (!$user) {
             Log::warning('Failed login attempt - User not found', [
                 'email' => $request->email,
@@ -132,11 +134,10 @@ class AuthController extends Controller
             ]);
 
             throw ValidationException::withMessages([
-                'email' => ['Aucun compte n\'existe avec cette adresse e-mail.'],
+                'email' => ['No account exists with this email address.'],
             ]);
         }
 
-        // Vérifier le mot de passe
         if (!Hash::check($request->password, $user->password)) {
             Log::warning('Failed login attempt - Invalid password', [
                 'email' => $request->email,
@@ -147,14 +148,14 @@ class AuthController extends Controller
             ]);
 
             throw ValidationException::withMessages([
-                'email' => ['Email ou mot de passe incorrect.'],
+                'email' => ['Invalid email or password.'],
             ]);
         }
 
-        // Limite de sessions simultanées (max 3 appareils)
+        // Prevent token hoarding by limiting to 3 concurrent sessions
+        // This protects against account sharing while allowing multiple devices
         $existingTokens = $user->tokens()->count();
         if ($existingTokens >= 3) {
-            // Supprimer le token le plus ancien
             $user->tokens()->oldest()->limit(1)->delete();
 
             Log::info('Session limit reached - Oldest token removed', [
@@ -163,7 +164,7 @@ class AuthController extends Controller
             ]);
         }
 
-        // Créer un nouveau token avec metadata
+        // Store device metadata for security auditing and session management
         $token = $user->createToken('auth_token', [
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
@@ -176,15 +177,15 @@ class AuthController extends Controller
             'timestamp' => now(),
         ]);
 
-        // Charger les relations nécessaires
+        // Eager load to avoid N+1 queries and provide complete user context
         $user->load('agency', 'reliabilityScore');
 
-        // Définir la durée du cookie selon "Remember Me"
+        // Dynamic expiration based on user preference (security vs convenience trade-off)
         $rememberMe = $request->input('remember_me', false);
-        $cookieExpiration = $rememberMe ? (60 * 24 * 30) : (60 * 2); // 30 jours ou 2 heures
+        $cookieExpiration = $rememberMe ? (60 * 24 * 30) : (60 * 2); // 30 days vs 2 hours
 
         return response()->json([
-            'message' => 'Connexion réussie',
+            'message' => 'Login successful',
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
@@ -216,18 +217,20 @@ class AuthController extends Controller
 
     /**
      * Logout user (revoke token).
+     *
+     * Clears both the database token and the HttpOnly cookie.
      */
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
 
-        // Supprimer le cookie en définissant une expiration passée
+        // Clear cookie by setting negative expiration (browser removes it immediately)
         return response()->json([
-            'message' => 'Déconnexion réussie',
+            'message' => 'Logout successful',
         ])->cookie(
             'auth_token',
-            '',                     // Valeur vide
-            -1,                     // Expiration dans le passé
+            '',                     // Empty value
+            -1,                     // Expiration in the past
             '/',
             null,
             false,

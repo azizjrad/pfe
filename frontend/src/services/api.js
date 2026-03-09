@@ -3,23 +3,22 @@ import axios from "axios";
 // Get API URL from environment variable (fallback to localhost for development)
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
-// Configuration de l'instance axios
+// Configure axios instance with authentication settings
 const api = axios.create({
   baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
-  withCredentials: true, // IMPORTANT: Permet l'envoi des cookies HttpOnly
+  // Enable credentials to allow HttpOnly cookie transmission for security
+  withCredentials: true,
 });
 
-// Intercepteur pour ajouter le token à chaque requête
-// NOTE: Avec les cookies HttpOnly, le token est automatiquement envoyé
-// On garde cet intercepteur pour la compatibilité mais il ne fait plus rien
+// Request interceptor - kept for compatibility but no longer adds Authorization header
+// With HttpOnly cookies, the browser automatically sends auth_token with each request
 api.interceptors.request.use(
   (config) => {
-    // Le token est automatiquement envoyé via le cookie HttpOnly
-    // Plus besoin de l'ajouter manuellement
+    // Token is automatically sent via HttpOnly cookie (immune to XSS attacks)
     return config;
   },
   (error) => {
@@ -27,12 +26,12 @@ api.interceptors.request.use(
   },
 );
 
-// Intercepteur pour gérer les erreurs d'authentification
+// Response interceptor - handles authentication errors globally
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Token invalide ou expiré
+      // Cookie expired or invalid - clear user data and redirect to login
       localStorage.removeItem("user");
       window.location.href = "/login";
     }
@@ -44,12 +43,12 @@ api.interceptors.response.use(
 
 export const authService = {
   /**
-   * Inscription d'un nouvel utilisateur
+   * Register a new user
+   * Token is stored in HttpOnly cookie by backend, only user data stored locally
    */
   register: async (userData) => {
     const response = await api.post("/register", userData);
-    // Le token est maintenant stocké dans un cookie HttpOnly
-    // On stocke seulement les infos utilisateur
+    // Store user data in localStorage for immediate UI access (non-sensitive data only)
     if (response.data.user) {
       localStorage.setItem("user", JSON.stringify(response.data.user));
     }
@@ -57,12 +56,12 @@ export const authService = {
   },
 
   /**
-   * Connexion d'un utilisateur
+   * Login user
+   * Token is stored in HttpOnly cookie by backend with dynamic expiration
    */
   login: async (credentials) => {
     const response = await api.post("/login", credentials);
-    // Le token est maintenant stocké dans un cookie HttpOnly
-    // On stocke seulement les infos utilisateur
+    // Cache user data locally to avoid API call on every page load
     if (response.data.user) {
       localStorage.setItem("user", JSON.stringify(response.data.user));
     }
@@ -70,39 +69,40 @@ export const authService = {
   },
 
   /**
-   * Déconnexion de l'utilisateur
+   * Logout user
+   * Revokes token in database and clears HttpOnly cookie
    */
   logout: async () => {
     try {
       await api.post("/logout");
     } finally {
-      // Supprimer uniquement les données utilisateur
-      // Le cookie est supprimé automatiquement par le backend
+      // Clean up local user data (cookie is automatically cleared by backend)
       localStorage.removeItem("user");
     }
   },
 
   /**
-   * Récupérer l'utilisateur authentifié depuis l'API
+   * Get authenticated user from API
+   * Validates cookie and refreshes local user data
    */
   getUser: async () => {
     const response = await api.get("/user");
-    // L'API retourne {user: {...}}, on extrait l'objet user
     const userData = response.data.user;
     localStorage.setItem("user", JSON.stringify(userData));
     return userData;
   },
 
   /**
-   * Vérifier si l'utilisateur est connecté
+   * Check if user is authenticated
+   * With HttpOnly cookies, we check if user data exists locally
    */
   isAuthenticated: () => {
-    // Avec les cookies HttpOnly, on vérifie juste si on a les infos utilisateur
     return !!localStorage.getItem("user");
   },
 
   /**
-   * Récupérer l'utilisateur depuis le localStorage
+   * Get user data from localStorage
+   * Returns cached user info without API call
    */
   getCurrentUser: () => {
     const userStr = localStorage.getItem("user");
@@ -110,11 +110,11 @@ export const authService = {
   },
 
   /**
-   * Mettre à jour le profil de l'utilisateur
+   * Update user profile
+   * Syncs changes to both API and local cache
    */
   updateProfile: async (profileData) => {
     const response = await api.put("/profile", profileData);
-    // Update localStorage with new user data
     if (response.data.user) {
       localStorage.setItem("user", JSON.stringify(response.data.user));
     }

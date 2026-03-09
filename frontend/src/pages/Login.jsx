@@ -11,7 +11,7 @@ const Login = () => {
   const { login, error, user, isAuthenticated } = useAuth();
   const returnTo = searchParams.get("returnTo");
 
-  // Rediriger si déjà connecté (persistence de session)
+  // Redirect if already logged in (preserve session persistence)
   useEffect(() => {
     if (user && isAuthenticated) {
       const destination = returnTo || "/dashboard";
@@ -66,7 +66,7 @@ const Login = () => {
     setLoginError("");
     setErrors({ email: "", password: "" });
 
-    // Handle remember me
+    // Save email for auto-fill if "remember me" is checked
     if (formData.rememberMe) {
       localStorage.setItem("rememberedEmail", formData.email);
     } else {
@@ -77,16 +77,16 @@ const Login = () => {
       const response = await login({
         email: formData.email,
         password: formData.password,
-        remember_me: formData.rememberMe, // Passer le param\u00e8tre au backend
+        remember_me: formData.rememberMe, // Controls session duration (2h vs 30d)
       });
 
       // Redirect to returnTo URL or dashboard
       const destination = returnTo || "/dashboard";
       navigate(destination);
     } catch (err) {
-      console.error("Erreur de connexion:", err);
+      console.error("Login error:", err);
 
-      // Gérer les erreurs de validation Laravel (422)
+      // Handle Laravel validation errors (422)
       if (err.response?.status === 422 && err.response?.data?.errors) {
         const validationErrors = err.response.data.errors;
         setErrors({
@@ -94,14 +94,14 @@ const Login = () => {
           password: validationErrors.password?.[0] || "",
         });
       }
-      // Gérer les erreurs d'authentification (401)
+      // Handle authentication errors (401)
       else if (err.response?.status === 401) {
         setErrors({
           email: "Email ou mot de passe incorrect",
           password: "Email ou mot de passe incorrect",
         });
       }
-      // Gérer les autres erreurs
+      // Handle other errors
       else {
         setLoginError(
           err.response?.data?.message ||
