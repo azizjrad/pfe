@@ -36,7 +36,6 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    console.log("Contact form:", formData);
 
     setTimeout(() => {
       setIsSubmitting(false);

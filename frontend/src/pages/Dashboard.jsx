@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import {
   LineChart,
@@ -37,6 +37,7 @@ import {
   clientService,
   reservationService,
   reportService,
+  reviewService,
 } from "../services/api";
 
 const Dashboard = () => {
@@ -65,6 +66,11 @@ const Dashboard = () => {
     type: null,
     item: null,
   });
+  const [suspendModal, setSuspendModal] = useState({
+    isOpen: false,
+    type: null, // 'user' or 'agency'
+    item: null,
+  });
   const [editModal, setEditModal] = useState({
     isOpen: false,
     type: null,
@@ -74,6 +80,9 @@ const Dashboard = () => {
     isOpen: false,
     type: null, // 'agency' or 'user'
     item: null,
+    userReviews: [], // Reviews written BY the user
+    reports: [], // Reports against this user/agency
+    userReportsSubmitted: [], // Reports submitted BY the user (for users only)
   });
   const [reportDetailsModal, setReportDetailsModal] = useState({
     isOpen: false,
@@ -126,12 +135,15 @@ const Dashboard = () => {
     setToast({ isVisible: false, message: "", type: "success" });
   };
 
-  // Fetch financial stats when financial tab is opened
+  // State for statistics sub-tabs
+  const [statisticsSubTab, setStatisticsSubTab] = useState("finance");
+
+  // Fetch financial stats when statistics tab with finance sub-tab is opened
   useEffect(() => {
-    if (user?.role === "super_admin" && activeTab === "financial") {
+    if (user?.role === "super_admin" && activeTab === "statistics" && statisticsSubTab === "finance") {
       fetchFinancialStats();
     }
-  }, [activeTab, user]);
+  }, [activeTab, statisticsSubTab, user]);
 
   // Fetch data on component mount (only for super_admin)
   useEffect(() => {
@@ -139,6 +151,7 @@ const Dashboard = () => {
       fetchDashboardData();
     } else if (user?.role === "agency_admin") {
       fetchAgencyStats();
+      fetchReports(); // Agencies can view vehicle reports
       fetchNotifications();
     } else if (user?.role === "client") {
       fetchClientStats();
@@ -227,45 +240,132 @@ const Dashboard = () => {
   // Initialize mock notifications (TODO: Replace with API call)
 
   // Fetch reports from API
-  const fetchReports = async () => {
+  // Fetch user details (reviews and reports) for DetailsModal
+  const fetchUserDetails = async (userId) => {
     try {
-      const [activeReports, trashedReports] = await Promise.all([
-        reportService.getAll(),
-        reportService.getTrashed(),
+      const [userReviews, reportsAgainst, reportsSubmitted] = await Promise.all([
+        reviewService.getUserReviews(userId),
+        reportService.getUserReportsAgainst(userId),
+        reportService.getUserReportsSubmitted(userId),
       ]);
 
-      // Map API response to frontend format
-      const mappedActiveReports = activeReports.data.map((report) => ({
-        id: report.id,
-        reportType: report.report_type,
-        targetId: report.target_id,
-        targetName: report.target_name,
-        reason: report.reason,
-        description: report.description,
-        reportedBy: report.reported_by_name,
-        reportedAt: report.created_at,
-        status: report.status,
-        adminNotes: report.admin_notes,
-        resolvedAt: report.resolved_at,
-      }));
+      return {
+        userReviews: userReviews.data || [],
+        reports: reportsAgainst.data || [],
+        userReportsSubmitted: reportsSubmitted.data || [],
+      };
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      return {
+        userReviews: [],
+        reports: [],
+        userReportsSubmitted: [],
+      };
+    }
+  };
 
-      const mappedTrashedReports = trashedReports.data.map((report) => ({
-        id: report.id,
-        reportType: report.report_type,
-        targetId: report.target_id,
-        targetName: report.target_name,
-        reason: report.reason,
-        description: report.description,
-        reportedBy: report.reported_by_name,
-        reportedAt: report.created_at,
-        status: report.status,
-        adminNotes: report.admin_notes,
-        resolvedAt: report.resolved_at,
-        autoDeleteAt: report.auto_delete_at,
-      }));
+  // Fetch agency details (reports) for DetailsModal
+  const fetchAgencyDetails = async (agencyId) => {
+    try {
+      const reportsAgainst = await reportService.getAgencyReportsAgainst(agencyId);
 
-      setReports(mappedActiveReports);
-      setTrashedReports(mappedTrashedReports);
+      return {
+        reports: reportsAgainst.data || [],
+      };
+    } catch (error) {
+      console.error("Error fetching agency details:", error);
+      return {
+        reports: [],
+      };
+    }
+  };
+
+  // Open user details modal with data
+  const openUserDetailsModal = async (user) => {
+    const details = await fetchUserDetails(user.id);
+    setDetailsModal({
+      isOpen: true,
+      type: "user",
+      item: user,
+      ...details,
+    });
+  };
+
+  // Open agency details modal with data
+  const openAgencyDetailsModal = async (agency) => {
+    const details = await fetchAgencyDetails(agency.id);
+    setDetailsModal({
+      isOpen: true,
+      type: "agency",
+      item: agency,
+      reports: details.reports,
+      userReviews: [],
+      userReportsSubmitted: [],
+    });
+  };
+
+  const fetchReports = async () => {
+    try {
+      // Agency admins only see reports about their vehicles (no trash access)
+      if (user?.role === "agency_admin") {
+        const agencyReports = await reportService.getAgencyReports();
+        
+        const mappedReports = agencyReports.data.map((report) => ({
+          id: report.id,
+          reportType: report.report_type,
+          targetId: report.target_id,
+          targetName: report.target_name,
+          reason: report.reason,
+          description: report.description,
+          reportedBy: report.reported_by_name,
+          reportedAt: report.created_at,
+          status: report.status,
+          adminNotes: report.admin_notes,
+          resolvedAt: report.resolved_at,
+        }));
+
+        setReports(mappedReports);
+        setTrashedReports([]); // Agencies don't have trash access
+      } else {
+        // Super admin sees all reports with trash
+        const [activeReports, trashedReports] = await Promise.all([
+          reportService.getAll(),
+          reportService.getTrashed(),
+        ]);
+
+        // Map API response to frontend format
+        const mappedActiveReports = activeReports.data.map((report) => ({
+          id: report.id,
+          reportType: report.report_type,
+          targetId: report.target_id,
+          targetName: report.target_name,
+          reason: report.reason,
+          description: report.description,
+          reportedBy: report.reported_by_name,
+          reportedAt: report.created_at,
+          status: report.status,
+          adminNotes: report.admin_notes,
+          resolvedAt: report.resolved_at,
+        }));
+
+        const mappedTrashedReports = trashedReports.data.map((report) => ({
+          id: report.id,
+          reportType: report.report_type,
+          targetId: report.target_id,
+          targetName: report.target_name,
+          reason: report.reason,
+          description: report.description,
+          reportedBy: report.reported_by_name,
+          reportedAt: report.created_at,
+          status: report.status,
+          adminNotes: report.admin_notes,
+          resolvedAt: report.resolved_at,
+          autoDeleteAt: report.auto_delete_at,
+        }));
+
+        setReports(mappedActiveReports);
+        setTrashedReports(mappedTrashedReports);
+      }
     } catch (error) {
       console.error("Error fetching reports:", error);
       showToast(
@@ -544,17 +644,17 @@ const Dashboard = () => {
       case "super_admin":
         return [
           { id: "overview", label: "Vue d'ensemble", icon: "home" },
-          { id: "agencies", label: "Gérer Agences", icon: "building" },
           { id: "users", label: "Gérer Utilisateurs", icon: "users" },
-          { id: "financial", label: "Finances", icon: "credit-card" },
-          { id: "reports", label: "Signalements", icon: "flag" },
-          { id: "statistics", label: "Statistiques", icon: "chart" },
+          { id: "agencies", label: "Gérer Agences", icon: "building" },
+          { id: "reports", label: "Traiter Signalements", icon: "flag" },
+          { id: "statistics", label: "Consulter Statistiques", icon: "chart" },
         ];
       case "agency_admin":
         return [
           { id: "overview", label: "Actives", icon: "clipboard" },
           { id: "reservations", label: "Toutes", icon: "list" },
           { id: "vehicles", label: "Véhicules", icon: "car" },
+          { id: "reports", label: "Signalements", icon: "flag" },
           { id: "financial", label: "Finances", icon: "credit-card" },
           { id: "alerts", label: "Alertes", icon: "bell" },
           { id: "statistics", label: "Statistiques", icon: "chart" },
@@ -992,6 +1092,8 @@ const Dashboard = () => {
       return (
         <AdminContent
           activeTab={activeTab}
+          statisticsSubTab={statisticsSubTab}
+          setStatisticsSubTab={setStatisticsSubTab}
           platformStats={platformStats}
           agencies={agencies}
           users={users}
@@ -1003,6 +1105,7 @@ const Dashboard = () => {
           setReportsView={setReportsView}
           setReportsFilter={setReportsFilter}
           setHistoryModal={setHistoryModal}
+          financialStats={financialStats}
           onDeleteAgency={(id) => {
             setDeleteModal({
               isOpen: true,
@@ -1012,6 +1115,13 @@ const Dashboard = () => {
           }}
           onEditAgency={(item) => {
             setEditModal({ isOpen: true, type: "agency", item });
+          }}
+          onSuspendAgency={(agency) => {
+            setSuspendModal({
+              isOpen: true,
+              type: "agency",
+              item: agency,
+            });
           }}
           onDeleteUser={(id) => {
             setDeleteModal({
@@ -1023,23 +1133,15 @@ const Dashboard = () => {
           onEditUser={(item) => {
             setEditModal({ isOpen: true, type: "user", item });
           }}
-          onSuspendUser={async (user) => {
-            try {
-              await adminService.suspendUser(user.id, !user.is_suspended);
-              showToast(
-                user.is_suspended
-                  ? "Utilisateur réactivé avec succès"
-                  : "Utilisateur suspendu avec succès",
-                "success",
-              );
-              fetchDashboardData();
-            } catch (error) {
-              console.error("Error suspending user:", error);
-              showToast("Erreur lors de la modification du statut", "error");
-            }
+          onSuspendUser={(user) => {
+            setSuspendModal({
+              isOpen: true,
+              type: "user",
+              item: user,
+            });
           }}
-          onViewUserDetails={(user) => {
-            setDetailsModal({ isOpen: true, type: "user", item: user });
+          onViewUserDetails={async (user) => {
+            await openUserDetailsModal(user);
           }}
           onResolveReport={handleResolveReport}
           onDismissReport={handleDismissReport}
@@ -1077,8 +1179,8 @@ const Dashboard = () => {
         <div className="space-y-8">
           {/* Home Button */}
           <div className="flex items-center justify-between">
-            <button
-              onClick={() => navigate("/")}
+            <Link
+              to="/"
               className="group flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors duration-300"
             >
               <svg
@@ -1095,7 +1197,7 @@ const Dashboard = () => {
                 />
               </svg>
               <span className="font-medium">Accueil</span>
-            </button>
+            </Link>
           </div>
 
           {/* Statistics Cards */}
@@ -1200,11 +1302,11 @@ const Dashboard = () => {
             {isSidebarOpen && (
               <>
                 <div
-                  className="lg:hidden fixed inset-0 bg-black/50 z-40"
+                  className="lg:hidden fixed inset-0 bg-black/50 z-[100]"
                   onClick={() => setIsSidebarOpen(false)}
                 ></div>
 
-                <div className="lg:hidden fixed left-0 top-0 bottom-0 w-72 z-50 animate-slideInLeft">
+                <div className="lg:hidden fixed left-0 top-0 bottom-0 w-72 z-[110] animate-slideInLeft">
                   <div className="h-full bg-gradient-to-br from-white/95 to-white/80 backdrop-blur-2xl border-r border-white/60 shadow-2xl rounded-r-3xl flex flex-col">
                     <div className="flex items-center justify-between p-6 border-b border-white/40">
                       <h3 className="text-lg font-bold text-gray-900">Menu</h3>
@@ -1228,7 +1330,7 @@ const Dashboard = () => {
                       </button>
                     </div>
 
-                    <nav className="flex-1 p-4 space-y-2">
+                    <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
                       {tabs.map((tab) => (
                         <button
                           key={tab.id}
@@ -1288,6 +1390,66 @@ const Dashboard = () => {
         danger
       />
 
+      {/* Suspend/Block Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={suspendModal.isOpen}
+        onClose={() =>
+          setSuspendModal({ isOpen: false, type: null, item: null })
+        }
+        onConfirm={async () => {
+          try {
+            if (suspendModal.type === "agency") {
+              const agency = suspendModal.item;
+              const newStatus = agency.status === "active" ? "inactive" : "active";
+              await adminService.suspendAgency(agency.id, newStatus);
+              showToast(
+                agency.status === "inactive"
+                  ? "Agence débloquée avec succès"
+                  : "Agence bloquée avec succès",
+                "success",
+              );
+            } else if (suspendModal.type === "user") {
+              const user = suspendModal.item;
+              await adminService.suspendUser(user.id, !user.is_suspended);
+              showToast(
+                user.is_suspended
+                  ? "Utilisateur débloqué avec succès"
+                  : "Utilisateur bloqué avec succès",
+                "success",
+              );
+            }
+            fetchDashboardData();
+          } catch (error) {
+            console.error("Error suspending:", error);
+            showToast("Erreur lors de la modification du statut", "error");
+          }
+          setSuspendModal({ isOpen: false, type: null, item: null });
+        }}
+        title={suspendModal.type === "agency" 
+          ? (suspendModal.item?.status === "inactive" ? "Débloquer l'agence" : "Bloquer l'agence")
+          : (suspendModal.item?.is_suspended ? "Débloquer l'utilisateur" : "Bloquer l'utilisateur")
+        }
+        message={suspendModal.type === "agency"
+          ? (suspendModal.item?.status === "inactive" 
+              ? `Êtes-vous sûr de vouloir débloquer l'agence "${suspendModal.item?.name}" ? Elle pourra à nouveau fonctionner normalement.`
+              : `Êtes-vous sûr de vouloir bloquer l'agence "${suspendModal.item?.name}" ? Elle ne pourra plus accepter de réservations.`
+            )
+          : (suspendModal.item?.is_suspended
+              ? `Êtes-vous sûr de vouloir débloquer l'utilisateur "${suspendModal.item?.name}" ? Il pourra à nouveau accéder à son compte.`
+              : `Êtes-vous sûr de vouloir bloquer l'utilisateur "${suspendModal.item?.name}" ? Il ne pourra plus se connecter.`
+            )
+        }
+        confirmText={suspendModal.type === "agency"
+          ? (suspendModal.item?.status === "inactive" ? "Débloquer" : "Bloquer")
+          : (suspendModal.item?.is_suspended ? "Débloquer" : "Bloquer")
+        }
+        cancelText="Annuler"
+        danger={suspendModal.type === "agency" 
+          ? suspendModal.item?.status === "active"
+          : !suspendModal.item?.is_suspended
+        }
+      />
+
       <EditModal
         isOpen={editModal.isOpen}
         onClose={() => setEditModal({ isOpen: false, type: null, item: null })}
@@ -1318,7 +1480,14 @@ const Dashboard = () => {
       <DetailsModal
         isOpen={detailsModal.isOpen}
         onClose={() =>
-          setDetailsModal({ isOpen: false, type: null, item: null })
+          setDetailsModal({
+            isOpen: false,
+            type: null,
+            item: null,
+            userReviews: [],
+            reports: [],
+            userReportsSubmitted: [],
+          })
         }
         type={detailsModal.type}
         item={detailsModal.item}
@@ -1328,8 +1497,18 @@ const Dashboard = () => {
             : []
         }
         reservations={allReservations}
+        userReviews={detailsModal.userReviews || []}
+        reports={detailsModal.reports || []}
+        userReportsSubmitted={detailsModal.userReportsSubmitted || []}
         onEdit={(item) => {
-          setDetailsModal({ isOpen: false, type: null, item: null });
+          setDetailsModal({
+            isOpen: false,
+            type: null,
+            item: null,
+            userReviews: [],
+            reports: [],
+            userReportsSubmitted: [],
+          });
           setEditModal({ isOpen: true, type: detailsModal.type, item });
         }}
         onDelete={(itemId) => {
@@ -1337,28 +1516,34 @@ const Dashboard = () => {
             detailsModal.type === "agency"
               ? agencies.find((a) => a.id === itemId)
               : users.find((u) => u.id === itemId);
-          setDetailsModal({ isOpen: false, type: null, item: null });
+          setDetailsModal({
+            isOpen: false,
+            type: null,
+            item: null,
+            userReviews: [],
+            reports: [],
+            userReportsSubmitted: [],
+          });
           setDeleteModal({
             isOpen: true,
             type: detailsModal.type,
             item,
           });
         }}
-        onSuspend={async (user) => {
-          try {
-            await adminService.suspendUser(user.id, !user.is_suspended);
-            showToast(
-              user.is_suspended
-                ? "Utilisateur réactivé avec succès"
-                : "Utilisateur suspendu avec succès",
-              "success",
-            );
-            fetchDashboardData();
-            setDetailsModal({ isOpen: false, type: null, item: null });
-          } catch (error) {
-            console.error("Error suspending user:", error);
-            showToast("Erreur lors de la modification du statut", "error");
-          }
+        onSuspend={(user) => {
+          setDetailsModal({
+            isOpen: false,
+            type: null,
+            item: null,
+            userReviews: [],
+            reports: [],
+            userReportsSubmitted: [],
+          });
+          setSuspendModal({
+            isOpen: true,
+            type: "user",
+            item: user,
+          });
         }}
       />
 
@@ -1406,6 +1591,8 @@ const Dashboard = () => {
 // Super Admin Content Component
 const AdminContent = ({
   activeTab,
+  statisticsSubTab,
+  setStatisticsSubTab,
   platformStats,
   agencies,
   users,
@@ -1417,8 +1604,10 @@ const AdminContent = ({
   setReportsView,
   setReportsFilter,
   setHistoryModal,
+  financialStats,
   onDeleteAgency,
   onEditAgency,
+  onSuspendAgency,
   onDeleteUser,
   onEditUser,
   onSuspendUser,
@@ -1609,13 +1798,7 @@ const AdminContent = ({
                 <tr
                   key={agency.id}
                   className="hover:bg-gray-50 cursor-pointer"
-                  onClick={() =>
-                    setDetailsModal({
-                      isOpen: true,
-                      type: "agency",
-                      item: agency,
-                    })
-                  }
+                  onClick={async () => await openAgencyDetailsModal(agency)}
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="font-medium text-gray-900">
@@ -1647,6 +1830,19 @@ const AdminContent = ({
                       className="text-primary-600 hover:text-primary-900 mr-3"
                     >
                       Modifier
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSuspendAgency && onSuspendAgency(agency);
+                      }}
+                      className={`mr-3 ${
+                        agency.status === "inactive"
+                          ? "text-green-600 hover:text-green-900"
+                          : "text-orange-600 hover:text-orange-900"
+                      }`}
+                    >
+                      {agency.status === "inactive" ? "Débloquer" : "Bloquer"}
                     </button>
                     <button
                       onClick={(e) => {
@@ -1787,22 +1983,13 @@ const AdminContent = ({
                         e.stopPropagation();
                         onSuspendUser && onSuspendUser(user);
                       }}
-                      className={`mr-3 ${
+                      className={`${
                         user.is_suspended
                           ? "text-green-600 hover:text-green-900"
                           : "text-orange-600 hover:text-orange-900"
                       }`}
                     >
-                      {user.is_suspended ? "Réactiver" : "Suspendre"}
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onDeleteUser(user.id);
-                      }}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      Supprimer
+                      {user.is_suspended ? "Débloquer" : "Bloquer"}
                     </button>
                   </td>
                 </tr>
@@ -1854,57 +2041,62 @@ const AdminContent = ({
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">
-              {reportsView === "active" ? "Signalements" : "Corbeille"}
+              {user?.role === "agency_admin"
+                ? "Signalements de mes véhicules"
+                : reportsView === "active"
+                  ? "Signalements"
+                  : "Corbeille"}
             </h2>
-            {reportsView === "trash" && (
+            {reportsView === "trash" && user?.role === "super_admin" && (
               <p className="text-sm text-gray-500 mt-1">
                 Suppression automatique après 30 jours
               </p>
             )}
           </div>
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => {
-                setHistoryModal({
-                  isOpen: true,
-                  resolvedReports: resolvedReports,
-                });
-              }}
-              className="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors font-medium flex items-center gap-2"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+          {user?.role === "super_admin" && (
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => {
+                  setHistoryModal({
+                    isOpen: true,
+                    resolvedReports: resolvedReports,
+                  });
+                }}
+                className="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors font-medium flex items-center gap-2"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              Historique ({resolvedReports.length})
-            </button>
-            <button
-              onClick={() => {
-                setReportsView(reportsView === "active" ? "trash" : "active");
-                setCurrentPage(1);
-              }}
-              className={`px-4 py-2 rounded-lg transition-colors font-medium flex items-center gap-2 ${
-                reportsView === "trash"
-                  ? "bg-primary-600 text-white hover:bg-primary-700"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                Historique ({resolvedReports.length})
+              </button>
+              <button
+                onClick={() => {
+                  setReportsView(reportsView === "active" ? "trash" : "active");
+                  setCurrentPage(1);
+                }}
+                className={`px-4 py-2 rounded-lg transition-colors font-medium flex items-center gap-2 ${
+                  reportsView === "trash"
+                    ? "bg-primary-600 text-white hover:bg-primary-700"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
               >
-                {reportsView === "trash" ? (
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  {reportsView === "trash" ? (
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -2176,58 +2368,69 @@ const AdminContent = ({
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       {reportsView === "active" ? (
                         <>
-                          {report.status === "pending" && (
+                          {/* Only super_admin can resolve/dismiss/delete */}
+                          {user?.role === "super_admin" && (
                             <>
+                              {report.status === "pending" && (
+                                <>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setResolveModal({
+                                        isOpen: true,
+                                        type: "resolve",
+                                        report: report,
+                                      });
+                                    }}
+                                    className="text-green-600 hover:text-green-900 mr-3"
+                                  >
+                                    Résoudre
+                                  </button>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setResolveModal({
+                                        isOpen: true,
+                                        type: "dismiss",
+                                        report: report,
+                                      });
+                                    }}
+                                    className="text-gray-600 hover:text-gray-900 mr-3"
+                                  >
+                                    Rejeter
+                                  </button>
+                                </>
+                              )}
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  setResolveModal({
-                                    isOpen: true,
-                                    type: "resolve",
-                                    report: report,
-                                  });
+                                  onDeleteReport(report);
                                 }}
-                                className="text-green-600 hover:text-green-900 mr-3"
+                                className="text-red-600 hover:text-red-900"
+                                title="Déplacer vers la corbeille"
                               >
-                                Résoudre
-                              </button>
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setResolveModal({
-                                    isOpen: true,
-                                    type: "dismiss",
-                                    report: report,
-                                  });
-                                }}
-                                className="text-gray-600 hover:text-gray-900 mr-3"
-                              >
-                                Rejeter
+                                <svg
+                                  className="w-5 h-5 inline"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                  />
+                                </svg>
                               </button>
                             </>
                           )}
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              onDeleteReport(report);
-                            }}
-                            className="text-red-600 hover:text-red-900"
-                            title="Déplacer vers la corbeille"
-                          >
-                            <svg
-                              className="w-5 h-5 inline"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                              />
-                            </svg>
-                          </button>
+                          {/* Agency admins can only view */}
+                          {user?.role === "agency_admin" && (
+                            <span className="text-gray-500 text-sm italic">
+                              Lecture seule
+                            </span>
+                          )}
                         </>
                       ) : (
                         <div className="flex items-center justify-end gap-2">
@@ -2339,115 +2542,504 @@ const AdminContent = ({
     );
   }
 
-  if (activeTab === "financial") {
-    // Use data from API
-    const monthlyRevenue = financialStats.monthly;
-    const revenueByAgency = financialStats.byAgency;
-    const paymentMethods = financialStats.paymentMethods.map(
-      (method, index) => {
-        const colors = ["#3B82F6", "#10B981", "#F59E0B", "#8B5CF6", "#EF4444"];
-        return {
-          name: method.name,
-          value: method.value,
-          color: colors[index % colors.length],
-        };
-      },
-    );
+  if (activeTab === "statistics") {
+    const statisticsSubTabs = [
+      { id: "finance", label: "💰 Finances" },
+      { id: "global", label: "📊 Statistiques Globales" },
+    ];
 
-    const totalRevenue = financialStats.totals.revenue;
-    const totalProfit = financialStats.totals.profit;
-    const totalCommission = financialStats.totals.commission;
-    const avgMonthlyRevenue = financialStats.totals.avgMonthly;
+    // Financial tab content
+    const renderFinancialContent = () => {
+      const monthlyRevenue = financialStats.monthly;
+      const revenueByAgency = financialStats.byAgency;
+      const paymentMethods = financialStats.paymentMethods.map(
+        (method, index) => {
+          const colors = ["#3B82F6", "#10B981", "#F59E0B", "#8B5CF6", "#EF4444"];
+          return {
+            name: method.name,
+            value: method.value,
+            color: colors[index % colors.length],
+          };
+        },
+      );
 
-    if (monthlyRevenue.length === 0) {
+      const totalRevenue = financialStats.totals.revenue;
+      const totalProfit = financialStats.totals.profit;
+      const totalCommission = financialStats.totals.commission;
+      const avgMonthlyRevenue = financialStats.totals.avgMonthly;
+
+      if (monthlyRevenue.length === 0) {
+        return (
+          <div className="flex items-center justify-center h-64">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
+              <p className="text-gray-600">
+                Chargement des données financières...
+              </p>
+            </div>
+          </div>
+        );
+      }
+
       return (
-        <div className="flex items-center justify-center h-64">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">
-              Chargement des données financières...
-            </p>
+        <div className="space-y-6 animate-fadeIn">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-gray-900">
+              💰 Tableau de Bord Financier
+            </h2>
+            <button className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+              Exporter Rapport
+            </button>
+          </div>
+
+          {/* Key Financial Metrics */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div
+              className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
+              style={{ animationDelay: "0ms" }}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                  <svg
+                    className="w-8 h-8"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
+                  +12.5%
+                </span>
+              </div>
+              <p className="text-blue-100 text-sm font-medium mb-1">
+                Revenu Total
+              </p>
+              <p className="text-3xl font-bold">
+                {totalRevenue.toLocaleString()} DT
+              </p>
+              <p className="text-blue-100 text-xs mt-2">Derniers 6 mois</p>
+            </div>
+
+            <div
+              className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
+              style={{ animationDelay: "100ms" }}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                  <svg
+                    className="w-8 h-8"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                    />
+                  </svg>
+                </div>
+                <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
+                  +8.3%
+                </span>
+              </div>
+              <p className="text-green-100 text-sm font-medium mb-1">
+                Profit Net
+              </p>
+              <p className="text-3xl font-bold">
+                {totalProfit.toLocaleString()} DT
+              </p>
+              <p className="text-green-100 text-xs mt-2">
+                Marge: {((totalProfit / totalRevenue) * 100).toFixed(1)}%
+              </p>
+            </div>
+
+            <div
+              className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
+              style={{ animationDelay: "200ms" }}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                  <svg
+                    className="w-8 h-8"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
+                <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
+                  15%
+                </span>
+              </div>
+              <p className="text-purple-100 text-sm font-medium mb-1">
+                Commission Platform
+              </p>
+              <p className="text-3xl font-bold">
+                {totalCommission.toLocaleString()} DT
+              </p>
+              <p className="text-purple-100 text-xs mt-2">Sur le revenu total</p>
+            </div>
+
+            <div
+              className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
+              style={{ animationDelay: "300ms" }}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                  <svg
+                    className="w-8 h-8"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                    />
+                  </svg>
+                </div>
+                <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
+                  Moy.
+                </span>
+              </div>
+              <p className="text-orange-100 text-sm font-medium mb-1">
+                Revenu Mensuel Moy.
+              </p>
+              <p className="text-3xl font-bold">
+                {avgMonthlyRevenue.toLocaleString()} DT
+              </p>
+              <p className="text-orange-100 text-xs mt-2">Tendance croissante</p>
+            </div>
+          </div>
+
+          {/* Charts Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Revenue Trend Chart */}
+            <div
+              className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
+              style={{ animationDelay: "400ms" }}
+            >
+              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+                Évolution du Revenu
+              </h3>
+              <ResponsiveContainer width="100%" height={300}>
+                <AreaChart data={monthlyRevenue}>
+                  <defs>
+                    <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.8} />
+                      <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.1} />
+                    </linearGradient>
+                    <linearGradient id="colorProfit" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#10B981" stopOpacity={0.8} />
+                      <stop offset="95%" stopColor="#10B981" stopOpacity={0.1} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                  <XAxis dataKey="month" stroke="#6B7280" />
+                  <YAxis stroke="#6B7280" />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "rgba(255, 255, 255, 0.95)",
+                      border: "1px solid #E5E7EB",
+                      borderRadius: "12px",
+                      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                    }}
+                  />
+                  <Legend />
+                  <Area
+                    type="monotone"
+                    dataKey="revenue"
+                    stroke="#3B82F6"
+                    fillOpacity={1}
+                    fill="url(#colorRevenue)"
+                    name="Revenu"
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="profit"
+                    stroke="#10B981"
+                    fillOpacity={1}
+                    fill="url(#colorProfit)"
+                    name="Profit"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Payment Methods Distribution */}
+            <div
+              className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
+              style={{ animationDelay: "500ms" }}
+            >
+              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <span className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></span>
+                Méthodes de Paiement
+              </h3>
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={paymentMethods}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={({ name, value }) => `${name}: ${value}%`}
+                    outerRadius={100}
+                    fill="#8884d8"
+                    dataKey="value"
+                    animationBegin={0}
+                    animationDuration={800}
+                  >
+                    {paymentMethods.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Revenue by Agency */}
+          <div
+            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
+            style={{ animationDelay: "600ms" }}
+          >
+            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              Performance des Agences (Top 5)
+            </h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={revenueByAgency}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                <XAxis dataKey="name" stroke="#6B7280" />
+                <YAxis stroke="#6B7280" />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "rgba(255, 255, 255, 0.95)",
+                    border: "1px solid #E5E7EB",
+                    borderRadius: "12px",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                  }}
+                />
+                <Legend />
+                <Bar
+                  dataKey="revenue"
+                  fill="#3B82F6"
+                  name="Revenu"
+                  radius={[8, 8, 0, 0]}
+                />
+                <Bar
+                  dataKey="commission"
+                  fill="#10B981"
+                  name="Commission"
+                  radius={[8, 8, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Financial Summary Table */}
+          <div
+            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
+            style={{ animationDelay: "700ms" }}
+          >
+            <h3 className="text-lg font-bold text-gray-900 mb-4">
+              Détails Mensuels
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="text-left py-3 px-4 font-semibold text-gray-900">
+                      Mois
+                    </th>
+                    <th className="text-right py-3 px-4 font-semibold text-gray-900">
+                      Revenu Total
+                    </th>
+                    <th className="text-right py-3 px-4 font-semibold text-gray-900">
+                      Commission (8%)
+                    </th>
+                    <th className="text-right py-3 px-4 font-semibold text-gray-900">
+                      Profit
+                    </th>
+                    <th className="text-right py-3 px-4 font-semibold text-gray-900">
+                      Marge
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {monthlyRevenue.map((month, index) => (
+                    <tr
+                      key={month.month}
+                      className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                    >
+                      <td className="py-3 px-4 font-medium text-gray-900">
+                        {month.month}
+                      </td>
+                      <td className="text-right py-3 px-4 text-blue-600 font-semibold">
+                        {month.revenue.toLocaleString()} DT
+                      </td>
+                      <td className="text-right py-3 px-4 text-purple-600">
+                        {month.commission.toLocaleString()} DT
+                      </td>
+                      <td className="text-right py-3 px-4 text-green-600 font-semibold">
+                        {month.profit.toLocaleString()} DT
+                      </td>
+                      <td className="text-right py-3 px-4">
+                        <span
+                          className={`px-3 py-1 rounded-full text-sm font-medium ${
+                            month.revenue > 0 &&
+                            (month.profit / month.revenue) * 100 > 5
+                              ? "bg-green-100 text-green-700"
+                              : "bg-yellow-100 text-yellow-700"
+                          }`}
+                        >
+                          {month.revenue > 0
+                            ? ((month.profit / month.revenue) * 100).toFixed(1)
+                            : 0}
+                          %
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <style>{`
+            @keyframes fadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            
+            @keyframes slideUp {
+              from { 
+                opacity: 0;
+                transform: translateY(20px);
+              }
+              to { 
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+            
+            .animate-fadeIn {
+              animation: fadeIn 0.5s ease-out;
+            }
+            
+            .animate-slideUp {
+              animation: slideUp 0.6s ease-out both;
+            }
+          `}</style>
+        </div>
+      );
+    };
+
+    // Global statistics content
+    const renderGlobalContent = () => {
+      return (
+        <div className="space-y-6">
+          <h2 className="text-xl font-bold text-gray-900">
+            📊 Statistiques Globales
+          </h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-blue-600 font-medium">
+                  Total Agences
+                </span>
+              </div>
+              <div className="flex justify-between items-center mt-2">
+                <span className="text-3xl font-bold text-blue-900">
+                  {platformStats.totalAgencies}
+                </span>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-green-600 font-medium">
+                  Total Utilisateurs
+                </span>
+              </div>
+              <div className="flex justify-between items-center mt-2">
+                <span className="text-3xl font-bold text-green-900">
+                  {platformStats.totalUsers}
+                </span>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-purple-600 font-medium">
+                  Revenu Mensuel
+                </span>
+              </div>
+              <div className="flex justify-between items-center mt-2">
+                <span className="text-3xl font-bold text-purple-900">
+                  {platformStats.monthlyRevenue.toLocaleString()} DT
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       );
-    }
+    };
 
     return (
-      <div className="space-y-6 animate-fadeIn">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-900">
-            💰 Tableau de Bord Financier
-          </h2>
-          <button className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2">
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+      <div className="space-y-6">
+        {/* Sub-tabs Navigation */}
+        <div className="flex gap-2 bg-gray-100 p-1 rounded-xl w-fit">
+          {statisticsSubTabs.map((subTab) => (
+            <button
+              key={subTab.id}
+              onClick={() => setStatisticsSubTab(subTab.id)}
+              className={`px-6 py-2.5 font-semibold rounded-lg transition-all duration-300 ${
+                statisticsSubTab === subTab.id
+                  ? "bg-white text-primary-600 shadow-md"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
-            Exporter Rapport
-          </button>
+              {subTab.label}
+            </button>
+          ))}
         </div>
 
-        {/* Key Financial Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div
-            className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
-            style={{ animationDelay: "0ms" }}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
-                <svg
-                  className="w-8 h-8"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-              <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
-                +12.5%
-              </span>
-            </div>
-            <p className="text-blue-100 text-sm font-medium mb-1">
-              Revenu Total
-            </p>
-            <p className="text-3xl font-bold">
-              {totalRevenue.toLocaleString()} DT
-            </p>
-            <p className="text-blue-100 text-xs mt-2">Derniers 6 mois</p>
-          </div>
-
-          <div
-            className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
-            style={{ animationDelay: "100ms" }}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
-                <svg
-                  className="w-8 h-8"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+        {/* Sub-tab Content */}
+        {statisticsSubTab === "finance" ? renderFinancialContent() : renderGlobalContent()}
+      </div>
+    );
+  }
                   />
                 </svg>
               </div>

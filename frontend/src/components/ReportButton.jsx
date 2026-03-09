@@ -19,9 +19,6 @@ const ReportButton = ({
   const handleReportSubmit = async (reportData) => {
     if (onReportSubmit) {
       await onReportSubmit(reportData);
-    } else {
-      // Default handler - log to console (will be replaced with API call)
-      console.log("Report submitted:", reportData);
     }
   };
 

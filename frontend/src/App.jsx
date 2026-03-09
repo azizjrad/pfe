@@ -1,6 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./contexts/AuthContext";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
 import Chatbot from "./components/Chatbot";
@@ -21,6 +26,19 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Forbidden from "./pages/Forbidden";
 
+// Component to redirect admins away from public pages
+const PublicRoute = ({ children }) => {
+  const { user } = useAuth();
+  const isAdmin = user?.role === "super_admin" || user?.role === "agency_admin";
+
+  // Redirect admins to dashboard - they shouldn't access public pages
+  if (isAdmin) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return children;
+};
+
 function App() {
   return (
     <AuthProvider>
@@ -28,19 +46,96 @@ function App() {
         <ScrollToTop />
         <div className="min-h-screen">
           <Routes>
-            <Route path="/" element={<Home />} />
+            {/* Public routes - admins redirected to dashboard */}
+            <Route
+              path="/"
+              element={
+                <PublicRoute>
+                  <Home />
+                </PublicRoute>
+              }
+            />
+
+            {/* Auth routes - accessible to everyone */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/terms-of-service" element={<TermsOfService />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/vehicles" element={<Vehicles />} />
-            <Route path="/vehicle/:id" element={<VehicleDetails />} />
-            <Route path="/agencies" element={<Agencies />} />
-            <Route path="/agency/:id" element={<AgencyDetails />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/about" element={<About />} />
+
+            {/* Static pages - accessible to non-admins */}
+            <Route
+              path="/terms-of-service"
+              element={
+                <PublicRoute>
+                  <TermsOfService />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/privacy-policy"
+              element={
+                <PublicRoute>
+                  <PrivacyPolicy />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/contact"
+              element={
+                <PublicRoute>
+                  <Contact />
+                </PublicRoute>
+              }
+            />
+
+            {/* Booking pages - clients only, admins manage via dashboard */}
+            <Route
+              path="/vehicles"
+              element={
+                <PublicRoute>
+                  <Vehicles />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/vehicle/:id"
+              element={
+                <PublicRoute>
+                  <VehicleDetails />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/agencies"
+              element={
+                <PublicRoute>
+                  <Agencies />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/agency/:id"
+              element={
+                <PublicRoute>
+                  <AgencyDetails />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/services"
+              element={
+                <PublicRoute>
+                  <Services />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <PublicRoute>
+                  <About />
+                </PublicRoute>
+              }
+            />
 
             {/* Protected Route - Universal Dashboard */}
             <Route

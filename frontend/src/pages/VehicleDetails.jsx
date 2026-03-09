@@ -33,8 +33,6 @@ const VehicleDetails = () => {
 
   const handleReportSubmit = async (reportData) => {
     try {
-      // TODO: Replace with actual API call when backend is ready
-      console.log("Vehicle report submitted:", reportData);
       showToast(
         "Signalement envoyé avec succès. Notre équipe examinera votre rapport.",
         "success",

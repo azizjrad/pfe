@@ -5,19 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use App\Models\Vehicle;
-use App\Services\PricingService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ReservationController extends Controller
 {
-    protected $pricingService;
-
-    public function __construct(PricingService $pricingService)
-    {
-        $this->pricingService = $pricingService;
-    }
 
     /**
      * Get all reservations for a client
@@ -57,7 +50,7 @@ class ReservationController extends Controller
     }
 
     /**
-     * Create a new reservation with dynamic pricing validation
+     * Create a new reservation
      */
     public function store(Request $request)
     {
@@ -106,41 +99,17 @@ class ReservationController extends Controller
                 ], 422);
             }
 
-            // Recalculate pricing on backend for security validation
+            // Calculate simple pricing on backend
             $startDate = Carbon::parse($validated['start_date']);
             $endDate = Carbon::parse($validated['end_date']);
-
-            $reliabilityScore = auth()->check() && auth()->user()->clientScore
-                ? auth()->user()->clientScore->total_score
-                : null;
-
             $options = $validated['options'] ?? [];
 
-            $backendPricing = $this->pricingService->calculatePrice(
+            $backendPricing = $this->calculateSimplePrice(
                 $vehicle,
                 $startDate,
                 $endDate,
-                $reliabilityScore,
                 $options
             );
-
-            // Validate that frontend price matches backend calculation (within 1% tolerance)
-            $frontendTotal = $validated['pricing_breakdown']['total_price'] ?? 0;
-            $backendTotal = $backendPricing['total_price'];
-            $priceDifference = abs($frontendTotal - $backendTotal);
-            $tolerance = $backendTotal * 0.01; // 1% tolerance for rounding
-
-            if ($priceDifference > $tolerance) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Erreur de calcul de prix. Veuillez actualiser et réessayer.',
-                    'details' => [
-                        'frontend_total' => $frontendTotal,
-                        'backend_total' => $backendTotal,
-                        'difference' => $priceDifference,
-                    ],
-                ], 422);
-            }
 
             // Create reservation with backend-calculated pricing (security)
             // Calculate platform commission (8%)
@@ -148,10 +117,10 @@ class ReservationController extends Controller
             $minCommission = config('pfe.commission.min_commission', 5);
 
             $platformCommission = max(
-                $backendPricing['total_price'] * $commissionRate,
+                $backendPricing['total'] * $commissionRate,
                 $minCommission
             );
-            $agencyPayout = $backendPricing['total_price'] - $platformCommission;
+            $agencyPayout = $backendPricing['total'] - $platformCommission;
 
             $reservation = Reservation::create([
                 'user_id' => auth()->id(),
@@ -160,18 +129,18 @@ class ReservationController extends Controller
                 'end_date' => $endDate,
                 'pickup_location' => $validated['pickup_location'],
                 'dropoff_location' => $validated['dropoff_location'] ?? $validated['pickup_location'],
-                'base_price' => $backendPricing['base_price'],
-                'discount_amount' => $this->calculateTotalDiscounts($backendPricing['adjustments']),
-                'additional_charges' => $this->calculateTotalCharges($backendPricing['adjustments']),
-                'total_price' => $backendPricing['total_price'],
+                'base_price' => $backendPricing['base_total'],
+                'discount_amount' => 0,
+                'additional_charges' => $backendPricing['total'] - $backendPricing['base_total'],
+                'total_price' => $backendPricing['total'],
                 'platform_commission_rate' => $commissionRate,
                 'platform_commission' => $platformCommission,
                 'agency_payout' => $agencyPayout,
                 'paid_amount' => 0,
-                'remaining_amount' => $backendPricing['total_price'],
+                'remaining_amount' => $backendPricing['total'],
                 'payment_status' => 'pending',
                 'status' => 'pending',
-                'pricing_details' => $backendPricing, // Store complete pricing breakdown
+                'pricing_details' => $backendPricing,
                 'notes' => $validated['notes'] ?? null,
             ]);
 
@@ -221,23 +190,77 @@ class ReservationController extends Controller
     }
 
     /**
-     * Calculate total discounts from adjustments
+     * Calculate simple static pricing for a vehicle rental
+     * Price = (Vehicle daily price × rental days) + optional add-ons
+     *
+     * @param Vehicle $vehicle
+     * @param Carbon $startDate
+     * @param Carbon $endDate
+     * @param array $options
+     * @return array Price breakdown
      */
-    private function calculateTotalDiscounts($adjustments)
-    {
-        return collect($adjustments)
-            ->filter(fn($adj) => $adj['amount'] < 0)
-            ->sum('amount') * -1; // Convert to positive
-    }
+    private function calculateSimplePrice(
+        Vehicle $vehicle,
+        Carbon $startDate,
+        Carbon $endDate,
+        array $options = []
+    ): array {
+        // Calculate rental days
+        $rentalDays = max(1, $startDate->diffInDays($endDate));
 
-    /**
-     * Calculate total additional charges from adjustments
-     */
-    private function calculateTotalCharges($adjustments)
-    {
-        return collect($adjustments)
-            ->filter(fn($adj) => $adj['amount'] > 0)
-            ->sum('amount');
+        // Base price: vehicle daily rate × days
+        $basePrice = $vehicle->price;
+        $baseTotal = $basePrice * $rentalDays;
+
+        $breakdown = [
+            'base_price' => $basePrice,
+            'rental_days' => $rentalDays,
+            'base_total' => $baseTotal,
+            'options' => [],
+            'total' => $baseTotal,
+        ];
+
+        // Add optional services
+        if (!empty($options['full_insurance'])) {
+            $amount = $baseTotal * 0.15; // 15% of base
+            $breakdown['options'][] = [
+                'name' => 'Assurance tous risques',
+                'amount' => round($amount, 2),
+            ];
+            $breakdown['total'] += $amount;
+        }
+
+        if (!empty($options['airport_delivery'])) {
+            $amount = 10;
+            $breakdown['options'][] = [
+                'name' => 'Livraison aéroport',
+                'amount' => $amount,
+            ];
+            $breakdown['total'] += $amount;
+        }
+
+        if (!empty($options['home_delivery'])) {
+            $amount = 25;
+            $breakdown['options'][] = [
+                'name' => 'Livraison à domicile',
+                'amount' => $amount,
+            ];
+            $breakdown['total'] += $amount;
+        }
+
+        if (!empty($options['after_hours_pickup'])) {
+            $amount = 15;
+            $breakdown['options'][] = [
+                'name' => 'Prise en charge hors horaires',
+                'amount' => $amount,
+            ];
+            $breakdown['total'] += $amount;
+        }
+
+        $breakdown['total'] = round($breakdown['total'], 2);
+        $breakdown['average_daily_rate'] = round($breakdown['total'] / $rentalDays, 2);
+
+        return $breakdown;
     }
 
     /**
@@ -332,30 +355,28 @@ class ReservationController extends Controller
                 // Recalculate pricing if dates changed
                 if (isset($validated['pricing_breakdown'])) {
                     $vehicle = $reservation->vehicle;
-                    $reliabilityScore = $user->clientScore ? $user->clientScore->total_score : null;
                     $options = $validated['options'] ?? [];
 
-                    $backendPricing = $this->pricingService->calculatePrice(
+                    $backendPricing = $this->calculateSimplePrice(
                         $vehicle,
                         Carbon::parse($startDate),
                         Carbon::parse($endDate),
-                        $reliabilityScore,
                         $options
                     );
 
                     // Update pricing fields
                     $commissionRate = config('pfe.commission.platform_rate', 0.08);
                     $minCommission = config('pfe.commission.min_commission', 5);
-                    $platformCommission = max($backendPricing['total_price'] * $commissionRate, $minCommission);
-                    $agencyPayout = $backendPricing['total_price'] - $platformCommission;
+                    $platformCommission = max($backendPricing['total'] * $commissionRate, $minCommission);
+                    $agencyPayout = $backendPricing['total'] - $platformCommission;
 
-                    $validated['base_price'] = $backendPricing['base_price'];
-                    $validated['discount_amount'] = $this->calculateTotalDiscounts($backendPricing['adjustments']);
-                    $validated['additional_charges'] = $this->calculateTotalCharges($backendPricing['adjustments']);
-                    $validated['total_price'] = $backendPricing['total_price'];
+                    $validated['base_price'] = $backendPricing['base_total'];
+                    $validated['discount_amount'] = 0;
+                    $validated['additional_charges'] = $backendPricing['total'] - $backendPricing['base_total'];
+                    $validated['total_price'] = $backendPricing['total'];
                     $validated['platform_commission'] = $platformCommission;
                     $validated['agency_payout'] = $agencyPayout;
-                    $validated['remaining_amount'] = $backendPricing['total_price'];
+                    $validated['remaining_amount'] = $backendPricing['total'];
                 }
             }
 

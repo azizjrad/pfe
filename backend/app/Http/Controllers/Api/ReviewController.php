@@ -70,4 +70,38 @@ class ReviewController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Avis supprimé avec succès']);
     }
+
+    /**
+     * Get reviews written BY a specific user (for admin viewing user details)
+     */
+    public function getUserReviews($userId)
+    {
+        try {
+            $reviews = Review::with('agency:id,name')
+                ->where('user_id', $userId)
+                ->orderBy('created_at', 'desc')
+                ->get()
+                ->map(fn($r) => [
+                    'id'         => $r->id,
+                    'agency_id'  => $r->agency_id,
+                    'agency_name'=> $r->agency?->name,
+                    'user_id'    => $r->user_id,
+                    'user_name'  => $r->user_name,
+                    'rating'     => $r->rating,
+                    'comment'    => $r->comment,
+                    'created_at' => $r->created_at->toISOString(),
+                ]);
+
+            return response()->json([
+                'success' => true,
+                'data' => $reviews,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de la récupération des avis de l\'utilisateur',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

@@ -14,19 +14,18 @@ export const AuthProvider = ({ children }) => {
       try {
         // 1. Charger immédiatement depuis localStorage (feedback instantané)
         const cachedUser = authService.getCurrentUser();
-        const token = localStorage.getItem("token");
 
-        if (cachedUser && token) {
+        if (cachedUser) {
           setUser(cachedUser);
           setLoading(false); // Afficher l'UI tout de suite
 
-          // 2. Valider le token avec l'API en arrière-plan
+          // 2. Valider le cookie avec l'API en arrière-plan
           try {
             const freshUserData = await authService.getUser();
             setUser(freshUserData); // Mettre à jour avec les données fraîches
           } catch (error) {
-            // Token expiré ou invalide
-            console.warn("Token invalide ou expiré, déconnexion...");
+            // Cookie expiré ou invalide
+            console.warn("Cookie invalide ou expiré, déconnexion...");
             await authService.logout();
             setUser(null);
           }

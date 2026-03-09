@@ -98,11 +98,31 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Include pricing details in submission
+    // Include complete pricing details in submission
     const submissionData = {
       ...reservationData,
       options,
-      total_price: pricing?.total || 0,
+      pricing_breakdown: {
+        base_total: pricing?.base_total || 0,
+        total: pricing?.total || 0,
+        days: pricing?.days || 1,
+        options: pricing
+          ? [
+              ...(pricing.insurance > 0
+                ? [{ name: "Assurance tous risques", amount: pricing.insurance }]
+                : []),
+              ...(pricing.airport_delivery > 0
+                ? [{ name: "Livraison aéroport", amount: pricing.airport_delivery }]
+                : []),
+              ...(pricing.home_delivery > 0
+                ? [{ name: "Livraison à domicile", amount: pricing.home_delivery }]
+                : []),
+              ...(pricing.after_hours > 0
+                ? [{ name: "Prise en charge hors horaires", amount: pricing.after_hours }]
+                : []),
+            ]
+          : [],
+      },
     };
 
     onSubmit(submissionData);
@@ -151,9 +171,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
     reservationData.fullName.trim() &&
     reservationData.email.trim() &&
     reservationData.phone.trim() &&
-    pricing && // Must have pricing calculated
-    !pricingLoading &&
-    !pricingError;
+    pricing; // Must have pricing calculated
 
   if (!isOpen || !vehicle) return null;
 
@@ -645,11 +663,9 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
               >
-                {pricingLoading
-                  ? "Calcul en cours..."
-                  : pricing
-                    ? `Réserver pour ${pricing.total.toFixed(2)} DT`
-                    : "Confirmer la réservation"}
+                {pricing
+                  ? `Réserver pour ${pricing.total.toFixed(2)} DT`
+                  : "Confirmer la réservation"}
               </button>
             </div>
           </form>

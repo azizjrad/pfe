@@ -5,14 +5,20 @@ export default function DetailsModal({
   onClose,
   type, // 'agency' or 'user'
   item,
-  reviews = [], // For agencies
+  reviews = [], // For agencies - reviews received by agency
   reservations = [], // For users
+  userReviews = [], // For users - reviews written by user
+  reports = [], // Reports against this agency/user
+  userReportsSubmitted = [], // For users - reports submitted BY user
   onEdit,
   onDelete,
   onSuspend, // For users
 }) {
   const [showAllReservations, setShowAllReservations] = useState(false);
   const [showAllReviews, setShowAllReviews] = useState(false);
+  const [showAllUserReviews, setShowAllUserReviews] = useState(false);
+  const [showAllReports, setShowAllReports] = useState(false);
+  const [showAllUserReportsSubmitted, setShowAllUserReportsSubmitted] = useState(false);
 
   if (!isOpen || !item) return null;
 
@@ -184,12 +190,192 @@ export default function DetailsModal({
                     </p>
                   </div>
                   <div>
+                    <p className="text-sm text-gray-600">Date de création</p>
+                    <p className="font-semibold text-gray-900">
+                      {item.created_at
+                        ? new Date(item.created_at).toLocaleDateString(
+                            "fr-FR"
+                          )
+                        : "N/A"}
+                    </p>
+                  </div>
+                  <div>
                     <p className="text-sm text-gray-600">Statut</p>
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}
                     >
                       {item.status === "active" ? "Active" : "Inactive"}
                     </span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Signalements reçus</p>
+                    <p className="font-semibold text-red-600">
+                      {reports.length || 0}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Reports Section */}
+              {reports.length > 0 && (
+                <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl p-6 border border-red-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl flex items-center justify-center shadow-md">
+                        <svg
+                          className="w-5 h-5 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                          />
+                        </svg>
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-bold text-gray-900">
+                          Signalements contre l'agence
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          {reports.length} signalement{reports.length > 1 ? "s" : ""}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Reports List */}
+                  <div className="space-y-3 max-h-60 overflow-y-auto">
+                    {(showAllReports ? reports : reports.slice(0, 3)).map(
+                      (report) => (
+                        <div
+                          key={report.id}
+                          className="p-4 bg-white rounded-lg border border-red-200"
+                        >
+                          <div className="flex items-start justify-between mb-2">
+                            <div>
+                              <p className="font-semibold text-gray-900">
+                                {report.reporter_name || "Utilisateur"}
+                              </p>
+                              <p className="text-xs text-gray-500 mt-1">
+                                {report.reason || "Non spécifié"}
+                              </p>
+                            </div>
+                            <span className="text-xs text-gray-500">
+                              {new Date(report.created_at).toLocaleDateString(
+                                "fr-FR"
+                              )}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-700">
+                            {report.description || report.comment}
+                          </p>
+                          <span
+                            className={`inline-block mt-2 px-2 py-1 rounded-full text-xs font-medium ${
+                              report.status === "pending"
+                                ? "bg-yellow-100 text-yellow-700"
+                                : report.status === "resolved"
+                                  ? "bg-green-100 text-green-700"
+                                  : "bg-red-100 text-red-700"
+                            }`}
+                          >
+                            {report.status === "pending"
+                              ? "En attente"
+                              : report.status === "resolved"
+                                ? "Résolu"
+                                : "Rejeté"}
+                          </span>
+                        </div>
+                      )
+                    )}
+                    {reports.length > 3 && (
+                      <button
+                        onClick={() => setShowAllReports(!showAllReports)}
+                        className="w-full text-sm text-red-600 hover:text-red-700 font-medium py-2"
+                      >
+                        {showAllReports
+                          ? "Voir moins"
+                          : `Voir tous les signalements (${reports.length})`}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              {/* User Basic Info */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/80 shadow-lg">
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h4 className="text-xl font-bold text-gray-900">
+                      {item.name}
+                    </h4>
+                    <p className="text-gray-600">{item.email}</p>
+                  </div>
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm font-medium ${getRoleBadge(item.role)}`}
+                  >
+                    {item.role === "client"
+                      ? "Client"
+                      : item.role === "agency_admin"
+                        ? "Admin Agence"
+                        : "Super Admin"}
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-600">Téléphone</p>
+                    {item.phone ? (
+                      <a
+                        href={`tel:${item.phone}`}
+                        className="font-semibold text-primary-600 hover:text-primary-700 transition-colors"
+                      >
+                        {item.phone}
+                      </a>
+                    ) : (
+                      <p className="font-semibold text-gray-900">N/A</p>
+                    )}
+                  </div>
+                  {item.agency && (
+                    <div>
+                      <p className="text-sm text-gray-600">Agence</p>
+                      <p className="font-semibold text-gray-900">
+                        {item.agency}
+                      </p>
+                    </div>
+                  )}
+                  <div>
+                    <p className="text-sm text-gray-600">Inscrit le</p>
+                    <p className="font-semibold text-gray-900">
+                      {item.registeredAt ||
+                        (item.created_at
+                          ? new Date(item.created_at).toLocaleDateString(
+                              "fr-FR"
+                            )
+                          : "N/A")}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Statut du compte</p>
+                    <span
+                      className={`inline-flex px-3 py-1 rounded-full text-xs font-medium ${
+                        item.is_suspended
+                          ? "bg-red-100 text-red-800"
+                          : "bg-green-100 text-green-800"
+                      }`}
+                    >
+                      {item.is_suspended ? "Suspendu" : "Actif"}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Signalements reçus</p>
+                    <p className="font-semibold text-red-600">
+                      {reports.length || 0}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -543,6 +729,287 @@ export default function DetailsModal({
                     </div>
                   );
                 })()}
+
+              {/* User's Written Reviews */}
+              {userReviews.length > 0 && (
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-md">
+                        <svg
+                          className="w-5 h-5 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                          />
+                        </svg>
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-bold text-gray-900">
+                          Avis rédigés par l'utilisateur
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          {userReviews.length} avis
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 max-h-60 overflow-y-auto">
+                    {(showAllUserReviews
+                      ? userReviews
+                      : userReviews.slice(0, 3)
+                    ).map((review) => (
+                      <div
+                        key={review.id}
+                        className="p-4 bg-white rounded-lg border border-blue-200"
+                      >
+                        <div className="flex items-start justify-between mb-2">
+                          <div>
+                            <p className="font-semibold text-gray-900">
+                              {review.agency_name || "Agence"}
+                            </p>
+                            <div className="flex items-center gap-1 mt-1">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <svg
+                                  key={star}
+                                  className={`w-4 h-4 ${
+                                    star <= review.rating
+                                      ? "text-yellow-400"
+                                      : "text-gray-300"
+                                  }`}
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                              ))}
+                            </div>
+                          </div>
+                          <span className="text-xs text-gray-500">
+                            {new Date(review.created_at).toLocaleDateString(
+                              "fr-FR"
+                            )}
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-700">
+                          {review.comment}
+                        </p>
+                      </div>
+                    ))}
+                    {userReviews.length > 3 && (
+                      <button
+                        onClick={() =>
+                          setShowAllUserReviews(!showAllUserReviews)
+                        }
+                        className="w-full text-sm text-blue-600 hover:text-blue-700 font-medium py-2"
+                      >
+                        {showAllUserReviews
+                          ? "Voir moins"
+                          : `Voir tous les avis (${userReviews.length})`}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Reports Against User */}
+              {reports.length > 0 && (
+                <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl p-6 border border-red-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl flex items-center justify-center shadow-md">
+                        <svg
+                          className="w-5 h-5 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                          />
+                        </svg>
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-bold text-gray-900">
+                          Signalements contre l'utilisateur
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          {reports.length} signalement{reports.length > 1 ? "s" : ""}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Reports List */}
+                  <div className="space-y-3 max-h-60 overflow-y-auto">
+                    {(showAllReports ? reports : reports.slice(0, 3)).map(
+                      (report) => (
+                        <div
+                          key={report.id}
+                          className="p-4 bg-white rounded-lg border border-red-200"
+                        >
+                          <div className="flex items-start justify-between mb-2">
+                            <div>
+                              <p className="font-semibold text-gray-900">
+                                {report.reporter_name || "Agence"}
+                              </p>
+                              <p className="text-xs text-gray-500 mt-1">
+                                {report.reason || "Non spécifié"}
+                              </p>
+                            </div>
+                            <span className="text-xs text-gray-500">
+                              {new Date(report.created_at).toLocaleDateString(
+                                "fr-FR"
+                              )}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-700">
+                            {report.description || report.comment}
+                          </p>
+                          <span
+                            className={`inline-block mt-2 px-2 py-1 rounded-full text-xs font-medium ${
+                              report.status === "pending"
+                                ? "bg-yellow-100 text-yellow-700"
+                                : report.status === "resolved"
+                                  ? "bg-green-100 text-green-700"
+                                  : "bg-red-100 text-red-700"
+                            }`}
+                          >
+                            {report.status === "pending"
+                              ? "En attente"
+                              : report.status === "resolved"
+                                ? "Résolu"
+                                : "Rejeté"}
+                          </span>
+                        </div>
+                      )
+                    )}
+                    {reports.length > 3 && (
+                      <button
+                        onClick={() => setShowAllReports(!showAllReports)}
+                        className="w-full text-sm text-red-600 hover:text-red-700 font-medium py-2"
+                      >
+                        {showAllReports
+                          ? "Voir moins"
+                          : `Voir tous les signalements (${reports.length})`}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Reports Submitted BY User */}
+              {userReportsSubmitted.length > 0 && (
+                <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border border-purple-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-md">
+                        <svg
+                          className="w-5 h-5 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                          />
+                        </svg>
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-bold text-gray-900">
+                          Signalements soumis par l'utilisateur
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          {userReportsSubmitted.length} signalement{userReportsSubmitted.length > 1 ? "s" : ""}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Reports List */}
+                  <div className="space-y-3 max-h-60 overflow-y-auto">
+                    {(showAllUserReportsSubmitted
+                      ? userReportsSubmitted
+                      : userReportsSubmitted.slice(0, 3)
+                    ).map((report) => (
+                      <div
+                        key={report.id}
+                        className="p-4 bg-white rounded-lg border border-purple-200"
+                      >
+                        <div className="flex items-start justify-between mb-2">
+                          <div>
+                            <p className="font-semibold text-gray-900">
+                              {report.target_name || "Cible"}
+                            </p>
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                {report.report_type === "vehicle"
+                                  ? "Véhicule"
+                                  : report.report_type === "agency"
+                                    ? "Agence"
+                                    : "Utilisateur"}
+                              </span>
+                              <p className="text-xs text-gray-500">
+                                {report.reason || "Non spécifié"}
+                              </p>
+                            </div>
+                          </div>
+                          <span className="text-xs text-gray-500">
+                            {new Date(report.created_at).toLocaleDateString(
+                              "fr-FR"
+                            )}
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-700">
+                          {report.description}
+                        </p>
+                        <span
+                          className={`inline-block mt-2 px-2 py-1 rounded-full text-xs font-medium ${
+                            report.status === "pending"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : report.status === "resolved"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-gray-100 text-gray-700"
+                          }`}
+                        >
+                          {report.status === "pending"
+                            ? "En attente"
+                            : report.status === "resolved"
+                              ? "Résolu"
+                              : "Rejeté"}
+                        </span>
+                      </div>
+                    ))}
+                    {userReportsSubmitted.length > 3 && (
+                      <button
+                        onClick={() =>
+                          setShowAllUserReportsSubmitted(
+                            !showAllUserReportsSubmitted
+                          )
+                        }
+                        className="w-full text-sm text-purple-600 hover:text-purple-700 font-medium py-2"
+                      >
+                        {showAllUserReportsSubmitted
+                          ? "Voir moins"
+                          : `Voir tous les signalements (${userReportsSubmitted.length})`}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
 
               {/* User Reservations */}
               {userReservations.length > 0 && (

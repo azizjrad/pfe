@@ -76,6 +76,9 @@ class AuthController extends Controller
         // Générer le token d'authentification Sanctum
         $token = $user->createToken('auth_token')->plainTextToken;
 
+        // Définir la durée du cookie (30 jours par défaut pour inscription)
+        $cookieExpiration = 60 * 24 * 30; // 30 jours en minutes
+
         return response()->json([
             'message' => 'Inscription réussie',
             'user' => [
@@ -88,9 +91,17 @@ class AuthController extends Controller
                 'driver_license' => $user->driver_license,
                 'agency_id' => $user->agency_id,
             ],
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ], 201);
+        ], 201)->cookie(
+            'auth_token',           // Cookie name
+            $token,                 // Token value
+            $cookieExpiration,      // Expiration in minutes
+            '/',                    // Path
+            null,                   // Domain
+            false,                  // Secure (true for HTTPS in production)
+            true,                   // HttpOnly
+            false,                  // Raw
+            'lax'                   // SameSite
+        );
     }
 
     /**
@@ -101,6 +112,7 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
+            'remember_me' => 'sometimes|boolean',
         ], [
             'email.required' => 'L\'adresse e-mail est requise.',
             'email.email' => 'L\'adresse e-mail doit être valide.',
@@ -143,7 +155,7 @@ class AuthController extends Controller
         $existingTokens = $user->tokens()->count();
         if ($existingTokens >= 3) {
             // Supprimer le token le plus ancien
-            $user->tokens()->oldest()->first()->delete();
+            $user->tokens()->oldest()->limit(1)->delete();
 
             Log::info('Session limit reached - Oldest token removed', [
                 'user_id' => $user->id,
@@ -167,6 +179,10 @@ class AuthController extends Controller
         // Charger les relations nécessaires
         $user->load('agency', 'reliabilityScore');
 
+        // Définir la durée du cookie selon "Remember Me"
+        $rememberMe = $request->input('remember_me', false);
+        $cookieExpiration = $rememberMe ? (60 * 24 * 30) : (60 * 2); // 30 jours ou 2 heures
+
         return response()->json([
             'message' => 'Connexion réussie',
             'user' => [
@@ -185,9 +201,17 @@ class AuthController extends Controller
                 ] : null,
                 'client_score' => $user->reliabilityScore?->score ?? null,
             ],
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ]);
+        ])->cookie(
+            'auth_token',           // Cookie name
+            $token,                 // Token value
+            $cookieExpiration,      // Expiration in minutes
+            '/',                    // Path
+            null,                   // Domain
+            false,                  // Secure (true for HTTPS in production)
+            true,                   // HttpOnly
+            false,                  // Raw
+            'lax'                   // SameSite
+        );
     }
 
     /**
@@ -197,9 +221,20 @@ class AuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
 
+        // Supprimer le cookie en définissant une expiration passée
         return response()->json([
             'message' => 'Déconnexion réussie',
-        ]);
+        ])->cookie(
+            'auth_token',
+            '',                     // Valeur vide
+            -1,                     // Expiration dans le passé
+            '/',
+            null,
+            false,
+            true,
+            false,
+            'lax'
+        );
     }
 
     /**

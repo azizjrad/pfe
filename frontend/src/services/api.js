@@ -10,16 +10,16 @@ const api = axios.create({
     "Content-Type": "application/json",
     Accept: "application/json",
   },
-  withCredentials: false, // Set to true if using cookies
+  withCredentials: true, // IMPORTANT: Permet l'envoi des cookies HttpOnly
 });
 
 // Intercepteur pour ajouter le token à chaque requête
+// NOTE: Avec les cookies HttpOnly, le token est automatiquement envoyé
+// On garde cet intercepteur pour la compatibilité mais il ne fait plus rien
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    // Le token est automatiquement envoyé via le cookie HttpOnly
+    // Plus besoin de l'ajouter manuellement
     return config;
   },
   (error) => {
@@ -33,7 +33,6 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // Token invalide ou expiré
-      localStorage.removeItem("token");
       localStorage.removeItem("user");
       window.location.href = "/login";
     }
@@ -49,8 +48,9 @@ export const authService = {
    */
   register: async (userData) => {
     const response = await api.post("/register", userData);
-    if (response.data.access_token) {
-      localStorage.setItem("token", response.data.access_token);
+    // Le token est maintenant stocké dans un cookie HttpOnly
+    // On stocke seulement les infos utilisateur
+    if (response.data.user) {
       localStorage.setItem("user", JSON.stringify(response.data.user));
     }
     return response.data;
@@ -61,8 +61,9 @@ export const authService = {
    */
   login: async (credentials) => {
     const response = await api.post("/login", credentials);
-    if (response.data.access_token) {
-      localStorage.setItem("token", response.data.access_token);
+    // Le token est maintenant stocké dans un cookie HttpOnly
+    // On stocke seulement les infos utilisateur
+    if (response.data.user) {
       localStorage.setItem("user", JSON.stringify(response.data.user));
     }
     return response.data;
@@ -75,7 +76,8 @@ export const authService = {
     try {
       await api.post("/logout");
     } finally {
-      localStorage.removeItem("token");
+      // Supprimer uniquement les données utilisateur
+      // Le cookie est supprimé automatiquement par le backend
       localStorage.removeItem("user");
     }
   },
@@ -95,7 +97,8 @@ export const authService = {
    * Vérifier si l'utilisateur est connecté
    */
   isAuthenticated: () => {
-    return !!localStorage.getItem("token");
+    // Avec les cookies HttpOnly, on vérifie juste si on a les infos utilisateur
+    return !!localStorage.getItem("user");
   },
 
   /**
@@ -216,6 +219,16 @@ export const adminService = {
   },
 
   /**
+   * Suspend or unsuspend an agency
+   */
+  suspendAgency: async (id, status) => {
+    const response = await api.put(`/admin/agencies/${id}`, {
+      status: status, // 'active' or 'inactive'
+    });
+    return response.data;
+  },
+
+  /**
    * Update user
    */
   updateUser: async (id, data) => {
@@ -281,7 +294,13 @@ export const reportService = {
     const response = await api.get("/admin/reports");
     return response.data;
   },
-
+  /**
+   * Get agency's vehicle reports (agency_admin only)
+   */
+  getAgencyReports: async () => {
+    const response = await api.get("/agency/reports");
+    return response.data;
+  },
   /**
    * Get trashed reports (super_admin only)
    */
@@ -339,6 +358,43 @@ export const reportService = {
    */
   cleanOldTrash: async () => {
     const response = await api.post("/admin/reports/clean-trash");
+    return response.data;
+  },
+
+  /**
+   * Get reports submitted BY a user (super_admin only)
+   */
+  getUserReportsSubmitted: async (userId) => {
+    const response = await api.get(`/admin/users/${userId}/reports-submitted`);
+    return response.data;
+  },
+
+  /**
+   * Get reports AGAINST a user (super_admin only)
+   */
+  getUserReportsAgainst: async (userId) => {
+    const response = await api.get(`/admin/users/${userId}/reports-against`);
+    return response.data;
+  },
+
+  /**
+   * Get reports AGAINST an agency (super_admin only)
+   */
+  getAgencyReportsAgainst: async (agencyId) => {
+    const response = await api.get(`/admin/agencies/${agencyId}/reports`);
+    return response.data;
+  },
+};
+
+/**
+ * Review service
+ */
+export const reviewService = {
+  /**
+   * Get reviews written BY a user (super_admin only)
+   */
+  getUserReviews: async (userId) => {
+    const response = await api.get(`/admin/users/${userId}/reviews`);
     return response.data;
   },
 };

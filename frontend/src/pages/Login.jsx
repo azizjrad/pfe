@@ -77,6 +77,7 @@ const Login = () => {
       const response = await login({
         email: formData.email,
         password: formData.password,
+        remember_me: formData.rememberMe, // Passer le param\u00e8tre au backend
       });
 
       // Redirect to returnTo URL or dashboard

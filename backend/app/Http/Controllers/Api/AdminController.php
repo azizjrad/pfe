@@ -126,6 +126,7 @@ class AdminController extends Controller
             'address' => 'sometimes|string|max:500',
             'phone' => 'sometimes|string|max:20',
             'email' => 'sometimes|email|max:255',
+            'status' => 'sometimes|in:active,inactive',
         ]);
 
         $agency = Agency::findOrFail($id);

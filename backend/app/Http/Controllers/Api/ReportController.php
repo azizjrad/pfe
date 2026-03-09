@@ -12,11 +12,58 @@ class ReportController extends Controller
 {
     /**
      * Get all active reports (for super_admin)
+     * Admin only sees agency and client reports (not vehicle reports)
      */
     public function index(Request $request)
     {
         try {
+            // Admin sees only agency and client reports (vehicle reports go to agencies)
             $reports = Report::whereNull('deleted_at')
+                ->whereIn('report_type', ['agency', 'client'])
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $reports,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de la récupération des signalements',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Get reports for agency's vehicles (for agency_admin)
+     * Agencies only see reports about their vehicles (report_type = 'vehicle')
+     */
+    public function getAgencyReports(Request $request)
+    {
+        try {
+            $user = auth()->user();
+
+            // Get the agency ID for this agency admin
+            $agencyId = $user->agency_id;
+
+            if (!$agencyId) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Agence non trouvée pour cet utilisateur',
+                ], 404);
+            }
+
+            // Get vehicle reports for this agency's vehicles
+            // We need to join with vehicles table to filter by agency_id
+            $reports = Report::whereNull('deleted_at')
+                ->where('report_type', 'vehicle')
+                ->whereIn('target_id', function($query) use ($agencyId) {
+                    $query->select('id')
+                        ->from('vehicles')
+                        ->where('agency_id', $agencyId);
+                })
                 ->orderBy('created_at', 'desc')
                 ->get();
 
@@ -39,7 +86,9 @@ class ReportController extends Controller
     public function getTrashed(Request $request)
     {
         try {
+            // Admin trash also excludes vehicle reports
             $reports = Report::onlyTrashed()
+                ->whereIn('report_type', ['agency', 'client'])
                 ->orderBy('deleted_at', 'desc')
                 ->get()
                 ->map(function ($report) {
@@ -279,6 +328,79 @@ class ReportController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Erreur lors du nettoyage',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Get reports submitted BY a specific user (for admin viewing user details)
+     */
+    public function getUserReports($userId)
+    {
+        try {
+            $reports = Report::where('reported_by_user_id', $userId)
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $reports,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de la récupération des signalements de l\'utilisateur',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Get reports AGAINST a specific user (for admin viewing user details)
+     */
+    public function getReportsAgainstUser($userId)
+    {
+        try {
+            $reports = Report::where('report_type', 'client')
+                ->where('target_id', $userId)
+                ->whereNull('deleted_at')
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $reports,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de la récupération des signalements contre l\'utilisateur',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Get reports AGAINST a specific agency (for admin viewing agency details)
+     */
+    public function getReportsAgainstAgency($agencyId)
+    {
+        try {
+            $reports = Report::where('report_type', 'agency')
+                ->where('target_id', $agencyId)
+                ->whereNull('deleted_at')
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $reports,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de la récupération des signalements contre l\'agence',
                 'error' => $e->getMessage(),
             ], 500);
         }

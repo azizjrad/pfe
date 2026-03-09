@@ -67,22 +67,27 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
     // Gestion des avis (lecture + suppression pour super_admin)
     Route::get('/admin/reviews', [ReviewController::class, 'index']);
     Route::delete('/admin/reviews/{id}', [ReviewController::class, 'destroy']);
+
+    // Get user details (reviews and reports)
+    Route::get('/admin/users/{userId}/reviews', [ReviewController::class, 'getUserReviews']);
+    Route::get('/admin/users/{userId}/reports-submitted', [ReportController::class, 'getUserReports']);
+    Route::get('/admin/users/{userId}/reports-against', [ReportController::class, 'getReportsAgainstUser']);
+
+    // Get agency details (reports)
+    Route::get('/admin/agencies/{agencyId}/reports', [ReportController::class, 'getReportsAgainstAgency']);
 });
 
 // Protected routes - Agency Admin & Super Admin
 Route::middleware(['auth:sanctum', 'role:agency_admin,super_admin'])->group(function () {
-    // Gestion des véhicules
-    // Route::get('/vehicles', [VehicleController::class, 'index']);
-    // Route::post('/vehicles', [VehicleController::class, 'store']);
-    // Route::put('/vehicles/{id}', [VehicleController::class, 'update']);
-    // Route::delete('/vehicles/{id}', [VehicleController::class, 'destroy']);
-
     // Statistiques de l'agence
     Route::get('/agency/stats', [AgencyController::class, 'getStats']);
     Route::get('/agency/financial-stats', [AgencyController::class, 'getFinancialStats']);
 
     // Avis de l'agence (lecture)
     Route::get('/agency/reviews', [ReviewController::class, 'index']);
+
+    // Signalements des véhicules de l'agence (lecture)
+    Route::get('/agency/reports', [ReportController::class, 'getAgencyReports']);
 
     // Gestion des réservations de l'agence
     Route::get('/agency/reservations', [ReservationController::class, 'agencyIndex']);
@@ -106,17 +111,5 @@ Route::middleware(['auth:sanctum', 'role:client'])->group(function () {
     Route::get('/reservations/{id}', [ReservationController::class, 'show']);
     Route::put('/reservations/{id}', [ReservationController::class, 'update']);
     Route::post('/reservations/{id}/cancel', [ReservationController::class, 'cancel']);
-
-    // Score de fiabilité
-    // Route::get('/my-score', [ClientScoreController::class, 'show']);
-});
-
-// Protected routes - All authenticated users (clients, agency admins, super admins)
-Route::middleware(['auth:sanctum', 'role:client,agency_admin,super_admin'])->group(function () {
-    // Véhicules disponibles (lecture seule pour tous)
-    // Route::get('/vehicles/available', [VehicleController::class, 'available']);
-
-    // Catégories de véhicules
-    // Route::get('/categories', [CategoryController::class, 'index']);
 });
 

@@ -57,7 +57,11 @@ const Navbar = () => {
     }, 300); // Match animation duration
   };
 
-  const navItems = [
+  // Only show public navigation to clients and unauthenticated users
+  // Admins should only access their dashboard
+  const isAdmin = user?.role === "super_admin" || user?.role === "agency_admin";
+
+  const allNavItems = [
     {
       name: "Accueil",
       path: "/",
@@ -173,6 +177,9 @@ const Navbar = () => {
       ),
     },
   ];
+
+  // Hide public pages from admins - they should only use dashboard
+  const navItems = isAdmin ? [] : allNavItems;
 
   return (
     <nav

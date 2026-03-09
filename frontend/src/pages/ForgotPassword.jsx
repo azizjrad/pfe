@@ -10,7 +10,6 @@ const ForgotPassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Reset password for:", email);
     setIsSubmitted(true);
   };
 
