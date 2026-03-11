@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import useScrollAnimation from "../hooks/useScrollAnimation";
+import Navbar from "../../components/common/Navbar";
+import Footer from "../../components/common/Footer";
+import useScrollAnimation from "../../hooks/useScrollAnimation";
 
 const About = () => {
   // Scroll animations

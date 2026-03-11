@@ -1,15 +1,14 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import VehicleCard from "../components/VehicleCard";
-import Pagination from "../components/Pagination";
-import useScrollAnimation from "../hooks/useScrollAnimation";
-import { vehiclesData } from "../data/vehiclesData";
+import Navbar from "../../components/common/Navbar";
+import Footer from "../../components/common/Footer";
+import VehicleCard from "../../components/cards/VehicleCard";
+import Pagination from "../../components/features/Pagination";
+import useScrollAnimation from "../../hooks/useScrollAnimation";
+import { vehiclesData } from "../../data/vehiclesData";
 
 const Vehicles = () => {
   const [searchParams] = useSearchParams();
-  const [selectedCategory, setSelectedCategory] = useState("Tous");
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState([0, 500]);
   const [selectedTransmission, setSelectedTransmission] = useState("Tous");
@@ -32,8 +31,6 @@ const Vehicles = () => {
     const endDate = searchParams.get("endDate");
     const startTime = searchParams.get("startTime");
     const endTime = searchParams.get("endTime");
-    const category = searchParams.get("category");
-
     if (location && startDate && endDate) {
       setSearchCriteria({
         location,
@@ -42,11 +39,6 @@ const Vehicles = () => {
         startTime: startTime || "10:00",
         endTime: endTime || "10:00",
       });
-
-      // Set category filter if provided
-      if (category) {
-        setSelectedCategory(category);
-      }
 
       // Scroll to vehicles section
       setTimeout(() => {
@@ -57,112 +49,13 @@ const Vehicles = () => {
 
   // Scroll animations
   const hero = useScrollAnimation({ threshold: 0.2 });
-  const filters = useScrollAnimation({ threshold: 0.2 });
   const vehiclesGrid = useScrollAnimation({ threshold: 0.2 });
-
-  const categories = [
-    {
-      name: "Tous",
-      icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
-      ),
-    },
-    {
-      name: "Économique",
-      icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-      ),
-    },
-    {
-      name: "SUV",
-      icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-          />
-        </svg>
-      ),
-    },
-    {
-      name: "Luxe",
-      icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
-          />
-        </svg>
-      ),
-    },
-    {
-      name: "Sport",
-      icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M13 10V3L4 14h7v7l9-11h-7z"
-          />
-        </svg>
-      ),
-    },
-  ];
 
   // Convert vehiclesData object to array
   const vehicles = Object.values(vehiclesData);
 
   const filteredVehicles = useMemo(() => {
     let result = vehicles;
-
-    // Filter by category
-    if (selectedCategory !== "Tous") {
-      result = result.filter((v) => v.category === selectedCategory);
-    }
 
     // Filter by search query
     if (searchQuery.trim()) {
@@ -204,7 +97,6 @@ const Vehicles = () => {
     return result;
   }, [
     vehicles,
-    selectedCategory,
     searchQuery,
     priceRange,
     selectedTransmission,
@@ -228,17 +120,9 @@ const Vehicles = () => {
   // Reset page when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [
-    selectedCategory,
-    searchQuery,
-    priceRange,
-    selectedTransmission,
-    selectedFuel,
-    sortBy,
-  ]);
+  }, [searchQuery, priceRange, selectedTransmission, selectedFuel, sortBy]);
 
   const resetFilters = () => {
-    setSelectedCategory("Tous");
     setSearchQuery("");
     setPriceRange([0, 500]);
     setSelectedTransmission("Tous");
@@ -263,8 +147,8 @@ const Vehicles = () => {
                 Notre <span className="text-primary-500">Flotte</span>
               </h1>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Découvrez notre large sélection de véhicules premium pour tous
-                vos besoins. Des modèles économiques aux voitures de luxe.
+                Trouvez le véhicule idéal parmi notre large sélection disponible
+                à travers toutes nos agences partenaires.
               </p>
             </div>
 
@@ -643,42 +527,6 @@ const Vehicles = () => {
                 </div>
               </div>
             )}
-          </div>
-        </div>
-      </section>
-
-      {/* Category Filters */}
-      <section className="pb-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            ref={filters.ref}
-            className={`transition-all duration-700 ${filters.isVisible ? "animate-slideUp" : "opacity-0"}`}
-          >
-            <div className="flex flex-wrap justify-center gap-4">
-              {categories.map((category) => (
-                <button
-                  key={category.name}
-                  onClick={() => setSelectedCategory(category.name)}
-                  className={`group relative px-6 py-3 rounded-2xl font-medium transition-all duration-500 overflow-hidden ${
-                    selectedCategory === category.name
-                      ? "bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-xl scale-105"
-                      : "bg-white/70 backdrop-blur-sm text-gray-700 hover:text-primary-600 hover:shadow-lg hover:scale-105 border-2 border-gray-200"
-                  }`}
-                >
-                  <span className="relative z-10 flex items-center gap-2">
-                    {category.icon}
-                    {category.name}
-                  </span>
-
-                  {selectedCategory !== category.name && (
-                    <>
-                      <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/10 to-transparent opacity-0 group-hover:opacity-100 rounded-2xl transition-all duration-500"></div>
-                      <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/30 to-transparent rounded-2xl"></div>
-                    </>
-                  )}
-                </button>
-              ))}
-            </div>
           </div>
         </div>
       </section>

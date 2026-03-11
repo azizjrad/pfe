@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import Toast from "../components/Toast";
-import useScrollAnimation from "../hooks/useScrollAnimation";
+import { useAuth } from "../../contexts/AuthContext";
+import Toast from "../../components/common/Toast";
+import useScrollAnimation from "../../hooks/useScrollAnimation";
 
 const Register = () => {
   const formAnim = useScrollAnimation({ threshold: 0.2 });

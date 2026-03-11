@@ -28,7 +28,6 @@ class VehicleSeeder extends Seeder
                 'status' => 'available',
                 'image' => null,
                 'agency_id' => 1,
-                'category_id' => 1, // Économique
             ],
             [
                 'brand' => 'Peugeot',
@@ -44,7 +43,6 @@ class VehicleSeeder extends Seeder
                 'status' => 'available',
                 'image' => null,
                 'agency_id' => 1,
-                'category_id' => 1,
             ],
 
             // Agence Tunis Centre - Berline
@@ -62,7 +60,6 @@ class VehicleSeeder extends Seeder
                 'status' => 'available',
                 'image' => null,
                 'agency_id' => 1,
-                'category_id' => 2, // Berline
             ],
 
             // Agence Tunis Centre - SUV
@@ -80,7 +77,6 @@ class VehicleSeeder extends Seeder
                 'status' => 'available',
                 'image' => null,
                 'agency_id' => 1,
-                'category_id' => 3, // SUV
             ],
 
             // Agence Aéroport - SUV Premium
@@ -98,7 +94,6 @@ class VehicleSeeder extends Seeder
                 'status' => 'available',
                 'image' => null,
                 'agency_id' => 2,
-                'category_id' => 3,
             ],
             [
                 'brand' => 'Kia',
@@ -114,7 +109,6 @@ class VehicleSeeder extends Seeder
                 'status' => 'rented',
                 'image' => null,
                 'agency_id' => 2,
-                'category_id' => 3,
             ],
 
             // Agence Aéroport - Luxe
@@ -132,7 +126,6 @@ class VehicleSeeder extends Seeder
                 'status' => 'available',
                 'image' => null,
                 'agency_id' => 2,
-                'category_id' => 4, // Luxe
             ],
 
             // Agence Sousse - Économique
@@ -150,7 +143,6 @@ class VehicleSeeder extends Seeder
                 'status' => 'available',
                 'image' => null,
                 'agency_id' => 3,
-                'category_id' => 1,
             ],
 
             // Agence Sousse - Berline
@@ -168,7 +160,6 @@ class VehicleSeeder extends Seeder
                 'status' => 'available',
                 'image' => null,
                 'agency_id' => 3,
-                'category_id' => 2,
             ],
 
             // Agence Sfax - SUV
@@ -186,7 +177,6 @@ class VehicleSeeder extends Seeder
                 'status' => 'available',
                 'image' => null,
                 'agency_id' => 4,
-                'category_id' => 3,
             ],
 
             // Agence Hammamet - Luxe
@@ -204,7 +194,6 @@ class VehicleSeeder extends Seeder
                 'status' => 'maintenance',
                 'image' => null,
                 'agency_id' => 5,
-                'category_id' => 4,
             ],
 
             // Agence Hammamet - Utilitaire
@@ -222,7 +211,6 @@ class VehicleSeeder extends Seeder
                 'status' => 'available',
                 'image' => null,
                 'agency_id' => 5,
-                'category_id' => 5, // Utilitaire
             ],
         ];
 

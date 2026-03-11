@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import useScrollAnimation from "../hooks/useScrollAnimation";
+import useScrollAnimation from "../../hooks/useScrollAnimation";
 
 const ForgotPassword = () => {
   const formAnim = useScrollAnimation({ threshold: 0.2 });

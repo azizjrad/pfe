@@ -274,7 +274,13 @@ export const adminService = {
     const response = await api.delete(`/admin/reviews/${id}`);
     return response.data;
   },
-};
+  /**
+   * Get all vehicles for a specific agency (vitrine)
+   */
+  getAgencyVehicles: async (agencyId) => {
+    const response = await api.get(`/admin/agencies/${agencyId}/vehicles`);
+    return response.data;
+  },};
 
 // ==================== Report Services ====================
 

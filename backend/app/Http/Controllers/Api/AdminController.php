@@ -68,6 +68,36 @@ class AdminController extends Controller
     }
 
     /**
+     * Get all vehicles belonging to a specific agency (for admin vitrine view)
+     */
+    public function getAgencyVehicles($agencyId)
+    {
+        $vehicles = Vehicle::where('agency_id', $agencyId)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($vehicle) {
+                return [
+                    'id'           => $vehicle->id,
+                    'brand'        => $vehicle->brand,
+                    'model'        => $vehicle->model,
+                    'year'         => $vehicle->year,
+                    'daily_price'  => $vehicle->daily_price,
+                    'status'       => $vehicle->status,
+                    'image'        => $vehicle->image,
+                    'transmission' => $vehicle->transmission,
+                    'fuel_type'    => $vehicle->fuel_type,
+                    'seats'        => $vehicle->seats,
+                    'color'        => $vehicle->color,
+                ];
+            });
+
+        return response()->json([
+            'success' => true,
+            'data'    => $vehicles,
+        ]);
+    }
+
+    /**
      * Get all users with their details
      */
     public function getUsers()

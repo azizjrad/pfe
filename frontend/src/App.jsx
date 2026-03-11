@@ -6,25 +6,24 @@ import {
   Navigate,
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import ProtectedRoute from "./components/ProtectedRoute";
-import ScrollToTop from "./components/ScrollToTop";
-import Chatbot from "./components/Chatbot";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import ForgotPassword from "./pages/ForgotPassword";
-import TermsOfService from "./pages/TermsOfService";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import Contact from "./pages/Contact";
-import Vehicles from "./pages/Vehicles";
-import VehicleDetails from "./pages/VehicleDetails";
-import Agencies from "./pages/Agencies";
-import AgencyDetails from "./pages/AgencyDetails";
-import Services from "./pages/Services";
-import About from "./pages/About";
+import ProtectedRoute from "./components/features/ProtectedRoute";
+import ScrollToTop from "./components/common/ScrollToTop";
+import Chatbot from "./components/features/Chatbot";
+import Home from "./pages/public/Home";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import TermsOfService from "./pages/public/TermsOfService";
+import PrivacyPolicy from "./pages/public/PrivacyPolicy";
+import Contact from "./pages/public/Contact";
+import Vehicles from "./pages/vehicles/Vehicles";
+import VehicleDetails from "./pages/vehicles/VehicleDetails";
+import Agencies from "./pages/agencies/Agencies";
+import AgencyDetails from "./pages/agencies/AgencyDetails";
+import About from "./pages/public/About";
 import Dashboard from "./pages/Dashboard";
-import NotFound from "./pages/NotFound";
-import Forbidden from "./pages/Forbidden";
+import NotFound from "./pages/error/NotFound";
+import Forbidden from "./pages/error/Forbidden";
 
 // Component to redirect admins away from public pages
 const PublicRoute = ({ children }) => {
@@ -117,14 +116,6 @@ function App() {
               element={
                 <PublicRoute>
                   <AgencyDetails />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/services"
-              element={
-                <PublicRoute>
-                  <Services />
                 </PublicRoute>
               }
             />

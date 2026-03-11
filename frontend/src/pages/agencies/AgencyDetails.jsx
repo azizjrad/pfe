@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import VehicleCard from "../components/VehicleCard";
-import ReportButton from "../components/ReportButton";
-import Toast from "../components/Toast";
-import useScrollAnimation from "../hooks/useScrollAnimation";
-import { useAuth } from "../contexts/AuthContext";
-import { getAgencyById } from "../data/agenciesData";
-import { vehiclesData } from "../data/vehiclesData";
+import Navbar from "../../components/common/Navbar";
+import Footer from "../../components/common/Footer";
+import VehicleCard from "../../components/cards/VehicleCard";
+import ReportButton from "../../components/features/ReportButton";
+import Toast from "../../components/common/Toast";
+import useScrollAnimation from "../../hooks/useScrollAnimation";
+import { useAuth } from "../../contexts/AuthContext";
+import { getAgencyById } from "../../data/agenciesData";
+import { vehiclesData } from "../../data/vehiclesData";
 
 const AgencyDetails = () => {
   const { id } = useParams();

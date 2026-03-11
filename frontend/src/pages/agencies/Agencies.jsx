@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import Pagination from "../components/Pagination";
-import useScrollAnimation from "../hooks/useScrollAnimation";
-import { getAllAgencies } from "../data/agenciesData";
+import Navbar from "../../components/common/Navbar";
+import Footer from "../../components/common/Footer";
+import Pagination from "../../components/features/Pagination";
+import useScrollAnimation from "../../hooks/useScrollAnimation";
+import { getAllAgencies } from "../../data/agenciesData";
 
 const Agencies = () => {
   const [searchQuery, setSearchQuery] = useState("");

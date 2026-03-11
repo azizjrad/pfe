@@ -94,17 +94,17 @@ const ReportDetailsModal = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn"
+      className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn"
       onClick={handleBackdropClick}
     >
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slideUp">
+      <div className="bg-white/80 backdrop-blur-2xl border border-white/60 rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slideUp">
         {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-red-600 to-red-700 p-6 rounded-t-xl">
-          <div className="flex items-start justify-between">
+        <div className="sticky top-0 bg-white/70 backdrop-blur-xl border-b border-gray-100/80 px-6 py-5 rounded-t-3xl z-10">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+              <div className="w-9 h-9 bg-red-50 border border-red-100 rounded-xl flex items-center justify-center shrink-0">
                 <svg
-                  className="w-6 h-6 text-white"
+                  className="w-5 h-5 text-red-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -113,10 +113,10 @@ const ReportDetailsModal = ({
                 </svg>
               </div>
               <div>
-                <h2 className="text-xl font-bold text-white">
+                <h2 className="text-base font-semibold text-gray-900">
                   Signalement #{report.id}
                 </h2>
-                <p className="text-red-100 text-sm">
+                <p className="text-xs text-gray-500">
                   {report.reportType === "vehicle"
                     ? "Véhicule"
                     : report.reportType === "agency"
@@ -127,10 +127,10 @@ const ReportDetailsModal = ({
             </div>
             <button
               onClick={onClose}
-              className="text-white hover:bg-white/20 rounded-lg p-2 transition-colors"
+              className="w-8 h-8 flex items-center justify-center rounded-xl hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
             >
               <svg
-                className="w-6 h-6"
+                className="w-4 h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -147,15 +147,15 @@ const ReportDetailsModal = ({
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-6">
-          {/* Status Badge */}
+        <div className="p-6 space-y-4">
+          {/* Status + Date */}
           <div className="flex items-center justify-between">
             <span
-              className={`px-4 py-2 rounded-full text-sm font-semibold ${getStatusBadge(report.status)}`}
+              className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusBadge(report.status)}`}
             >
               {getStatusLabel(report.status)}
             </span>
-            <span className="text-sm text-gray-500">
+            <span className="text-xs text-gray-400">
               {new Date(
                 report.reportedAt || report.created_at,
               ).toLocaleDateString("fr-FR", {
@@ -168,75 +168,85 @@ const ReportDetailsModal = ({
             </span>
           </div>
 
-          {/* Report Details */}
-          <div className="grid gap-4">
-            {/* Target Info */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Signalé
-              </label>
-              <p className="text-gray-900 font-medium">{report.targetName}</p>
+          {/* Target & Reporter */}
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-5 border border-gray-100/80 grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-1 h-4 bg-red-400 rounded-full inline-block" />
+                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Signalé
+                </span>
+              </div>
+              <p className="text-sm font-medium text-gray-900">
+                {report.targetName}
+              </p>
               {report.targetId && (
-                <p className="text-sm text-gray-500">ID: {report.targetId}</p>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  ID: {report.targetId}
+                </p>
               )}
             </div>
-
-            {/* Reporter Info */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Signalé par
-              </label>
-              <p className="text-gray-900">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-1 h-4 bg-gray-400 rounded-full inline-block" />
+                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Signalé par
+                </span>
+              </div>
+              <p className="text-sm font-medium text-gray-900">
                 {report.reportedBy || "Utilisateur"}
               </p>
             </div>
-
-            {/* Reason */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Raison
-              </label>
-              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md">
-                <p className="text-gray-900 font-medium">{report.reason}</p>
-              </div>
-            </div>
-
-            {/* Description */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Description détaillée
-              </label>
-              <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <p className="text-gray-700 whitespace-pre-wrap">
-                  {report.description}
-                </p>
-              </div>
-            </div>
-
-            {/* Admin Notes (if resolved or dismissed) */}
-            {report.adminNotes && (
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Notes administratives
-                </label>
-                <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                  <p className="text-gray-700">{report.adminNotes}</p>
-                </div>
-              </div>
-            )}
           </div>
 
-          {/* Action Buttons (only if pending) */}
-          {report.status === "pending" && (
-            <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t">
+          {/* Reason */}
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-5 border border-gray-100/80">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-1 h-4 bg-amber-400 rounded-full inline-block" />
+              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Raison
+              </span>
+            </div>
+            <p className="text-sm font-medium text-gray-900">{report.reason}</p>
+          </div>
+
+          {/* Description */}
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-5 border border-gray-100/80">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-1 h-4 bg-primary-400 rounded-full inline-block" />
+              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Description détaillée
+              </span>
+            </div>
+            <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
+              {report.description}
+            </p>
+          </div>
+
+          {/* Admin Notes */}
+          {report.adminNotes && (
+            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-5 border border-blue-100/80">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="w-1 h-4 bg-blue-400 rounded-full inline-block" />
+                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Notes administratives
+                </span>
+              </div>
+              <p className="text-sm text-gray-700">{report.adminNotes}</p>
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="sticky bottom-0 bg-white/70 backdrop-blur-xl border-t border-gray-100/80 px-5 py-4 rounded-b-3xl">
+          {report.status === "pending" ? (
+            <div className="flex flex-col sm:flex-row gap-2">
               <button
-                onClick={() => {
-                  setResolveModal({ isOpen: true, type: "resolve" });
-                }}
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-medium rounded-lg hover:from-green-700 hover:to-green-800 transition-all shadow-lg flex items-center justify-center gap-2"
+                onClick={() => setResolveModal({ isOpen: true, type: "resolve" })}
+                className="flex-1 px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <svg
-                  className="w-5 h-5"
+                  className="w-4 h-4"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -251,13 +261,11 @@ const ReportDetailsModal = ({
                 Résoudre
               </button>
               <button
-                onClick={() => {
-                  setResolveModal({ isOpen: true, type: "dismiss" });
-                }}
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-gray-600 to-gray-700 text-white font-medium rounded-lg hover:from-gray-700 hover:to-gray-800 transition-all shadow-lg flex items-center justify-center gap-2"
+                onClick={() => setResolveModal({ isOpen: true, type: "dismiss" })}
+                className="flex-1 px-4 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <svg
-                  className="w-5 h-5"
+                  className="w-4 h-4"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -272,13 +280,11 @@ const ReportDetailsModal = ({
                 Rejeter
               </button>
               <button
-                onClick={() => {
-                  setDeleteConfirmModal(true);
-                }}
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white font-medium rounded-lg hover:from-red-700 hover:to-red-800 transition-all shadow-lg flex items-center justify-center gap-2"
+                onClick={() => setDeleteConfirmModal(true)}
+                className="flex-1 px-4 py-2.5 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <svg
-                  className="w-5 h-5"
+                  className="w-4 h-4"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -293,14 +299,11 @@ const ReportDetailsModal = ({
                 Supprimer
               </button>
             </div>
-          )}
-
-          {/* Close button for resolved/dismissed */}
-          {report.status !== "pending" && (
-            <div className="flex justify-end pt-4 border-t">
+          ) : (
+            <div className="flex justify-end">
               <button
                 onClick={onClose}
-                className="px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
+                className="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-xl transition-colors"
               >
                 Fermer
               </button>

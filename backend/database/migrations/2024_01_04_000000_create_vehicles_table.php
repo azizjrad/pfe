@@ -26,7 +26,6 @@ return new class extends Migration
             $table->enum('status', ['available', 'rented', 'maintenance', 'unavailable'])->default('available');
             $table->text('image')->nullable();
             $table->foreignId('agency_id')->constrained('agencies')->onDelete('cascade');
-            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->timestamps();
         });
     }

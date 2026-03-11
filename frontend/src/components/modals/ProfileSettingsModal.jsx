@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../contexts/AuthContext";
-import { authService } from "../services/api";
+import { useAuth } from "../../contexts/AuthContext";
+import { authService } from "../../services/api";
 
 const ProfileSettingsModal = ({ isOpen, onClose }) => {
   const { user, refreshUser } = useAuth();

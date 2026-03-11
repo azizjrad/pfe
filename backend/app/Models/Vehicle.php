@@ -20,7 +20,6 @@ class Vehicle extends Model
         'status',
         'image',
         'agency_id',
-        'category_id',
     ];
 
     protected $casts = [
@@ -38,13 +37,6 @@ class Vehicle extends Model
         return $this->belongsTo(Agency::class);
     }
 
-    /**
-     * Get the category of the vehicle.
-     */
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
 
     /**
      * Get all reservations for this vehicle.

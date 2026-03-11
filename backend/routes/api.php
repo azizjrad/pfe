@@ -75,6 +75,9 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
 
     // Get agency details (reports)
     Route::get('/admin/agencies/{agencyId}/reports', [ReportController::class, 'getReportsAgainstAgency']);
+
+    // Get agency vehicles (vitrine)
+    Route::get('/admin/agencies/{agencyId}/vehicles', [AdminController::class, 'getAgencyVehicles']);
 });
 
 // Protected routes - Agency Admin & Super Admin

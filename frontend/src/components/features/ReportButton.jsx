@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ReportModal from "./ReportModal";
+import ReportModal from "../modals/ReportModal";
 
 const ReportButton = ({
   reportType, // 'vehicle', 'agency', or 'client'
