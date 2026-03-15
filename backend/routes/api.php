@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AgencyController;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\ContactController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +20,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+// Public routes
+Route::post('/contact', [ContactController::class, 'store']);
 
 // Public authentication routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -78,6 +82,11 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
 
     // Get agency vehicles (vitrine)
     Route::get('/admin/agencies/{agencyId}/vehicles', [AdminController::class, 'getAgencyVehicles']);
+
+    // Contact messages (view, mark as read, delete)
+    Route::get('/admin/contact-messages', [ContactController::class, 'index']);
+    Route::patch('/admin/contact-messages/{contactMessage}/read', [ContactController::class, 'markAsRead']);
+    Route::delete('/admin/contact-messages/{contactMessage}', [ContactController::class, 'destroy']);
 });
 
 // Protected routes - Agency Admin & Super Admin

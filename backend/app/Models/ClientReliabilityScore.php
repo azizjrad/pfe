@@ -52,8 +52,7 @@ class ClientReliabilityScore extends Model
             ($this->cancelled_reservations * $penalties['cancelled_penalty']) +
             ($this->late_returns * $penalties['late_return_penalty']) +
             ($this->payment_delays * $penalties['payment_delay_penalty']) +
-            ($this->damage_incidents * $penalties['damage_penalty']) +
-            ($this->total_unpaid_amount > 0 ? $penalties['unpaid_penalty'] : 0)
+            ($this->damage_incidents * $penalties['damage_penalty'])
         );
 
         // Ensure score is between 0 and 100

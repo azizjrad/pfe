@@ -2,7 +2,7 @@
 import { agencyService } from "../../services/api";
 import ReservationDetailsModal from "../modals/ReservationDetailsModal";
 import Toast from "../common/Toast";
-const AgencyContent = ({ activeTab }) => {
+const AgencyContent = ({ activeTab, reports = [] }) => {
   const COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"];
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -349,6 +349,115 @@ const AgencyContent = ({ activeTab }) => {
         <div className="text-center py-8 text-gray-500">
           Fonctionnalité en développement
         </div>
+      </div>
+    );
+  }
+
+  if (activeTab === "reports") {
+    const statusLabel = (status) => {
+      if (status === "pending")
+        return { label: "En attente", color: "bg-yellow-100 text-yellow-700" };
+      if (status === "resolved")
+        return { label: "Résolu", color: "bg-green-100 text-green-700" };
+      if (status === "dismissed")
+        return { label: "Rejeté", color: "bg-gray-100 text-gray-700" };
+      return { label: status, color: "bg-gray-100 text-gray-700" };
+    };
+
+    return (
+      <div className="space-y-5">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">
+            Signalements de mes véhicules
+          </h2>
+          <p className="text-sm text-gray-500 mt-1">
+            Signalements soumis par des clients concernant vos véhicules
+          </p>
+        </div>
+
+        {reports.length === 0 ? (
+          <div className="bg-white rounded-xl shadow-sm p-10 text-center">
+            <svg
+              className="w-12 h-12 text-gray-300 mx-auto mb-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <p className="text-gray-500 font-medium">
+              Aucun signalement pour le moment
+            </p>
+          </div>
+        ) : (
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
+                    Véhicule
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
+                    Raison
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
+                    Signalé par
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
+                    Date
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
+                    Statut
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
+                    Notes admin
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {reports.map((report) => {
+                  const { label, color } = statusLabel(report.status);
+                  return (
+                    <tr key={report.id} className="hover:bg-gray-50">
+                      <td className="px-4 py-3 font-medium text-gray-900">
+                        {report.targetName || "—"}
+                      </td>
+                      <td
+                        className="px-4 py-3 text-gray-700 max-w-xs truncate"
+                        title={report.description}
+                      >
+                        {report.reason}
+                      </td>
+                      <td className="px-4 py-3 text-gray-600">
+                        {report.reportedBy}
+                      </td>
+                      <td className="px-4 py-3 text-gray-500 whitespace-nowrap">
+                        {new Date(report.reportedAt).toLocaleDateString(
+                          "fr-FR",
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span
+                          className={`px-2.5 py-1 rounded-full text-xs font-medium ${color}`}
+                        >
+                          {label}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-gray-500 text-xs max-w-xs truncate">
+                        {report.adminNotes || "—"}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     );
   }

@@ -280,7 +280,8 @@ export const adminService = {
   getAgencyVehicles: async (agencyId) => {
     const response = await api.get(`/admin/agencies/${agencyId}/vehicles`);
     return response.data;
-  },};
+  },
+};
 
 // ==================== Report Services ====================
 
@@ -401,6 +402,26 @@ export const reviewService = {
    */
   getUserReviews: async (userId) => {
     const response = await api.get(`/admin/users/${userId}/reviews`);
+    return response.data;
+  },
+};
+
+/**
+ * Contact messages service (super_admin only)
+ */
+export const contactService = {
+  getAll: async () => {
+    const response = await api.get("/admin/contact-messages");
+    return response.data;
+  },
+
+  markAsRead: async (id) => {
+    const response = await api.patch(`/admin/contact-messages/${id}/read`);
+    return response.data;
+  },
+
+  delete: async (id) => {
+    const response = await api.delete(`/admin/contact-messages/${id}`);
     return response.data;
   },
 };

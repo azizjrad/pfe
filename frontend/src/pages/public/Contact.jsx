@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../../components/common/Navbar";
 import Footer from "../../components/common/Footer";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
+import api from "../../services/api";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -33,18 +34,21 @@ const Contact = () => {
     setTouched({ ...touched, [fieldName]: true });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      await api.post("/contact", formData);
       setSubmitted(true);
       setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
       setTouched({});
-
       setTimeout(() => setSubmitted(false), 5000);
-    }, 1500);
+    } catch (error) {
+      console.error("Error submitting contact form:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

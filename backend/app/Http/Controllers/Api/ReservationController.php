@@ -74,7 +74,7 @@ class ReservationController extends Controller
             // Check client reliability score
             $user = auth()->user();
             if ($user->role === 'client') {
-                $score = $user->clientScore ? $user->clientScore->total_score : 100;
+                $score = $user->reliabilityScore ? $user->reliabilityScore->reliability_score : 100;
                 if ($score < 40) {
                     return response()->json([
                         'success' => false,

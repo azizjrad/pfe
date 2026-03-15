@@ -25,9 +25,6 @@ import EditModal from "../components/modals/EditModal";
 import Toast from "../components/common/Toast";
 import ReservationDetailsModal from "../components/modals/ReservationDetailsModal";
 import DetailsModal from "../components/modals/DetailsModal";
-import ReportDetailsModal from "../components/modals/ReportDetailsModal";
-import ResolveReportModal from "../components/modals/ResolveReportModal";
-import ReportsHistoryModal from "../components/modals/ReportsHistoryModal";
 import Pagination from "../components/features/Pagination";
 import NotificationButton from "../components/dashboard/NotificationButton";
 import VehicleCard from "../components/cards/VehicleCard";
@@ -38,6 +35,7 @@ import {
   adminService,
   agencyService,
   clientService,
+  contactService,
   reservationService,
   reportService,
   reviewService,
@@ -89,18 +87,8 @@ const Dashboard = () => {
     userReportsSubmitted: [], // Reports submitted BY the user (for users only)
     vehicles: [], // Vehicles belonging to the agency (for agencies only)
   });
-  const [reportDetailsModal, setReportDetailsModal] = useState({
-    isOpen: false,
-    report: null,
-  });
-  const [historyModal, setHistoryModal] = useState({
-    isOpen: false,
-    resolvedReports: [],
-  });
   const [reports, setReports] = useState([]);
-  const [trashedReports, setTrashedReports] = useState([]);
-  const [reportsView, setReportsView] = useState("active"); // 'active' or 'trash'
-  const [reportsFilter, setReportsFilter] = useState("all"); // 'all', 'pending', 'resolved', 'dismissed'
+  const [contactMessages, setContactMessages] = useState([]);
   const [agencyReviews, setAgencyReviews] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [financialStats, setFinancialStats] = useState({
@@ -149,6 +137,7 @@ const Dashboard = () => {
     try {
       if (user?.role === "super_admin") {
         await fetchDashboardData();
+        await fetchContactMessages();
         if (activeTab === "statistics" && statisticsSubTab === "finance") {
           await fetchFinancialStats();
         }
@@ -185,6 +174,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (user?.role === "super_admin") {
       fetchDashboardData();
+      fetchContactMessages();
     } else if (user?.role === "agency_admin") {
       fetchAgencyStats();
       fetchReports(); // Agencies can view vehicle reports
@@ -210,8 +200,7 @@ const Dashboard = () => {
       setAgencies(agenciesRes.data);
       setUsers(usersRes.data);
 
-      // Fetch reports and other data
-      await fetchReports();
+      // Fetch other dashboard data
       await fetchAgencyReviews();
       await fetchNotifications();
     } catch (error) {
@@ -337,7 +326,10 @@ const Dashboard = () => {
       });
     } catch (error) {
       console.error("Error opening user details:", error);
-      showToast("Erreur lors du chargement des détails de l'utilisateur", "error");
+      showToast(
+        "Erreur lors du chargement des détails de l'utilisateur",
+        "error",
+      );
     }
   };
 
@@ -362,71 +354,75 @@ const Dashboard = () => {
 
   const fetchReports = async () => {
     try {
-      // Agency admins only see reports about their vehicles (no trash access)
-      if (user?.role === "agency_admin") {
-        const agencyReports = await reportService.getAgencyReports();
+      const agencyReports = await reportService.getAgencyReports();
 
-        const mappedReports = agencyReports.data.map((report) => ({
-          id: report.id,
-          reportType: report.report_type,
-          targetId: report.target_id,
-          targetName: report.target_name,
-          reason: report.reason,
-          description: report.description,
-          reportedBy: report.reported_by_name,
-          reportedAt: report.created_at,
-          status: report.status,
-          adminNotes: report.admin_notes,
-          resolvedAt: report.resolved_at,
-        }));
+      const mappedReports = agencyReports.data.map((report) => ({
+        id: report.id,
+        reportType: report.report_type,
+        targetId: report.target_id,
+        targetName: report.target_name,
+        reason: report.reason,
+        description: report.description,
+        reportedBy: report.reported_by_name,
+        reportedAt: report.created_at,
+        status: report.status,
+        adminNotes: report.admin_notes,
+        resolvedAt: report.resolved_at,
+      }));
 
-        setReports(mappedReports);
-        setTrashedReports([]); // Agencies don't have trash access
-      } else {
-        // Super admin sees all reports with trash
-        const [activeReports, trashedReports] = await Promise.all([
-          reportService.getAll(),
-          reportService.getTrashed(),
-        ]);
-
-        // Map API response to frontend format
-        const mappedActiveReports = activeReports.data.map((report) => ({
-          id: report.id,
-          reportType: report.report_type,
-          targetId: report.target_id,
-          targetName: report.target_name,
-          reason: report.reason,
-          description: report.description,
-          reportedBy: report.reported_by_name,
-          reportedAt: report.created_at,
-          status: report.status,
-          adminNotes: report.admin_notes,
-          resolvedAt: report.resolved_at,
-        }));
-
-        const mappedTrashedReports = trashedReports.data.map((report) => ({
-          id: report.id,
-          reportType: report.report_type,
-          targetId: report.target_id,
-          targetName: report.target_name,
-          reason: report.reason,
-          description: report.description,
-          reportedBy: report.reported_by_name,
-          reportedAt: report.created_at,
-          status: report.status,
-          adminNotes: report.admin_notes,
-          resolvedAt: report.resolved_at,
-          autoDeleteAt: report.auto_delete_at,
-        }));
-
-        setReports(mappedActiveReports);
-        setTrashedReports(mappedTrashedReports);
-      }
+      setReports(mappedReports);
     } catch (error) {
       console.error("Error fetching reports:", error);
       showToast(
         error.response?.data?.message ||
           "Erreur lors du chargement des signalements",
+        "error",
+      );
+    }
+  };
+
+  const fetchContactMessages = async () => {
+    try {
+      const response = await contactService.getAll();
+      const messages = response.data || [];
+      setContactMessages(Array.isArray(messages) ? messages : []);
+    } catch (error) {
+      console.error("Error fetching contact messages:", error);
+      showToast(
+        error.response?.data?.message ||
+          "Erreur lors du chargement des messages de contact",
+        "error",
+      );
+    }
+  };
+
+  const handleMarkMessageRead = async (id) => {
+    try {
+      await contactService.markAsRead(id);
+      setContactMessages((prev) =>
+        prev.map((message) =>
+          message.id === id ? { ...message, is_read: true } : message,
+        ),
+      );
+      showToast("Message marque comme lu", "success");
+    } catch (error) {
+      console.error("Error marking message as read:", error);
+      showToast(
+        error.response?.data?.message || "Erreur lors de la mise a jour",
+        "error",
+      );
+    }
+  };
+
+  const handleDeleteContactMessage = async (id) => {
+    try {
+      await contactService.delete(id);
+      setContactMessages((prev) => prev.filter((message) => message.id !== id));
+      showToast("Message supprime avec succes", "success");
+    } catch (error) {
+      console.error("Error deleting contact message:", error);
+      showToast(
+        error.response?.data?.message || "Erreur lors de la suppression",
         "error",
       );
     }
@@ -446,155 +442,6 @@ const Dashboard = () => {
       );
     }
   };
-
-  // Report handlers
-  const handleResolveReport = async (report, notes) => {
-    try {
-      await reportService.resolve(report.id, notes);
-
-      // Update local state
-      setReports(
-        reports.map((r) =>
-          r.id === report.id
-            ? {
-                ...r,
-                status: "resolved",
-                resolvedAt: new Date().toISOString(),
-                adminNotes: notes,
-              }
-            : r,
-        ),
-      );
-      showToast("Signalement marqué comme résolu", "success");
-    } catch (error) {
-      console.error("Error resolving report:", error);
-      showToast(
-        error.response?.data?.message ||
-          "Erreur lors de la résolution du signalement",
-        "error",
-      );
-    }
-  };
-
-  const handleDismissReport = async (report, notes) => {
-    try {
-      await reportService.dismiss(report.id, notes);
-
-      // Update local state
-      setReports(
-        reports.map((r) =>
-          r.id === report.id
-            ? {
-                ...r,
-                status: "dismissed",
-                resolvedAt: new Date().toISOString(),
-                adminNotes: notes,
-              }
-            : r,
-        ),
-      );
-      showToast("Signalement rejeté", "success");
-    } catch (error) {
-      console.error("Error dismissing report:", error);
-      showToast(
-        error.response?.data?.message || "Erreur lors du rejet du signalement",
-        "error",
-      );
-    }
-  };
-
-  const handleDeleteReport = async (report) => {
-    try {
-      await reportService.moveToTrash(report.id);
-
-      // Move to trash locally with auto-delete date
-      const trashedReport = {
-        ...report,
-        autoDeleteAt: new Date(
-          Date.now() + 30 * 24 * 60 * 60 * 1000,
-        ).toISOString(), // 30 days from now
-      };
-
-      setReports(reports.filter((r) => r.id !== report.id));
-      setTrashedReports([...trashedReports, trashedReport]);
-      showToast("Signalement déplacé vers la corbeille", "success");
-    } catch (error) {
-      console.error("Error deleting report:", error);
-      showToast(
-        error.response?.data?.message ||
-          "Erreur lors de la suppression du signalement",
-        "error",
-      );
-    }
-  };
-
-  const handleRestoreReport = async (report) => {
-    try {
-      await reportService.restore(report.id);
-
-      // Restore from trash locally
-      const { autoDeleteAt, ...restoredReport } = report;
-
-      setTrashedReports(trashedReports.filter((r) => r.id !== report.id));
-      setReports([...reports, restoredReport]);
-      showToast("Signalement restauré", "success");
-    } catch (error) {
-      console.error("Error restoring report:", error);
-      showToast(
-        error.response?.data?.message ||
-          "Erreur lors de la restauration du signalement",
-        "error",
-      );
-    }
-  };
-
-  const handlePermanentDeleteReport = async (report) => {
-    try {
-      await reportService.forceDelete(report.id);
-
-      // Remove from trash locally
-      setTrashedReports(trashedReports.filter((r) => r.id !== report.id));
-      showToast("Signalement supprimé définitivement", "success");
-    } catch (error) {
-      console.error("Error permanently deleting report:", error);
-      showToast(
-        error.response?.data?.message ||
-          "Erreur lors de la suppression définitive",
-        "error",
-      );
-    }
-  };
-
-  // Auto-delete reports older than 30 days from trash
-  useEffect(() => {
-    const checkAndDeleteOldReports = () => {
-      setTrashedReports((currentTrashedReports) => {
-        const now = new Date().getTime();
-        const filtered = currentTrashedReports.filter((report) => {
-          const autoDeleteTime = new Date(report.autoDeleteAt).getTime();
-          return autoDeleteTime > now;
-        });
-
-        if (filtered.length !== currentTrashedReports.length) {
-          const deletedCount = currentTrashedReports.length - filtered.length;
-          if (deletedCount > 0) {
-            showToast(
-              `${deletedCount} signalement(s) supprimé(s) automatiquement après 30 jours`,
-              "info",
-            );
-          }
-          return filtered;
-        }
-        return currentTrashedReports;
-      });
-    };
-
-    // Check on mount and every hour
-    checkAndDeleteOldReports();
-    const interval = setInterval(checkAndDeleteOldReports, 60 * 60 * 1000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   // Handle agency review submission
   const handleSubmitReview = async (reviewData) => {
@@ -702,7 +549,7 @@ const Dashboard = () => {
           { id: "overview", label: "Vue d'ensemble", icon: "home" },
           { id: "users", label: "Gérer Utilisateurs", icon: "users" },
           { id: "agencies", label: "Gérer Agences", icon: "building" },
-          { id: "reports", label: "Traiter Signalements", icon: "flag" },
+          { id: "messages", label: "Messages Contact", icon: "mail" },
           { id: "statistics", label: "Consulter Statistiques", icon: "chart" },
         ];
       case "agency_admin":
@@ -1136,6 +983,14 @@ const Dashboard = () => {
           d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
         />
       ),
+      mail: (
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8m-18 9h18a2 2 0 002-2V7a2 2 0 00-2-2H3a2 2 0 00-2 2v8a2 2 0 002 2z"
+        />
+      ),
     };
     return icons[iconName] || icons.home;
   };
@@ -1153,14 +1008,8 @@ const Dashboard = () => {
           platformStats={platformStats}
           agencies={agencies}
           users={users}
-          reports={reports}
           loading={loading}
-          trashedReports={trashedReports}
-          reportsView={reportsView}
-          reportsFilter={reportsFilter}
-          setReportsView={setReportsView}
-          setReportsFilter={setReportsFilter}
-          setHistoryModal={setHistoryModal}
+          contactMessages={contactMessages}
           financialStats={financialStats}
           user={user}
           onDeleteAgency={(id) => {
@@ -1171,9 +1020,6 @@ const Dashboard = () => {
             });
           }}
           onEditAgency={(item) => {
-            setEditModal({ isOpen: true, type: "agency", item });
-          }}
-          onSuspendAgency={(agency) => {
             setSuspendModal({
               isOpen: true,
               type: "agency",
@@ -1218,13 +1064,15 @@ const Dashboard = () => {
           onDeleteReport={handleDeleteReport}
           onRestoreReport={handleRestoreReport}
           onPermanentDeleteReport={handlePermanentDeleteReport}
+          onMarkMessageRead={handleMarkMessageRead}
+          onDeleteContactMessage={handleDeleteContactMessage}
           onViewReportDetails={(report) => {
             setReportDetailsModal({ isOpen: true, report });
           }}
         />
       );
     } else if (role === "agency_admin") {
-      return <AgencyContent activeTab={activeTab} />;
+      return <AgencyContent activeTab={activeTab} reports={reports} />;
     } else if (role === "client") {
       return <ClientContent activeTab={activeTab} navigate={navigate} />;
     }
@@ -1552,7 +1400,9 @@ const Dashboard = () => {
         agencies={agencies}
         reviews={
           editModal.type === "agency" && editModal.item?.id
-            ? (Array.isArray(agencyReviews) ? agencyReviews : []).filter((r) => r.agency_id === editModal.item.id)
+            ? (Array.isArray(agencyReviews) ? agencyReviews : []).filter(
+                (r) => r.agency_id === editModal.item.id,
+              )
             : []
         }
         userRole={user?.role}
@@ -1580,7 +1430,9 @@ const Dashboard = () => {
         item={detailsModal.item}
         reviews={
           detailsModal.type === "agency" && detailsModal.item?.id
-            ? (Array.isArray(agencyReviews) ? agencyReviews : []).filter((r) => r.agency_id === detailsModal.item.id)
+            ? (Array.isArray(agencyReviews) ? agencyReviews : []).filter(
+                (r) => r.agency_id === detailsModal.item.id,
+              )
             : []
         }
         reservations={allReservations}
@@ -1636,21 +1488,6 @@ const Dashboard = () => {
             item: user,
           });
         }}
-      />
-
-      <ReportDetailsModal
-        isOpen={reportDetailsModal.isOpen}
-        onClose={() => setReportDetailsModal({ isOpen: false, report: null })}
-        report={reportDetailsModal.report}
-        onResolve={handleResolveReport}
-        onDismiss={handleDismissReport}
-        onDelete={handleDeleteReport}
-      />
-
-      <ReportsHistoryModal
-        isOpen={historyModal.isOpen}
-        onClose={() => setHistoryModal({ isOpen: false, resolvedReports: [] })}
-        resolvedReports={historyModal.resolvedReports}
       />
 
       <Toast

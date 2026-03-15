@@ -34,6 +34,7 @@ const AdminContent = ({
   reportsFilter,
   setReportsView,
   setReportsFilter,
+  contactMessages,
   setHistoryModal,
   financialStats,
   user,
@@ -50,6 +51,8 @@ const AdminContent = ({
   onDeleteReport,
   onRestoreReport,
   onPermanentDeleteReport,
+  onMarkMessageRead,
+  onDeleteContactMessage,
   onViewReportDetails,
 }) => {
   // Pagination state
@@ -67,6 +70,10 @@ const AdminContent = ({
   const [deleteConfirmModal, setDeleteConfirmModal] = useState({
     isOpen: false,
     report: null,
+  });
+  const [messageDetailsModal, setMessageDetailsModal] = useState({
+    isOpen: false,
+    message: null,
   });
 
   // Loading state
@@ -213,24 +220,48 @@ const AdminContent = ({
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <p className="font-semibold text-gray-900">{agency.name}</p>
-                  <p className="text-sm text-gray-500">{agency.location || "—"}</p>
+                  <p className="text-sm text-gray-500">
+                    {agency.location || "—"}
+                  </p>
                 </div>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(agency.status)}`}>
+                <span
+                  className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(agency.status)}`}
+                >
                   {agency.status === "active" ? "Active" : "Inactive"}
                 </span>
               </div>
               <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
                 <span>{agency.vehicles} véhicules</span>
-                <span className="font-medium text-primary-600">{(agency.revenue ?? 0).toLocaleString()} DT</span>
+                <span className="font-medium text-primary-600">
+                  {(agency.revenue ?? 0).toLocaleString()} DT
+                </span>
               </div>
               <div className="flex items-center gap-3 pt-3 border-t border-gray-100">
-                <button onClick={(e) => { e.stopPropagation(); onEditAgency(agency); }} className="flex-1 py-1.5 text-sm font-medium text-primary-600 bg-primary-50 rounded-lg hover:bg-primary-100">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onEditAgency(agency);
+                  }}
+                  className="flex-1 py-1.5 text-sm font-medium text-primary-600 bg-primary-50 rounded-lg hover:bg-primary-100"
+                >
                   Modifier
                 </button>
-                <button onClick={(e) => { e.stopPropagation(); onSuspendAgency && onSuspendAgency(agency); }} className={`flex-1 py-1.5 text-sm font-medium rounded-lg ${ agency.status === "inactive" ? "text-green-600 bg-green-50 hover:bg-green-100" : "text-orange-600 bg-orange-50 hover:bg-orange-100" }`}>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSuspendAgency && onSuspendAgency(agency);
+                  }}
+                  className={`flex-1 py-1.5 text-sm font-medium rounded-lg ${agency.status === "inactive" ? "text-green-600 bg-green-50 hover:bg-green-100" : "text-orange-600 bg-orange-50 hover:bg-orange-100"}`}
+                >
                   {agency.status === "inactive" ? "Débloquer" : "Bloquer"}
                 </button>
-                <button onClick={(e) => { e.stopPropagation(); onDeleteAgency(agency.id); }} className="flex-1 py-1.5 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDeleteAgency(agency.id);
+                  }}
+                  className="flex-1 py-1.5 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100"
+                >
                   Supprimer
                 </button>
               </div>
@@ -243,32 +274,82 @@ const AdminContent = ({
           <table className="min-w-full bg-white rounded-lg overflow-hidden">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Agence</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Localisation</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Véhicules</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Revenu</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Statut</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Agence
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Localisation
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Véhicules
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Revenu
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Statut
+                </th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {paginatedAgencies.map((agency) => (
-                <tr key={agency.id} className="hover:bg-gray-50 cursor-pointer" onClick={async () => await onViewAgencyDetails(agency)}>
-                  <td className="px-6 py-4 whitespace-nowrap"><div className="font-medium text-gray-900">{agency.name}</div></td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{agency.location}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{agency.vehicles}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-600">{(agency.revenue ?? 0).toLocaleString()} DT</td>
+                <tr
+                  key={agency.id}
+                  className="hover:bg-gray-50 cursor-pointer"
+                  onClick={async () => await onViewAgencyDetails(agency)}
+                >
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(agency.status)}`}>
+                    <div className="font-medium text-gray-900">
+                      {agency.name}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {agency.location}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {agency.vehicles}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-600">
+                    {(agency.revenue ?? 0).toLocaleString()} DT
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(agency.status)}`}
+                    >
                       {agency.status === "active" ? "Active" : "Inactive"}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button onClick={(e) => { e.stopPropagation(); onEditAgency(agency); }} className="text-primary-600 hover:text-primary-900 mr-3">Modifier</button>
-                    <button onClick={(e) => { e.stopPropagation(); onSuspendAgency && onSuspendAgency(agency); }} className={`mr-3 ${ agency.status === "inactive" ? "text-green-600 hover:text-green-900" : "text-orange-600 hover:text-orange-900" }`}>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEditAgency(agency);
+                      }}
+                      className="text-primary-600 hover:text-primary-900 mr-3"
+                    >
+                      Modifier
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSuspendAgency && onSuspendAgency(agency);
+                      }}
+                      className={`mr-3 ${agency.status === "inactive" ? "text-green-600 hover:text-green-900" : "text-orange-600 hover:text-orange-900"}`}
+                    >
                       {agency.status === "inactive" ? "Débloquer" : "Bloquer"}
                     </button>
-                    <button onClick={(e) => { e.stopPropagation(); onDeleteAgency(agency.id); }} className="text-red-600 hover:text-red-900">Supprimer</button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDeleteAgency(agency.id);
+                      }}
+                      className="text-red-600 hover:text-red-900"
+                    >
+                      Supprimer
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -348,8 +429,14 @@ const AdminContent = ({
                   <p className="font-semibold text-gray-900">{user.name}</p>
                   <p className="text-sm text-gray-500">{user.email}</p>
                 </div>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRoleBadge(user.role)}`}>
-                  {user.role === "client" ? "Client" : user.role === "agency_admin" ? "Admin Agence" : "Super Admin"}
+                <span
+                  className={`px-2 py-1 rounded-full text-xs font-medium ${getRoleBadge(user.role)}`}
+                >
+                  {user.role === "client"
+                    ? "Client"
+                    : user.role === "agency_admin"
+                      ? "Admin Agence"
+                      : "Super Admin"}
                 </span>
               </div>
               <div className="flex items-center gap-3 text-sm text-gray-500 mb-3">
@@ -357,10 +444,22 @@ const AdminContent = ({
                 <span>Inscrit le {user.registeredAt}</span>
               </div>
               <div className="flex items-center gap-3 pt-3 border-t border-gray-100">
-                <button onClick={(e) => { e.stopPropagation(); onEditUser(user); }} className="flex-1 py-1.5 text-sm font-medium text-primary-600 bg-primary-50 rounded-lg hover:bg-primary-100">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onEditUser(user);
+                  }}
+                  className="flex-1 py-1.5 text-sm font-medium text-primary-600 bg-primary-50 rounded-lg hover:bg-primary-100"
+                >
                   Modifier
                 </button>
-                <button onClick={(e) => { e.stopPropagation(); onSuspendUser && onSuspendUser(user); }} className={`flex-1 py-1.5 text-sm font-medium rounded-lg ${ user.is_suspended ? "text-green-600 bg-green-50 hover:bg-green-100" : "text-orange-600 bg-orange-50 hover:bg-orange-100" }`}>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSuspendUser && onSuspendUser(user);
+                  }}
+                  className={`flex-1 py-1.5 text-sm font-medium rounded-lg ${user.is_suspended ? "text-green-600 bg-green-50 hover:bg-green-100" : "text-orange-600 bg-orange-50 hover:bg-orange-100"}`}
+                >
                   {user.is_suspended ? "Débloquer" : "Bloquer"}
                 </button>
               </div>
@@ -373,30 +472,68 @@ const AdminContent = ({
           <table className="min-w-full bg-white rounded-lg overflow-hidden">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Utilisateur</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Rôle</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Agence</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Inscrit le</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Utilisateur
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Rôle
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Agence
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Inscrit le
+                </th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {paginatedUsers.map((user) => (
-                <tr key={user.id} onClick={() => onViewUserDetails && onViewUserDetails(user)} className="hover:bg-gray-50 cursor-pointer transition-colors">
+                <tr
+                  key={user.id}
+                  onClick={() => onViewUserDetails && onViewUserDetails(user)}
+                  className="hover:bg-gray-50 cursor-pointer transition-colors"
+                >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="font-medium text-gray-900">{user.name}</div>
                     <div className="text-sm text-gray-500">{user.email}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRoleBadge(user.role)}`}>
-                      {user.role === "client" ? "Client" : user.role === "agency_admin" ? "Admin Agence" : "Super Admin"}
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${getRoleBadge(user.role)}`}
+                    >
+                      {user.role === "client"
+                        ? "Client"
+                        : user.role === "agency_admin"
+                          ? "Admin Agence"
+                          : "Super Admin"}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{user.agency || "-"}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{user.registeredAt}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {user.agency || "-"}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {user.registeredAt}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button onClick={(e) => { e.stopPropagation(); onEditUser(user); }} className="text-primary-600 hover:text-primary-900 mr-3">Modifier</button>
-                    <button onClick={(e) => { e.stopPropagation(); onSuspendUser && onSuspendUser(user); }} className={`${ user.is_suspended ? "text-green-600 hover:text-green-900" : "text-orange-600 hover:text-orange-900" }`}>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEditUser(user);
+                      }}
+                      className="text-primary-600 hover:text-primary-900 mr-3"
+                    >
+                      Modifier
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSuspendUser && onSuspendUser(user);
+                      }}
+                      className={`${user.is_suspended ? "text-green-600 hover:text-green-900" : "text-orange-600 hover:text-orange-900"}`}
+                    >
                       {user.is_suspended ? "Débloquer" : "Bloquer"}
                     </button>
                   </td>
@@ -414,6 +551,276 @@ const AdminContent = ({
             onPageChange={(page) => setCurrentPage(page)}
             itemsPerPage={itemsPerPage}
             totalItems={filteredUsers.length}
+          />
+        )}
+      </div>
+    );
+  }
+
+  if (activeTab === "messages") {
+    const formatMessageDate = (dateValue) => {
+      if (!dateValue) return "-";
+      return new Date(dateValue).toLocaleString("fr-FR", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      });
+    };
+
+    const unreadCount = (contactMessages || []).filter(
+      (message) => !message.is_read,
+    ).length;
+    const totalPages = Math.ceil((contactMessages || []).length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedMessages = (contactMessages || []).slice(
+      startIndex,
+      endIndex,
+    );
+
+    return (
+      <div className="space-y-5">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h2 className="text-2xl font-bold text-gray-900">
+            Messages de contact
+          </h2>
+          <p className="text-sm text-gray-500 mt-1">
+            {contactMessages.length} message(s) dont {unreadCount} non lu(s)
+          </p>
+        </div>
+
+        {paginatedMessages.length === 0 ? (
+          <div className="bg-white rounded-xl shadow-sm p-10 text-center text-gray-500">
+            Aucun message disponible pour le moment
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="md:hidden space-y-3">
+              {paginatedMessages.map((message) => (
+                <div
+                  key={message.id}
+                  className="bg-white rounded-xl shadow-sm border border-gray-100 p-4"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="font-semibold text-gray-900">
+                        {message.name}
+                      </h3>
+                      <p className="text-sm text-gray-500">{message.email}</p>
+                    </div>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        message.is_read
+                          ? "bg-green-100 text-green-700"
+                          : "bg-yellow-100 text-yellow-700"
+                      }`}
+                    >
+                      {message.is_read ? "Lu" : "Non lu"}
+                    </span>
+                  </div>
+
+                  <div className="mt-3 space-y-2 text-sm text-gray-600">
+                    <p>
+                      <span className="font-medium text-gray-700">Sujet:</span>{" "}
+                      {message.subject}
+                    </p>
+                    <p className="text-gray-500 line-clamp-3">
+                      {message.message}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {formatMessageDate(message.created_at)}
+                    </p>
+                  </div>
+
+                  <div className="mt-4 flex items-center gap-2">
+                    <button
+                      onClick={() =>
+                        setMessageDetailsModal({ isOpen: true, message })
+                      }
+                      className="flex-1 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+                    >
+                      Voir détails
+                    </button>
+                    {!message.is_read && (
+                      <button
+                        onClick={() => onMarkMessageRead(message.id)}
+                        className="flex-1 py-2 text-sm font-medium text-primary-700 bg-primary-50 rounded-lg hover:bg-primary-100"
+                      >
+                        Marquer lu
+                      </button>
+                    )}
+                    <button
+                      onClick={() => onDeleteContactMessage(message.id)}
+                      className="flex-1 py-2 text-sm font-medium text-red-700 bg-red-50 rounded-lg hover:bg-red-100"
+                    >
+                      Supprimer
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="hidden md:block overflow-x-auto">
+              <table className="min-w-full bg-white rounded-lg overflow-hidden">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Expéditeur
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Sujet
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Date
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Statut
+                    </th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {paginatedMessages.map((message) => (
+                    <tr
+                      key={message.id}
+                      className="hover:bg-gray-50 transition-colors cursor-pointer"
+                      onClick={() =>
+                        setMessageDetailsModal({ isOpen: true, message })
+                      }
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="font-medium text-gray-900">
+                          {message.name}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {message.email}
+                        </div>
+                      </td>
+                      <td
+                        className="px-6 py-4 text-sm text-gray-700 max-w-[280px] truncate"
+                        title={message.subject}
+                      >
+                        {message.subject}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {formatMessageDate(message.created_at)}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            message.is_read
+                              ? "bg-green-100 text-green-700"
+                              : "bg-yellow-100 text-yellow-700"
+                          }`}
+                        >
+                          {message.is_read ? "Lu" : "Non lu"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        {!message.is_read && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onMarkMessageRead(message.id);
+                            }}
+                            className="text-primary-600 hover:text-primary-800 mr-3"
+                          >
+                            Marquer lu
+                          </button>
+                        )}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDeleteContactMessage(message.id);
+                          }}
+                          className="text-red-600 hover:text-red-800"
+                        >
+                          Supprimer
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {messageDetailsModal.isOpen && messageDetailsModal.message && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div
+              className="absolute inset-0 bg-black/40"
+              onClick={() =>
+                setMessageDetailsModal({ isOpen: false, message: null })
+              }
+            ></div>
+            <div className="relative bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-auto shadow-2xl p-6">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900">
+                    Détail du message
+                  </h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Reçu le{" "}
+                    {formatMessageDate(messageDetailsModal.message.created_at)}
+                  </p>
+                </div>
+                <button
+                  onClick={() =>
+                    setMessageDetailsModal({ isOpen: false, message: null })
+                  }
+                  className="text-gray-500 hover:text-gray-700 text-xl leading-none"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="mt-6 space-y-4 text-sm">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <p className="text-gray-500">Nom</p>
+                    <p className="font-medium text-gray-900">
+                      {messageDetailsModal.message.name}
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <p className="text-gray-500">Email</p>
+                    <p className="font-medium text-gray-900 break-all">
+                      {messageDetailsModal.message.email}
+                    </p>
+                  </div>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <p className="text-gray-500">Téléphone</p>
+                  <p className="font-medium text-gray-900">
+                    {messageDetailsModal.message.phone || "-"}
+                  </p>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <p className="text-gray-500">Sujet</p>
+                  <p className="font-medium text-gray-900">
+                    {messageDetailsModal.message.subject}
+                  </p>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <p className="text-gray-500 mb-2">Message</p>
+                  <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
+                    {messageDetailsModal.message.message}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            itemsPerPage={itemsPerPage}
+            totalItems={contactMessages.length}
           />
         )}
       </div>
@@ -669,45 +1076,120 @@ const AdminContent = ({
               {paginatedReports.map((report) => (
                 <div
                   key={report.id}
-                  className={`bg-white rounded-xl border p-4 shadow-sm ${ reportsView === "active" ? "cursor-pointer" : "" } ${ report.status === "pending" ? "border-yellow-200 bg-yellow-50/40" : "border-gray-200" }`}
-                  onClick={() => reportsView === "active" && onViewReportDetails(report)}
+                  className={`bg-white rounded-xl border p-4 shadow-sm ${reportsView === "active" ? "cursor-pointer" : ""} ${report.status === "pending" ? "border-yellow-200 bg-yellow-50/40" : "border-gray-200"}`}
+                  onClick={() =>
+                    reportsView === "active" && onViewReportDetails(report)
+                  }
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        {report.reportType === "vehicle" ? "Véhicule" : report.reportType === "agency" ? "Agence" : "Client"}
+                        {report.reportType === "vehicle"
+                          ? "Véhicule"
+                          : report.reportType === "agency"
+                            ? "Agence"
+                            : "Client"}
                       </span>
                       {reportsView === "active" && (
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${ report.status === "pending" ? "bg-yellow-100 text-yellow-800" : report.status === "resolved" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800" }`}>
-                          {report.status === "pending" ? "En attente" : report.status === "resolved" ? "Résolu" : "Rejeté"}
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${report.status === "pending" ? "bg-yellow-100 text-yellow-800" : report.status === "resolved" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}
+                        >
+                          {report.status === "pending"
+                            ? "En attente"
+                            : report.status === "resolved"
+                              ? "Résolu"
+                              : "Rejeté"}
                         </span>
                       )}
                     </div>
-                    <span className="text-xs text-gray-400">{new Date(report.reportedAt || report.created_at).toLocaleDateString("fr-FR")}</span>
+                    <span className="text-xs text-gray-400">
+                      {new Date(
+                        report.reportedAt || report.created_at,
+                      ).toLocaleDateString("fr-FR")}
+                    </span>
                   </div>
-                  <p className="font-medium text-gray-900 text-sm">{report.targetName}</p>
-                  <p className="text-xs text-gray-500 mb-1">Par: {report.reportedBy}</p>
-                  <p className="text-sm text-gray-600 truncate">{report.reason}</p>
+                  <p className="font-medium text-gray-900 text-sm">
+                    {report.targetName}
+                  </p>
+                  <p className="text-xs text-gray-500 mb-1">
+                    Par: {report.reportedBy}
+                  </p>
+                  <p className="text-sm text-gray-600 truncate">
+                    {report.reason}
+                  </p>
                   {reportsView === "trash" && (
                     <p className="text-xs text-orange-500 mt-1">
-                      Suppression dans {Math.ceil((new Date(report.autoDeleteAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24))} jours
+                      Suppression dans{" "}
+                      {Math.ceil(
+                        (new Date(report.autoDeleteAt).getTime() - Date.now()) /
+                          (1000 * 60 * 60 * 24),
+                      )}{" "}
+                      jours
                     </p>
                   )}
                   {reportsView === "active" && user?.role === "super_admin" && (
                     <div className="flex items-center gap-2 pt-3 mt-2 border-t border-gray-100">
                       {report.status === "pending" && (
                         <>
-                          <button onClick={(e) => { e.stopPropagation(); setResolveModal({ isOpen: true, type: "resolve", report }); }} className="flex-1 py-1.5 text-xs font-medium text-green-600 bg-green-50 rounded-lg hover:bg-green-100">Résoudre</button>
-                          <button onClick={(e) => { e.stopPropagation(); setResolveModal({ isOpen: true, type: "dismiss", report }); }} className="flex-1 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">Rejeter</button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setResolveModal({
+                                isOpen: true,
+                                type: "resolve",
+                                report,
+                              });
+                            }}
+                            className="flex-1 py-1.5 text-xs font-medium text-green-600 bg-green-50 rounded-lg hover:bg-green-100"
+                          >
+                            Résoudre
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setResolveModal({
+                                isOpen: true,
+                                type: "dismiss",
+                                report,
+                              });
+                            }}
+                            className="flex-1 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
+                          >
+                            Rejeter
+                          </button>
                         </>
                       )}
-                      <button onClick={(e) => { e.stopPropagation(); onDeleteReport(report); }} className="py-1.5 px-3 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100">Corbeille</button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDeleteReport(report);
+                        }}
+                        className="py-1.5 px-3 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100"
+                      >
+                        Corbeille
+                      </button>
                     </div>
                   )}
                   {reportsView === "trash" && (
                     <div className="flex items-center gap-2 pt-3 mt-2 border-t border-gray-100">
-                      <button onClick={(e) => { e.stopPropagation(); onRestoreReport(report); }} className="flex-1 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100">Restaurer</button>
-                      <button onClick={(e) => { e.stopPropagation(); setDeleteConfirmModal({ isOpen: true, report }); }} className="flex-1 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100">Supprimer</button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onRestoreReport(report);
+                        }}
+                        className="flex-1 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100"
+                      >
+                        Restaurer
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDeleteConfirmModal({ isOpen: true, report });
+                        }}
+                        className="flex-1 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100"
+                      >
+                        Supprimer
+                      </button>
                     </div>
                   )}
                 </div>
@@ -719,42 +1201,98 @@ const AdminContent = ({
               <table className="min-w-full">
                 <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Signalé</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Raison</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                    {reportsView === "active" && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Statut</th>}
-                    {reportsView === "trash" && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Suppression auto</th>}
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Type
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Signalé
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Raison
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Date
+                    </th>
+                    {reportsView === "active" && (
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                        Statut
+                      </th>
+                    )}
+                    {reportsView === "trash" && (
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                        Suppression auto
+                      </th>
+                    )}
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {paginatedReports.map((report) => (
-                    <tr key={report.id} onClick={() => reportsView === "active" && onViewReportDetails(report)} className={`${ reportsView === "active" ? "cursor-pointer" : "" } transition-colors ${ report.status === "pending" ? "bg-yellow-50/50 hover:bg-yellow-100/70" : "hover:bg-gray-50" }`}>
+                    <tr
+                      key={report.id}
+                      onClick={() =>
+                        reportsView === "active" && onViewReportDetails(report)
+                      }
+                      className={`${reportsView === "active" ? "cursor-pointer" : ""} transition-colors ${report.status === "pending" ? "bg-yellow-50/50 hover:bg-yellow-100/70" : "hover:bg-gray-50"}`}
+                    >
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                          {report.reportType === "vehicle" ? "Véhicule" : report.reportType === "agency" ? "Agence" : "Client"}
+                          {report.reportType === "vehicle"
+                            ? "Véhicule"
+                            : report.reportType === "agency"
+                              ? "Agence"
+                              : "Client"}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="font-medium text-gray-900">{report.targetName}</div>
-                        <div className="text-sm text-gray-500">Par: {report.reportedBy}</div>
+                        <div className="font-medium text-gray-900">
+                          {report.targetName}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          Par: {report.reportedBy}
+                        </div>
                       </td>
-                      <td className="px-6 py-4"><div className="text-sm text-gray-900 max-w-xs truncate">{report.reason}</div></td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{new Date(report.reportedAt || report.created_at).toLocaleDateString("fr-FR")}</td>
+                      <td className="px-6 py-4">
+                        <div className="text-sm text-gray-900 max-w-xs truncate">
+                          {report.reason}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        {new Date(
+                          report.reportedAt || report.created_at,
+                        ).toLocaleDateString("fr-FR")}
+                      </td>
                       {reportsView === "active" && (
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center gap-2">
-                            {report.status === "pending" && (<span className="flex h-2 w-2"><span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-yellow-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span></span>)}
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${ report.status === "pending" ? "bg-yellow-100 text-yellow-800" : report.status === "resolved" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800" }`}>
-                              {report.status === "pending" ? "En attente" : report.status === "resolved" ? "Résolu" : "Rejeté"}
+                            {report.status === "pending" && (
+                              <span className="flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-yellow-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
+                              </span>
+                            )}
+                            <span
+                              className={`px-2 py-1 rounded-full text-xs font-medium ${report.status === "pending" ? "bg-yellow-100 text-yellow-800" : report.status === "resolved" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}
+                            >
+                              {report.status === "pending"
+                                ? "En attente"
+                                : report.status === "resolved"
+                                  ? "Résolu"
+                                  : "Rejeté"}
                             </span>
                           </div>
                         </td>
                       )}
                       {reportsView === "trash" && (
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                          {Math.ceil((new Date(report.autoDeleteAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24))} jours
+                          {Math.ceil(
+                            (new Date(report.autoDeleteAt).getTime() -
+                              Date.now()) /
+                              (1000 * 60 * 60 * 24),
+                          )}{" "}
+                          jours
                         </td>
                       )}
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -764,25 +1302,108 @@ const AdminContent = ({
                               <>
                                 {report.status === "pending" && (
                                   <>
-                                    <button onClick={(e) => { e.stopPropagation(); setResolveModal({ isOpen: true, type: "resolve", report }); }} className="text-green-600 hover:text-green-900 mr-3">Résoudre</button>
-                                    <button onClick={(e) => { e.stopPropagation(); setResolveModal({ isOpen: true, type: "dismiss", report }); }} className="text-gray-600 hover:text-gray-900 mr-3">Rejeter</button>
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setResolveModal({
+                                          isOpen: true,
+                                          type: "resolve",
+                                          report,
+                                        });
+                                      }}
+                                      className="text-green-600 hover:text-green-900 mr-3"
+                                    >
+                                      Résoudre
+                                    </button>
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setResolveModal({
+                                          isOpen: true,
+                                          type: "dismiss",
+                                          report,
+                                        });
+                                      }}
+                                      className="text-gray-600 hover:text-gray-900 mr-3"
+                                    >
+                                      Rejeter
+                                    </button>
                                   </>
                                 )}
-                                <button onClick={(e) => { e.stopPropagation(); onDeleteReport(report); }} className="text-red-600 hover:text-red-900" title="Déplacer vers la corbeille">
-                                  <svg className="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    onDeleteReport(report);
+                                  }}
+                                  className="text-red-600 hover:text-red-900"
+                                  title="Déplacer vers la corbeille"
+                                >
+                                  <svg
+                                    className="w-5 h-5 inline"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                    />
+                                  </svg>
                                 </button>
                               </>
                             )}
-                            {user?.role === "agency_admin" && <span className="text-gray-500 text-sm italic">Lecture seule</span>}
+                            {user?.role === "agency_admin" && (
+                              <span className="text-gray-500 text-sm italic">
+                                Lecture seule
+                              </span>
+                            )}
                           </>
                         ) : (
                           <div className="flex items-center justify-end gap-2">
-                            <button onClick={(e) => { e.stopPropagation(); onRestoreReport(report); }} className="text-blue-600 hover:text-blue-900 font-medium">
-                              <svg className="w-5 h-5 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onRestoreReport(report);
+                              }}
+                              className="text-blue-600 hover:text-blue-900 font-medium"
+                            >
+                              <svg
+                                className="w-5 h-5 inline mr-1"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                                />
+                              </svg>
                               Restaurer
                             </button>
-                            <button onClick={(e) => { e.stopPropagation(); setDeleteConfirmModal({ isOpen: true, report }); }} className="text-red-600 hover:text-red-900 font-medium">
-                              <svg className="w-5 h-5 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setDeleteConfirmModal({ isOpen: true, report });
+                              }}
+                              className="text-red-600 hover:text-red-900 font-medium"
+                            >
+                              <svg
+                                className="w-5 h-5 inline mr-1"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M6 18L18 6M6 6l12 12"
+                                />
+                              </svg>
                               Supprimer
                             </button>
                           </div>
@@ -899,70 +1520,149 @@ const AdminContent = ({
           {/* Key Financial Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
             {/* Revenu Total */}
-            <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 animate-slideUp" style={{ animationDelay: "0ms" }}>
+            <div
+              className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 animate-slideUp"
+              style={{ animationDelay: "0ms" }}
+            >
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center">
-                  <svg className="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <svg
+                    className="w-5 h-5 text-primary-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
                   </svg>
                 </div>
-                <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${revenueGrowth >= 0 ? "text-green-600 bg-green-50 border-green-100" : "text-red-500 bg-red-50 border-red-100"}`}>
-                  {revenueGrowth >= 0 ? "+" : ""}{revenueGrowth.toFixed(1)}%
+                <span
+                  className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${revenueGrowth >= 0 ? "text-green-600 bg-green-50 border-green-100" : "text-red-500 bg-red-50 border-red-100"}`}
+                >
+                  {revenueGrowth >= 0 ? "+" : ""}
+                  {revenueGrowth.toFixed(1)}%
                 </span>
               </div>
-              <p className="text-xs text-gray-400 uppercase tracking-wide font-medium mb-1">Revenu Total</p>
-              <p className="text-2xl font-bold text-gray-900">{totalRevenue.toLocaleString()} DT</p>
+              <p className="text-xs text-gray-400 uppercase tracking-wide font-medium mb-1">
+                Revenu Total
+              </p>
+              <p className="text-2xl font-bold text-gray-900">
+                {totalRevenue.toLocaleString()} DT
+              </p>
               <p className="text-xs text-gray-400 mt-2">Derniers 6 mois</p>
             </div>
 
             {/* Commission Gagnée */}
-            <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 animate-slideUp" style={{ animationDelay: "100ms" }}>
+            <div
+              className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 animate-slideUp"
+              style={{ animationDelay: "100ms" }}
+            >
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center">
-                  <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                  <svg
+                    className="w-5 h-5 text-emerald-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                    />
                   </svg>
                 </div>
-                <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${commissionGrowth >= 0 ? "text-green-600 bg-green-50 border-green-100" : "text-red-500 bg-red-50 border-red-100"}`}>
-                  {commissionGrowth >= 0 ? "+" : ""}{commissionGrowth.toFixed(1)}%
+                <span
+                  className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${commissionGrowth >= 0 ? "text-green-600 bg-green-50 border-green-100" : "text-red-500 bg-red-50 border-red-100"}`}
+                >
+                  {commissionGrowth >= 0 ? "+" : ""}
+                  {commissionGrowth.toFixed(1)}%
                 </span>
               </div>
-              <p className="text-xs text-gray-400 uppercase tracking-wide font-medium mb-1">Commission Gagnée</p>
-              <p className="text-2xl font-bold text-gray-900">{totalCommission.toLocaleString()} DT</p>
-              <p className="text-xs text-gray-400 mt-2">Votre revenu plateforme</p>
+              <p className="text-xs text-gray-400 uppercase tracking-wide font-medium mb-1">
+                Commission Gagnée
+              </p>
+              <p className="text-2xl font-bold text-gray-900">
+                {totalCommission.toLocaleString()} DT
+              </p>
+              <p className="text-xs text-gray-400 mt-2">
+                Votre revenu plateforme
+              </p>
             </div>
 
             {/* Taux de Commission */}
-            <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 animate-slideUp" style={{ animationDelay: "200ms" }}>
+            <div
+              className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 animate-slideUp"
+              style={{ animationDelay: "200ms" }}
+            >
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-violet-50 rounded-xl flex items-center justify-center">
-                  <svg className="w-5 h-5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  <svg
+                    className="w-5 h-5 text-violet-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                    />
                   </svg>
                 </div>
                 <span className="text-xs font-semibold px-2.5 py-1 rounded-full border text-violet-600 bg-violet-50 border-violet-100">
                   {commissionRate.toFixed(1)}%
                 </span>
               </div>
-              <p className="text-xs text-gray-400 uppercase tracking-wide font-medium mb-1">Taux de Commission</p>
-              <p className="text-2xl font-bold text-gray-900">{commissionRate.toFixed(1)}%</p>
+              <p className="text-xs text-gray-400 uppercase tracking-wide font-medium mb-1">
+                Taux de Commission
+              </p>
+              <p className="text-2xl font-bold text-gray-900">
+                {commissionRate.toFixed(1)}%
+              </p>
               <p className="text-xs text-gray-400 mt-2">Sur le revenu total</p>
             </div>
 
             {/* Commission Moy./Mois */}
-            <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 animate-slideUp" style={{ animationDelay: "300ms" }}>
+            <div
+              className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 animate-slideUp"
+              style={{ animationDelay: "300ms" }}
+            >
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center">
-                  <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  <svg
+                    className="w-5 h-5 text-amber-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                    />
                   </svg>
                 </div>
                 <span className="text-xs font-semibold px-2.5 py-1 rounded-full border text-amber-600 bg-amber-50 border-amber-100">
                   Moy.
                 </span>
               </div>
-              <p className="text-xs text-gray-400 uppercase tracking-wide font-medium mb-1">Commission Moy./Mois</p>
-              <p className="text-2xl font-bold text-gray-900">{(totalCommission / Math.max(monthlyRevenue.length, 1)).toLocaleString()} DT</p>
+              <p className="text-xs text-gray-400 uppercase tracking-wide font-medium mb-1">
+                Commission Moy./Mois
+              </p>
+              <p className="text-2xl font-bold text-gray-900">
+                {(
+                  totalCommission / Math.max(monthlyRevenue.length, 1)
+                ).toLocaleString()}{" "}
+                DT
+              </p>
               <p className="text-xs text-gray-400 mt-2">Sur 6 derniers mois</p>
             </div>
           </div>
