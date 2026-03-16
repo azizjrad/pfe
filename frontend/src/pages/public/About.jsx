@@ -9,7 +9,6 @@ const About = () => {
   const hero = useScrollAnimation({ threshold: 0.2 });
   const story = useScrollAnimation({ threshold: 0.2 });
   const values = useScrollAnimation({ threshold: 0.2 });
-  const team = useScrollAnimation({ threshold: 0.2 });
   const stats = useScrollAnimation({ threshold: 0.2 });
   const cta = useScrollAnimation({ threshold: 0.3 });
 
@@ -101,33 +100,6 @@ const About = () => {
     { number: "150+", label: "Véhicules" },
     { number: "3", label: "Agences" },
     { number: "24/7", label: "Assistance" },
-  ];
-
-  const teamMembers = [
-    {
-      name: "Mohamed Ben Ali",
-      role: "Directeur Général",
-      image:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400",
-    },
-    {
-      name: "Amira Trabelsi",
-      role: "Responsable Service Client",
-      image:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400",
-    },
-    {
-      name: "Karim Hamza",
-      role: "Chef de Parc Automobile",
-      image:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400",
-    },
-    {
-      name: "Salma Mansour",
-      role: "Responsable Marketing",
-      image:
-        "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400",
-    },
   ];
 
   return (
@@ -268,56 +240,6 @@ const About = () => {
                   </h3>
                   <p className="text-gray-600 leading-relaxed text-sm">
                     {value.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section className="pb-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            ref={team.ref}
-            className={`transition-all duration-700 ${team.isVisible ? "animate-fadeIn" : "opacity-0"}`}
-          >
-            <div className="text-center mb-12">
-              <span className="inline-block px-4 py-2 bg-primary-100 text-primary-600 rounded-full text-sm font-semibold mb-4">
-                L'équipe
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                À votre service
-              </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Une équipe expérimentée disponible pour vous accompagner
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {teamMembers.map((member, index) => (
-                <div
-                  key={index}
-                  className="group text-center"
-                  style={{
-                    animation: team.isVisible
-                      ? `slideUp 0.6s ease-out ${index * 100}ms both`
-                      : "none",
-                  }}
-                >
-                  <div className="relative mb-6 overflow-hidden rounded-xl shadow-md group-hover:shadow-lg transition-all duration-300">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-1">
-                    {member.name}
-                  </h3>
-                  <p className="text-primary-600 text-sm font-medium">
-                    {member.role}
                   </p>
                 </div>
               ))}

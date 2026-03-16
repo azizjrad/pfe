@@ -794,26 +794,6 @@ const Home = () => {
               </div>
             ))}
           </div>
-
-          {/* Stats Section */}
-          <div className="mt-20 grid md:grid-cols-4 gap-8">
-            {[
-              { number: "500+", label: "Clients satisfaits" },
-              { number: "50+", label: "Véhicules disponibles" },
-              { number: "5", label: "Agences en Tunisie" },
-              { number: "24/7", label: "Support client" },
-            ].map((stat, index) => (
-              <div
-                key={index}
-                className="text-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
-              >
-                <div className="text-4xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent mb-2">
-                  {stat.number}
-                </div>
-                <div className="text-gray-600 font-medium">{stat.label}</div>
-              </div>
-            ))}
-          </div>
         </div>
 
         <style>{`
