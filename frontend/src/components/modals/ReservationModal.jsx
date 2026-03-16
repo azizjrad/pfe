@@ -109,16 +109,36 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
         options: pricing
           ? [
               ...(pricing.insurance > 0
-                ? [{ name: "Assurance tous risques", amount: pricing.insurance }]
+                ? [
+                    {
+                      name: "Assurance tous risques",
+                      amount: pricing.insurance,
+                    },
+                  ]
                 : []),
               ...(pricing.airport_delivery > 0
-                ? [{ name: "Livraison aéroport", amount: pricing.airport_delivery }]
+                ? [
+                    {
+                      name: "Livraison aéroport",
+                      amount: pricing.airport_delivery,
+                    },
+                  ]
                 : []),
               ...(pricing.home_delivery > 0
-                ? [{ name: "Livraison à domicile", amount: pricing.home_delivery }]
+                ? [
+                    {
+                      name: "Livraison à domicile",
+                      amount: pricing.home_delivery,
+                    },
+                  ]
                 : []),
               ...(pricing.after_hours > 0
-                ? [{ name: "Prise en charge hors horaires", amount: pricing.after_hours }]
+                ? [
+                    {
+                      name: "Prise en charge hors horaires",
+                      amount: pricing.after_hours,
+                    },
+                  ]
                 : []),
             ]
           : [],
@@ -177,25 +197,29 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 pt-6 sm:pt-4 bg-black/50 backdrop-blur-sm animate-fadeIn"
       onClick={handleClose}
     >
       <div
-        className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slideUp"
+        className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl max-w-2xl w-full max-h-[94vh] sm:max-h-[90vh] overflow-y-auto animate-slideUp"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="sticky top-0 z-10 bg-gradient-to-r from-primary-600 to-primary-700 text-white p-6 rounded-t-3xl flex items-center justify-between">
+        <div className="sticky top-0 z-10 bg-gradient-to-r from-primary-600 to-primary-700 text-white p-4 sm:p-6 rounded-t-2xl sm:rounded-t-3xl flex items-center justify-between gap-3">
           <div>
-            <h3 className="text-2xl font-bold">Réserver votre véhicule</h3>
-            <p className="text-primary-100 mt-1">{vehicle.name}</p>
+            <h3 className="text-lg sm:text-2xl font-bold">
+              Réserver votre véhicule
+            </h3>
+            <p className="text-sm sm:text-base text-primary-100 mt-1 break-words">
+              {vehicle.name}
+            </p>
           </div>
           <button
             onClick={handleClose}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+            className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors flex-shrink-0"
           >
             <svg
-              className="w-6 h-6"
+              className="w-5 h-5 sm:w-6 sm:h-6"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -211,20 +235,22 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 space-y-6">
+        <div className="p-4 sm:p-6 space-y-5 sm:space-y-6">
           {/* Vehicle Summary */}
-          <div className="flex items-center gap-4 p-4 bg-primary-50 rounded-2xl">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-primary-50 rounded-2xl">
             <img
               src={vehicle.image}
               alt={vehicle.name}
-              className="w-24 h-24 object-cover rounded-xl"
+              className="w-full sm:w-24 h-40 sm:h-24 object-cover rounded-xl"
             />
             <div className="flex-1">
-              <h4 className="font-bold text-gray-900 text-lg">
+              <h4 className="font-bold text-gray-900 text-base sm:text-lg">
                 {vehicle.name}
               </h4>
-              <p className="text-gray-600">{vehicle.category}</p>
-              <p className="text-gray-600 text-sm mt-1">
+              <p className="text-sm sm:text-base text-gray-600">
+                {vehicle.category}
+              </p>
+              <p className="text-gray-600 text-xs sm:text-sm mt-1">
                 Prix de base: {vehicle.price} DT/jour
               </p>
             </div>
@@ -250,7 +276,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                 </svg>
                 Période de location*
               </h4>
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid md:grid-cols-2 gap-3 sm:gap-4">
                 <div className="relative">
                   <input
                     type="date"
@@ -261,7 +287,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                     onBlur={() => handleBlur("startDate")}
                     min={new Date().toISOString().split("T")[0]}
                     required
-                    className={`w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black focus:text-primary-500 peer focus:outline-none ${
+                    className={`w-full px-3.5 sm:px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black focus:text-primary-500 peer focus:outline-none text-sm sm:text-base ${
                       touched.startDate && !reservationData.startDate
                         ? "border-red-500"
                         : "border-gray-300"
@@ -302,7 +328,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                             .split("T")[0]
                     }
                     required
-                    className={`w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black focus:text-primary-500 peer focus:outline-none ${
+                    className={`w-full px-3.5 sm:px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black focus:text-primary-500 peer focus:outline-none text-sm sm:text-base ${
                       touched.endDate && !reservationData.endDate
                         ? "border-red-500"
                         : "border-gray-300"
@@ -346,7 +372,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                     </svg>
                     Assurance & Protection
                   </h4>
-                  <label className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors">
+                  <label className="flex items-center gap-3 p-3 sm:p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors">
                     <input
                       type="checkbox"
                       checked={options.full_insurance}
@@ -385,7 +411,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                     Services supplémentaires
                   </h4>
                   <div className="grid md:grid-cols-2 gap-3">
-                    <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors">
+                    <label className="flex items-center gap-3 p-2.5 sm:p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors">
                       <input
                         type="checkbox"
                         checked={options.airport_delivery}
@@ -406,7 +432,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                         </div>
                       </div>
                     </label>
-                    <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors">
+                    <label className="flex items-center gap-3 p-2.5 sm:p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors">
                       <input
                         type="checkbox"
                         checked={options.home_delivery}
@@ -424,7 +450,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                         </div>
                       </div>
                     </label>
-                    <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors md:col-span-2">
+                    <label className="flex items-center gap-3 p-2.5 sm:p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors md:col-span-2">
                       <input
                         type="checkbox"
                         checked={options.after_hours_pickup}
@@ -450,7 +476,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
 
                 {/* Price Summary */}
                 {pricing && (
-                  <div className="bg-gradient-to-br from-primary-50 to-primary-100/50 rounded-2xl p-6 space-y-3">
+                  <div className="bg-gradient-to-br from-primary-50 to-primary-100/50 rounded-2xl p-4 sm:p-6 space-y-3">
                     <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
                       <svg
                         className="w-5 h-5 text-primary-600"
@@ -524,11 +550,11 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                       )}
 
                       <div className="border-t border-primary-200 my-3 pt-3">
-                        <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center gap-3">
                           <span className="text-lg font-bold text-gray-900">
                             Total
                           </span>
-                          <span className="text-2xl font-bold text-primary-600">
+                          <span className="text-xl sm:text-2xl font-bold text-primary-600 text-right break-words">
                             {pricing.total.toFixed(2)} DT
                           </span>
                         </div>
@@ -566,7 +592,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                     onChange={handleChange}
                     onBlur={() => handleBlur("fullName")}
                     required
-                    className={`w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none ${
+                    className={`w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base ${
                       touched.fullName && !reservationData.fullName.trim()
                         ? "border-red-500"
                         : "border-gray-300"
@@ -583,7 +609,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                   )}
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 gap-3 sm:gap-4">
                   <div className="relative">
                     <input
                       type="email"
@@ -592,7 +618,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                       onChange={handleChange}
                       onBlur={() => handleBlur("email")}
                       required
-                      className={`w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none ${
+                      className={`w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base ${
                         touched.email && !reservationData.email.trim()
                           ? "border-red-500"
                           : "border-gray-300"
@@ -616,7 +642,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                       onChange={handleChange}
                       onBlur={() => handleBlur("phone")}
                       required
-                      className={`w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none ${
+                      className={`w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base ${
                         touched.phone && !reservationData.phone.trim()
                           ? "border-red-500"
                           : "border-gray-300"
@@ -642,22 +668,24 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                 Agence de retrait
               </p>
               <p className="text-gray-900 font-medium">{vehicle.agency.name}</p>
-              <p className="text-gray-600 text-sm">{vehicle.agency.address}</p>
+              <p className="text-gray-600 text-sm break-words">
+                {vehicle.agency.address}
+              </p>
             </div>
 
             {/* Submit Buttons */}
-            <div className="flex gap-4 pt-4 border-t border-gray-200">
+            <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-4 border-t border-gray-200">
               <button
                 type="button"
                 onClick={handleClose}
-                className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all font-semibold"
+                className="w-full sm:flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all font-semibold text-sm sm:text-base"
               >
                 Annuler
               </button>
               <button
                 type="submit"
                 disabled={!isFormValid}
-                className={`flex-1 px-6 py-3 rounded-xl font-semibold shadow-lg transition-all ${
+                className={`w-full sm:flex-1 px-6 py-3 rounded-xl font-semibold shadow-lg transition-all text-sm sm:text-base ${
                   isFormValid
                     ? "bg-gradient-to-r from-primary-600 to-primary-700 text-white hover:from-primary-700 hover:to-primary-800 hover:shadow-xl"
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"

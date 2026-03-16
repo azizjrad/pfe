@@ -16,6 +16,7 @@ const AgencyDetails = () => {
   const [agency, setAgency] = useState(null);
   const [agencyVehicles, setAgencyVehicles] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [isReviewsModalOpen, setIsReviewsModalOpen] = useState(false);
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [reviewData, setReviewData] = useState({ rating: 5, comment: "" });
   const [submittingReview, setSubmittingReview] = useState(false);
@@ -152,6 +153,12 @@ const AgencyDetails = () => {
     );
   }
 
+  const reviewsCount = reviews.length || agency.totalReviews || 0;
+  const averageRating =
+    reviews.length > 0
+      ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
+      : agency.rating;
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -222,7 +229,11 @@ const AgencyDetails = () => {
                   </svg>
                   {agency.location}
                 </div>
-                <div className="bg-white/90 backdrop-blur-sm rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsReviewsModalOpen(true)}
+                  className="bg-white/90 backdrop-blur-sm rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 flex items-center gap-2 hover:bg-white transition-colors"
+                >
                   <svg
                     className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
@@ -231,12 +242,12 @@ const AgencyDetails = () => {
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                   </svg>
                   <span className="text-sm sm:text-base font-bold text-gray-900">
-                    {agency.rating}
+                    {averageRating.toFixed(1)}
                   </span>
                   <span className="text-xs sm:text-sm text-gray-600">
-                    ({agency.totalReviews} avis)
+                    ({reviewsCount} avis)
                   </span>
-                </div>
+                </button>
               </div>
               <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-3 sm:mb-4 flex items-center justify-between gap-3">
                 <span className="min-w-0 break-words">{agency.name}</span>
@@ -445,199 +456,6 @@ const AgencyDetails = () => {
         </div>
       </section>
 
-      {/* Reviews Section */}
-      <section className="py-10 sm:py-12 md:py-16 bg-gradient-to-br from-gray-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            {/* Header */}
-            <div className="text-center mb-8 sm:mb-10 md:mb-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
-                Avis des Clients
-              </h2>
-              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-                {reviews.length > 0 ? (
-                  <>
-                    <div className="flex items-center">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <svg
-                          key={star}
-                          className={`w-5 h-5 sm:w-6 sm:h-6 ${
-                            star <=
-                            Math.round(
-                              reviews.reduce((acc, r) => acc + r.rating, 0) /
-                                reviews.length,
-                            )
-                              ? "text-yellow-400"
-                              : "text-gray-300"
-                          }`}
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                      ))}
-                    </div>
-                    <span className="text-xl sm:text-2xl font-bold text-gray-900">
-                      {(
-                        reviews.reduce((acc, r) => acc + r.rating, 0) /
-                        reviews.length
-                      ).toFixed(1)}
-                    </span>
-                    <span className="text-sm sm:text-base text-gray-600">
-                      ({reviews.length} avis)
-                    </span>
-                  </>
-                ) : (
-                  <span className="text-gray-500">
-                    Aucun avis pour le moment
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {/* Add Review Button (only for logged in clients) */}
-            {user && user.role === "client" && !showReviewForm && (
-              <div className="text-center mb-6 sm:mb-8">
-                <button
-                  onClick={() => setShowReviewForm(true)}
-                  className="px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-xl hover:from-primary-700 hover:to-primary-800 transition-all shadow-lg"
-                >
-                  Laisser un avis
-                </button>
-              </div>
-            )}
-
-            {/* Review Form */}
-            {showReviewForm && (
-              <div className="mb-8 bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-200">
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">
-                  Votre avis
-                </h3>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Note
-                    </label>
-                    <div className="flex gap-2">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <button
-                          key={star}
-                          type="button"
-                          onClick={() =>
-                            setReviewData({ ...reviewData, rating: star })
-                          }
-                          className="transition-transform hover:scale-110"
-                        >
-                          <svg
-                            className={`w-8 h-8 sm:w-10 sm:h-10 ${
-                              star <= reviewData.rating
-                                ? "text-yellow-400"
-                                : "text-gray-300"
-                            }`}
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Commentaire
-                    </label>
-                    <textarea
-                      value={reviewData.comment}
-                      onChange={(e) =>
-                        setReviewData({
-                          ...reviewData,
-                          comment: e.target.value,
-                        })
-                      }
-                      rows={4}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
-                      placeholder="Partagez votre expérience..."
-                    />
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <button
-                      onClick={handleSubmitReview}
-                      disabled={submittingReview}
-                      className="w-full sm:w-auto px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50"
-                    >
-                      {submittingReview ? "Envoi..." : "Publier"}
-                    </button>
-                    <button
-                      onClick={() => {
-                        setShowReviewForm(false);
-                        setReviewData({ rating: 5, comment: "" });
-                      }}
-                      className="w-full sm:w-auto px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition-colors"
-                    >
-                      Annuler
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Reviews List */}
-            <div className="space-y-4">
-              {reviews.length > 0 ? (
-                reviews.map((review) => (
-                  <div
-                    key={review.id}
-                    className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-200"
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
-                      <div>
-                        <p className="font-bold text-gray-900 text-base sm:text-lg">
-                          {review.user_name}
-                        </p>
-                        <div className="flex items-center gap-2 mt-1">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <svg
-                              key={star}
-                              className={`w-5 h-5 ${
-                                star <= review.rating
-                                  ? "text-yellow-400"
-                                  : "text-gray-300"
-                              }`}
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                            </svg>
-                          ))}
-                        </div>
-                      </div>
-                      <span className="text-xs sm:text-sm text-gray-500">
-                        {new Date(review.created_at).toLocaleDateString(
-                          "fr-FR",
-                        )}
-                      </span>
-                    </div>
-                    <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                      {review.comment}
-                    </p>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center py-12 bg-white rounded-2xl">
-                  <p className="text-gray-500 text-lg">
-                    Aucun avis pour le moment
-                  </p>
-                  <p className="text-gray-400 mt-2">
-                    Soyez le premier à partager votre expérience !
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Agency Vehicles */}
       <section className="py-10 sm:py-12 md:py-16 bg-white">
         <div className="container mx-auto px-4">
@@ -690,6 +508,193 @@ const AgencyDetails = () => {
           )}
         </div>
       </section>
+
+      {/* Reviews Modal */}
+      {isReviewsModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm"
+          onClick={() => setIsReviewsModalOpen(false)}
+        >
+          <div
+            className="w-full max-w-4xl max-h-[92vh] overflow-y-auto bg-white rounded-2xl sm:rounded-3xl shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="sticky top-0 z-10 px-4 sm:px-6 py-4 bg-white/95 backdrop-blur-sm border-b border-gray-200 rounded-t-2xl sm:rounded-t-3xl flex items-center justify-between gap-3">
+              <div>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+                  Avis des Clients
+                </h2>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-primary-600 font-semibold">
+                    {averageRating.toFixed(1)}
+                  </span>
+                  <span className="text-sm text-gray-600">
+                    ({reviewsCount} avis)
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsReviewsModalOpen(false)}
+                className="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 flex items-center justify-center transition-colors"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div className="p-4 sm:p-6">
+              {user && user.role === "client" && !showReviewForm && (
+                <div className="text-center mb-6 sm:mb-8">
+                  <button
+                    onClick={() => setShowReviewForm(true)}
+                    className="px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-xl hover:from-primary-700 hover:to-primary-800 transition-all shadow-lg"
+                  >
+                    Laisser un avis
+                  </button>
+                </div>
+              )}
+
+              {showReviewForm && (
+                <div className="mb-8 bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-200">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">
+                    Votre avis
+                  </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Note
+                      </label>
+                      <div className="flex gap-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() =>
+                              setReviewData({ ...reviewData, rating: star })
+                            }
+                            className="transition-transform hover:scale-110"
+                          >
+                            <svg
+                              className={`w-8 h-8 sm:w-10 sm:h-10 ${
+                                star <= reviewData.rating
+                                  ? "text-yellow-400"
+                                  : "text-gray-300"
+                              }`}
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Commentaire
+                      </label>
+                      <textarea
+                        value={reviewData.comment}
+                        onChange={(e) =>
+                          setReviewData({
+                            ...reviewData,
+                            comment: e.target.value,
+                          })
+                        }
+                        rows={4}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        placeholder="Partagez votre expérience..."
+                      />
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <button
+                        onClick={handleSubmitReview}
+                        disabled={submittingReview}
+                        className="w-full sm:w-auto px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50"
+                      >
+                        {submittingReview ? "Envoi..." : "Publier"}
+                      </button>
+                      <button
+                        onClick={() => {
+                          setShowReviewForm(false);
+                          setReviewData({ rating: 5, comment: "" });
+                        }}
+                        className="w-full sm:w-auto px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition-colors"
+                      >
+                        Annuler
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-4">
+                {reviews.length > 0 ? (
+                  reviews.map((review) => (
+                    <div
+                      key={review.id}
+                      className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-200"
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                        <div>
+                          <p className="font-bold text-gray-900 text-base sm:text-lg">
+                            {review.user_name}
+                          </p>
+                          <div className="flex items-center gap-2 mt-1">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <svg
+                                key={star}
+                                className={`w-5 h-5 ${
+                                  star <= review.rating
+                                    ? "text-yellow-400"
+                                    : "text-gray-300"
+                                }`}
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                              >
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                            ))}
+                          </div>
+                        </div>
+                        <span className="text-xs sm:text-sm text-gray-500">
+                          {new Date(review.created_at).toLocaleDateString(
+                            "fr-FR",
+                          )}
+                        </span>
+                      </div>
+                      <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                        {review.comment}
+                      </p>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-12 bg-white rounded-2xl">
+                    <p className="text-gray-500 text-lg">
+                      Aucun avis pour le moment
+                    </p>
+                    <p className="text-gray-400 mt-2">
+                      Soyez le premier à partager votre expérience !
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
 

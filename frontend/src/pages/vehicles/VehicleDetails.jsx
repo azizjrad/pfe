@@ -163,12 +163,12 @@ const VehicleDetails = () => {
       <Navbar />
 
       {/* Hero Section with Vehicle Image */}
-      <section className="pt-32 pb-12">
+      <section className="pt-24 sm:pt-28 md:pt-32 pb-8 sm:pb-10 md:pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Back Button */}
           <button
             onClick={() => navigate("/vehicles")}
-            className="mb-6 flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors group"
+            className="mb-4 sm:mb-6 flex items-center gap-2 text-sm sm:text-base text-gray-600 hover:text-primary-600 transition-colors group"
           >
             <svg
               className="w-5 h-5 group-hover:-translate-x-1 transition-transform"
@@ -190,7 +190,7 @@ const VehicleDetails = () => {
             ref={hero.ref}
             className={`transition-all duration-700 ${hero.isVisible ? "animate-fadeIn" : ""}`}
           >
-            <div className="grid lg:grid-cols-2 gap-12 items-start">
+            <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-start">
               {/* Left: Image */}
               <div className="relative">
                 <div className="aspect-[4/3] rounded-3xl overflow-hidden bg-white/50 backdrop-blur-sm shadow-2xl">
@@ -201,18 +201,18 @@ const VehicleDetails = () => {
                   />
                 </div>
                 {/* Category Badge */}
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
-                  <span className="text-primary-600 font-semibold">
+                <div className="absolute top-3 sm:top-4 left-3 sm:left-4 bg-white/90 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-lg">
+                  <span className="text-xs sm:text-sm text-primary-600 font-semibold">
                     {vehicle.category}
                   </span>
                 </div>
               </div>
 
               {/* Right: Info */}
-              <div className="space-y-6">
+              <div className="space-y-5 sm:space-y-6">
                 <div>
-                  <div className="flex items-start justify-between mb-4">
-                    <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
+                  <div className="flex items-start justify-between gap-3 mb-3 sm:mb-4">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 break-words">
                       {vehicle.name}
                     </h1>
                     <ReportButton
@@ -222,39 +222,41 @@ const VehicleDetails = () => {
                       onReportSubmit={handleReportSubmit}
                     />
                   </div>
-                  <div className="flex items-baseline gap-3 mb-6">
-                    <span className="text-5xl font-bold text-primary-600">
+                  <div className="flex items-baseline gap-2 sm:gap-3 mb-4 sm:mb-6 flex-wrap">
+                    <span className="text-4xl sm:text-5xl font-bold text-primary-600">
                       {vehicle.price} dt
                     </span>
-                    <span className="text-xl text-gray-600">/jour</span>
+                    <span className="text-lg sm:text-xl text-gray-600">
+                      /jour
+                    </span>
                   </div>
                 </div>
 
                 {/* Quick Stats */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-gray-200">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-3 sm:p-4 border border-gray-200">
                     <div className="text-gray-600 text-sm mb-1">Année</div>
-                    <div className="text-xl font-bold text-gray-900">
+                    <div className="text-lg sm:text-xl font-bold text-gray-900">
                       {vehicle.year}
                     </div>
                   </div>
-                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-gray-200">
+                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-3 sm:p-4 border border-gray-200">
                     <div className="text-gray-600 text-sm mb-1">Places</div>
-                    <div className="text-xl font-bold text-gray-900">
+                    <div className="text-lg sm:text-xl font-bold text-gray-900">
                       {vehicle.seats}
                     </div>
                   </div>
-                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-gray-200">
+                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-3 sm:p-4 border border-gray-200">
                     <div className="text-gray-600 text-sm mb-1">
                       Transmission
                     </div>
-                    <div className="text-lg font-bold text-gray-900">
+                    <div className="text-base sm:text-lg font-bold text-gray-900 break-words">
                       {vehicle.transmission}
                     </div>
                   </div>
-                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-gray-200">
+                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-3 sm:p-4 border border-gray-200">
                     <div className="text-gray-600 text-sm mb-1">Carburant</div>
-                    <div className="text-lg font-bold text-gray-900">
+                    <div className="text-base sm:text-lg font-bold text-gray-900 break-words">
                       {vehicle.fuel}
                     </div>
                   </div>
@@ -263,7 +265,7 @@ const VehicleDetails = () => {
                 {/* Reserve Button */}
                 <button
                   onClick={handleReserveClick}
-                  className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white px-8 py-4 rounded-2xl hover:from-primary-700 hover:to-primary-800 transition-all font-semibold text-lg shadow-lg hover:shadow-xl hover:scale-[1.02] flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl hover:from-primary-700 hover:to-primary-800 transition-all font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl hover:scale-[1.02] flex items-center justify-center gap-2"
                 >
                   <svg
                     className="w-6 h-6"
@@ -284,7 +286,7 @@ const VehicleDetails = () => {
                 {/* Contact Agency */}
                 <button
                   onClick={scrollToAgency}
-                  className="w-full bg-white/60 backdrop-blur-sm border-2 border-primary-200 text-primary-600 px-8 py-4 rounded-2xl hover:bg-primary-50 transition-all font-semibold text-lg flex items-center justify-center gap-2"
+                  className="w-full bg-white/60 backdrop-blur-sm border-2 border-primary-200 text-primary-600 px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl hover:bg-primary-50 transition-all font-semibold text-base sm:text-lg flex items-center justify-center gap-2"
                 >
                   <svg
                     className="w-6 h-6"
@@ -318,39 +320,39 @@ const VehicleDetails = () => {
       </section>
 
       {/* Description & Features */}
-      <section className="py-12">
+      <section className="py-8 sm:py-10 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             ref={details.ref}
             className={`transition-all duration-700 delay-200 ${details.isVisible ? "animate-slideUp" : ""}`}
           >
-            <div className="grid lg:grid-cols-3 gap-8">
+            <div className="grid lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
               {/* Description */}
-              <div className="lg:col-span-2 space-y-8">
-                <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-gray-200 shadow-lg">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              <div className="lg:col-span-2 space-y-5 sm:space-y-6 md:space-y-8">
+                <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-5 sm:p-6 md:p-8 border border-gray-200 shadow-lg">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
                     Description
                   </h2>
-                  <p className="text-gray-700 leading-relaxed text-lg">
+                  <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed">
                     {vehicle.description}
                   </p>
                 </div>
 
                 {/* Specifications */}
-                <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-gray-200 shadow-lg">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-5 sm:p-6 md:p-8 border border-gray-200 shadow-lg">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
                     Spécifications techniques
                   </h2>
-                  <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
                     {vehicle.specifications.map((spec, index) => (
                       <div
                         key={index}
-                        className="flex items-center justify-between p-4 bg-gray-50 rounded-xl"
+                        className="flex items-center justify-between gap-3 p-3 sm:p-4 bg-gray-50 rounded-xl"
                       >
-                        <span className="text-gray-600 font-medium">
+                        <span className="text-sm sm:text-base text-gray-600 font-medium">
                           {spec.label}
                         </span>
-                        <span className="text-gray-900 font-bold">
+                        <span className="text-sm sm:text-base text-gray-900 font-bold text-right break-words">
                           {spec.value}
                         </span>
                       </div>
@@ -360,19 +362,19 @@ const VehicleDetails = () => {
               </div>
 
               {/* Features Sidebar */}
-              <div className="space-y-8">
+              <div className="space-y-5 sm:space-y-6 md:space-y-8">
                 <div
                   ref={features.ref}
-                  className={`bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-gray-200 shadow-lg transition-all duration-700 delay-300 ${features.isVisible ? "animate-slideInRight" : ""}`}
+                  className={`bg-white/60 backdrop-blur-sm rounded-3xl p-5 sm:p-6 md:p-8 border border-gray-200 shadow-lg transition-all duration-700 delay-300 ${features.isVisible ? "animate-slideInRight" : ""}`}
                 >
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
                     Équipements inclus
                   </h2>
-                  <div className="space-y-3">
+                  <div className="space-y-2.5 sm:space-y-3">
                     {vehicle.features.map((feature, index) => (
                       <div
                         key={index}
-                        className="flex items-center gap-3 p-3 bg-primary-50 rounded-xl"
+                        className="flex items-center gap-3 p-2.5 sm:p-3 bg-primary-50 rounded-xl"
                       >
                         <svg
                           className="w-5 h-5 text-primary-600 flex-shrink-0"
@@ -387,7 +389,7 @@ const VehicleDetails = () => {
                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                           />
                         </svg>
-                        <span className="text-gray-800 font-medium">
+                        <span className="text-sm sm:text-base text-gray-800 font-medium break-words">
                           {feature}
                         </span>
                       </div>
@@ -401,17 +403,20 @@ const VehicleDetails = () => {
       </section>
 
       {/* Agency Information */}
-      <section ref={agencyRef} className="py-12 pb-20">
+      <section
+        ref={agencyRef}
+        className="py-8 sm:py-10 md:py-12 pb-14 sm:pb-16 md:pb-20"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             ref={agency.ref}
             className={`transition-all duration-700 delay-400 ${agency.isVisible ? "animate-slideUp" : ""}`}
           >
-            <div className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-3xl p-8 md:p-12 text-white shadow-2xl">
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+            <div className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-3xl p-5 sm:p-7 md:p-12 text-white shadow-2xl">
+              <div className="flex items-start sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center flex-shrink-0">
                   <svg
-                    className="w-8 h-8"
+                    className="w-6 h-6 sm:w-8 sm:h-8"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -425,16 +430,20 @@ const VehicleDetails = () => {
                   </svg>
                 </div>
                 <div>
-                  <h2 className="text-3xl font-bold">{vehicle.agency.name}</h2>
-                  <p className="text-primary-100">Agence gérant ce véhicule</p>
+                  <h2 className="text-2xl sm:text-3xl font-bold break-words">
+                    {vehicle.agency.name}
+                  </h2>
+                  <p className="text-sm sm:text-base text-primary-100">
+                    Agence gérant ce véhicule
+                  </p>
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+              <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
                     <svg
-                      className="w-6 h-6"
+                      className="w-5 h-5 sm:w-6 sm:h-6"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -454,17 +463,19 @@ const VehicleDetails = () => {
                     </svg>
                   </div>
                   <div>
-                    <div className="text-sm text-primary-200 mb-1">Adresse</div>
-                    <div className="font-semibold">
+                    <div className="text-xs sm:text-sm text-primary-200 mb-1">
+                      Adresse
+                    </div>
+                    <div className="text-sm sm:text-base font-semibold break-words">
                       {vehicle.agency.address}
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
                     <svg
-                      className="w-6 h-6"
+                      className="w-5 h-5 sm:w-6 sm:h-6"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -478,22 +489,22 @@ const VehicleDetails = () => {
                     </svg>
                   </div>
                   <div>
-                    <div className="text-sm text-primary-200 mb-1">
+                    <div className="text-xs sm:text-sm text-primary-200 mb-1">
                       Téléphone
                     </div>
                     <a
                       href={`tel:${vehicle.agency.phone}`}
-                      className="font-semibold hover:text-primary-100 transition-colors"
+                      className="text-sm sm:text-base font-semibold hover:text-primary-100 transition-colors break-all"
                     >
                       {vehicle.agency.phone}
                     </a>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
                     <svg
-                      className="w-6 h-6"
+                      className="w-5 h-5 sm:w-6 sm:h-6"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -507,20 +518,22 @@ const VehicleDetails = () => {
                     </svg>
                   </div>
                   <div>
-                    <div className="text-sm text-primary-200 mb-1">Email</div>
+                    <div className="text-xs sm:text-sm text-primary-200 mb-1">
+                      Email
+                    </div>
                     <a
                       href={`mailto:${vehicle.agency.email}`}
-                      className="font-semibold hover:text-primary-100 transition-colors"
+                      className="text-sm sm:text-base font-semibold hover:text-primary-100 transition-colors break-all"
                     >
                       {vehicle.agency.email}
                     </a>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
                     <svg
-                      className="w-6 h-6"
+                      className="w-5 h-5 sm:w-6 sm:h-6"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -534,10 +547,12 @@ const VehicleDetails = () => {
                     </svg>
                   </div>
                   <div>
-                    <div className="text-sm text-primary-200 mb-1">
+                    <div className="text-xs sm:text-sm text-primary-200 mb-1">
                       Horaires
                     </div>
-                    <div className="font-semibold">{vehicle.agency.hours}</div>
+                    <div className="text-sm sm:text-base font-semibold break-words">
+                      {vehicle.agency.hours}
+                    </div>
                   </div>
                 </div>
               </div>
