@@ -223,7 +223,7 @@ const Home = () => {
       {/* Hero Section */}
       <section
         id="home"
-        className="relative pt-40 pb-32 bg-gradient-to-br from-primary-50 via-white to-primary-50 overflow-hidden"
+        className="relative pt-32 lg:pt-40 pb-20 lg:pb-32 bg-gradient-to-br from-primary-50 via-white to-primary-50 overflow-hidden"
       >
         {/* Background decoration */}
         <div className="absolute top-0 right-0 w-1/2 h-full opacity-5">
@@ -237,14 +237,14 @@ const Home = () => {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start lg:items-center">
             {/* Hero Content */}
             <div
               ref={heroContentAnim.ref}
               className={`text-left space-y-8 transition-all duration-700 ${heroContentAnim.isVisible ? "animate-slideInLeft" : "opacity-0"}`}
             >
               {/* Booking Card */}
-              <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-gray-100 p-8 max-w-md hover:shadow-3xl transition-shadow duration-300">
+              <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-gray-100 p-6 sm:p-8 max-w-md mx-auto lg:mx-0 hover:shadow-3xl transition-shadow duration-300">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="p-2 bg-primary-50 rounded-lg">
                     <svg
@@ -360,8 +360,8 @@ const Home = () => {
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Date de prise en charge
                   </label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="relative">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="relative group">
                       <input
                         type="date"
                         value={searchData.pickupDate}
@@ -447,8 +447,8 @@ const Home = () => {
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Date de retour
                   </label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="relative">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="relative group">
                       <input
                         type="date"
                         value={searchData.returnDate}
@@ -622,8 +622,12 @@ const Home = () => {
             </div>
 
             {/* Hero Image */}
-            <div className="relative">
-              <img src="/clio.png" alt="Renault Clio" className="" />
+            <div className="relative hidden lg:flex justify-end">
+              <img
+                src="/clio.png"
+                alt="Renault Clio"
+                className="w-full max-w-2xl object-contain drop-shadow-[0_30px_35px_rgba(0,0,0,0.25)]"
+              />
             </div>
           </div>
         </div>

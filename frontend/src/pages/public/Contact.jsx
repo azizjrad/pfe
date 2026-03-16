@@ -54,13 +54,13 @@ const Contact = () => {
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-      <section className="pt-40 pb-16 bg-white">
-        <div className="max-w-full mx-auto pl-20 pr-4">
-          <div className="grid lg:grid-cols-12 gap-8 items-start">
+      <section className="pt-32 sm:pt-40 pb-12 sm:pb-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             {/* Left Column - Text Content */}
             <div
               ref={leftColumn.ref}
-              className={`lg:col-span-4 lg:pl-8 lg:pt-8 transition-all duration-700 ${leftColumn.isVisible ? "opacity-100" : "opacity-0"}`}
+              className={`lg:col-span-5 lg:pt-8 transition-all duration-700 ${leftColumn.isVisible ? "opacity-100" : "opacity-0"}`}
             >
               <div
                 ref={logo.ref}
@@ -77,7 +77,7 @@ const Contact = () => {
                       className="w-8 h-8"
                     />
                   </div>
-                  <span className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
+                  <span className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
                     Elite Drive
                   </span>
                 </Link>
@@ -87,7 +87,7 @@ const Contact = () => {
                 ref={title.ref}
                 className={`transition-all duration-700 delay-200 ${title.isVisible ? "animate-slideUp" : "opacity-0"}`}
               >
-                <h1 className="text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
                   <span className="text-gray-900">Contactez</span>{" "}
                   <span className="text-primary-500">nous</span>
                 </h1>
@@ -198,7 +198,7 @@ const Contact = () => {
             {/* Right Column - Contact Form */}
             <div
               ref={rightColumn.ref}
-              className={`lg:col-span-7 lg:col-start-6 bg-white rounded-2xl p-8 lg:mr-8 transition-all duration-700 delay-200 ${rightColumn.isVisible ? "animate-slideInRight" : "opacity-0"}`}
+              className={`lg:col-span-7 lg:col-start-6 bg-white rounded-2xl p-5 sm:p-8 transition-all duration-700 delay-200 ${rightColumn.isVisible ? "animate-slideInRight" : "opacity-0"}`}
             >
               {submitted ? (
                 <div className="bg-gray-100 rounded-2xl p-12 text-center">
@@ -239,7 +239,7 @@ const Contact = () => {
                   </div>
 
                   {/* Email and Phone */}
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="relative">
                       <input
                         type="email"

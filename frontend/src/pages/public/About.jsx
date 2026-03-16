@@ -107,16 +107,16 @@ const About = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="pt-40 pb-16">
+      <section className="pt-28 sm:pt-32 lg:pt-40 pb-12 sm:pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             ref={hero.ref}
             className={`text-center transition-all duration-700 ${hero.isVisible ? "animate-fadeIn" : "opacity-0"}`}
           >
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
               À Propos d'<span className="text-primary-600">Elite Drive</span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Location de véhicules haut de gamme en Tunisie. Une approche
               centrée sur la qualité du service et la satisfaction client.
             </p>
@@ -125,11 +125,11 @@ const About = () => {
       </section>
 
       {/* Story Section */}
-      <section className="pb-20">
+      <section className="pb-14 sm:pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             ref={story.ref}
-            className={`grid lg:grid-cols-2 gap-12 items-center transition-all duration-700 ${story.isVisible ? "animate-slideUp" : "opacity-0"}`}
+            className={`grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-center transition-all duration-700 ${story.isVisible ? "animate-slideUp" : "opacity-0"}`}
           >
             <div>
               <div className="space-y-6">
@@ -137,11 +137,11 @@ const About = () => {
                   <span className="inline-block px-4 py-2 bg-primary-100 text-primary-600 rounded-full text-sm font-semibold mb-4">
                     Depuis 2015
                   </span>
-                  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                     Qui sommes-nous
                   </h2>
                 </div>
-                <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
+                <div className="space-y-4 text-gray-700 text-base sm:text-lg leading-relaxed">
                   <p>
                     Elite Drive est une entreprise tunisienne spécialisée dans
                     la location de véhicules. Nous proposons une gamme variée
@@ -163,8 +163,8 @@ const About = () => {
               </div>
             </div>
 
-            <div className="relative">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative mt-2 lg:mt-0">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3]">
                 <img
                   src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800"
                   alt="Elite Drive Fleet"
@@ -172,30 +172,30 @@ const About = () => {
                 />
               </div>
               {/* Decorative element */}
-              <div className="absolute -bottom-6 -right-6 w-72 h-72 bg-gradient-to-br from-primary-500/20 to-primary-700/20 rounded-full blur-3xl -z-10"></div>
+              <div className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 w-48 h-48 sm:w-72 sm:h-72 bg-gradient-to-br from-primary-500/20 to-primary-700/20 rounded-full blur-3xl -z-10"></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="pb-20">
+      <section className="pb-14 sm:pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             ref={stats.ref}
-            className={`grid sm:grid-cols-2 lg:grid-cols-4 gap-8 transition-all duration-700 ${stats.isVisible ? "animate-fadeIn" : "opacity-0"}`}
+            className={`grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 transition-all duration-700 ${stats.isVisible ? "animate-fadeIn" : "opacity-0"}`}
           >
             {companyStats.map((stat, index) => (
               <div
                 key={index}
-                className="text-center p-8 bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105"
+                className="text-center p-5 sm:p-8 bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105"
                 style={{
                   animation: stats.isVisible
                     ? `scaleIn 0.6s ease-out ${index * 100}ms both`
                     : "none",
                 }}
               >
-                <div className="text-5xl font-bold text-primary-600 mb-2">
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-600 mb-2">
                   {stat.number}
                 </div>
                 <div className="text-gray-700 font-medium">{stat.label}</div>
@@ -206,36 +206,36 @@ const About = () => {
       </section>
 
       {/* Values Section */}
-      <section className="pb-20">
+      <section className="pb-14 sm:pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             ref={values.ref}
             className={`transition-all duration-700 ${values.isVisible ? "animate-slideUp" : "opacity-0"}`}
           >
-            <div className="text-center mb-12">
+            <div className="text-center mb-8 sm:mb-12">
               <span className="inline-block px-4 py-2 bg-primary-100 text-primary-600 rounded-full text-sm font-semibold mb-4">
                 Nos engagements
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
                 Ce qui nous guide
               </h2>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
               {companyValues.map((value, index) => (
                 <div
                   key={index}
-                  className="group bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
+                  className="group bg-white rounded-2xl p-5 sm:p-6 lg:p-8 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
                   style={{
                     animation: values.isVisible
                       ? `slideUp 0.6s ease-out ${index * 100}ms both`
                       : "none",
                   }}
                 >
-                  <div className="w-16 h-16 bg-gradient-to-br from-primary-100 to-primary-50 rounded-xl flex items-center justify-center text-primary-600 mb-6 group-hover:scale-105 transition-transform">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-primary-100 to-primary-50 rounded-xl flex items-center justify-center text-primary-600 mb-4 sm:mb-6 group-hover:scale-105 transition-transform">
                     {value.icon}
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">
                     {value.title}
                   </h3>
                   <p className="text-gray-600 leading-relaxed text-sm">
@@ -249,10 +249,10 @@ const About = () => {
       </section>
 
       {/* Customer Success Section */}
-      <section className="py-24 relative overflow-hidden bg-gray-50">
+      <section className="py-14 sm:py-20 lg:py-24 relative overflow-hidden bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <div className="group bg-gray-200 hover:bg-gradient-to-br hover:from-yellow-50 hover:via-amber-50 hover:to-orange-50 rounded-3xl pt-8 px-6 sm:px-10 md:px-16 pb-8 shadow-lg hover:shadow-2xl transition-all duration-500 ease-out flex flex-col min-h-[400px] cursor-pointer transform hover:scale-[1.02] hover:-translate-y-1">
+            <div className="group bg-gray-200 hover:bg-gradient-to-br hover:from-yellow-50 hover:via-amber-50 hover:to-orange-50 rounded-3xl pt-6 sm:pt-8 px-4 sm:px-8 lg:px-12 xl:px-16 pb-6 sm:pb-8 shadow-lg hover:shadow-2xl transition-all duration-500 ease-out flex flex-col min-h-[320px] sm:min-h-[380px] md:min-h-[400px] cursor-pointer transform hover:scale-[1.02] hover:-translate-y-1">
               {/* Enhanced multi-color glow effect on hover */}
               <div className="absolute inset-0 bg-gradient-to-r from-yellow-200/25 via-amber-200/20 to-white/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl blur-xl"></div>
 
@@ -261,10 +261,10 @@ const About = () => {
 
               {/* Customer Success Header */}
               <div className="relative z-10 mb-8">
-                <div className="flex items-center gap-4">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-800 group-hover:bg-gradient-to-br group-hover:from-yellow-500 group-hover:to-amber-500 rounded-full shadow-lg group-hover:scale-110 transition-all duration-300 group-hover:shadow-yellow-200/50">
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gray-800 group-hover:bg-gradient-to-br group-hover:from-yellow-500 group-hover:to-amber-500 rounded-full shadow-lg group-hover:scale-110 transition-all duration-300 group-hover:shadow-yellow-200/50">
                     <svg
-                      className="w-7 h-7 text-white group-hover:text-white transition-colors duration-300"
+                      className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white group-hover:text-white transition-colors duration-300"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -277,14 +277,14 @@ const About = () => {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-3xl font-bold text-gray-800 group-hover:text-yellow-600 transition-colors duration-300">
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 group-hover:text-yellow-600 transition-colors duration-300">
                     Satisfaction Client
                   </h3>
                 </div>
               </div>
 
               <div className="max-w-5xl flex-grow relative z-10">
-                <h2 className="text-4xl md:text-5xl font-medium mb-10 text-gray-900 leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-8 sm:mb-10 text-gray-900 leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
                   Nos clients sont notre priorité. Questions ou commentaires?
                   Nous sommes là pour vous aider, avec un support disponible
                   24h/24.
@@ -294,7 +294,7 @@ const About = () => {
               <div className="max-w-5xl relative z-10">
                 <Link
                   to="/contact"
-                  className="group/btn relative inline-block px-10 py-5 bg-gray-800 border-2 border-gray-800 text-white font-medium rounded-full hover:bg-gradient-to-r hover:from-yellow-500 hover:to-amber-500 hover:border-yellow-500 hover:scale-105 transition-all duration-300 text-lg overflow-hidden backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-yellow-200/50"
+                  className="group/btn relative inline-block px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-gray-800 border-2 border-gray-800 text-white font-medium rounded-full hover:bg-gradient-to-r hover:from-yellow-500 hover:to-amber-500 hover:border-yellow-500 hover:scale-105 transition-all duration-300 text-sm sm:text-base md:text-lg overflow-hidden backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-yellow-200/50"
                 >
                   {/* Enhanced glass overlay */}
                   <div className="absolute inset-0 bg-gradient-to-r from-white/25 via-white/10 to-transparent opacity-0 group-hover/btn:opacity-100 transition-all duration-500 rounded-full"></div>
@@ -316,29 +316,29 @@ const About = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="pb-20">
+      <section className="pb-14 sm:pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             ref={cta.ref}
-            className={`bg-gradient-to-r from-primary-600 to-primary-800 rounded-3xl p-12 text-center text-white shadow-2xl transition-all duration-700 ${cta.isVisible ? "animate-scaleIn" : "opacity-0"}`}
+            className={`bg-gradient-to-r from-primary-600 to-primary-800 rounded-3xl p-6 sm:p-8 lg:p-12 text-center text-white shadow-2xl transition-all duration-700 ${cta.isVisible ? "animate-scaleIn" : "opacity-0"}`}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
               Besoin d'un véhicule?
             </h2>
-            <p className="text-lg md:text-xl mb-8 text-primary-50 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-primary-50 max-w-2xl mx-auto">
               Consultez notre flotte et réservez en ligne en quelques clics.
               Notre équipe reste à votre disposition pour toute question.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
               <Link
                 to="/vehicles"
-                className="px-8 py-4 bg-white text-primary-600 font-semibold rounded-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white text-primary-600 font-semibold rounded-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
               >
                 Découvrir nos véhicules
               </Link>
               <Link
                 to="/contact"
-                className="px-8 py-4 bg-primary-700 text-white font-semibold rounded-xl border-2 border-white hover:bg-primary-600 hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-primary-700 text-white font-semibold rounded-xl border-2 border-white hover:bg-primary-600 hover:shadow-2xl hover:scale-105 transition-all duration-300"
               >
                 Nous contacter
               </Link>

@@ -6,6 +6,7 @@ import VehicleCard from "../../components/cards/VehicleCard";
 import Pagination from "../../components/features/Pagination";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
 import { vehiclesData } from "../../data/vehiclesData";
+import { FormControl, Select, MenuItem } from "@mui/material";
 
 const Vehicles = () => {
   const [searchParams] = useSearchParams();
@@ -136,17 +137,17 @@ const Vehicles = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="pt-40 pb-12">
+      <section className="pt-32 sm:pt-40 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             ref={hero.ref}
             className={`transition-all duration-700 ${hero.isVisible ? "animate-fadeIn" : "opacity-0"}`}
           >
             <div className="text-center mb-12">
-              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6">
                 Notre <span className="text-primary-500">Flotte</span>
               </h1>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
                 Trouvez le véhicule idéal parmi notre large sélection disponible
                 à travers toutes nos agences partenaires.
               </p>
@@ -206,7 +207,7 @@ const Vehicles = () => {
             {searchCriteria && (
               <div className="max-w-7xl mx-auto mb-8">
                 <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl p-6 text-white shadow-lg">
-                  <div className="flex items-start justify-between gap-4">
+                  <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-3">
                         <svg
@@ -313,7 +314,7 @@ const Vehicles = () => {
                     </div>
                     <button
                       onClick={() => setSearchCriteria(null)}
-                      className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+                      className="self-end sm:self-auto p-2 hover:bg-white/20 rounded-lg transition-colors"
                       title="Effacer la recherche"
                     >
                       <svg
@@ -336,10 +337,10 @@ const Vehicles = () => {
             )}
 
             {/* Filter Toggle & Sort */}
-            <div className="flex flex-wrap justify-center gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 mb-6 max-w-5xl mx-auto">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-gray-200 rounded-2xl hover:border-primary-500 transition-all"
+                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-white border-2 border-gray-200 rounded-2xl hover:border-primary-500 transition-all"
               >
                 <svg
                   className="w-5 h-5"
@@ -366,20 +367,49 @@ const Vehicles = () => {
                 )}
               </button>
 
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="px-6 py-3 bg-white border-2 border-gray-200 rounded-2xl hover:border-primary-500 focus:border-primary-500 focus:outline-none transition-all font-medium cursor-pointer"
-              >
-                <option value="default">Trier par</option>
-                <option value="price-asc">Prix croissant</option>
-                <option value="price-desc">Prix décroissant</option>
-                <option value="name">Nom (A-Z)</option>
-              </select>
+              <FormControl fullWidth>
+                <Select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  displayEmpty
+                  sx={{
+                    borderRadius: "1rem",
+                    backgroundColor: "white",
+                    fontWeight: 500,
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderWidth: "2px",
+                      borderColor: "#e5e7eb",
+                    },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#3b82f6",
+                    },
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#3b82f6",
+                    },
+                    "& .MuiSelect-select": {
+                      padding: "12px 24px",
+                    },
+                  }}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        mt: 1,
+                        borderRadius: 2,
+                        boxShadow: "0 10px 25px rgba(0,0,0,0.12)",
+                      },
+                    },
+                  }}
+                >
+                  <MenuItem value="default">Trier par</MenuItem>
+                  <MenuItem value="price-asc">Prix croissant</MenuItem>
+                  <MenuItem value="price-desc">Prix décroissant</MenuItem>
+                  <MenuItem value="name">Nom (A-Z)</MenuItem>
+                </Select>
+              </FormControl>
 
               <button
                 onClick={resetFilters}
-                className="flex items-center gap-2 px-6 py-3 bg-gray-100 rounded-2xl hover:bg-gray-200 transition-all font-medium"
+                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 rounded-2xl hover:bg-gray-200 transition-all font-medium"
               >
                 <svg
                   className="w-5 h-5"
@@ -397,7 +427,7 @@ const Vehicles = () => {
                 Réinitialiser
               </button>
 
-              <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 rounded-2xl">
+              <div className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-50 rounded-2xl">
                 <span className="font-semibold text-primary-600">
                   {filteredVehicles.length}
                 </span>
@@ -409,12 +439,12 @@ const Vehicles = () => {
 
             {/* Advanced Filters Panel */}
             {showFilters && (
-              <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 mb-8 animate-slideDown">
+              <div className="bg-white border-2 border-gray-200 rounded-2xl p-4 sm:p-6 mb-8 animate-slideDown">
                 <h3 className="font-bold text-lg mb-6 text-gray-900">
                   Filtres avancés
                 </h3>
 
-                <div className="grid md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {/* Price Range */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -536,7 +566,7 @@ const Vehicles = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div
             ref={vehiclesGrid.ref}
-            className={`flex flex-wrap justify-center gap-8 transition-all duration-700 ${vehiclesGrid.isVisible ? "animate-fadeIn" : "opacity-0"}`}
+            className={`flex flex-wrap justify-center gap-5 sm:gap-8 transition-all duration-700 ${vehiclesGrid.isVisible ? "animate-fadeIn" : "opacity-100"}`}
           >
             {paginatedVehicles.map((vehicle, index) => (
               <VehicleCard

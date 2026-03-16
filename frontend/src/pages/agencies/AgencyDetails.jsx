@@ -5,7 +5,6 @@ import Footer from "../../components/common/Footer";
 import VehicleCard from "../../components/cards/VehicleCard";
 import ReportButton from "../../components/features/ReportButton";
 import Toast from "../../components/common/Toast";
-import useScrollAnimation from "../../hooks/useScrollAnimation";
 import { useAuth } from "../../contexts/AuthContext";
 import { getAgencyById } from "../../data/agenciesData";
 import { vehiclesData } from "../../data/vehiclesData";
@@ -79,11 +78,6 @@ const AgencyDetails = () => {
       setSubmittingReview(false);
     }
   };
-
-  // Scroll animations
-  const hero = useScrollAnimation({ threshold: 0.2 });
-  const info = useScrollAnimation({ threshold: 0.2 });
-  const vehicles = useScrollAnimation({ threshold: 0.2 });
 
   useEffect(() => {
     // Scroll to top
@@ -163,13 +157,8 @@ const AgencyDetails = () => {
       <Navbar />
 
       {/* Hero Section with Agency Image */}
-      <section
-        className={`relative pt-20 ${
-          hero.isVisible ? "animate-fadeInUp" : "opacity-0"
-        }`}
-        ref={hero.ref}
-      >
-        <div className="relative h-96 overflow-hidden">
+      <section className="relative pt-16 sm:pt-20">
+        <div className="relative h-[420px] sm:h-96 overflow-hidden">
           <img
             src={agency.image}
             alt={agency.name}
@@ -178,8 +167,8 @@ const AgencyDetails = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30"></div>
 
           {/* Breadcrumb */}
-          <div className="absolute top-8 left-0 right-0 container mx-auto px-4">
-            <div className="flex items-center gap-2 text-white/80 text-sm">
+          <div className="absolute top-6 sm:top-8 left-0 right-0 container mx-auto px-4">
+            <div className="hidden sm:flex items-center gap-2 text-white/80 text-sm">
               <Link to="/" className="hover:text-white transition-colors">
                 Accueil
               </Link>
@@ -208,10 +197,10 @@ const AgencyDetails = () => {
           </div>
 
           {/* Agency Title */}
-          <div className="absolute bottom-0 left-0 right-0 container mx-auto px-4 pb-12">
+          <div className="absolute bottom-0 left-0 right-0 container mx-auto px-4 pb-8 sm:pb-12">
             <div className="max-w-4xl">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="bg-primary-600/90 backdrop-blur-sm text-white px-4 py-2 rounded-xl font-semibold flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                <div className="bg-primary-600/90 backdrop-blur-sm text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-sm sm:text-base font-semibold flex items-center gap-2">
                   <svg
                     className="w-5 h-5"
                     fill="none"
@@ -233,7 +222,7 @@ const AgencyDetails = () => {
                   </svg>
                   {agency.location}
                 </div>
-                <div className="bg-white/90 backdrop-blur-sm rounded-xl px-4 py-2 flex items-center gap-2">
+                <div className="bg-white/90 backdrop-blur-sm rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 flex items-center gap-2">
                   <svg
                     className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
@@ -241,16 +230,16 @@ const AgencyDetails = () => {
                   >
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                   </svg>
-                  <span className="font-bold text-gray-900">
+                  <span className="text-sm sm:text-base font-bold text-gray-900">
                     {agency.rating}
                   </span>
-                  <span className="text-sm text-gray-600">
+                  <span className="text-xs sm:text-sm text-gray-600">
                     ({agency.totalReviews} avis)
                   </span>
                 </div>
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 flex items-center justify-between">
-                <span>{agency.name}</span>
+              <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-3 sm:mb-4 flex items-center justify-between gap-3">
+                <span className="min-w-0 break-words">{agency.name}</span>
                 <ReportButton
                   reportType="agency"
                   reportTarget={{ id: agency.id, name: agency.name }}
@@ -259,25 +248,24 @@ const AgencyDetails = () => {
                   onReportSubmit={handleReportSubmit}
                 />
               </h1>
-              <p className="text-xl text-white/90">{agency.description}</p>
+              <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-3xl">
+                {agency.description}
+              </p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Agency Information */}
-      <section
-        className={`py-16 ${info.isVisible ? "animate-fadeInUp" : "opacity-0"}`}
-        ref={info.ref}
-      >
+      <section className="py-10 sm:py-12 md:py-16">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
             {/* Contact Information Card */}
             <div className="lg:col-span-2">
-              <div className="bg-white rounded-2xl p-8 shadow-lg">
-                <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+              <div className="bg-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg">
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-5 sm:mb-6 flex items-center gap-3">
                   <svg
-                    className="w-8 h-8 text-primary-600"
+                    className="w-7 h-7 sm:w-8 sm:h-8 text-primary-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -292,12 +280,12 @@ const AgencyDetails = () => {
                   Informations de Contact
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
                   {/* Address */}
-                  <div className="flex gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
+                  <div className="flex gap-3 sm:gap-4">
+                    <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-primary-100 rounded-xl flex items-center justify-center">
                       <svg
-                        className="w-6 h-6 text-primary-600"
+                        className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -317,18 +305,20 @@ const AgencyDetails = () => {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-1">
+                      <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">
                         Adresse
                       </h3>
-                      <p className="text-gray-600">{agency.address}</p>
+                      <p className="text-sm sm:text-base text-gray-600 break-words">
+                        {agency.address}
+                      </p>
                     </div>
                   </div>
 
                   {/* Phone */}
-                  <div className="flex gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
+                  <div className="flex gap-3 sm:gap-4">
+                    <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-primary-100 rounded-xl flex items-center justify-center">
                       <svg
-                        className="w-6 h-6 text-primary-600"
+                        className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -342,12 +332,12 @@ const AgencyDetails = () => {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-1">
+                      <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">
                         Téléphone
                       </h3>
                       <a
                         href={`tel:${agency.phone}`}
-                        className="text-primary-600 hover:text-primary-700 transition-colors"
+                        className="text-sm sm:text-base text-primary-600 hover:text-primary-700 transition-colors break-all"
                       >
                         {agency.phone}
                       </a>
@@ -355,10 +345,10 @@ const AgencyDetails = () => {
                   </div>
 
                   {/* Email */}
-                  <div className="flex gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
+                  <div className="flex gap-3 sm:gap-4">
+                    <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-primary-100 rounded-xl flex items-center justify-center">
                       <svg
-                        className="w-6 h-6 text-primary-600"
+                        className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -372,12 +362,12 @@ const AgencyDetails = () => {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-1">
+                      <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">
                         Email
                       </h3>
                       <a
                         href={`mailto:${agency.email}`}
-                        className="text-primary-600 hover:text-primary-700 transition-colors"
+                        className="text-sm sm:text-base text-primary-600 hover:text-primary-700 transition-colors break-all"
                       >
                         {agency.email}
                       </a>
@@ -385,10 +375,10 @@ const AgencyDetails = () => {
                   </div>
 
                   {/* Hours */}
-                  <div className="flex gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
+                  <div className="flex gap-3 sm:gap-4">
+                    <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-primary-100 rounded-xl flex items-center justify-center">
                       <svg
-                        className="w-6 h-6 text-primary-600"
+                        className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -402,10 +392,12 @@ const AgencyDetails = () => {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-1">
+                      <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">
                         Horaires
                       </h3>
-                      <p className="text-gray-600">{agency.hours}</p>
+                      <p className="text-sm sm:text-base text-gray-600">
+                        {agency.hours}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -414,15 +406,15 @@ const AgencyDetails = () => {
 
             {/* Features Card */}
             <div className="lg:col-span-1">
-              <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl p-8 shadow-lg text-white">
-                <h2 className="text-2xl font-bold mb-6">
+              <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl p-5 sm:p-6 md:p-8 shadow-lg text-white">
+                <h2 className="text-xl sm:text-2xl font-bold mb-5 sm:mb-6">
                   Services & Avantages
                 </h2>
-                <ul className="space-y-4">
+                <ul className="space-y-3 sm:space-y-4">
                   {agency.features.map((feature, index) => (
                     <li key={index} className="flex items-center gap-3">
                       <svg
-                        className="w-6 h-6 text-primary-200 flex-shrink-0"
+                        className="w-5 h-5 sm:w-6 sm:h-6 text-primary-200 flex-shrink-0"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -432,15 +424,17 @@ const AgencyDetails = () => {
                           clipRule="evenodd"
                         />
                       </svg>
-                      <span className="text-primary-50">{feature}</span>
+                      <span className="text-sm sm:text-base text-primary-50">
+                        {feature}
+                      </span>
                     </li>
                   ))}
                 </ul>
 
-                <div className="mt-8 pt-8 border-t border-white/20">
+                <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-white/20">
                   <Link
                     to="/contact"
-                    className="block w-full text-center px-6 py-3 bg-white text-primary-600 rounded-xl hover:bg-primary-50 transition-all duration-300 font-semibold shadow-lg"
+                    className="block w-full text-center px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-white text-primary-600 rounded-xl hover:bg-primary-50 transition-all duration-300 font-semibold shadow-lg"
                   >
                     Nous Contacter
                   </Link>
@@ -452,22 +446,22 @@ const AgencyDetails = () => {
       </section>
 
       {/* Reviews Section */}
-      <section className="py-16 bg-gradient-to-br from-gray-50 to-white">
+      <section className="py-10 sm:py-12 md:py-16 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             {/* Header */}
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <div className="text-center mb-8 sm:mb-10 md:mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
                 Avis des Clients
               </h2>
-              <div className="flex items-center justify-center gap-3">
+              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
                 {reviews.length > 0 ? (
                   <>
                     <div className="flex items-center">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <svg
                           key={star}
-                          className={`w-6 h-6 ${
+                          className={`w-5 h-5 sm:w-6 sm:h-6 ${
                             star <=
                             Math.round(
                               reviews.reduce((acc, r) => acc + r.rating, 0) /
@@ -483,13 +477,13 @@ const AgencyDetails = () => {
                         </svg>
                       ))}
                     </div>
-                    <span className="text-2xl font-bold text-gray-900">
+                    <span className="text-xl sm:text-2xl font-bold text-gray-900">
                       {(
                         reviews.reduce((acc, r) => acc + r.rating, 0) /
                         reviews.length
                       ).toFixed(1)}
                     </span>
-                    <span className="text-gray-600">
+                    <span className="text-sm sm:text-base text-gray-600">
                       ({reviews.length} avis)
                     </span>
                   </>
@@ -503,10 +497,10 @@ const AgencyDetails = () => {
 
             {/* Add Review Button (only for logged in clients) */}
             {user && user.role === "client" && !showReviewForm && (
-              <div className="text-center mb-8">
+              <div className="text-center mb-6 sm:mb-8">
                 <button
                   onClick={() => setShowReviewForm(true)}
-                  className="px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-xl hover:from-primary-700 hover:to-primary-800 transition-all shadow-lg"
+                  className="px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-xl hover:from-primary-700 hover:to-primary-800 transition-all shadow-lg"
                 >
                   Laisser un avis
                 </button>
@@ -515,8 +509,8 @@ const AgencyDetails = () => {
 
             {/* Review Form */}
             {showReviewForm && (
-              <div className="mb-8 bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
+              <div className="mb-8 bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-200">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">
                   Votre avis
                 </h3>
                 <div className="space-y-4">
@@ -535,7 +529,7 @@ const AgencyDetails = () => {
                           className="transition-transform hover:scale-110"
                         >
                           <svg
-                            className={`w-10 h-10 ${
+                            className={`w-8 h-8 sm:w-10 sm:h-10 ${
                               star <= reviewData.rating
                                 ? "text-yellow-400"
                                 : "text-gray-300"
@@ -566,11 +560,11 @@ const AgencyDetails = () => {
                       placeholder="Partagez votre expérience..."
                     />
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex flex-col sm:flex-row gap-3">
                     <button
                       onClick={handleSubmitReview}
                       disabled={submittingReview}
-                      className="px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50"
+                      className="w-full sm:w-auto px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50"
                     >
                       {submittingReview ? "Envoi..." : "Publier"}
                     </button>
@@ -579,7 +573,7 @@ const AgencyDetails = () => {
                         setShowReviewForm(false);
                         setReviewData({ rating: 5, comment: "" });
                       }}
-                      className="px-6 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition-colors"
+                      className="w-full sm:w-auto px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition-colors"
                     >
                       Annuler
                     </button>
@@ -594,11 +588,11 @@ const AgencyDetails = () => {
                 reviews.map((review) => (
                   <div
                     key={review.id}
-                    className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200"
+                    className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-200"
                   >
-                    <div className="flex items-start justify-between mb-3">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
                       <div>
-                        <p className="font-bold text-gray-900 text-lg">
+                        <p className="font-bold text-gray-900 text-base sm:text-lg">
                           {review.user_name}
                         </p>
                         <div className="flex items-center gap-2 mt-1">
@@ -618,13 +612,13 @@ const AgencyDetails = () => {
                           ))}
                         </div>
                       </div>
-                      <span className="text-sm text-gray-500">
+                      <span className="text-xs sm:text-sm text-gray-500">
                         {new Date(review.created_at).toLocaleDateString(
                           "fr-FR",
                         )}
                       </span>
                     </div>
-                    <p className="text-gray-700 leading-relaxed">
+                    <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
                       {review.comment}
                     </p>
                   </div>
@@ -645,18 +639,13 @@ const AgencyDetails = () => {
       </section>
 
       {/* Agency Vehicles */}
-      <section
-        className={`py-16 bg-white ${
-          vehicles.isVisible ? "animate-fadeInUp" : "opacity-0"
-        }`}
-        ref={vehicles.ref}
-      >
+      <section className="py-10 sm:py-12 md:py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-8 sm:mb-10 md:mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
               Nos Véhicules
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600">
               Découvrez notre flotte de{" "}
               {agencyVehicles.length === 1
                 ? "1 véhicule disponible"
@@ -665,9 +654,9 @@ const AgencyDetails = () => {
           </div>
 
           {agencyVehicles.length === 0 ? (
-            <div className="text-center py-20">
+            <div className="text-center py-14 sm:py-16 md:py-20">
               <svg
-                className="w-24 h-24 mx-auto text-gray-300 mb-6"
+                className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mx-auto text-gray-300 mb-5 sm:mb-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -679,21 +668,21 @@ const AgencyDetails = () => {
                   d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                 />
               </svg>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
                 Aucun véhicule disponible
               </h3>
-              <p className="text-gray-600 mb-6">
+              <p className="text-sm sm:text-base text-gray-600 mb-6">
                 Cette agence n'a pas encore de véhicules enregistrés
               </p>
               <Link
                 to="/vehicles"
-                className="inline-block px-6 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors font-semibold"
+                className="inline-block px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors font-semibold"
               >
                 Voir tous les véhicules
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
               {agencyVehicles.map((vehicle) => (
                 <VehicleCard key={vehicle.id} vehicle={vehicle} />
               ))}

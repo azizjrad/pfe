@@ -63,7 +63,7 @@ const VehicleCard = ({
 
   return (
     <div
-      className="group relative flex-shrink-0 w-[340px] h-[520px] bg-white/20 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden snap-start cursor-pointer"
+      className="group relative w-full max-w-[340px] h-[520px] bg-white/20 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden snap-start cursor-pointer"
       style={{
         animation: isVisible
           ? `slideUp 0.6s ease-out ${index * 100}ms both`
