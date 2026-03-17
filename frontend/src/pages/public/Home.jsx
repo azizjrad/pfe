@@ -20,6 +20,18 @@ const Home = () => {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
+  const getCardStep = (container) => {
+    if (!container) return 320;
+    const firstCard = container.firstElementChild;
+    if (!firstCard) return 320;
+
+    const computedStyles = window.getComputedStyle(container);
+    const gap = parseFloat(
+      computedStyles.columnGap || computedStyles.gap || "0",
+    );
+    return firstCard.getBoundingClientRect().width + gap;
+  };
+
   // Handle scroll pagination dots and buttons state
   useEffect(() => {
     const scrollContainer = document.getElementById(
@@ -29,8 +41,8 @@ const Home = () => {
 
     const handleScroll = () => {
       const scrollLeft = scrollContainer.scrollLeft;
-      const cardWidth = 340 + 24; // card width + gap
-      const activeIndex = Math.round(scrollLeft / cardWidth);
+      const cardStep = getCardStep(scrollContainer);
+      const activeIndex = Math.round(scrollLeft / cardStep);
 
       // Update dots
       document.querySelectorAll('[id^="scroll-dot-"]').forEach((dot, index) => {
@@ -65,7 +77,7 @@ const Home = () => {
     );
     if (!scrollContainer) return;
 
-    const cardWidth = 340 + 24; // card width + gap
+    const cardWidth = getCardStep(scrollContainer);
     scrollContainer.scrollTo({
       left: index * cardWidth,
       behavior: "smooth",
@@ -79,7 +91,7 @@ const Home = () => {
     );
     if (!scrollContainer) return;
 
-    const cardWidth = 340 + 24;
+    const cardWidth = getCardStep(scrollContainer);
     scrollContainer.scrollBy({
       left: -cardWidth,
       behavior: "smooth",
@@ -92,7 +104,7 @@ const Home = () => {
     );
     if (!scrollContainer) return;
 
-    const cardWidth = 340 + 24;
+    const cardWidth = getCardStep(scrollContainer);
     scrollContainer.scrollBy({
       left: cardWidth,
       behavior: "smooth",
@@ -637,12 +649,14 @@ const Home = () => {
       <section
         ref={vehiclesAnim.ref}
         id="vehicles"
-        className={`py-20 bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 transition-all duration-700 ${vehiclesAnim.isVisible ? "animate-slideUp" : "opacity-0"}`}
+        className={`py-14 sm:py-16 md:py-20 bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 transition-all duration-700 ${vehiclesAnim.isVisible ? "animate-slideUp" : "opacity-0"}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">Véhicules en vedette</h2>
-            <p className="text-xl text-gray-600">
+          <div className="text-center mb-8 sm:mb-10 md:mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4">
+              Véhicules en vedette
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600">
               Notre sélection de véhicules premium
             </p>
           </div>
@@ -653,7 +667,7 @@ const Home = () => {
             <button
               onClick={scrollLeft}
               disabled={!canScrollLeft}
-              className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-300 text-gray-900 ${
+              className={`hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 md:w-12 md:h-12 rounded-full bg-white/20 backdrop-blur-sm shadow-lg items-center justify-center transition-all duration-300 text-gray-900 ${
                 canScrollLeft
                   ? "opacity-100 hover:bg-primary-600 hover:text-white cursor-pointer"
                   : "opacity-30 cursor-not-allowed"
@@ -678,7 +692,7 @@ const Home = () => {
             <button
               onClick={scrollRight}
               disabled={!canScrollRight}
-              className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-300 text-gray-900 ${
+              className={`hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 md:w-12 md:h-12 rounded-full bg-white/20 backdrop-blur-sm shadow-lg items-center justify-center transition-all duration-300 text-gray-900 ${
                 canScrollRight
                   ? "opacity-100 hover:bg-primary-600 hover:text-white cursor-pointer"
                   : "opacity-30 cursor-not-allowed"
@@ -701,7 +715,7 @@ const Home = () => {
 
             <div
               id="vehicles-scroll-container"
-              className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide scroll-smooth px-12"
+              className="flex gap-4 sm:gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide scroll-smooth px-1 sm:px-12"
             >
               {featuredVehicles.map((vehicle, index) => (
                 <VehicleCard
@@ -709,6 +723,7 @@ const Home = () => {
                   vehicle={vehicle}
                   index={index}
                   isVisible={vehiclesAnim.isVisible}
+                  className="flex-none w-[240px] sm:w-[300px] lg:w-[340px]"
                 />
               ))}
             </div>
