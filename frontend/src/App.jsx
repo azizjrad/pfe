@@ -55,8 +55,8 @@ const PublicRoute = ({ children }) => {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
         <ScrollToTop />
         <div className="min-h-screen">
           <Routes>
@@ -216,8 +216,8 @@ function App() {
           </Routes>
           <Chatbot />
         </div>
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 
