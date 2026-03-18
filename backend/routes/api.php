@@ -46,42 +46,31 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
     // Admin dashboard statistics
     Route::get('/admin/stats', [AdminController::class, 'getDashboardStats']);
-    Route::get('/admin/financial-stats', [AdminController::class, 'getFinancialStats']);
 
-    // Agency management (CRUD operations)
-    Route::get('/admin/agencies', [AdminController::class, 'getAgencies']);
-    Route::put('/admin/agencies/{id}', [AdminController::class, 'updateAgency']);
-    Route::delete('/admin/agencies/{id}', [AdminController::class, 'deleteAgency']);
+    // Agency details
+    Route::get('/admin/agencies/{id}', [AdminController::class, 'getAgencyDetails']);
 
-    // User management (CRUD operations)
+    // User management
     Route::get('/admin/users', [AdminController::class, 'getUsers']);
-    Route::put('/admin/users/{id}', [AdminController::class, 'updateUser']);
+    Route::get('/admin/users/{id}', [AdminController::class, 'getUserDetails']);
+    Route::post('/admin/users/{id}/suspend', [AdminController::class, 'suspendUser']);
+    Route::post('/admin/users/{id}/unsuspend', [AdminController::class, 'unsuspendUser']);
     Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser']);
 
-    // Report management (view, resolve, dismiss, soft/hard delete)
+    // Report management (view, update status, soft/hard delete)
     Route::get('/admin/reports', [ReportController::class, 'index']);
     Route::get('/admin/reports/trashed', [ReportController::class, 'getTrashed']);
-    Route::post('/admin/reports/{id}/resolve', [ReportController::class, 'resolve']);
-    Route::post('/admin/reports/{id}/dismiss', [ReportController::class, 'dismiss']);
+    Route::patch('/admin/reports/{id}/status', [ReportController::class, 'updateStatus']);
     Route::delete('/admin/reports/{id}', [ReportController::class, 'destroy']);
     Route::post('/admin/reports/{id}/restore', [ReportController::class, 'restore']);
     Route::delete('/admin/reports/{id}/force', [ReportController::class, 'forceDelete']);
-    Route::post('/admin/reports/clean-trash', [ReportController::class, 'cleanOldTrash']);
 
     // Review management (read and delete only for super admin)
     Route::get('/admin/reviews', [ReviewController::class, 'index']);
     Route::delete('/admin/reviews/{id}', [ReviewController::class, 'destroy']);
 
-    // Get user details (reviews and reports)
+    // Get user details (reviews)
     Route::get('/admin/users/{userId}/reviews', [ReviewController::class, 'getUserReviews']);
-    Route::get('/admin/users/{userId}/reports-submitted', [ReportController::class, 'getUserReports']);
-    Route::get('/admin/users/{userId}/reports-against', [ReportController::class, 'getReportsAgainstUser']);
-
-    // Get agency details (reports)
-    Route::get('/admin/agencies/{agencyId}/reports', [ReportController::class, 'getReportsAgainstAgency']);
-
-    // Get agency vehicles (vitrine)
-    Route::get('/admin/agencies/{agencyId}/vehicles', [AdminController::class, 'getAgencyVehicles']);
 
     // Contact messages (view, mark as read, delete)
     Route::get('/admin/contact-messages', [ContactController::class, 'index']);

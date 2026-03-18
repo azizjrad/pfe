@@ -4,37 +4,34 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Vehicle;
+use App\Services\VehicleService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class VehicleController extends Controller
 {
+    private VehicleService $vehicleService;
+
+    public function __construct(VehicleService $vehicleService)
+    {
+        $this->vehicleService = $vehicleService;
+    }
+
     /**
-     * Get all vehicles for agency admin (their vehicles only)
+     * Get all vehicles (role-based filtering)
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Vehicle::class);
+
         $user = $request->user();
 
-        // Agency admins see only their vehicles
-        if ($user->role === 'agency_admin') {
-            $vehicles = Vehicle::with(['agency'])
-                ->where('agency_id', $user->agency_id)
-                ->orderBy('created_at', 'desc')
-                ->get();
-        }
-        // Super admin sees all vehicles
-        elseif ($user->role === 'super_admin') {
-            $vehicles = Vehicle::with(['agency'])
-                ->orderBy('created_at', 'desc')
-                ->get();
-        }
-        // Clients/public see only available vehicles
-        else {
-            $vehicles = Vehicle::with(['agency'])
-                ->where('status', 'available')
-                ->orderBy('created_at', 'desc')
-                ->get();
+        // Determine which vehicles to fetch based on role
+        $agencyId = $user->isAgencyAdmin() ? $user->agency_id : null;
+        $vehicles = $this->vehicleService->getAll($agencyId);
+
+        // Filter for clients - only available vehicles
+        if ($user->isClient()) {
+            $vehicles = $vehicles->filter(fn($v) => $v->status === 'available')->values();
         }
 
         return response()->json([
@@ -48,12 +45,20 @@ class VehicleController extends Controller
      */
     public function show($id)
     {
-        $vehicle = Vehicle::with(['agency'])->findOrFail($id);
+        try {
+            $vehicle = $this->vehicleService->getById($id);
+            $this->authorize('view', $vehicle);
 
-        return response()->json([
-            'success' => true,
-            'data' => $vehicle,
-        ]);
+            return response()->json([
+                'success' => true,
+                'data' => $vehicle,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 404);
+        }
     }
 
     /**
@@ -62,14 +67,7 @@ class VehicleController extends Controller
     public function store(Request $request)
     {
         $user = $request->user();
-
-        // Only agency admins can create vehicles for their agency
-        if ($user->role !== 'agency_admin') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized',
-            ], 403);
-        }
+        $this->authorize('create', Vehicle::class);
 
         $validated = $request->validate([
             'brand' => 'required|string|max:255',
@@ -83,20 +81,23 @@ class VehicleController extends Controller
             'transmission' => 'required|in:manual,automatic',
             'fuel_type' => 'required|in:petrol,diesel,electric,hybrid',
             'status' => 'sometimes|in:available,rented,maintenance',
-            'image' => 'nullable|string', // Base64 or URL
+            'image' => 'nullable|string',
         ]);
 
-        // Auto-assign agency_id from authenticated user
-        $validated['agency_id'] = $user->agency_id;
-        $validated['status'] = $validated['status'] ?? 'available';
+        try {
+            $vehicle = $this->vehicleService->create($validated, $user->agency_id);
 
-        $vehicle = Vehicle::create($validated);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Vehicle created successfully',
-            'data' => $vehicle->load(['agency']),
-        ], 201);
+            return response()->json([
+                'success' => true,
+                'message' => 'Vehicle created successfully',
+                'data' => $vehicle,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 422);
+        }
     }
 
     /**
@@ -104,16 +105,8 @@ class VehicleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = $request->user();
         $vehicle = Vehicle::findOrFail($id);
-
-        // Authorization: agency admins can only update their own vehicles
-        if ($user->role === 'agency_admin' && $vehicle->agency_id !== $user->agency_id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized - You can only update your own vehicles',
-            ], 403);
-        }
+        $this->authorize('update', $vehicle);
 
         $validated = $request->validate([
             'brand' => 'sometimes|string|max:255',
@@ -130,49 +123,42 @@ class VehicleController extends Controller
             'image' => 'nullable|string',
         ]);
 
-        $vehicle->update($validated);
+        try {
+            $vehicle = $this->vehicleService->update($id, $validated);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Vehicle updated successfully',
-            'data' => $vehicle->load(['agency']),
-        ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Vehicle updated successfully',
+                'data' => $vehicle,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], in_array($e->getCode(), [403, 404]) ? $e->getCode() : 422);
+        }
     }
 
     /**
      * Delete vehicle (agency admins can only delete their own vehicles)
-     * Cannot delete if vehicle has active/pending reservations
      */
     public function destroy($id)
     {
-        $user = auth()->user();
         $vehicle = Vehicle::findOrFail($id);
+        $this->authorize('delete', $vehicle);
 
-        // Authorization: agency admins can only delete their own vehicles
-        if ($user->role === 'agency_admin' && $vehicle->agency_id !== $user->agency_id) {
+        try {
+            $this->vehicleService->delete($id);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Vehicle deleted successfully',
+            ]);
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Unauthorized - You can only delete your own vehicles',
-            ], 403);
+                'message' => $e->getMessage(),
+            ], in_array($e->getCode(), [403, 404, 400]) ? $e->getCode() : 422);
         }
-
-        // Check for active or pending reservations
-        $activeReservations = $vehicle->reservations()
-            ->whereIn('status', ['pending', 'confirmed', 'ongoing'])
-            ->count();
-
-        if ($activeReservations > 0) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Cannot delete vehicle with active reservations',
-            ], 400);
-        }
-
-        $vehicle->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Vehicle deleted successfully',
-        ]);
     }
 }

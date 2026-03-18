@@ -3,12 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Review;
-use App\Models\Agency;
+use App\Services\ReviewService;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
+    private ReviewService $reviewService;
+
+    public function __construct(ReviewService $reviewService)
+    {
+        $this->reviewService = $reviewService;
+    }
+
     /**
      * Get all reviews (super_admin: all agencies, agency_admin: own agency)
      */
@@ -16,22 +22,9 @@ class ReviewController extends Controller
     {
         $user = $request->user();
 
-        $query = Review::with('agency:id,name')->orderBy('created_at', 'desc');
-
-        if ($user->role === 'agency_admin' && $user->agency_id) {
-            $query->where('agency_id', $user->agency_id);
-        }
-
-        $reviews = $query->get()->map(fn($r) => [
-            'id'         => $r->id,
-            'agency_id'  => $r->agency_id,
-            'agency_name'=> $r->agency?->name,
-            'user_id'    => $r->user_id,
-            'user_name'  => $r->user_name,
-            'rating'     => $r->rating,
-            'comment'    => $r->comment,
-            'created_at' => $r->created_at->toISOString(),
-        ]);
+        // Determine which agency to filter by
+        $agencyId = $user->isAgencyAdmin() ? $user->agency_id : null;
+        $reviews = $this->reviewService->getAll($agencyId);
 
         return response()->json(['success' => true, 'data' => $reviews]);
     }
@@ -47,17 +40,24 @@ class ReviewController extends Controller
             'comment'   => 'required|string|max:1000',
         ]);
 
-        $review = Review::create([
-            ...$validated,
-            'user_id'   => $request->user()->id,
-            'user_name' => $request->user()->name,
-        ]);
+        try {
+            $review = $this->reviewService->create(
+                $validated,
+                $request->user()->id,
+                $request->user()->name
+            );
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Avis publié avec succès',
-            'data'    => $review,
-        ], 201);
+            return response()->json([
+                'success' => true,
+                'message' => 'Review submitted successfully',
+                'data'    => $review,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 422);
+        }
     }
 
     /**
@@ -65,10 +65,19 @@ class ReviewController extends Controller
      */
     public function destroy($id)
     {
-        $review = Review::findOrFail($id);
-        $review->delete();
+        try {
+            $this->reviewService->delete($id);
 
-        return response()->json(['success' => true, 'message' => 'Avis supprimé avec succès']);
+            return response()->json([
+                'success' => true,
+                'message' => 'Review deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 404);
+        }
     }
 
     /**
@@ -77,20 +86,7 @@ class ReviewController extends Controller
     public function getUserReviews($userId)
     {
         try {
-            $reviews = Review::with('agency:id,name')
-                ->where('user_id', $userId)
-                ->orderBy('created_at', 'desc')
-                ->get()
-                ->map(fn($r) => [
-                    'id'         => $r->id,
-                    'agency_id'  => $r->agency_id,
-                    'agency_name'=> $r->agency?->name,
-                    'user_id'    => $r->user_id,
-                    'user_name'  => $r->user_name,
-                    'rating'     => $r->rating,
-                    'comment'    => $r->comment,
-                    'created_at' => $r->created_at->toISOString(),
-                ]);
+            $reviews = $this->reviewService->getUserReviews($userId);
 
             return response()->json([
                 'success' => true,
@@ -99,7 +95,7 @@ class ReviewController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Erreur lors de la récupération des avis de l\'utilisateur',
+                'message' => $e->getMessage(),
                 'error' => $e->getMessage(),
             ], 500);
         }

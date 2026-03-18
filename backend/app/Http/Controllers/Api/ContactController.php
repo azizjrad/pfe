@@ -3,11 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\ContactMessage;
+use App\Services\ContactService;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
+    private ContactService $contactService;
+
+    public function __construct(ContactService $contactService)
+    {
+        $this->contactService = $contactService;
+    }
+
     /**
      * Store a contact form submission (public).
      */
@@ -21,12 +28,19 @@ class ContactController extends Controller
             'message' => 'required|string|max:5000',
         ]);
 
-        $contactMessage = ContactMessage::create($validated);
+        try {
+            $message = $this->contactService->submit($validated);
 
-        return response()->json([
-            'message' => 'Votre message a été envoyé avec succès.',
-            'data'    => $contactMessage,
-        ], 201);
+            return response()->json([
+                'message' => 'Message sent successfully.',
+                'data'    => $message,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -34,28 +48,52 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $messages = ContactMessage::orderByRaw('is_read ASC, created_at DESC')->get();
+        try {
+            $messages = $this->contactService->getAll();
 
-        return response()->json(['data' => $messages]);
+            return response()->json(['success' => true, 'data' => $messages]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
      * Mark a contact message as read (super_admin only).
      */
-    public function markAsRead(ContactMessage $contactMessage)
+    public function markAsRead($id)
     {
-        $contactMessage->update(['is_read' => true]);
+        try {
+            $message = $this->contactService->markAsRead($id);
 
-        return response()->json(['message' => 'Message marqué comme lu.', 'data' => $contactMessage]);
+            return response()->json([
+                'message' => 'Message marked as read.',
+                'data' => $message
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 404);
+        }
     }
 
     /**
      * Delete a contact message (super_admin only).
      */
-    public function destroy(ContactMessage $contactMessage)
+    public function destroy($id)
     {
-        $contactMessage->delete();
+        try {
+            $this->contactService->delete($id);
 
-        return response()->json(['message' => 'Message supprimé.']);
+            return response()->json(['message' => 'Message deleted.']);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 404);
+        }
     }
 }
