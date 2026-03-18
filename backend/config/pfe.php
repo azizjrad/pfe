@@ -24,6 +24,28 @@ return [
         'currency' => 'TND',
         'currency_symbol' => 'DT',
         'default_daily_price' => 150,
+        'add_ons' => [
+            'full_insurance' => [
+                'type' => 'percentage',
+                'value' => 0.15, // 15% of base price
+                'display_name' => 'Assurance tous risques',
+            ],
+            'airport_delivery' => [
+                'type' => 'fixed',
+                'value' => 10, // Fixed 10 DT
+                'display_name' => 'Livraison aéroport',
+            ],
+            'home_delivery' => [
+                'type' => 'fixed',
+                'value' => 25, // Fixed 25 DT
+                'display_name' => 'Livraison à domicile',
+            ],
+            'after_hours_pickup' => [
+                'type' => 'fixed',
+                'value' => 15, // Fixed 15 DT
+                'display_name' => 'Prise en charge hors horaires',
+            ],
+        ],
     ],
 
     'commission' => [

@@ -8,7 +8,7 @@ import ReportButton from "../../components/features/ReportButton";
 import Toast from "../../components/common/Toast";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
 import { vehiclesData } from "../../data/vehiclesData";
-import api from "../../services/api";
+import { reservationService } from "../../services/reservationService";
 
 const VehicleDetails = () => {
   const { id } = useParams();
@@ -77,7 +77,7 @@ const VehicleDetails = () => {
       };
 
       // Call the backend API
-      const response = await api.post("/reservations", submissionPayload);
+      const response = await reservationService.create(submissionPayload);
 
       if (response.data.success) {
         showToast(

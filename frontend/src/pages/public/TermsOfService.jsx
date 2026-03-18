@@ -125,7 +125,7 @@ const TermsOfService = () => {
                     Assurance & Protection
                   </p>
                   <p className="text-sm text-gray-600">
-                    Assurance tous risques : +15% du total
+                    Assurance tous risques : selon tarification en vigueur
                   </p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-3">
@@ -141,13 +141,14 @@ const TermsOfService = () => {
                     Conducteur additionnel : 8 DT/jour
                   </p>
                   <p className="text-sm text-gray-600">
-                    Livraison aéroport : 10 DT
+                    Livraison aéroport : selon tarification en vigueur
                   </p>
                   <p className="text-sm text-gray-600">
-                    Livraison à domicile : 25 DT
+                    Livraison à domicile : selon tarification en vigueur
                   </p>
                   <p className="text-sm text-gray-600">
-                    Prise en charge hors horaires : 15 DT
+                    Prise en charge hors horaires : selon tarification en
+                    vigueur
                   </p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-3">

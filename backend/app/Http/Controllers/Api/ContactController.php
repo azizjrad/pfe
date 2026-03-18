@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ContactMessageResource;
 use App\Services\ContactService;
 use Illuminate\Http\Request;
 
@@ -33,7 +34,7 @@ class ContactController extends Controller
 
             return response()->json([
                 'message' => 'Message sent successfully.',
-                'data'    => $message,
+                'data'    => new ContactMessageResource($message),
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
@@ -51,7 +52,7 @@ class ContactController extends Controller
         try {
             $messages = $this->contactService->getAll();
 
-            return response()->json(['success' => true, 'data' => $messages]);
+            return response()->json(['success' => true, 'data' => ContactMessageResource::collection($messages)]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -70,7 +71,7 @@ class ContactController extends Controller
 
             return response()->json([
                 'message' => 'Message marked as read.',
-                'data' => $message
+                'data' => new ContactMessageResource($message)
             ]);
         } catch (\Exception $e) {
             return response()->json([

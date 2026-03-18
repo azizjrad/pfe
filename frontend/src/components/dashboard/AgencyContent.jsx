@@ -1,5 +1,5 @@
-﻿import React, { useState, useEffect } from "react";
-import { agencyService } from "../../services/api";
+import React, { useState, useEffect } from "react";
+import { agencyService } from "../../services/agencyService";
 import ReservationDetailsModal from "../modals/ReservationDetailsModal";
 import Toast from "../common/Toast";
 const AgencyContent = ({ activeTab, reports = [] }) => {

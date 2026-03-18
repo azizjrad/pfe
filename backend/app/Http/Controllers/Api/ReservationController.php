@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReservationRequest;
 use App\Http\Requests\UpdateReservationRequest;
 use App\Http\Requests\CancelReservationRequest;
+use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
 use App\Services\ReservationService;
 use Illuminate\Http\Request;
@@ -32,7 +33,7 @@ class ReservationController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $reservations,
+            'data' => ReservationResource::collection($reservations),
         ]);
     }
 
@@ -53,7 +54,7 @@ class ReservationController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $reservations,
+            'data' => ReservationResource::collection($reservations),
         ]);
     }
 
@@ -75,7 +76,7 @@ class ReservationController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Réservation confirmée! Vous recevrez un email de confirmation ou un appel de l\'agence bientôt.',
-                'data' => $reservation->load('vehicle'),
+                'data' => new ReservationResource($reservation->load('vehicle')),
             ], 201);
 
         } catch (\Exception $e) {
@@ -101,7 +102,7 @@ class ReservationController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $reservation,
+            'data' => new ReservationResource($reservation),
         ]);
     }
 
@@ -126,7 +127,7 @@ class ReservationController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Réservation modifiée avec succès.',
-                'data' => $updated->load('vehicle'),
+                'data' => new ReservationResource($updated->load('vehicle')),
             ]);
 
         } catch (\Exception $e) {
@@ -162,7 +163,7 @@ class ReservationController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Réservation annulée avec succès.',
-                'data' => $cancelled,
+                'data' => new ReservationResource($cancelled),
             ]);
 
         } catch (\Exception $e) {
@@ -205,7 +206,7 @@ class ReservationController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Statut de la réservation mis à jour avec succès.',
-            'data' => $reservation->load(['vehicle', 'user', 'payments']),
+            'data' => new ReservationResource($reservation->load(['vehicle', 'user', 'payments'])),
         ]);
     }
 
@@ -228,7 +229,7 @@ class ReservationController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Véhicule marqué comme retiré. La réservation est maintenant en cours.',
-                'data' => $updated->load(['vehicle', 'user', 'payments']),
+                'data' => new ReservationResource($updated->load(['vehicle', 'user', 'payments'])),
             ]);
 
         } catch (\Exception $e) {
@@ -266,7 +267,7 @@ class ReservationController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Véhicule retourné et réservation complétée.',
-                'data' => $updated->load(['vehicle', 'user', 'payments', 'vehicleReturn']),
+                'data' => new ReservationResource($updated->load(['vehicle', 'user', 'payments', 'vehicleReturn'])),
             ]);
 
         } catch (\Exception $e) {

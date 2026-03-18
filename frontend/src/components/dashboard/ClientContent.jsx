@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { reservationService } from "../../services/api";
+import { reservationService } from "../../services/reservationService";
 import ReservationDetailsModal from "../modals/ReservationDetailsModal";
 import ConfirmationModal from "../modals/ConfirmationModal";
 import Toast from "../common/Toast";

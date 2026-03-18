@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\ConfigController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 
 // Public routes
 Route::post('/contact', [ContactController::class, 'store']);
+Route::get('/pricing-config', [ConfigController::class, 'pricingConfig']);
 
 // Public authentication routes
 Route::post('/register', [AuthController::class, 'register']);

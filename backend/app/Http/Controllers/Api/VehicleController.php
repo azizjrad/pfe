@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\VehicleResource;
 use App\Models\Vehicle;
 use App\Services\VehicleService;
 use Illuminate\Http\Request;
@@ -36,7 +37,7 @@ class VehicleController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $vehicles,
+            'data' => VehicleResource::collection($vehicles),
         ]);
     }
 
@@ -51,7 +52,7 @@ class VehicleController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $vehicle,
+                'data' => new VehicleResource($vehicle),
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -90,7 +91,7 @@ class VehicleController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Vehicle created successfully',
-                'data' => $vehicle,
+                'data' => new VehicleResource($vehicle),
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
@@ -129,7 +130,7 @@ class VehicleController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Vehicle updated successfully',
-                'data' => $vehicle,
+                'data' => new VehicleResource($vehicle),
             ]);
         } catch (\Exception $e) {
             return response()->json([

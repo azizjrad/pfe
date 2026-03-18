@@ -1,9 +1,12 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { authService } from "../services/api";
+import { useNavigate } from "react-router-dom";
+import { authService } from "../services/authService";
+import { authEventEmitter } from "../services/authEventEmitter";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,15 +23,19 @@ export const AuthProvider = ({ children }) => {
           setUser(cachedUser);
           setLoading(false);
 
-          // Phase 2: Validate cookie in background and refresh user data
+          // Phase 2: Validate session with server to detect suspensions/invalidations
           try {
             const freshUserData = await authService.getUser();
             setUser(freshUserData);
           } catch (error) {
-            // Cookie expired or invalid - logout user
-            console.warn("Cookie expired or invalid, logging out...");
+            // Cookie expired, invalid, or server rejected the session
+            console.warn(
+              "Session invalid. User might be suspended or unauthorized.",
+              error,
+            );
             await authService.logout();
             setUser(null);
+            navigate("/login", { replace: true });
           }
         } else {
           setLoading(false);
@@ -40,7 +47,64 @@ export const AuthProvider = ({ children }) => {
     };
 
     initAuth();
-  }, []);
+  }, [navigate]);
+
+  // Listen for unauthorized errors from HTTP interceptor
+  // This handles cases where user is suspended AFTER login
+  useEffect(() => {
+    const unsubscribe = authEventEmitter.on("unauthorized", async (reason) => {
+      console.warn("Authorization failed:", reason);
+
+      // Clear auth state
+      setUser(null);
+      setError("Authorization failed. Please log in again.");
+
+      // Clear localStorage
+      await authService.logout();
+
+      // Navigate to login
+      navigate("/login", { replace: true });
+    });
+
+    return unsubscribe;
+  }, [navigate]);
+
+  // Periodically validate session (detect suspensions/changes server-side)
+  // Validates every 30 seconds when user is authenticated
+  useEffect(() => {
+    if (!user) return;
+
+    const validateSessionInterval = setInterval(async () => {
+      try {
+        const freshData = await authService.getUser();
+
+        // Check if user status changed (suspended, role changed, etc.)
+        if (freshData?.is_suspended && !user?.is_suspended) {
+          console.warn("User was suspended server-side");
+          setUser(null);
+          setError("Your account has been suspended. Please contact support.");
+          await authService.logout();
+          navigate("/login", { replace: true });
+          return;
+        }
+
+        // Update user data if any changes detected
+        if (JSON.stringify(freshData) !== JSON.stringify(user)) {
+          setUser(freshData);
+        }
+      } catch (err) {
+        console.error("Session validation error:", err);
+        // On validation error, emit unauthorized to trigger logout
+        if (err.response?.status === 401) {
+          authEventEmitter.emit("unauthorized", {
+            reason: "Session validation failed",
+          });
+        }
+      }
+    }, 30000); // Check every 30 seconds
+
+    return () => clearInterval(validateSessionInterval);
+  }, [user, navigate]);
 
   /**
    * Register a new user

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../../components/common/Navbar";
 import Footer from "../../components/common/Footer";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
-import api from "../../services/api";
+import { contactService } from "../../services/contactService";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -39,7 +39,7 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      await api.post("/contact", formData);
+      await contactService.submit(formData);
       setSubmitted(true);
       setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
       setTouched({});

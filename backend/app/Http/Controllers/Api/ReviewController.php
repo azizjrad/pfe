@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ReviewResource;
 use App\Services\ReviewService;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,7 @@ class ReviewController extends Controller
         $agencyId = $user->isAgencyAdmin() ? $user->agency_id : null;
         $reviews = $this->reviewService->getAll($agencyId);
 
-        return response()->json(['success' => true, 'data' => $reviews]);
+        return response()->json(['success' => true, 'data' => ReviewResource::collection($reviews)]);
     }
 
     /**
@@ -50,7 +51,7 @@ class ReviewController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Review submitted successfully',
-                'data'    => $review,
+                'data'    => new ReviewResource($review),
             ], 201);
         } catch (\Exception $e) {
             return response()->json([

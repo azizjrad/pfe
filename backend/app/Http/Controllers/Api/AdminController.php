@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\AgencyResource;
 use App\Services\AdminService;
 use Illuminate\Http\Request;
 
@@ -45,7 +47,7 @@ class AdminController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $users,
+                'data' => UserResource::collection($users),
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -65,7 +67,7 @@ class AdminController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $user,
+                'data' => new UserResource($user),
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -149,7 +151,7 @@ class AdminController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $agency,
+                'data' => new AgencyResource($agency),
             ]);
         } catch (\Exception $e) {
             return response()->json([

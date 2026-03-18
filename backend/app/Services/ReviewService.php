@@ -18,16 +18,7 @@ class ReviewService
             $query->where('agency_id', $agencyId);
         }
 
-        return $query->get()->map(fn($r) => [
-            'id'         => $r->id,
-            'agency_id'  => $r->agency_id,
-            'agency_name'=> $r->agency?->name,
-            'user_id'    => $r->user_id,
-            'user_name'  => $r->user_name,
-            'rating'     => $r->rating,
-            'comment'    => $r->comment,
-            'created_at' => $r->created_at->toISOString(),
-        ]);
+        return $query->get();
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ReportResource;
 use App\Models\Report;
 use App\Services\ReportService;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class ReportController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $reports,
+                'data' => ReportResource::collection($reports),
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -58,7 +59,7 @@ class ReportController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $reports,
+                'data' => ReportResource::collection($reports),
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -81,7 +82,7 @@ class ReportController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $reports,
+                'data' => ReportResource::collection($reports),
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -114,7 +115,7 @@ class ReportController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Report created successfully',
-                'data' => $report,
+                'data' => new ReportResource($report),
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
@@ -144,7 +145,7 @@ class ReportController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Report status updated successfully',
-                'data' => $report,
+                'data' => new ReportResource($report),
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -191,7 +192,7 @@ class ReportController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Report restored successfully',
-                'data' => $report,
+                'data' => new ReportResource($report),
             ]);
         } catch (\Exception $e) {
             return response()->json([

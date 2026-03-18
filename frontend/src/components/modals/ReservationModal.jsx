@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { pricingConfigService } from "../../services/pricingConfigService";
 
 /**
  * ReservationModal Component with Simple Pricing
@@ -16,6 +17,31 @@ import React, { useState, useMemo } from "react";
  * @param {function} onSubmit - Callback with reservation data including final price
  */
 const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
+  // Pricing configuration fetched from backend
+  const [pricingConfig, setPricingConfig] = useState(null);
+  const [pricingConfigError, setPricingConfigError] = useState("");
+
+  // Fetch pricing configuration on component mount
+  useEffect(() => {
+    const fetchPricingConfig = async () => {
+      try {
+        const config = await pricingConfigService.getPricingConfig();
+        setPricingConfig(config);
+        setPricingConfigError("");
+      } catch (error) {
+        console.error("Failed to load pricing configuration:", error);
+        setPricingConfig(null);
+        setPricingConfigError(
+          "Impossible de charger la configuration tarifaire. Veuillez réessayer.",
+        );
+      }
+    };
+
+    if (isOpen) {
+      fetchPricingConfig();
+    }
+  }, [isOpen]);
+
   // Personal information state
   const [reservationData, setReservationData] = useState({
     startDate: "",
@@ -36,7 +62,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
   const [touched, setTouched] = useState({});
   const [focused, setFocused] = useState({});
 
-  // Simple pricing calculation
+  // Simple pricing calculation using config-driven values
   const pricing = useMemo(() => {
     if (
       !vehicle?.price ||
@@ -51,10 +77,33 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
     const days = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
 
     const basePrice = vehicle.price * days;
-    const insurance = options.full_insurance ? basePrice * 0.15 : 0;
-    const airportDelivery = options.airport_delivery ? 10 : 0;
-    const homeDelivery = options.home_delivery ? 25 : 0;
-    const afterHours = options.after_hours_pickup ? 15 : 0;
+
+    const addOns = pricingConfig?.add_ons;
+    if (!addOns) {
+      return null;
+    }
+
+    // Calculate insurance (percentage-based)
+    const insurance =
+      options.full_insurance && addOns.full_insurance.type === "percentage"
+        ? basePrice * addOns.full_insurance.value
+        : 0;
+
+    // Calculate fixed add-ons
+    const airportDelivery =
+      options.airport_delivery && addOns.airport_delivery.type === "fixed"
+        ? addOns.airport_delivery.value
+        : 0;
+
+    const homeDelivery =
+      options.home_delivery && addOns.home_delivery.type === "fixed"
+        ? addOns.home_delivery.value
+        : 0;
+
+    const afterHours =
+      options.after_hours_pickup && addOns.after_hours_pickup.type === "fixed"
+        ? addOns.after_hours_pickup.value
+        : 0;
 
     const total =
       basePrice + insurance + airportDelivery + homeDelivery + afterHours;
@@ -74,6 +123,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
     reservationData.startDate,
     reservationData.endDate,
     options,
+    pricingConfig,
   ]);
 
   const handleChange = (e) => {
@@ -98,6 +148,12 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (!pricingConfig?.add_ons) {
+      return;
+    }
+
+    const addOnsConfig = pricingConfig.add_ons;
+
     // Include complete pricing details in submission
     const submissionData = {
       ...reservationData,
@@ -111,7 +167,9 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
               ...(pricing.insurance > 0
                 ? [
                     {
-                      name: "Assurance tous risques",
+                      name:
+                        addOnsConfig.full_insurance?.display_name ||
+                        "full_insurance",
                       amount: pricing.insurance,
                     },
                   ]
@@ -119,7 +177,9 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
               ...(pricing.airport_delivery > 0
                 ? [
                     {
-                      name: "Livraison aéroport",
+                      name:
+                        addOnsConfig.airport_delivery?.display_name ||
+                        "airport_delivery",
                       amount: pricing.airport_delivery,
                     },
                   ]
@@ -127,7 +187,9 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
               ...(pricing.home_delivery > 0
                 ? [
                     {
-                      name: "Livraison à domicile",
+                      name:
+                        addOnsConfig.home_delivery?.display_name ||
+                        "home_delivery",
                       amount: pricing.home_delivery,
                     },
                   ]
@@ -135,7 +197,9 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
               ...(pricing.after_hours > 0
                 ? [
                     {
-                      name: "Prise en charge hors horaires",
+                      name:
+                        addOnsConfig.after_hours_pickup?.display_name ||
+                        "after_hours_pickup",
                       amount: pricing.after_hours,
                     },
                   ]
@@ -258,6 +322,12 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
 
           {/* Reservation Form */}
           <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+            {pricingConfigError && (
+              <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {pricingConfigError}
+              </div>
+            )}
+
             {/* Dates Section */}
             <div>
               <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
@@ -383,10 +453,16 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                     />
                     <div className="flex-1">
                       <div className="font-medium text-gray-900">
-                        Assurance complète
+                        {pricingConfig?.add_ons?.full_insurance?.display_name ||
+                          "full_insurance"}
                       </div>
                       <div className="text-sm text-gray-600">
-                        +15% du sous-total
+                        {!pricingConfig?.add_ons?.full_insurance
+                          ? "Tarif indisponible"
+                          : pricingConfig?.add_ons?.full_insurance?.type ===
+                              "percentage"
+                            ? `+${(pricingConfig.add_ons.full_insurance.value * 100).toFixed(0)}% du sous-total`
+                            : `+${pricingConfig.add_ons.full_insurance.value} DT`}
                       </div>
                     </div>
                   </label>
@@ -425,10 +501,13 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                       />
                       <div className="flex-1">
                         <div className="font-medium text-gray-900">
-                          Livraison aéroport
+                          {pricingConfig?.add_ons?.airport_delivery
+                            ?.display_name || "airport_delivery"}
                         </div>
                         <div className="text-sm text-gray-600">
-                          10 DT (unique)
+                          {pricingConfig?.add_ons?.airport_delivery
+                            ? `+${pricingConfig.add_ons.airport_delivery.value} DT (unique)`
+                            : "Tarif indisponible"}
                         </div>
                       </div>
                     </label>
@@ -443,10 +522,13 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                       />
                       <div className="flex-1">
                         <div className="font-medium text-gray-900">
-                          Livraison à domicile
+                          {pricingConfig?.add_ons?.home_delivery
+                            ?.display_name || "home_delivery"}
                         </div>
                         <div className="text-sm text-gray-600">
-                          25 DT (unique)
+                          {pricingConfig?.add_ons?.home_delivery
+                            ? `+${pricingConfig.add_ons.home_delivery.value} DT (unique)`
+                            : "Tarif indisponible"}
                         </div>
                       </div>
                     </label>
@@ -464,10 +546,13 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                       />
                       <div className="flex-1">
                         <div className="font-medium text-gray-900">
-                          Prise en charge hors horaires
+                          {pricingConfig?.add_ons?.after_hours_pickup
+                            ?.display_name || "after_hours_pickup"}
                         </div>
                         <div className="text-sm text-gray-600">
-                          15 DT (unique)
+                          {pricingConfig?.add_ons?.after_hours_pickup
+                            ? `+${pricingConfig.add_ons.after_hours_pickup.value} DT (unique)`
+                            : "Tarif indisponible"}
                         </div>
                       </div>
                     </label>
@@ -508,7 +593,12 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                       {pricing.insurance > 0 && (
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-600">
-                            Assurance complète (+15%)
+                            {pricingConfig?.add_ons?.full_insurance
+                              ?.display_name || "full_insurance"}{" "}
+                            (+
+                            {(pricingConfig?.add_ons?.full_insurance?.value ||
+                              0) * 100}
+                            %)
                           </span>
                           <span className="font-medium text-gray-900">
                             +{pricing.insurance.toFixed(2)} DT
@@ -519,7 +609,8 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                       {pricing.airport_delivery > 0 && (
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-600">
-                            Livraison aéroport
+                            {pricingConfig?.add_ons?.airport_delivery
+                              ?.display_name || "airport_delivery"}
                           </span>
                           <span className="font-medium text-gray-900">
                             +{pricing.airport_delivery} DT
@@ -530,7 +621,8 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                       {pricing.home_delivery > 0 && (
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-600">
-                            Livraison à domicile
+                            {pricingConfig?.add_ons?.home_delivery
+                              ?.display_name || "home_delivery"}
                           </span>
                           <span className="font-medium text-gray-900">
                             +{pricing.home_delivery} DT
@@ -541,7 +633,8 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                       {pricing.after_hours > 0 && (
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-600">
-                            Prise en charge hors horaires
+                            {pricingConfig?.add_ons?.after_hours_pickup
+                              ?.display_name || "after_hours_pickup"}
                           </span>
                           <span className="font-medium text-gray-900">
                             +{pricing.after_hours} DT

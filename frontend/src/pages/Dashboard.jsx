@@ -1,68 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import {
-  LineChart,
-  Line,
-  AreaChart,
-  Area,
-  BarChart,
-  Bar,
-  PieChart,
-  Pie,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
 import Footer from "../components/common/Footer";
 import DashboardHeader from "../components/dashboard/DashboardHeader";
 import ConfirmationModal from "../components/modals/ConfirmationModal";
 import EditModal from "../components/modals/EditModal";
 import Toast from "../components/common/Toast";
-import ReservationDetailsModal from "../components/modals/ReservationDetailsModal";
 import DetailsModal from "../components/modals/DetailsModal";
-import Pagination from "../components/features/Pagination";
 import NotificationButton from "../components/dashboard/NotificationButton";
-import VehicleCard from "../components/cards/VehicleCard";
 import AdminContent from "../components/dashboard/AdminContent";
 import AgencyContent from "../components/dashboard/AgencyContent";
 import ClientContent from "../components/dashboard/ClientContent";
-import {
-  adminService,
-  agencyService,
-  clientService,
-  contactService,
-  reservationService,
-  reportService,
-  reviewService,
-} from "../services/api";
+import useAdminDashboard from "../hooks/useAdminDashboard";
+import useAgencyDashboard from "../hooks/useAgencyDashboard";
+import useClientDashboard from "../hooks/useClientDashboard";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  // State for API data
-  const [platformStats, setPlatformStats] = useState({
-    totalAgencies: 0,
-    totalUsers: 0,
-    totalVehicles: 0,
-    totalReservations: 0,
-    monthlyRevenue: 0,
-    activeReservations: 0,
-  });
-  const [agencies, setAgencies] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [allReservations, setAllReservations] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  // Modal states
+  // State for statistics sub-tabs
+  const [statisticsSubTab, setStatisticsSubTab] = useState("finance");
+
+  // Modal states (admin flows)
   const [deleteModal, setDeleteModal] = useState({
     isOpen: false,
     type: null,
@@ -70,7 +33,7 @@ const Dashboard = () => {
   });
   const [suspendModal, setSuspendModal] = useState({
     isOpen: false,
-    type: null, // 'user' or 'agency'
+    type: null,
     item: null,
   });
   const [editModal, setEditModal] = useState({
@@ -80,37 +43,21 @@ const Dashboard = () => {
   });
   const [detailsModal, setDetailsModal] = useState({
     isOpen: false,
-    type: null, // 'agency' or 'user'
+    type: null,
     item: null,
-    userReviews: [], // Reviews written BY the user
-    reports: [], // Reports against this user/agency
-    userReportsSubmitted: [], // Reports submitted BY the user (for users only)
-    vehicles: [], // Vehicles belonging to the agency (for agencies only)
+    userReviews: [],
+    reports: [],
+    userReportsSubmitted: [],
+    vehicles: [],
   });
-  const [reports, setReports] = useState([]);
-  const [contactMessages, setContactMessages] = useState([]);
-  const [agencyReviews, setAgencyReviews] = useState([]);
-  const [notifications, setNotifications] = useState([]);
-  const [financialStats, setFinancialStats] = useState({
-    monthly: [],
-    byAgency: [],
-    paymentMethods: [],
-    totals: { revenue: 0, commission: 0, profit: 0, avgMonthly: 0 },
+  const [, setReportDetailsModal] = useState({
+    isOpen: false,
+    report: null,
   });
-  const [agencyStats, setAgencyStats] = useState({
-    totalVehicles: 0,
-    availableVehicles: 0,
-    maintenanceVehicles: 0,
-    activeReservations: 0,
-    monthlyRevenue: 0,
-    alertsCount: 0,
-  });
-  const [clientStats, setClientStats] = useState({
-    activeReservations: 0,
-    completedReservations: 0,
-    totalSpend: 0,
-    reliabilityScore: 100,
-    riskLabel: "Excellent",
+  const [, setHistoryModal] = useState({
+    isOpen: false,
+    mode: "clean-trash",
+    count: 0,
   });
 
   // Toast notification state
@@ -128,27 +75,50 @@ const Dashboard = () => {
     setToast({ isVisible: false, message: "", type: "success" });
   };
 
-  // State for statistics sub-tabs
-  const [statisticsSubTab, setStatisticsSubTab] = useState("finance");
+  const adminDashboard = useAdminDashboard({
+    user,
+    activeTab,
+    statisticsSubTab,
+    showToast,
+  });
+
+  const agencyDashboard = useAgencyDashboard({ user, showToast });
+  const clientDashboard = useClientDashboard({ user, showToast });
+
+  const notifications =
+    user?.role === "super_admin"
+      ? adminDashboard.notifications
+      : user?.role === "agency_admin"
+        ? agencyDashboard.notifications
+        : clientDashboard.notifications;
+
+  const platformStats = adminDashboard.platformStats;
+  const agencies = adminDashboard.agencies;
+  const users = adminDashboard.users;
+  const allReservations = adminDashboard.allReservations;
+  const contactMessages = adminDashboard.contactMessages;
+  const financialStats = adminDashboard.financialStats;
+  const agencyReviews = adminDashboard.agencyReviews;
+  const agencyStats = agencyDashboard.agencyStats;
+  const clientStats = clientDashboard.clientStats;
+
+  const loading =
+    user?.role === "super_admin"
+      ? adminDashboard.loading
+      : user?.role === "agency_admin"
+        ? agencyDashboard.loading
+        : clientDashboard.loading;
 
   // Handle refresh button click
   const handleRefresh = async () => {
     setRefreshing(true);
     try {
       if (user?.role === "super_admin") {
-        await fetchDashboardData();
-        await fetchContactMessages();
-        if (activeTab === "statistics" && statisticsSubTab === "finance") {
-          await fetchFinancialStats();
-        }
+        await adminDashboard.refreshData();
       } else if (user?.role === "agency_admin") {
-        await Promise.all([
-          fetchAgencyStats(),
-          fetchReports(),
-          fetchNotifications(),
-        ]);
+        await agencyDashboard.refreshData();
       } else if (user?.role === "client") {
-        await Promise.all([fetchClientStats(), fetchNotifications()]);
+        await clientDashboard.refreshData();
       }
       showToast("Données actualisées avec succès", "success");
     } catch (error) {
@@ -159,184 +129,23 @@ const Dashboard = () => {
     }
   };
 
-  // Fetch financial stats when statistics tab with finance sub-tab is opened
-  useEffect(() => {
-    if (
-      user?.role === "super_admin" &&
-      activeTab === "statistics" &&
-      statisticsSubTab === "finance"
-    ) {
-      fetchFinancialStats();
-    }
-  }, [activeTab, statisticsSubTab, user]);
-
-  // Fetch data on component mount (only for super_admin)
-  useEffect(() => {
-    if (user?.role === "super_admin") {
-      fetchDashboardData();
-      fetchContactMessages();
-    } else if (user?.role === "agency_admin") {
-      fetchAgencyStats();
-      fetchReports(); // Agencies can view vehicle reports
-      fetchNotifications();
-    } else if (user?.role === "client") {
-      fetchClientStats();
-      fetchNotifications();
-    } else {
-      setLoading(false);
-    }
-  }, [user]);
-
-  const fetchDashboardData = async () => {
-    setLoading(true);
+  const openUserDetailsModal = async (selectedUser) => {
     try {
-      const [statsRes, agenciesRes, usersRes] = await Promise.all([
-        adminService.getDashboardStats(),
-        adminService.getAgencies(),
-        adminService.getUsers(),
-      ]);
-
-      setPlatformStats(statsRes.data);
-      setAgencies(agenciesRes.data);
-      setUsers(usersRes.data);
-
-      // Fetch other dashboard data
-      await fetchAgencyReviews();
-      await fetchNotifications();
-    } catch (error) {
-      console.error("Error fetching dashboard data:", error);
-      console.error("Error response:", error.response);
-
-      // Show more specific error message
-      const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        "Erreur lors du chargement des données";
-      showToast(errorMessage, "error");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Fetch agency reviews from API
-  const fetchAgencyReviews = async () => {
-    try {
-      const response = await adminService.getReviews();
-      const reviews = response.data?.data || response.data || [];
-      setAgencyReviews(Array.isArray(reviews) ? reviews : []);
-    } catch (error) {
-      console.error("Error fetching reviews:", error);
-      setAgencyReviews([]);
-    }
-  };
-
-  // Fetch agency stats for agency_admin dashboard
-  const fetchAgencyStats = async () => {
-    try {
-      const response = await agencyService.getStats();
-      setAgencyStats(response.data.data);
-    } catch (error) {
-      console.error("Error fetching agency stats:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Fetch client stats for client dashboard
-  const fetchClientStats = async () => {
-    try {
-      const response = await clientService.getStats();
-      setClientStats(response.data.data);
-    } catch (error) {
-      console.error("Error fetching client stats:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Fetch notifications derived from reservation events
-  const fetchNotifications = async () => {
-    try {
-      const response = await clientService.getNotifications();
-      setNotifications(response.data.data);
-    } catch (error) {
-      console.error("Error fetching notifications:", error);
-    }
-  };
-
-  // Initialize mock notifications (TODO: Replace with API call)
-
-  // Fetch reports from API
-  // Fetch user details (reviews and reports) for DetailsModal
-  const fetchUserDetails = async (userId) => {
-    try {
-      const [userReviews, reportsAgainst, reportsSubmitted] = await Promise.all(
-        [
-          reviewService.getUserReviews(userId),
-          reportService.getUserReportsAgainst(userId),
-          reportService.getUserReportsSubmitted(userId),
-        ],
-      );
-
-      return {
-        userReviews: userReviews.data || [],
-        reports: reportsAgainst.data || [],
-        userReportsSubmitted: reportsSubmitted.data || [],
-      };
-    } catch (error) {
-      console.error("Error fetching user details:", error);
-      return {
-        userReviews: [],
-        reports: [],
-        userReportsSubmitted: [],
-      };
-    }
-  };
-
-  // Fetch agency details (reports + vehicles) for DetailsModal
-  const fetchAgencyDetails = async (agencyId) => {
-    try {
-      const [reportsAgainst, vehiclesRes] = await Promise.all([
-        reportService.getAgencyReportsAgainst(agencyId),
-        adminService.getAgencyVehicles(agencyId),
-      ]);
-
-      return {
-        reports: reportsAgainst.data || [],
-        vehicles: vehiclesRes.data || [],
-      };
-    } catch (error) {
-      console.error("Error fetching agency details:", error);
-      return {
-        reports: [],
-        vehicles: [],
-      };
-    }
-  };
-
-  // Open user details modal with data
-  const openUserDetailsModal = async (user) => {
-    try {
-      const details = await fetchUserDetails(user.id);
+      const details = await adminDashboard.fetchUserDetails(selectedUser.id);
       setDetailsModal({
         isOpen: true,
         type: "user",
-        item: user,
+        item: selectedUser,
         ...details,
       });
     } catch (error) {
-      console.error("Error opening user details:", error);
-      showToast(
-        "Erreur lors du chargement des détails de l'utilisateur",
-        "error",
-      );
+      showToast("Erreur lors de l'ouverture des détails", "error");
     }
   };
 
-  // Open agency details modal with data
   const openAgencyDetailsModal = async (agency) => {
     try {
-      const details = await fetchAgencyDetails(agency.id);
+      const details = await adminDashboard.fetchAgencyDetails(agency.id);
       setDetailsModal({
         isOpen: true,
         type: "agency",
@@ -347,197 +156,7 @@ const Dashboard = () => {
         userReportsSubmitted: [],
       });
     } catch (error) {
-      console.error("Error opening agency details:", error);
-      showToast("Erreur lors du chargement des détails de l'agence", "error");
-    }
-  };
-
-  const fetchReports = async () => {
-    try {
-      const agencyReports = await reportService.getAgencyReports();
-
-      const mappedReports = agencyReports.data.map((report) => ({
-        id: report.id,
-        reportType: report.report_type,
-        targetId: report.target_id,
-        targetName: report.target_name,
-        reason: report.reason,
-        description: report.description,
-        reportedBy: report.reported_by_name,
-        reportedAt: report.created_at,
-        status: report.status,
-        adminNotes: report.admin_notes,
-        resolvedAt: report.resolved_at,
-      }));
-
-      setReports(mappedReports);
-    } catch (error) {
-      console.error("Error fetching reports:", error);
-      showToast(
-        error.response?.data?.message ||
-          "Erreur lors du chargement des signalements",
-        "error",
-      );
-    }
-  };
-
-  const fetchContactMessages = async () => {
-    try {
-      const response = await contactService.getAll();
-      const messages = response.data || [];
-      setContactMessages(Array.isArray(messages) ? messages : []);
-    } catch (error) {
-      console.error("Error fetching contact messages:", error);
-      showToast(
-        error.response?.data?.message ||
-          "Erreur lors du chargement des messages de contact",
-        "error",
-      );
-    }
-  };
-
-  const handleMarkMessageRead = async (id) => {
-    try {
-      await contactService.markAsRead(id);
-      setContactMessages((prev) =>
-        prev.map((message) =>
-          message.id === id ? { ...message, is_read: true } : message,
-        ),
-      );
-      showToast("Message marque comme lu", "success");
-    } catch (error) {
-      console.error("Error marking message as read:", error);
-      showToast(
-        error.response?.data?.message || "Erreur lors de la mise a jour",
-        "error",
-      );
-    }
-  };
-
-  const handleDeleteContactMessage = async (id) => {
-    try {
-      await contactService.delete(id);
-      setContactMessages((prev) => prev.filter((message) => message.id !== id));
-      showToast("Message supprime avec succes", "success");
-    } catch (error) {
-      console.error("Error deleting contact message:", error);
-      showToast(
-        error.response?.data?.message || "Erreur lors de la suppression",
-        "error",
-      );
-    }
-  };
-
-  // Fetch financial statistics from API
-  const fetchFinancialStats = async () => {
-    try {
-      const response = await adminService.getFinancialStats();
-      setFinancialStats(response.data);
-    } catch (error) {
-      console.error("Error fetching financial stats:", error);
-      showToast(
-        error.response?.data?.message ||
-          "Erreur lors du chargement des statistiques financières",
-        "error",
-      );
-    }
-  };
-
-  // Handle agency review submission
-  const handleSubmitReview = async (reviewData) => {
-    try {
-      // TODO: Replace with API call
-      const newReview = {
-        id: agencyReviews.length + 1,
-        ...reviewData,
-        user_id: user.id,
-        user_name: user.name,
-        created_at: new Date().toISOString(),
-      };
-      setAgencyReviews((prev) => [newReview, ...prev]);
-      showToast("Avis publié avec succès");
-    } catch (error) {
-      console.error("Error submitting review:", error);
-      showToast("Erreur lors de la publication de l'avis", "error");
-      throw error;
-    }
-  };
-
-  // Delete handlers
-  const handleDeleteAgency = async (id) => {
-    try {
-      await adminService.deleteAgency(id);
-      setAgencies(agencies.filter((a) => a.id !== id));
-      setPlatformStats((prev) => ({
-        ...prev,
-        totalAgencies: prev.totalAgencies - 1,
-      }));
-      showToast("Agence supprimée avec succès", "success");
-    } catch (error) {
-      showToast(
-        error.response?.data?.message || "Erreur lors de la suppression",
-        "error",
-      );
-    }
-  };
-
-  const handleDeleteUser = async (id) => {
-    try {
-      await adminService.deleteUser(id);
-      setUsers(users.filter((u) => u.id !== id));
-      setPlatformStats((prev) => ({
-        ...prev,
-        totalUsers: prev.totalUsers - 1,
-      }));
-      showToast("Utilisateur supprimé avec succès", "success");
-    } catch (error) {
-      showToast(
-        error.response?.data?.message || "Erreur lors de la suppression",
-        "error",
-      );
-    }
-  };
-
-  // Edit handlers
-  const handleEditAgency = async (updatedData) => {
-    try {
-      const response = await adminService.updateAgency(
-        updatedData.id,
-        updatedData,
-      );
-      setAgencies(
-        agencies.map((a) =>
-          a.id === updatedData.id ? { ...a, ...response.data } : a,
-        ),
-      );
-      showToast("Agence modifiée avec succès", "success");
-    } catch (error) {
-      showToast(
-        error.response?.data?.message || "Erreur lors de la modification",
-        "error",
-      );
-      throw error;
-    }
-  };
-
-  const handleEditUser = async (updatedData) => {
-    try {
-      const response = await adminService.updateUser(
-        updatedData.id,
-        updatedData,
-      );
-      setUsers(
-        users.map((u) =>
-          u.id === updatedData.id ? { ...u, ...response.data } : u,
-        ),
-      );
-      showToast("Utilisateur modifié avec succès", "success");
-    } catch (error) {
-      showToast(
-        error.response?.data?.message || "Erreur lors de la modification",
-        "error",
-      );
-      throw error;
+      showToast("Erreur lors de l'ouverture des détails", "error");
     }
   };
 
@@ -1008,8 +627,15 @@ const Dashboard = () => {
           platformStats={platformStats}
           agencies={agencies}
           users={users}
+          reports={adminDashboard.reports}
+          trashedReports={adminDashboard.trashedReports}
+          reportsView={adminDashboard.reportsView}
+          reportsFilter={adminDashboard.reportsFilter}
+          setReportsView={adminDashboard.setReportsView}
+          setReportsFilter={adminDashboard.setReportsFilter}
           loading={loading}
           contactMessages={contactMessages}
+          setHistoryModal={setHistoryModal}
           financialStats={financialStats}
           user={user}
           onDeleteAgency={(id) => {
@@ -1020,6 +646,9 @@ const Dashboard = () => {
             });
           }}
           onEditAgency={(item) => {
+            setEditModal({ isOpen: true, type: "agency", item });
+          }}
+          onSuspendAgency={(agency) => {
             setSuspendModal({
               isOpen: true,
               type: "agency",
@@ -1059,20 +688,25 @@ const Dashboard = () => {
               showToast("Erreur lors de l'ouverture des détails", "error");
             }
           }}
-          onResolveReport={handleResolveReport}
-          onDismissReport={handleDismissReport}
-          onDeleteReport={handleDeleteReport}
-          onRestoreReport={handleRestoreReport}
-          onPermanentDeleteReport={handlePermanentDeleteReport}
-          onMarkMessageRead={handleMarkMessageRead}
-          onDeleteContactMessage={handleDeleteContactMessage}
+          onResolveReport={adminDashboard.handleResolveReport}
+          onDismissReport={adminDashboard.handleDismissReport}
+          onDeleteReport={adminDashboard.handleDeleteReport}
+          onRestoreReport={adminDashboard.handleRestoreReport}
+          onPermanentDeleteReport={adminDashboard.handlePermanentDeleteReport}
+          onMarkMessageRead={adminDashboard.handleMarkMessageRead}
+          onDeleteContactMessage={adminDashboard.handleDeleteContactMessage}
           onViewReportDetails={(report) => {
             setReportDetailsModal({ isOpen: true, report });
           }}
         />
       );
     } else if (role === "agency_admin") {
-      return <AgencyContent activeTab={activeTab} reports={reports} />;
+      return (
+        <AgencyContent
+          activeTab={activeTab}
+          reports={agencyDashboard.reports}
+        />
+      );
     } else if (role === "client") {
       return <ClientContent activeTab={activeTab} navigate={navigate} />;
     }
@@ -1300,9 +934,9 @@ const Dashboard = () => {
         }
         onConfirm={() => {
           if (deleteModal.type === "agency") {
-            handleDeleteAgency(deleteModal.item.id);
+            adminDashboard.handleDeleteAgency(deleteModal.item.id);
           } else if (deleteModal.type === "user") {
-            handleDeleteUser(deleteModal.item.id);
+            adminDashboard.handleDeleteUser(deleteModal.item.id);
           }
           setDeleteModal({ isOpen: false, type: null, item: null });
         }}
@@ -1323,9 +957,7 @@ const Dashboard = () => {
           try {
             if (suspendModal.type === "agency") {
               const agency = suspendModal.item;
-              const newStatus =
-                agency.status === "active" ? "inactive" : "active";
-              await adminService.suspendAgency(agency.id, newStatus);
+              await adminDashboard.handleSuspendAgency(agency);
               showToast(
                 agency.status === "inactive"
                   ? "Agence débloquée avec succès"
@@ -1333,16 +965,16 @@ const Dashboard = () => {
                 "success",
               );
             } else if (suspendModal.type === "user") {
-              const user = suspendModal.item;
-              await adminService.suspendUser(user.id, !user.is_suspended);
+              const selectedUser = suspendModal.item;
+              await adminDashboard.handleSuspendUser(selectedUser);
               showToast(
-                user.is_suspended
+                selectedUser.is_suspended
                   ? "Utilisateur débloqué avec succès"
                   : "Utilisateur bloqué avec succès",
                 "success",
               );
             }
-            fetchDashboardData();
+            await adminDashboard.refreshData();
           } catch (error) {
             console.error("Error suspending:", error);
             showToast("Erreur lors de la modification du statut", "error");
@@ -1389,9 +1021,9 @@ const Dashboard = () => {
         onClose={() => setEditModal({ isOpen: false, type: null, item: null })}
         onSave={async (updatedData) => {
           if (editModal.type === "agency") {
-            await handleEditAgency(updatedData);
+            await adminDashboard.handleEditAgency(updatedData);
           } else if (editModal.type === "user") {
-            await handleEditUser(updatedData);
+            await adminDashboard.handleEditUser(updatedData);
           }
           setEditModal({ isOpen: false, type: null, item: null });
         }}
@@ -1410,7 +1042,7 @@ const Dashboard = () => {
         userReservations={allReservations.filter(
           (r) => r.user_id === user?.id || r.client_id === user?.id,
         )}
-        onSubmitReview={handleSubmitReview}
+        onSubmitReview={adminDashboard.handleSubmitReview}
       />
 
       <DetailsModal

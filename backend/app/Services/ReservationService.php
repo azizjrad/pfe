@@ -43,8 +43,8 @@ class ReservationService
         $pricingBreakdown = $this->calculatePrice($vehicle, $startDate, $endDate, $options);
 
         // Calculate platform commission (8%)
-        $commissionRate = config('pfe.commission.platform_rate', 0.08);
-        $minCommission = config('pfe.commission.min_commission', 5);
+        $commissionRate = config('pfe.commission.platform_rate');
+        $minCommission = config('pfe.commission.min_commission');
 
         $platformCommission = max(
             $pricingBreakdown['total'] * $commissionRate,
@@ -112,8 +112,8 @@ class ReservationService
                     $options
                 );
 
-                $commissionRate = config('pfe.commission.platform_rate', 0.08);
-                $minCommission = config('pfe.commission.min_commission', 5);
+                $commissionRate = config('pfe.commission.platform_rate');
+                $minCommission = config('pfe.commission.min_commission');
                 $platformCommission = max($pricingBreakdown['total'] * $commissionRate, $minCommission);
                 $agencyPayout = $pricingBreakdown['total'] - $platformCommission;
 
@@ -260,6 +260,7 @@ class ReservationService
      * Calculate pricing for a vehicle rental
      *
      * Price = (Vehicle daily price × rental days) + optional add-ons
+     * All add-on prices are configured in config/pfe.php
      *
      * @param Vehicle $vehicle
      * @param Carbon $startDate
@@ -285,38 +286,48 @@ class ReservationService
             'total' => $baseTotal,
         ];
 
-        // Add optional services
-        if (!empty($options['full_insurance'])) {
-            $amount = $baseTotal * 0.15; // 15% of base
+        // Get add-ons config
+        $addOns = config('pfe.pricing.add_ons', []);
+
+        // Add optional services from config
+        if (!empty($options['full_insurance']) && isset($addOns['full_insurance'])) {
+            $config = $addOns['full_insurance'];
+            $amount = ($config['type'] === 'percentage')
+                ? $baseTotal * $config['value']
+                : $config['value'];
+
             $breakdown['options'][] = [
-                'name' => 'Assurance tous risques',
+                'name' => $config['display_name'],
                 'amount' => round($amount, 2),
             ];
             $breakdown['total'] += $amount;
         }
 
-        if (!empty($options['airport_delivery'])) {
-            $amount = 10;
+        if (!empty($options['airport_delivery']) && isset($addOns['airport_delivery'])) {
+            $config = $addOns['airport_delivery'];
+            $amount = $config['value'];
             $breakdown['options'][] = [
-                'name' => 'Livraison aéroport',
+                'name' => $config['display_name'],
                 'amount' => $amount,
             ];
             $breakdown['total'] += $amount;
         }
 
-        if (!empty($options['home_delivery'])) {
-            $amount = 25;
+        if (!empty($options['home_delivery']) && isset($addOns['home_delivery'])) {
+            $config = $addOns['home_delivery'];
+            $amount = $config['value'];
             $breakdown['options'][] = [
-                'name' => 'Livraison à domicile',
+                'name' => $config['display_name'],
                 'amount' => $amount,
             ];
             $breakdown['total'] += $amount;
         }
 
-        if (!empty($options['after_hours_pickup'])) {
-            $amount = 15;
+        if (!empty($options['after_hours_pickup']) && isset($addOns['after_hours_pickup'])) {
+            $config = $addOns['after_hours_pickup'];
+            $amount = $config['value'];
             $breakdown['options'][] = [
-                'name' => 'Prise en charge hors horaires',
+                'name' => $config['display_name'],
                 'amount' => $amount,
             ];
             $breakdown['total'] += $amount;
