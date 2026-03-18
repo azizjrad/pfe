@@ -256,11 +256,11 @@ const Home = () => {
               className={`text-left space-y-8 transition-all duration-700 ${heroContentAnim.isVisible ? "animate-slideInLeft" : "opacity-0"}`}
             >
               {/* Booking Card */}
-              <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-gray-100 p-6 sm:p-8 max-w-md mx-auto lg:mx-0 hover:shadow-3xl transition-shadow duration-300">
-                <div className="flex items-center gap-3 mb-6">
+              <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-gray-100 p-5 sm:p-6 md:p-8 max-w-md mx-auto lg:mx-0 hover:shadow-3xl transition-shadow duration-300">
+                <div className="flex items-center gap-2 sm:gap-3 mb-5 sm:mb-6">
                   <div className="p-2 bg-primary-50 rounded-lg">
                     <svg
-                      className="w-6 h-6 text-primary-600"
+                      className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -273,14 +273,14 @@ const Home = () => {
                       />
                     </svg>
                   </div>
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
+                  <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
                     Rechercher un véhicule
                   </h2>
                 </div>
 
                 {/* Pick up and return location */}
                 <div className="mb-5">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
                     Lieu de prise en charge et de retour
                   </label>
                   <div className="relative group">
@@ -360,7 +360,7 @@ const Home = () => {
                     />
                     <label
                       htmlFor="differentLocation"
-                      className="ml-2 text-sm text-gray-600 cursor-pointer hover:text-gray-900 transition-colors"
+                      className="ml-2 text-xs sm:text-sm text-gray-600 cursor-pointer hover:text-gray-900 transition-colors"
                     >
                       lieu de retour différent
                     </label>
@@ -369,10 +369,10 @@ const Home = () => {
 
                 {/* Pick up date */}
                 <div className="mb-5">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
                     Date de prise en charge
                   </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3">
                     <div className="relative group">
                       <input
                         type="date"
@@ -383,7 +383,7 @@ const Home = () => {
                             pickupDate: e.target.value,
                           })
                         }
-                        className="w-full px-4 py-3 text-sm bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary-500 focus:bg-white transition-all duration-200 cursor-pointer hover:border-gray-300"
+                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary-500 focus:bg-white transition-all duration-200 cursor-pointer hover:border-gray-300"
                       />
                     </div>
                     <div className="relative group">
@@ -419,8 +419,8 @@ const Home = () => {
                               },
                             },
                             "& .MuiSelect-select": {
-                              paddingTop: "0.75rem",
-                              paddingBottom: "0.75rem",
+                              paddingTop: "0.625rem",
+                              paddingBottom: "0.625rem",
                             },
                           }}
                         >
@@ -456,10 +456,10 @@ const Home = () => {
 
                 {/* Return date */}
                 <div className="mb-5">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
                     Date de retour
                   </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3">
                     <div className="relative group">
                       <input
                         type="date"
@@ -470,7 +470,7 @@ const Home = () => {
                             returnDate: e.target.value,
                           })
                         }
-                        className="w-full px-4 py-3 text-sm bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary-500 focus:bg-white transition-all duration-200 cursor-pointer hover:border-gray-300"
+                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary-500 focus:bg-white transition-all duration-200 cursor-pointer hover:border-gray-300"
                       />
                     </div>
                     <div className="relative group">
@@ -506,8 +506,8 @@ const Home = () => {
                               },
                             },
                             "& .MuiSelect-select": {
-                              paddingTop: "0.75rem",
-                              paddingBottom: "0.75rem",
+                              paddingTop: "0.625rem",
+                              paddingBottom: "0.625rem",
                             },
                           }}
                         >
@@ -543,7 +543,7 @@ const Home = () => {
 
                 {/* Category selection */}
                 <div className="mb-6">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
                     Type de véhicule (optionnel)
                   </label>
                   <div className="relative group">
@@ -613,11 +613,11 @@ const Home = () => {
                 {/* Search button */}
                 <button
                   onClick={handleSearchSubmit}
-                  className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 group"
+                  className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold py-3 sm:py-4 px-4 sm:px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 group text-sm sm:text-base"
                 >
                   <span>Rechercher des véhicules</span>
                   <svg
-                    className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200"
+                    className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-200"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
