@@ -383,7 +383,7 @@ const Home = () => {
                             pickupDate: e.target.value,
                           })
                         }
-                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary-500 focus:bg-white transition-all duration-200 cursor-pointer hover:border-gray-300"
+                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary-500 focus:bg-white transition-all duration-200 cursor-pointer hover:border-gray-300 appearance-none"
                       />
                     </div>
                     <div className="relative group">
@@ -470,7 +470,7 @@ const Home = () => {
                             returnDate: e.target.value,
                           })
                         }
-                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary-500 focus:bg-white transition-all duration-200 cursor-pointer hover:border-gray-300"
+                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary-500 focus:bg-white transition-all duration-200 cursor-pointer hover:border-gray-300 appearance-none"
                       />
                     </div>
                     <div className="relative group">
