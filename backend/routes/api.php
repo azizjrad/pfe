@@ -42,6 +42,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Notifications - Available for both agency admins and clients
     Route::get('/user/notifications', [ClientController::class, 'getNotifications']);
+
+    // Reservation cancellation - Available to both clients and agency admins (controller handles permission checks)
+    Route::post('/reservations/{id}/cancel', [ReservationController::class, 'cancel']);
 });
 
 // Protected routes - Super Admin only
@@ -94,7 +97,6 @@ Route::middleware(['auth:sanctum', 'role:agency_admin,super_admin'])->group(func
 
     // Agency reservation management
     Route::get('/agency/reservations', [ReservationController::class, 'agencyIndex']);
-    Route::post('/reservations/{id}/cancel', [ReservationController::class, 'cancel']);
     Route::patch('/reservations/{id}/status', [ReservationController::class, 'updateStatus']);
     Route::post('/reservations/{id}/pickup', [ReservationController::class, 'pickupVehicle']);
     Route::post('/reservations/{id}/return', [ReservationController::class, 'returnVehicle']);
@@ -108,11 +110,10 @@ Route::middleware(['auth:sanctum', 'role:client'])->group(function () {
     // Submit reviews for agencies
     Route::post('/reviews', [ReviewController::class, 'store']);
 
-    // Client reservations (create, view, update, cancel)
+    // Client reservations (create, view, update)
     Route::get('/my-reservations', [ReservationController::class, 'clientIndex']);
     Route::post('/reservations', [ReservationController::class, 'store']);
     Route::get('/reservations/{id}', [ReservationController::class, 'show']);
     Route::put('/reservations/{id}', [ReservationController::class, 'update']);
-    Route::post('/reservations/{id}/cancel', [ReservationController::class, 'cancel']);
 });
 

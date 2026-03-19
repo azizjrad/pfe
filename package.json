@@ -1,5 +1,20 @@
 {
-  "dependencies": {
-    "react-router-dom": "^7.13.0"
+  "name": "pfe",
+  "version": "1.0.0",
+  "description": "PFE - Full Stack Rental Management System",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "preview": "cd frontend && npm run preview",
+    "start": "cd frontend && npm run start",
+    "install:all": "npm install && cd frontend && npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }
