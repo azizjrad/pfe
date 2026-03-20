@@ -14,6 +14,19 @@ export default function useClientDashboard({ user, showToast }) {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const markAllNotificationsAsRead = async () => {
+    try {
+      await clientService.markAllNotificationsRead();
+      setNotifications((prev) =>
+        prev.map((notification) => ({ ...notification, is_read: true })),
+      );
+    } catch (error) {
+      console.error("Error marking notifications as read:", error);
+      showToast?.("Erreur lors du marquage des notifications", "error");
+      throw error;
+    }
+  };
+
   const fetchClientStats = async () => {
     try {
       const response = await clientService.getStats();
@@ -53,5 +66,6 @@ export default function useClientDashboard({ user, showToast }) {
     notifications,
     loading,
     refreshData,
+    markAllNotificationsAsRead,
   };
 }

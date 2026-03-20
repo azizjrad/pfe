@@ -39,6 +39,48 @@ class AgencyService
     }
 
     /**
+     * Get public agency catalog list with pagination.
+     */
+    public function getPublicAgencies(int $perPage = 12)
+    {
+        return Agency::with(['reviews', 'vehicles'])
+            ->withCount('reviews')
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
+    }
+
+    /**
+     * Get public agency details by id.
+     */
+    public function getPublicAgencyById(int $id): Agency
+    {
+        return Agency::withCount('reviews')
+            ->with([
+                'reviews',
+                'vehicles' => function ($query) {
+                    $query->where('status', 'available');
+                },
+            ])
+            ->findOrFail($id);
+    }
+
+    /**
+     * Get public agency details by slug.
+     */
+    public function getPublicAgencyBySlug(string $slug): Agency
+    {
+        return Agency::where('slug', $slug)
+            ->withCount('reviews')
+            ->with([
+                'reviews',
+                'vehicles' => function ($query) {
+                    $query->where('status', 'available');
+                },
+            ])
+            ->firstOrFail();
+    }
+
+    /**
      * Get agency dashboard stats
      * Returns: vehicle count, active reservations, revenue, ratings
      */

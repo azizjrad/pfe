@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\ClientReliabilityScore;
+use App\Models\UserNotification;
 
 class ClientService
 {
@@ -39,67 +40,61 @@ class ClientService
     }
 
     /**
-     * Get client notifications (upcoming reservations, expiring status, etc.)
+     * Get persistent user notifications
      */
     public function getNotifications(User $user): array
     {
-        $upcoming = $user->reservations()
-            ->where('status', 'confirmed')
-            ->where('start_date', '>=', now())
-            ->where('start_date', '<=', now()->addDays(7))
-            ->count();
+        return UserNotification::query()
+            ->where('user_id', $user->id)
+            ->latest()
+            ->limit(100)
+            ->get()
+            ->map(function (UserNotification $notification) {
+                return [
+                    'id' => $notification->id,
+                    'type' => $notification->type,
+                    'title' => $notification->title,
+                    'message' => $notification->message,
+                    'data' => $notification->data,
+                    'is_read' => $notification->is_read,
+                    'read_at' => $notification->read_at?->toISOString(),
+                    'created_at' => $notification->created_at?->toISOString(),
+                ];
+            })
+            ->toArray();
+    }
 
-        $pending = $user->reservations()
-            ->where('status', 'pending')
-            ->count();
+    /**
+     * Mark one notification as read for the given user.
+     */
+    public function markNotificationAsRead(User $user, int $notificationId): UserNotification
+    {
+        $notification = UserNotification::query()
+            ->where('user_id', $user->id)
+            ->findOrFail($notificationId);
 
-        $needsRating = $user->reservations()
-            ->where('status', 'completed')
-            ->where('created_at', '>=', now()->subDays(7))
-            ->doesntHave('reviews')
-            ->count();
-
-        $lowScore = $user->reliabilityScore?->score ?? 100;
-
-        $notifications = [];
-
-        if ($upcoming > 0) {
-            $notifications[] = [
-                'type' => 'upcoming',
-                'title' => 'Upcoming Reservations',
-                'message' => "You have {$upcoming} reservation(s) starting within the next week.",
-                'count' => $upcoming,
-            ];
+        if (!$notification->is_read) {
+            $notification->update([
+                'is_read' => true,
+                'read_at' => now(),
+            ]);
         }
 
-        if ($pending > 0) {
-            $notifications[] = [
-                'type' => 'pending',
-                'title' => 'Pending Confirmation',
-                'message' => "You have {$pending} reservation(s) awaiting agency confirmation.",
-                'count' => $pending,
-            ];
-        }
+        return $notification;
+    }
 
-        if ($needsRating > 0) {
-            $notifications[] = [
-                'type' => 'review',
-                'title' => 'Rate Your Rentals',
-                'message' => "Rate {$needsRating} completed rental(s) to help us improve.",
-                'count' => $needsRating,
-            ];
-        }
-
-        if ($lowScore < 60) {
-            $notifications[] = [
-                'type' => 'warning',
-                'title' => 'Reliability Score Warning',
-                'message' => "Your reliability score is {$lowScore}. Maintain good behavior to keep booking eligibility.",
-                'count' => 1,
-            ];
-        }
-
-        return $notifications;
+    /**
+     * Mark all notifications as read for the given user.
+     */
+    public function markAllNotificationsAsRead(User $user): int
+    {
+        return UserNotification::query()
+            ->where('user_id', $user->id)
+            ->where('is_read', false)
+            ->update([
+                'is_read' => true,
+                'read_at' => now(),
+            ]);
     }
 
     /**

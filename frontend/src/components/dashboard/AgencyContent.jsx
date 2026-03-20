@@ -1,7 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { agencyService } from "../../services/agencyService";
+import { reservationService } from "../../services/reservationService";
 import ReservationDetailsModal from "../modals/ReservationDetailsModal";
 import Toast from "../common/Toast";
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 const AgencyContent = ({ activeTab, reports = [] }) => {
   const COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"];
   const [reservations, setReservations] = useState([]);
@@ -342,12 +358,87 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
 
   if (activeTab === "vehicles") {
     return (
-      <div className="space-y-5">
-        <h2 className="text-xl font-bold text-gray-900">
-          Gestion des Véhicules
-        </h2>
-        <div className="text-center py-8 text-gray-500">
-          Fonctionnalité en développement
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">
+              Gestion des Véhicules
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">
+              Gérez votre flotte de véhicules disponibles
+            </p>
+          </div>
+          <button className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Ajouter Véhicule
+          </button>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">
+                    Modèle
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">
+                    Marque
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">
+                    Immatriculation
+                  </th>
+                  <th className="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase">
+                    Statut
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">
+                    Réservations
+                  </th>
+                  <th className="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                <tr className="hover:bg-gray-50 transition-colors">
+                  <td colSpan="6" className="px-6 py-12 text-center">
+                    <svg
+                      className="w-12 h-12 text-gray-300 mx-auto mb-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M8 7h12M8 11h12m-12 4h12M3 7l.75 1.5H3m0 3l.75 1.5H3m0 3l.75 1.5H3"
+                      />
+                    </svg>
+                    <p className="text-gray-500 font-medium">
+                      Vos véhicules apparaîtront ici
+                    </p>
+                    <p className="text-gray-400 text-sm mt-1">
+                      Veuillez vous contacter l'administrateur pour ajouter des
+                      véhicules
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     );
@@ -463,14 +554,175 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
   }
 
   if (activeTab === "alerts") {
+    // Filter alerts based on reservation statuses
+    const pendingReservations = reservations.filter(
+      (r) => r.status === "pending",
+    );
+    const ongoingReservations = reservations.filter(
+      (r) => r.status === "ongoing",
+    );
+
+    const alerts = [
+      ...pendingReservations.map((r) => ({
+        id: `pending-${r.id}`,
+        type: "pending",
+        title: "Réservation en attente",
+        description: `${r.user?.name || "Client"} a réservé ${r.vehicle?.name || "un véhicule"} du ${new Date(r.start_date).toLocaleDateString()} au ${new Date(r.end_date).toLocaleDateString()}`,
+        icon: "clock",
+        color: "yellow",
+        severity: "high",
+        timestamp: r.created_at,
+      })),
+      ...ongoingReservations.map((r) => ({
+        id: `ongoing-${r.id}`,
+        type: "ongoing",
+        title: "Réservation en cours",
+        description: `${r.vehicle?.name || "Un véhicule"} est actuellement réservé jusqu'au ${new Date(r.end_date).toLocaleDateString()}`,
+        icon: "play",
+        color: "blue",
+        severity: "medium",
+        timestamp: r.created_at,
+      })),
+    ];
+
+    const getAlertIcon = (type) => {
+      switch (type) {
+        case "pending":
+          return (
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          );
+        case "ongoing":
+          return (
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          );
+        default:
+          return (
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          );
+      }
+    };
+
+    const getAlertBgColor = (color) => {
+      const colors = {
+        yellow: "bg-yellow-50 border-yellow-200",
+        blue: "bg-blue-50 border-blue-200",
+        red: "bg-red-50 border-red-200",
+      };
+      return colors[color] || colors.blue;
+    };
+
+    const getAlertIconBgColor = (color) => {
+      const colors = {
+        yellow: "bg-yellow-100 text-yellow-600",
+        blue: "bg-blue-100 text-blue-600",
+        red: "bg-red-100 text-red-600",
+      };
+      return colors[color] || colors.blue;
+    };
+
     return (
       <div className="space-y-6">
-        <h2 className="text-xl font-bold text-gray-900">
-          Alertes et Notifications
-        </h2>
-        <div className="text-center py-8 text-gray-500">
-          Aucune alerte pour le moment
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">
+            Alertes et Notifications
+          </h2>
+          <p className="text-sm text-gray-500 mt-1">
+            Suivez les actions requises et les mises à jour importantes
+          </p>
         </div>
+
+        {alerts.length === 0 ? (
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-12 text-center">
+            <svg
+              className="w-16 h-16 text-green-300 mx-auto mb-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <p className="text-gray-600 font-medium text-lg">
+              Aucune alerte pour le moment
+            </p>
+            <p className="text-gray-500 text-sm mt-2">
+              Tout est en ordre, continuez vos opérations!
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {alerts.map((alert) => (
+              <div
+                key={alert.id}
+                className={`rounded-2xl border p-5 flex items-start gap-4 hover:shadow-md transition-all ${getAlertBgColor(alert.color)}`}
+              >
+                <div
+                  className={`rounded-lg p-3 flex-shrink-0 ${getAlertIconBgColor(alert.color)}`}
+                >
+                  {getAlertIcon(alert.type)}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-gray-900">{alert.title}</h3>
+                  <p className="text-gray-600 text-sm mt-1">
+                    {alert.description}
+                  </p>
+                  <p className="text-gray-500 text-xs mt-2">
+                    {new Date(alert.timestamp).toLocaleDateString("fr-FR", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                </div>
+                <button className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 rounded-lg transition-colors flex-shrink-0">
+                  Voir
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     );
   }

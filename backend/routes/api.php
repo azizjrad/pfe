@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ConfigController;
+use App\Http\Controllers\Api\PublicVehicleController;
+use App\Http\Controllers\Api\PublicAgencyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +28,19 @@ use Illuminate\Support\Facades\Route;
 Route::post('/contact', [ContactController::class, 'store']);
 Route::get('/pricing-config', [ConfigController::class, 'pricingConfig']);
 
+// Public vehicles and agencies (for browsing without authentication)
+Route::prefix('public')->group(function () {
+    // Vehicles
+    Route::get('/vehicles', [PublicVehicleController::class, 'index']);
+    Route::get('/vehicles/{id}', [PublicVehicleController::class, 'show']);
+    Route::get('/vehicles/agency/{agencyId}', [PublicVehicleController::class, 'byAgency']);
+
+    // Agencies
+    Route::get('/agencies', [PublicAgencyController::class, 'index']);
+    Route::get('/agencies/{id}', [PublicAgencyController::class, 'show']);
+    Route::get('/agencies/slug/{slug}', [PublicAgencyController::class, 'bySlug']);
+});
+
 // Public authentication routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])
@@ -42,6 +57,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Notifications - Available for both agency admins and clients
     Route::get('/user/notifications', [ClientController::class, 'getNotifications']);
+    Route::patch('/user/notifications/{id}/read', [ClientController::class, 'markNotificationAsRead']);
+    Route::patch('/user/notifications/read-all', [ClientController::class, 'markAllNotificationsAsRead']);
 
     // Reservation cancellation - Available to both clients and agency admins (controller handles permission checks)
     Route::post('/reservations/{id}/cancel', [ReservationController::class, 'cancel']);

@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
-export default function NotificationButton({ userRole, notifications = [] }) {
+export default function NotificationButton({
+  userRole,
+  notifications = [],
+  onMarkAllRead,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const unreadCount = notifications.filter((n) => !n.is_read).length;
 
@@ -210,7 +214,10 @@ export default function NotificationButton({ userRole, notifications = [] }) {
             {/* Footer */}
             {notifications.length > 0 && (
               <div className="p-3 border-t border-gray-200 bg-gray-50">
-                <button className="w-full text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors">
+                <button
+                  onClick={() => onMarkAllRead?.()}
+                  className="w-full text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+                >
                   Marquer tout comme lu
                 </button>
               </div>

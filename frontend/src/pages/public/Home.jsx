@@ -5,10 +5,11 @@ import Footer from "../../components/common/Footer";
 import VehicleCard from "../../components/cards/VehicleCard";
 import { Select, MenuItem, FormControl } from "@mui/material";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
-import { vehiclesData } from "../../data/vehiclesData";
+import publicVehicleService from "../../services/publicVehicleService";
 
 const Home = () => {
   const navigate = useNavigate();
+  const [featuredVehicles, setFeaturedVehicles] = useState([]);
 
   // Scroll animations for sections
   const heroContentAnim = useScrollAnimation({ threshold: 0.2 });
@@ -68,6 +69,23 @@ const Home = () => {
     handleScroll();
 
     return () => scrollContainer.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Fetch featured vehicles on component mount
+  useEffect(() => {
+    const fetchFeaturedVehicles = async () => {
+      try {
+        const response = await publicVehicleService.getAll(1, 4);
+        if (response.success && response.data) {
+          setFeaturedVehicles(response.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch featured vehicles:", error);
+        setFeaturedVehicles([]);
+      }
+    };
+
+    fetchFeaturedVehicles();
   }, []);
 
   // Scroll to specific card
@@ -145,9 +163,6 @@ const Home = () => {
 
     navigate(`/vehicles?${searchParams.toString()}`);
   };
-
-  // Featured vehicles data - get first 4 vehicles from centralized data
-  const featuredVehicles = Object.values(vehiclesData).slice(0, 4);
 
   const features = [
     {

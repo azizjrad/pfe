@@ -14,6 +14,7 @@ import ClientContent from "../components/dashboard/ClientContent";
 import useAdminDashboard from "../hooks/useAdminDashboard";
 import useAgencyDashboard from "../hooks/useAgencyDashboard";
 import useClientDashboard from "../hooks/useClientDashboard";
+import ErrorBoundary from "../components/common/ErrorBoundary";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -91,6 +92,20 @@ const Dashboard = () => {
       : user?.role === "agency_admin"
         ? agencyDashboard.notifications
         : clientDashboard.notifications;
+
+  const handleMarkAllNotificationsRead = async () => {
+    if (user?.role === "client") {
+      try {
+        await clientDashboard.markAllNotificationsAsRead();
+        showToast(
+          "Toutes les notifications sont marquées comme lues",
+          "success",
+        );
+      } catch (error) {
+        showToast("Erreur lors du marquage des notifications", "error");
+      }
+    }
+  };
 
   const platformStats = adminDashboard.platformStats;
   const agencies = adminDashboard.agencies;
@@ -185,6 +200,7 @@ const Dashboard = () => {
         return [
           { id: "overview", label: "Mes Réservations", icon: "clipboard" },
           { id: "saved", label: "Véhicules Sauvegardés", icon: "heart" },
+          { id: "notifications", label: "Notifications", icon: "bell" },
           { id: "history", label: "Historique", icon: "clock" },
         ];
       default:
@@ -620,95 +636,109 @@ const Dashboard = () => {
 
     if (role === "super_admin") {
       return (
-        <AdminContent
-          activeTab={activeTab}
-          statisticsSubTab={statisticsSubTab}
-          setStatisticsSubTab={setStatisticsSubTab}
-          platformStats={platformStats}
-          agencies={agencies}
-          users={users}
-          reports={adminDashboard.reports}
-          trashedReports={adminDashboard.trashedReports}
-          reportsView={adminDashboard.reportsView}
-          reportsFilter={adminDashboard.reportsFilter}
-          setReportsView={adminDashboard.setReportsView}
-          setReportsFilter={adminDashboard.setReportsFilter}
-          loading={loading}
-          contactMessages={contactMessages}
-          setHistoryModal={setHistoryModal}
-          financialStats={financialStats}
-          user={user}
-          onDeleteAgency={(id) => {
-            setDeleteModal({
-              isOpen: true,
-              type: "agency",
-              item: agencies.find((a) => a.id === id),
-            });
-          }}
-          onEditAgency={(item) => {
-            setEditModal({ isOpen: true, type: "agency", item });
-          }}
-          onSuspendAgency={(agency) => {
-            setSuspendModal({
-              isOpen: true,
-              type: "agency",
-              item: agency,
-            });
-          }}
-          onDeleteUser={(id) => {
-            setDeleteModal({
-              isOpen: true,
-              type: "user",
-              item: users.find((u) => u.id === id),
-            });
-          }}
-          onEditUser={(item) => {
-            setEditModal({ isOpen: true, type: "user", item });
-          }}
-          onSuspendUser={(user) => {
-            setSuspendModal({
-              isOpen: true,
-              type: "user",
-              item: user,
-            });
-          }}
-          onViewUserDetails={async (user) => {
-            try {
-              await openUserDetailsModal(user);
-            } catch (error) {
-              console.error("Error viewing user details:", error);
-              showToast("Erreur lors de l'ouverture des détails", "error");
-            }
-          }}
-          onViewAgencyDetails={async (agency) => {
-            try {
-              await openAgencyDetailsModal(agency);
-            } catch (error) {
-              console.error("Error viewing agency details:", error);
-              showToast("Erreur lors de l'ouverture des détails", "error");
-            }
-          }}
-          onResolveReport={adminDashboard.handleResolveReport}
-          onDismissReport={adminDashboard.handleDismissReport}
-          onDeleteReport={adminDashboard.handleDeleteReport}
-          onRestoreReport={adminDashboard.handleRestoreReport}
-          onPermanentDeleteReport={adminDashboard.handlePermanentDeleteReport}
-          onMarkMessageRead={adminDashboard.handleMarkMessageRead}
-          onDeleteContactMessage={adminDashboard.handleDeleteContactMessage}
-          onViewReportDetails={(report) => {
-            setReportDetailsModal({ isOpen: true, report });
-          }}
-        />
+        <ErrorBoundary minimal>
+          <AdminContent
+            activeTab={activeTab}
+            statisticsSubTab={statisticsSubTab}
+            setStatisticsSubTab={setStatisticsSubTab}
+            platformStats={platformStats}
+            agencies={agencies}
+            users={users}
+            reports={adminDashboard.reports}
+            trashedReports={adminDashboard.trashedReports}
+            reportsView={adminDashboard.reportsView}
+            reportsFilter={adminDashboard.reportsFilter}
+            setReportsView={adminDashboard.setReportsView}
+            setReportsFilter={adminDashboard.setReportsFilter}
+            loading={loading}
+            contactMessages={contactMessages}
+            setHistoryModal={setHistoryModal}
+            financialStats={financialStats}
+            user={user}
+            onDeleteAgency={(id) => {
+              setDeleteModal({
+                isOpen: true,
+                type: "agency",
+                item: agencies.find((a) => a.id === id),
+              });
+            }}
+            onEditAgency={(item) => {
+              setEditModal({ isOpen: true, type: "agency", item });
+            }}
+            onSuspendAgency={(agency) => {
+              setSuspendModal({
+                isOpen: true,
+                type: "agency",
+                item: agency,
+              });
+            }}
+            onDeleteUser={(id) => {
+              setDeleteModal({
+                isOpen: true,
+                type: "user",
+                item: users.find((u) => u.id === id),
+              });
+            }}
+            onEditUser={(item) => {
+              setEditModal({ isOpen: true, type: "user", item });
+            }}
+            onSuspendUser={(user) => {
+              setSuspendModal({
+                isOpen: true,
+                type: "user",
+                item: user,
+              });
+            }}
+            onViewUserDetails={async (user) => {
+              try {
+                await openUserDetailsModal(user);
+              } catch (error) {
+                console.error("Error viewing user details:", error);
+                showToast("Erreur lors de l'ouverture des détails", "error");
+              }
+            }}
+            onViewAgencyDetails={async (agency) => {
+              try {
+                await openAgencyDetailsModal(agency);
+              } catch (error) {
+                console.error("Error viewing agency details:", error);
+                showToast("Erreur lors de l'ouverture des détails", "error");
+              }
+            }}
+            onResolveReport={adminDashboard.handleResolveReport}
+            onDismissReport={adminDashboard.handleDismissReport}
+            onDeleteReport={adminDashboard.handleDeleteReport}
+            onRestoreReport={adminDashboard.handleRestoreReport}
+            onPermanentDeleteReport={adminDashboard.handlePermanentDeleteReport}
+            onMarkMessageRead={adminDashboard.handleMarkMessageRead}
+            onDeleteContactMessage={adminDashboard.handleDeleteContactMessage}
+            onViewReportDetails={(report) => {
+              setReportDetailsModal({ isOpen: true, report });
+            }}
+          />
+        </ErrorBoundary>
       );
     } else if (role === "agency_admin") {
       return (
-        <AgencyContent
-          activeTab={activeTab}
-          reports={agencyDashboard.reports}
-        />
+        <ErrorBoundary minimal>
+          <AgencyContent
+            activeTab={activeTab}
+            reports={agencyDashboard.reports}
+          />
+        </ErrorBoundary>
       );
     } else if (role === "client") {
-      return <ClientContent activeTab={activeTab} navigate={navigate} />;
+      return (
+        <ErrorBoundary minimal>
+          <ClientContent
+            activeTab={activeTab}
+            navigate={navigate}
+            notifications={notifications}
+            onChangeTab={setActiveTab}
+            onMarkAllNotificationsRead={handleMarkAllNotificationsRead}
+          />
+        </ErrorBoundary>
+      );
     }
 
     return (
@@ -724,6 +754,7 @@ const Dashboard = () => {
         <NotificationButton
           userRole={user?.role}
           notifications={notifications}
+          onMarkAllRead={handleMarkAllNotificationsRead}
         />
       </DashboardHeader>
 

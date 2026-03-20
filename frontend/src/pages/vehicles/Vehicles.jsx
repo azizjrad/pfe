@@ -5,7 +5,7 @@ import Footer from "../../components/common/Footer";
 import VehicleCard from "../../components/cards/VehicleCard";
 import Pagination from "../../components/features/Pagination";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
-import { vehiclesData } from "../../data/vehiclesData";
+import publicVehicleService from "../../services/publicVehicleService";
 import { FormControl, Select, MenuItem } from "@mui/material";
 
 const Vehicles = () => {
@@ -17,6 +17,7 @@ const Vehicles = () => {
   const [sortBy, setSortBy] = useState("default");
   const [showFilters, setShowFilters] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [vehicles, setVehicles] = useState([]);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -52,8 +53,22 @@ const Vehicles = () => {
   const hero = useScrollAnimation({ threshold: 0.2 });
   const vehiclesGrid = useScrollAnimation({ threshold: 0.2 });
 
-  // Convert vehiclesData object to array
-  const vehicles = Object.values(vehiclesData);
+  // Fetch vehicles on component mount
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        const response = await publicVehicleService.getAll(currentPage, 12);
+        if (response.success && response.data) {
+          setVehicles(response.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch vehicles:", error);
+        setVehicles([]);
+      }
+    };
+
+    fetchVehicles();
+  }, [currentPage]);
 
   const filteredVehicles = useMemo(() => {
     let result = vehicles;

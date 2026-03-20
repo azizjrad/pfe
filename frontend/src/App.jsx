@@ -9,6 +9,7 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/features/ProtectedRoute";
 import ScrollToTop from "./components/common/ScrollToTop";
 import Chatbot from "./components/features/Chatbot";
+import ErrorBoundary from "./components/common/ErrorBoundary";
 
 // Lazy-load pages for route-based code splitting
 const Home = React.lazy(() => import("./pages/public/Home"));
@@ -58,164 +59,166 @@ function App() {
     <Router>
       <AuthProvider>
         <ScrollToTop />
-        <div className="min-h-screen">
-          <Routes>
-            {/* Public routes - admins redirected to dashboard */}
-            <Route
-              path="/"
-              element={
-                <PublicRoute>
-                  <React.Suspense fallback={<PageLoader />}>
-                    <Home />
-                  </React.Suspense>
-                </PublicRoute>
-              }
-            />
+        <ErrorBoundary>
+          <div className="min-h-screen">
+            <Routes>
+              {/* Public routes - admins redirected to dashboard */}
+              <Route
+                path="/"
+                element={
+                  <PublicRoute>
+                    <React.Suspense fallback={<PageLoader />}>
+                      <Home />
+                    </React.Suspense>
+                  </PublicRoute>
+                }
+              />
 
-            {/* Auth routes - accessible to everyone */}
-            <Route
-              path="/login"
-              element={
-                <React.Suspense fallback={<PageLoader />}>
-                  <Login />
-                </React.Suspense>
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                <React.Suspense fallback={<PageLoader />}>
-                  <Register />
-                </React.Suspense>
-              }
-            />
-            <Route
-              path="/forgot-password"
-              element={
-                <React.Suspense fallback={<PageLoader />}>
-                  <ForgotPassword />
-                </React.Suspense>
-              }
-            />
+              {/* Auth routes - accessible to everyone */}
+              <Route
+                path="/login"
+                element={
+                  <React.Suspense fallback={<PageLoader />}>
+                    <Login />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path="/register"
+                element={
+                  <React.Suspense fallback={<PageLoader />}>
+                    <Register />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path="/forgot-password"
+                element={
+                  <React.Suspense fallback={<PageLoader />}>
+                    <ForgotPassword />
+                  </React.Suspense>
+                }
+              />
 
-            {/* Static pages - accessible to non-admins */}
-            <Route
-              path="/terms-of-service"
-              element={
-                <PublicRoute>
-                  <React.Suspense fallback={<PageLoader />}>
-                    <TermsOfService />
-                  </React.Suspense>
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/privacy-policy"
-              element={
-                <PublicRoute>
-                  <React.Suspense fallback={<PageLoader />}>
-                    <PrivacyPolicy />
-                  </React.Suspense>
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/contact"
-              element={
-                <PublicRoute>
-                  <React.Suspense fallback={<PageLoader />}>
-                    <Contact />
-                  </React.Suspense>
-                </PublicRoute>
-              }
-            />
+              {/* Static pages - accessible to non-admins */}
+              <Route
+                path="/terms-of-service"
+                element={
+                  <PublicRoute>
+                    <React.Suspense fallback={<PageLoader />}>
+                      <TermsOfService />
+                    </React.Suspense>
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/privacy-policy"
+                element={
+                  <PublicRoute>
+                    <React.Suspense fallback={<PageLoader />}>
+                      <PrivacyPolicy />
+                    </React.Suspense>
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/contact"
+                element={
+                  <PublicRoute>
+                    <React.Suspense fallback={<PageLoader />}>
+                      <Contact />
+                    </React.Suspense>
+                  </PublicRoute>
+                }
+              />
 
-            {/* Booking pages - clients only, admins manage via dashboard */}
-            <Route
-              path="/vehicles"
-              element={
-                <PublicRoute>
-                  <React.Suspense fallback={<PageLoader />}>
-                    <Vehicles />
-                  </React.Suspense>
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/vehicle/:id"
-              element={
-                <PublicRoute>
-                  <React.Suspense fallback={<PageLoader />}>
-                    <VehicleDetails />
-                  </React.Suspense>
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/agencies"
-              element={
-                <PublicRoute>
-                  <React.Suspense fallback={<PageLoader />}>
-                    <Agencies />
-                  </React.Suspense>
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/agency/:id"
-              element={
-                <PublicRoute>
-                  <React.Suspense fallback={<PageLoader />}>
-                    <AgencyDetails />
-                  </React.Suspense>
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/about"
-              element={
-                <PublicRoute>
-                  <React.Suspense fallback={<PageLoader />}>
-                    <About />
-                  </React.Suspense>
-                </PublicRoute>
-              }
-            />
+              {/* Booking pages - clients only, admins manage via dashboard */}
+              <Route
+                path="/vehicles"
+                element={
+                  <PublicRoute>
+                    <React.Suspense fallback={<PageLoader />}>
+                      <Vehicles />
+                    </React.Suspense>
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/vehicle/:id"
+                element={
+                  <PublicRoute>
+                    <React.Suspense fallback={<PageLoader />}>
+                      <VehicleDetails />
+                    </React.Suspense>
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/agencies"
+                element={
+                  <PublicRoute>
+                    <React.Suspense fallback={<PageLoader />}>
+                      <Agencies />
+                    </React.Suspense>
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/agency/:id"
+                element={
+                  <PublicRoute>
+                    <React.Suspense fallback={<PageLoader />}>
+                      <AgencyDetails />
+                    </React.Suspense>
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/about"
+                element={
+                  <PublicRoute>
+                    <React.Suspense fallback={<PageLoader />}>
+                      <About />
+                    </React.Suspense>
+                  </PublicRoute>
+                }
+              />
 
-            {/* Protected Route - Universal Dashboard */}
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
+              {/* Protected Route - Universal Dashboard */}
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <React.Suspense fallback={<PageLoader />}>
+                      <Dashboard />
+                    </React.Suspense>
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* 403 - Forbidden */}
+              <Route
+                path="/forbidden"
+                element={
                   <React.Suspense fallback={<PageLoader />}>
-                    <Dashboard />
+                    <Forbidden />
                   </React.Suspense>
-                </ProtectedRoute>
-              }
-            />
+                }
+              />
 
-            {/* 403 - Forbidden */}
-            <Route
-              path="/forbidden"
-              element={
-                <React.Suspense fallback={<PageLoader />}>
-                  <Forbidden />
-                </React.Suspense>
-              }
-            />
-
-            {/* 404 - Catch all undefined routes */}
-            <Route
-              path="*"
-              element={
-                <React.Suspense fallback={<PageLoader />}>
-                  <NotFound />
-                </React.Suspense>
-              }
-            />
-          </Routes>
-          <Chatbot />
-        </div>
+              {/* 404 - Catch all undefined routes */}
+              <Route
+                path="*"
+                element={
+                  <React.Suspense fallback={<PageLoader />}>
+                    <NotFound />
+                  </React.Suspense>
+                }
+              />
+            </Routes>
+            <Chatbot />
+          </div>
+        </ErrorBoundary>
       </AuthProvider>
     </Router>
   );

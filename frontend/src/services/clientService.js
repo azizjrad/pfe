@@ -12,4 +12,10 @@ export const clientService = {
 
   /** Get notifications for the authenticated user */
   getNotifications: () => http.get("/user/notifications"),
+
+  /** Mark one notification as read */
+  markNotificationRead: (id) => http.patch(`/user/notifications/${id}/read`),
+
+  /** Mark all notifications as read */
+  markAllNotificationsRead: () => http.patch("/user/notifications/read-all"),
 };

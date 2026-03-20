@@ -77,6 +77,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get notifications for this user.
+     */
+    public function notifications()
+    {
+        return $this->hasMany(UserNotification::class)->latest();
+    }
+
+    /**
      * Check if user is a super admin.
      */
     public function isSuperAdmin()

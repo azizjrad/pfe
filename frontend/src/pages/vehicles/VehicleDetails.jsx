@@ -3,11 +3,12 @@ import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import Navbar from "../../components/common/Navbar";
 import Footer from "../../components/common/Footer";
+import VehicleImageGallery from "../../components/features/VehicleImageGallery";
 import ReservationModal from "../../components/modals/ReservationModal";
 import ReportButton from "../../components/features/ReportButton";
 import Toast from "../../components/common/Toast";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
-import { vehiclesData } from "../../data/vehiclesData";
+import publicVehicleService from "../../services/publicVehicleService";
 import { reservationService } from "../../services/reservationService";
 
 const VehicleDetails = () => {
@@ -124,17 +125,22 @@ const VehicleDetails = () => {
     // Scroll to top when component loads
     window.scrollTo(0, 0);
 
-    // Convert string id from URL to number
-    const numericId = parseInt(id);
-    const vehicleData = vehiclesData[numericId];
+    const fetchVehicle = async () => {
+      try {
+        const response = await publicVehicleService.getById(id);
+        if (response.success && response.data) {
+          setVehicle(response.data);
+        } else {
+          console.error("Vehicle not found for id:", id);
+          setTimeout(() => navigate("/vehicles"), 100);
+        }
+      } catch (error) {
+        console.error("Failed to fetch vehicle:", error);
+        setTimeout(() => navigate("/vehicles"), 100);
+      }
+    };
 
-    if (vehicleData) {
-      setVehicle(vehicleData);
-    } else {
-      console.error("Vehicle not found for id:", id);
-      // Use setTimeout to allow state to settle before navigating
-      setTimeout(() => navigate("/vehicles"), 100);
-    }
+    fetchVehicle();
 
     // Check if we should auto-open the reservation modal
     const openModal = searchParams.get("openModal");
@@ -191,17 +197,19 @@ const VehicleDetails = () => {
             className={`transition-all duration-700 ${hero.isVisible ? "animate-fadeIn" : ""}`}
           >
             <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-start">
-              {/* Left: Image */}
+              {/* Left: Image Gallery */}
               <div className="relative">
-                <div className="aspect-[4/3] rounded-3xl overflow-hidden bg-white/50 backdrop-blur-sm shadow-2xl">
-                  <img
-                    src={vehicle.image}
-                    alt={vehicle.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                <VehicleImageGallery
+                  images={
+                    vehicle.images && vehicle.images.length > 0
+                      ? vehicle.images
+                      : vehicle.image
+                        ? [vehicle.image]
+                        : []
+                  }
+                />
                 {/* Category Badge */}
-                <div className="absolute top-3 sm:top-4 left-3 sm:left-4 bg-white/90 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-lg">
+                <div className="absolute top-3 sm:top-4 left-3 sm:left-4 bg-white/90 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-lg z-20">
                   <span className="text-xs sm:text-sm text-primary-600 font-semibold">
                     {vehicle.category}
                   </span>

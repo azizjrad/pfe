@@ -29,6 +29,39 @@ class VehicleService
     }
 
     /**
+     * Get publicly visible vehicles (available only) with pagination.
+     */
+    public function getPublicVehicles(int $perPage = 12)
+    {
+        return Vehicle::where('status', 'available')
+            ->with(['agency', 'reviews'])
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
+    }
+
+    /**
+     * Get public vehicle details by id.
+     */
+    public function getPublicVehicleById(int $id): Vehicle
+    {
+        return Vehicle::where('status', 'available')
+            ->with(['agency', 'reviews'])
+            ->findOrFail($id);
+    }
+
+    /**
+     * Get public vehicles for an agency.
+     */
+    public function getPublicVehiclesByAgency(int $agencyId)
+    {
+        return Vehicle::where('agency_id', $agencyId)
+            ->where('status', 'available')
+            ->with(['agency', 'reviews'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    /**
      * Create new vehicle
      */
     public function create(array $data, int $agencyId): Vehicle

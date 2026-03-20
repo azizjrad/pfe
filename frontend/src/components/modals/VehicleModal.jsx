@@ -18,13 +18,16 @@ export default function VehicleModal({ isOpen, onClose, vehicle, onSubmit }) {
     transmission: "automatic",
     fuel_type: "petrol",
     status: "available",
-    image: "",
+    images: [],
   });
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [pendingFormData, setPendingFormData] = useState(null);
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [dragActive, setDragActive] = useState(false);
+  const MAX_IMAGES = 4;
 
   // Populate form when editing existing vehicle
   useEffect(() => {
@@ -41,8 +44,11 @@ export default function VehicleModal({ isOpen, onClose, vehicle, onSubmit }) {
         transmission: vehicle.transmission || "automatic",
         fuel_type: vehicle.fuel_type || "petrol",
         status: vehicle.status || "available",
-        image: vehicle.image || "",
+        images: vehicle.images || [],
       });
+      if (vehicle.images && Array.isArray(vehicle.images)) {
+        setImagePreviews(vehicle.images);
+      }
     } else {
       // Reset form for new vehicle
       setFormData({
@@ -57,8 +63,9 @@ export default function VehicleModal({ isOpen, onClose, vehicle, onSubmit }) {
         transmission: "automatic",
         fuel_type: "petrol",
         status: "available",
-        image: "",
+        images: [],
       });
+      setImagePreviews([]);
     }
     setErrors({});
   }, [vehicle, isOpen]);
@@ -75,6 +82,84 @@ export default function VehicleModal({ isOpen, onClose, vehicle, onSubmit }) {
         ...prev,
         [name]: "",
       }));
+    }
+  };
+
+  const handleImageChange = (file) => {
+    if (file && file.type.startsWith("image/")) {
+      // Check if we're at max limit
+      if (imagePreviews.length >= MAX_IMAGES) {
+        setErrors((prev) => ({
+          ...prev,
+          images: `Vous ne pouvez ajouter que ${MAX_IMAGES} images maximum`,
+        }));
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const base64String = e.target.result;
+        const newPreviews = [...imagePreviews, base64String];
+        setImagePreviews(newPreviews);
+        setFormData((prev) => ({
+          ...prev,
+          images: newPreviews,
+        }));
+        setErrors((prev) => ({
+          ...prev,
+          images: "",
+        }));
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        images: "Veuillez sélectionner une image valide",
+      }));
+    }
+  };
+
+  const removeImage = (index) => {
+    const newPreviews = imagePreviews.filter((_, i) => i !== index);
+    setImagePreviews(newPreviews);
+    setFormData((prev) => ({
+      ...prev,
+      images: newPreviews,
+    }));
+  };
+
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+
+    if (e.dataTransfer.files) {
+      // Handle multiple files
+      Array.from(e.dataTransfer.files).forEach((file) => {
+        if (imagePreviews.length < MAX_IMAGES) {
+          handleImageChange(file);
+        }
+      });
+    }
+  };
+
+  const handleFileInputChange = (e) => {
+    if (e.target.files) {
+      Array.from(e.target.files).forEach((file) => {
+        if (imagePreviews.length < MAX_IMAGES) {
+          handleImageChange(file);
+        }
+      });
     }
   };
 
@@ -407,21 +492,131 @@ export default function VehicleModal({ isOpen, onClose, vehicle, onSubmit }) {
             </div>
           </div>
 
-          {/* Image URL (Optional) */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Image URL (Optional)
-            </label>
-            <input
-              type="text"
-              name="image"
-              value={formData.image}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-              placeholder="https://example.com/image.jpg"
-            />
-            <p className="text-sm text-gray-500 mt-1">
-              Leave empty to use default car image
+          {/* Image Upload with Drag & Drop */}
+          <div className="bg-gradient-to-br from-blue-50/50 to-cyan-50/50 rounded-2xl p-5 border border-blue-100">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center justify-between">
+              <span className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                Photos du Véhicule
+              </span>
+              <span className="text-sm font-medium text-blue-600 bg-blue-100 px-3 py-1 rounded-full">
+                {imagePreviews.length}/{MAX_IMAGES}
+              </span>
+            </h3>
+
+            {/* Drag & Drop Zone */}
+            {imagePreviews.length < MAX_IMAGES && (
+              <div
+                onDragEnter={handleDrag}
+                onDragLeave={handleDrag}
+                onDragOver={handleDrag}
+                onDrop={handleDrop}
+                className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 cursor-pointer mb-4 ${
+                  dragActive
+                    ? "border-blue-500 bg-blue-100/30"
+                    : "border-blue-300 bg-white/50 hover:border-blue-400 hover:bg-blue-50/20"
+                }`}
+              >
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileInputChange}
+                  className="hidden"
+                  id="vehicle-image-input"
+                  multiple
+                />
+                <label
+                  htmlFor="vehicle-image-input"
+                  className="cursor-pointer block w-full h-full absolute inset-0 rounded-2xl"
+                />
+
+                <div className="space-y-3 pointer-events-none">
+                  <svg
+                    className="w-12 h-12 text-blue-400 mx-auto"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6 20.25v-2.468c0-.119.023-.232.067-.343m12.732-12.638A9 9 0 017.875 5.25v12.468m0 0a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5zm12-1.41A16.318 16.318 0 005.487 20.917m16.026-5.192l-5.313 5.313a2.25 2.25 0 01-3.182 0l-5.313-5.313m0 0a2.25 2.25 0 00-3.182 0l-5.313 5.313m16.026-5.192l3.182 3.182a2.25 2.25 0 010 3.182l-5.313 5.313m0 0a2.25 2.25 0 01-3.182 0l-5.313-5.313"
+                    />
+                  </svg>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">
+                      Glissez vos images ici
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      ou cliquez pour sélectionner (
+                      {MAX_IMAGES - imagePreviews.length} restante
+                      {MAX_IMAGES - imagePreviews.length > 1 ? "s" : ""})
+                    </p>
+                  </div>
+                  <p className="text-xs text-blue-600 font-medium">
+                    PNG, JPG, GIF - Max {MAX_IMAGES} images
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Image Thumbnails Grid */}
+            {imagePreviews.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-gray-700 mb-3">
+                  {imagePreviews.length === 1
+                    ? "Image ajoutée"
+                    : "Images ajoutées"}{" "}
+                  ({imagePreviews.length}/{MAX_IMAGES})
+                </p>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {imagePreviews.map((preview, index) => (
+                    <div
+                      key={index}
+                      className="relative group rounded-xl overflow-hidden shadow-md border-2 border-blue-100 hover:border-blue-300 transition-all"
+                    >
+                      <img
+                        src={preview}
+                        alt={`Aperçu ${index + 1}`}
+                        className="w-full h-24 object-cover"
+                      />
+                      {index === 0 && (
+                        <div className="absolute top-1 left-1 bg-blue-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                          Principal
+                        </div>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors opacity-0 group-hover:opacity-100"
+                        title="Supprimer cette image"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {errors.images && (
+              <p className="text-red-500 text-sm mt-2">{errors.images}</p>
+            )}
+            <p className="text-xs text-gray-500 mt-3">
+              💡 La première image s'affichera sur la fiche du véhicule
             </p>
           </div>
 

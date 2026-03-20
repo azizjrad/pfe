@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Report;
+use App\Models\UserNotification;
 
 class ReportService
 {
@@ -73,6 +74,7 @@ class ReportService
     public function updateStatus(int $reportId, string $status, ?string $adminNotes = null): Report
     {
         $report = Report::findOrFail($reportId);
+        $previousStatus = $report->status;
 
         $validStatuses = ['open', 'investigating', 'resolved', 'dismissed'];
 
@@ -91,6 +93,31 @@ class ReportService
         }
 
         $report->update($payload);
+
+        // Notify the reporting user when the report receives a response from admin.
+        if (
+            $report->reported_by_user_id &&
+            $previousStatus !== $status &&
+            in_array($status, ['investigating', 'resolved', 'dismissed'])
+        ) {
+            $statusText = [
+                'investigating' => 'en cours d\'investigation',
+                'resolved' => 'résolu',
+                'dismissed' => 'rejeté',
+            ][$status] ?? $status;
+
+            UserNotification::create([
+                'user_id' => $report->reported_by_user_id,
+                'type' => 'report_response',
+                'title' => 'Réponse à votre signalement',
+                'message' => "Votre signalement concernant {$report->target_name} a été {$statusText}.",
+                'data' => [
+                    'report_id' => $report->id,
+                    'status' => $status,
+                    'admin_notes' => $adminNotes,
+                ],
+            ]);
+        }
 
         return $report;
     }

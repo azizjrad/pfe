@@ -6,8 +6,8 @@ import VehicleCard from "../../components/cards/VehicleCard";
 import ReportButton from "../../components/features/ReportButton";
 import Toast from "../../components/common/Toast";
 import { useAuth } from "../../contexts/AuthContext";
-import { getAgencyById } from "../../data/agenciesData";
-import { vehiclesData } from "../../data/vehiclesData";
+import publicAgencyService from "../../services/publicAgencyService";
+import { reviewService } from "../../services/reviewService";
 
 const AgencyDetails = () => {
   const { id } = useParams();
@@ -57,24 +57,30 @@ const AgencyDetails = () => {
 
     setSubmittingReview(true);
     try {
-      // TODO: Replace with API call
-      const newReview = {
-        id: reviews.length + 1,
+      const response = await reviewService.store({
         agency_id: parseInt(id),
-        user_id: user?.id,
-        user_name: user?.name || "Client",
         rating: reviewData.rating,
         comment: reviewData.comment,
-        created_at: new Date().toISOString(),
-      };
+      });
 
-      setReviews([newReview, ...reviews]);
-      setShowReviewForm(false);
-      setReviewData({ rating: 5, comment: "" });
-      showToast("Avis publié avec succès", "success");
+      if (response.success && response.data) {
+        // Add the new review to the list
+        setReviews([response.data, ...reviews]);
+        setShowReviewForm(false);
+        setReviewData({ rating: 5, comment: "" });
+        showToast("Avis publié avec succès", "success");
+      } else {
+        showToast(
+          response.message || "Erreur lors de la publication de l'avis",
+          "error",
+        );
+      }
     } catch (error) {
-      console.error("Review submission error:", error);
-      showToast("Erreur lors de la publication de l'avis", "error");
+      showToast(
+        error.response?.data?.message ||
+          "Erreur lors de la publication de l'avis",
+        "error",
+      );
     } finally {
       setSubmittingReview(false);
     }
@@ -84,62 +90,30 @@ const AgencyDetails = () => {
     // Scroll to top
     window.scrollTo(0, 0);
 
-    // Get agency data
-    const agencyData = getAgencyById(parseInt(id));
+    const fetchAgencyData = async () => {
+      try {
+        const response = await publicAgencyService.getById(id);
+        if (response.success && response.data) {
+          setAgency(response.data);
+          // Vehicles are included in response.data
+          if (response.data.vehicles) {
+            setAgencyVehicles(response.data.vehicles);
+          }
+          // Reviews are included in response.data
+          if (response.data.reviews) {
+            setReviews(response.data.reviews);
+          }
+        } else {
+          // Agency not found, redirect to agencies page
+          setTimeout(() => navigate("/agencies"), 100);
+        }
+      } catch (error) {
+        console.error("Failed to fetch agency:", error);
+        setTimeout(() => navigate("/agencies"), 100);
+      }
+    };
 
-    if (agencyData) {
-      setAgency(agencyData);
-
-      // Filter vehicles by agency name
-      const vehiclesFromAgency = Object.values(vehiclesData).filter(
-        (vehicle) => vehicle.agency.name === agencyData.name,
-      );
-      setAgencyVehicles(vehiclesFromAgency);
-
-      // Load mock reviews (TODO: Replace with API call)
-      const mockReviews = [
-        {
-          id: 1,
-          agency_id: parseInt(id),
-          user_id: 5,
-          user_name: "Sophie Martin",
-          rating: 5,
-          comment:
-            "Excellent service ! Voiture impeccable et personnel très accueillant. Je recommande vivement cette agence.",
-          created_at: new Date(
-            Date.now() - 5 * 24 * 60 * 60 * 1000,
-          ).toISOString(),
-        },
-        {
-          id: 2,
-          agency_id: parseInt(id),
-          user_id: 6,
-          user_name: "Thomas Dubois",
-          rating: 4,
-          comment:
-            "Très bonne expérience. La voiture était propre et bien entretenue. Un petit délai à la prise en charge mais rien de grave.",
-          created_at: new Date(
-            Date.now() - 10 * 24 * 60 * 60 * 1000,
-          ).toISOString(),
-        },
-        {
-          id: 3,
-          agency_id: parseInt(id),
-          user_id: 7,
-          user_name: "Marie Leclerc",
-          rating: 5,
-          comment:
-            "Service irréprochable ! L'équipe est professionnelle et à l'écoute. Les prix sont compétitifs.",
-          created_at: new Date(
-            Date.now() - 15 * 24 * 60 * 60 * 1000,
-          ).toISOString(),
-        },
-      ];
-      setReviews(mockReviews);
-    } else {
-      // Agency not found, redirect to agencies page
-      setTimeout(() => navigate("/agencies"), 100);
-    }
+    fetchAgencyData();
   }, [id, navigate]);
 
   if (!agency) {

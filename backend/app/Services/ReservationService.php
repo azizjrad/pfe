@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Reservation;
 use App\Models\User;
+use App\Models\UserNotification;
 use App\Models\Vehicle;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -164,6 +165,21 @@ class ReservationService
             'cancelled_at' => now(),
         ]);
 
+        // Notify client when cancellation is performed by agency/super admin.
+        if (in_array($user->role, ['agency_admin', 'super_admin']) && $reservation->user_id) {
+            UserNotification::create([
+                'user_id' => $reservation->user_id,
+                'type' => 'reservation_refused',
+                'title' => 'Réservation refusée',
+                'message' => "Votre réservation #{$reservation->id} a été refusée par l'agence.",
+                'data' => [
+                    'reservation_id' => $reservation->id,
+                    'status' => 'cancelled',
+                    'vehicle_id' => $reservation->vehicle_id,
+                ],
+            ]);
+        }
+
         return $reservation;
     }
 
@@ -182,7 +198,40 @@ class ReservationService
             throw new \Exception("Statut invalide: {$status}");
         }
 
+        $previousStatus = $reservation->status;
         $reservation->update(['status' => $status]);
+
+        // Notify client for acceptance/refusal decision.
+        if ($reservation->user_id && $previousStatus !== $status) {
+            if ($status === 'confirmed') {
+                UserNotification::create([
+                    'user_id' => $reservation->user_id,
+                    'type' => 'reservation_accepted',
+                    'title' => 'Réservation acceptée',
+                    'message' => "Bonne nouvelle ! Votre réservation #{$reservation->id} a été acceptée.",
+                    'data' => [
+                        'reservation_id' => $reservation->id,
+                        'status' => $status,
+                        'vehicle_id' => $reservation->vehicle_id,
+                    ],
+                ]);
+            }
+
+            if ($status === 'cancelled') {
+                UserNotification::create([
+                    'user_id' => $reservation->user_id,
+                    'type' => 'reservation_refused',
+                    'title' => 'Réservation refusée',
+                    'message' => "Votre réservation #{$reservation->id} a été refusée.",
+                    'data' => [
+                        'reservation_id' => $reservation->id,
+                        'status' => $status,
+                        'vehicle_id' => $reservation->vehicle_id,
+                    ],
+                ]);
+            }
+        }
+
         return $reservation;
     }
 

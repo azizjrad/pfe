@@ -18,7 +18,7 @@ class Vehicle extends Model
         'transmission',
         'fuel_type',
         'status',
-        'image',
+        'images',
         'agency_id',
     ];
 
@@ -27,6 +27,7 @@ class Vehicle extends Model
         'year' => 'integer',
         'mileage' => 'integer',
         'seats' => 'integer',
+        'images' => 'array',
     ];
 
     /**

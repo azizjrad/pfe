@@ -4,11 +4,12 @@ import Navbar from "../../components/common/Navbar";
 import Footer from "../../components/common/Footer";
 import Pagination from "../../components/features/Pagination";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
-import { getAllAgencies } from "../../data/agenciesData";
+import publicAgencyService from "../../services/publicAgencyService";
 
 const Agencies = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [agencies, setAgencies] = useState([]);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,7 +19,22 @@ const Agencies = () => {
   const hero = useScrollAnimation({ threshold: 0.2 });
   const grid = useScrollAnimation({ threshold: 0.2 });
 
-  const agencies = getAllAgencies();
+  // Fetch agencies on component mount
+  useEffect(() => {
+    const fetchAgencies = async () => {
+      try {
+        const response = await publicAgencyService.getAll(currentPage, 12);
+        if (response.success && response.data) {
+          setAgencies(response.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch agencies:", error);
+        setAgencies([]);
+      }
+    };
+
+    fetchAgencies();
+  }, [currentPage]);
 
   // Filter agencies based on search query
   const filteredAgencies = useMemo(() => {

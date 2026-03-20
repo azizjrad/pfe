@@ -76,7 +76,11 @@ const VehicleCard = ({
         {/* Vehicle Image */}
         <div className="relative h-44 sm:h-56 mb-5 sm:mb-8 rounded-2xl overflow-hidden bg-white/50 flex-shrink-0">
           <img
-            src={vehicle.image}
+            src={
+              vehicle.images && vehicle.images.length > 0
+                ? vehicle.images[0]
+                : vehicle.image || "/default-car.jpg"
+            }
             alt={vehicle.name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
