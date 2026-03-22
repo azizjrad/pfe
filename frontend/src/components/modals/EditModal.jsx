@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ROLES } from "../../constants/roles";
 
 export default function EditModal({
   isOpen,
@@ -47,7 +48,7 @@ export default function EditModal({
       if (!formData.email?.trim()) newErrors.email = "L'email est requis";
       if (!formData.phone?.trim()) newErrors.phone = "Le téléphone est requis";
       if (!formData.role) newErrors.role = "Le rôle est requis";
-      if (formData.role === "agency_admin" && !formData.agency_id) {
+      if (formData.role === ROLES.AGENCY_ADMIN && !formData.agency_id) {
         newErrors.agency_id = "L'agence est requise pour un admin d'agence";
       }
     } else if (type === "agency") {
@@ -322,9 +323,9 @@ export default function EditModal({
                   } focus:outline-none focus:bg-white transition-all hover:border-primary-300 appearance-none cursor-pointer`}
                 >
                   <option value="">Sélectionner un rôle</option>
-                  <option value="client">Client</option>
-                  <option value="agency_admin">Admin d'agence</option>
-                  <option value="super_admin">Super Admin</option>
+                  <option value={ROLES.CLIENT}>Client</option>
+                  <option value={ROLES.AGENCY_ADMIN}>Admin d'agence</option>
+                  <option value={ROLES.SUPER_ADMIN}>Super Admin</option>
                 </select>
                 <label
                   htmlFor="user-role"
@@ -352,7 +353,7 @@ export default function EditModal({
                 )}
               </div>
 
-              {formData.role === "agency_admin" && (
+              {formData.role === ROLES.AGENCY_ADMIN && (
                 <div className="relative">
                   <select
                     id="user-agency"

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreReviewRequest;
 use App\Http\Resources\ReviewResource;
 use App\Services\ReviewService;
 use Illuminate\Http\Request;
@@ -33,13 +34,9 @@ class ReviewController extends Controller
     /**
      * Submit a review (authenticated clients)
      */
-    public function store(Request $request)
+    public function store(StoreReviewRequest $request)
     {
-        $validated = $request->validate([
-            'agency_id' => 'required|exists:agencies,id',
-            'rating'    => 'required|integer|between:1,5',
-            'comment'   => 'required|string|max:1000',
-        ]);
+        $validated = $request->validated();
 
         try {
             $review = $this->reviewService->create(

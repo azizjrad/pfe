@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreContactMessageRequest;
 use App\Http\Resources\ContactMessageResource;
 use App\Services\ContactService;
 use Illuminate\Http\Request;
@@ -19,15 +20,9 @@ class ContactController extends Controller
     /**
      * Store a contact form submission (public).
      */
-    public function store(Request $request)
+    public function store(StoreContactMessageRequest $request)
     {
-        $validated = $request->validate([
-            'name'    => 'required|string|max:255',
-            'email'   => 'required|email|max:255',
-            'phone'   => 'nullable|string|max:50',
-            'subject' => 'required|string|max:255',
-            'message' => 'required|string|max:5000',
-        ]);
+        $validated = $request->validated();
 
         try {
             $message = $this->contactService->submit($validated);

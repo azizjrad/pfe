@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { ROLES } from "../../constants/roles";
 
 const VehicleCard = ({
   vehicle,
@@ -16,7 +17,7 @@ const VehicleCard = ({
 
   useEffect(() => {
     // Check if vehicle is already saved
-    if (user && user.role === "client") {
+    if (user && user.role === ROLES.CLIENT) {
       const savedVehicles = JSON.parse(
         localStorage.getItem(`savedVehicles_${user.id}`) || "[]",
       );
@@ -31,7 +32,7 @@ const VehicleCard = ({
   const handleSaveToggle = (e) => {
     e.stopPropagation();
 
-    if (!user || user.role !== "client") {
+    if (!user || user.role !== ROLES.CLIENT) {
       // Redirect to login if not authenticated
       navigate("/login");
       return;
@@ -85,7 +86,7 @@ const VehicleCard = ({
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
           {/* Save Button */}
-          {user && user.role === "client" && (
+          {user && user.role === ROLES.CLIENT && (
             <button
               onClick={handleSaveToggle}
               className="absolute top-3 right-3 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-all flex items-center justify-center group/save z-10"

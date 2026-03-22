@@ -15,6 +15,7 @@ import useAdminDashboard from "../hooks/useAdminDashboard";
 import useAgencyDashboard from "../hooks/useAgencyDashboard";
 import useClientDashboard from "../hooks/useClientDashboard";
 import ErrorBoundary from "../components/common/ErrorBoundary";
+import { ROLES } from "../constants/roles";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -87,14 +88,14 @@ const Dashboard = () => {
   const clientDashboard = useClientDashboard({ user, showToast });
 
   const notifications =
-    user?.role === "super_admin"
+    user?.role === ROLES.SUPER_ADMIN
       ? adminDashboard.notifications
-      : user?.role === "agency_admin"
+      : user?.role === ROLES.AGENCY_ADMIN
         ? agencyDashboard.notifications
         : clientDashboard.notifications;
 
   const handleMarkAllNotificationsRead = async () => {
-    if (user?.role === "client") {
+    if (user?.role === ROLES.CLIENT) {
       try {
         await clientDashboard.markAllNotificationsAsRead();
         showToast(
@@ -118,9 +119,9 @@ const Dashboard = () => {
   const clientStats = clientDashboard.clientStats;
 
   const loading =
-    user?.role === "super_admin"
+    user?.role === ROLES.SUPER_ADMIN
       ? adminDashboard.loading
-      : user?.role === "agency_admin"
+      : user?.role === ROLES.AGENCY_ADMIN
         ? agencyDashboard.loading
         : clientDashboard.loading;
 
@@ -128,11 +129,11 @@ const Dashboard = () => {
   const handleRefresh = async () => {
     setRefreshing(true);
     try {
-      if (user?.role === "super_admin") {
+      if (user?.role === ROLES.SUPER_ADMIN) {
         await adminDashboard.refreshData();
-      } else if (user?.role === "agency_admin") {
+      } else if (user?.role === ROLES.AGENCY_ADMIN) {
         await agencyDashboard.refreshData();
-      } else if (user?.role === "client") {
+      } else if (user?.role === ROLES.CLIENT) {
         await clientDashboard.refreshData();
       }
       showToast("Données actualisées avec succès", "success");
@@ -178,7 +179,7 @@ const Dashboard = () => {
   // Role-based tab configuration
   const getTabsConfig = () => {
     switch (user?.role) {
-      case "super_admin":
+      case ROLES.SUPER_ADMIN:
         return [
           { id: "overview", label: "Vue d'ensemble", icon: "home" },
           { id: "users", label: "Gérer Utilisateurs", icon: "users" },
@@ -186,7 +187,7 @@ const Dashboard = () => {
           { id: "messages", label: "Messages Contact", icon: "mail" },
           { id: "statistics", label: "Consulter Statistiques", icon: "chart" },
         ];
-      case "agency_admin":
+      case ROLES.AGENCY_ADMIN:
         return [
           { id: "overview", label: "Actives", icon: "clipboard" },
           { id: "reservations", label: "Toutes", icon: "list" },
@@ -196,7 +197,7 @@ const Dashboard = () => {
           { id: "alerts", label: "Alertes", icon: "bell" },
           { id: "statistics", label: "Statistiques", icon: "chart" },
         ];
-      case "client":
+      case ROLES.CLIENT:
         return [
           { id: "overview", label: "Mes Réservations", icon: "clipboard" },
           { id: "saved", label: "Véhicules Sauvegardés", icon: "heart" },
@@ -213,17 +214,17 @@ const Dashboard = () => {
   // Role-based title
   const getDashboardTitle = () => {
     switch (user?.role) {
-      case "super_admin":
+      case ROLES.SUPER_ADMIN:
         return {
           title: "Administration Globale",
           subtitle: "Gérez l'ensemble de la plateforme Elite Drive",
         };
-      case "agency_admin":
+      case ROLES.AGENCY_ADMIN:
         return {
           title: "Tableau de Bord Agence",
           subtitle: "Gérez votre agence et vos véhicules",
         };
-      case "client":
+      case ROLES.CLIENT:
         return {
           title: "Mon Espace Client",
           subtitle: "Gérez vos réservations et consultez votre historique",
@@ -238,7 +239,7 @@ const Dashboard = () => {
   // Get statistics cards based on role
   const getStatsCards = () => {
     switch (user?.role) {
-      case "super_admin":
+      case ROLES.SUPER_ADMIN:
         return [
           {
             title: "Agences",
@@ -275,7 +276,7 @@ const Dashboard = () => {
             color: "emerald",
           },
         ];
-      case "agency_admin":
+      case ROLES.AGENCY_ADMIN:
         return [
           {
             title: "Véhicules Totaux",
@@ -310,7 +311,7 @@ const Dashboard = () => {
             color: "yellow",
           },
         ];
-      case "client":
+      case ROLES.CLIENT:
         return [
           {
             title: "Réservations Actives",
@@ -634,7 +635,7 @@ const Dashboard = () => {
   const renderTabContent = () => {
     const role = user?.role;
 
-    if (role === "super_admin") {
+    if (role === ROLES.SUPER_ADMIN) {
       return (
         <ErrorBoundary minimal>
           <AdminContent
@@ -718,7 +719,7 @@ const Dashboard = () => {
           />
         </ErrorBoundary>
       );
-    } else if (role === "agency_admin") {
+    } else if (role === ROLES.AGENCY_ADMIN) {
       return (
         <ErrorBoundary minimal>
           <AgencyContent
@@ -727,7 +728,7 @@ const Dashboard = () => {
           />
         </ErrorBoundary>
       );
-    } else if (role === "client") {
+    } else if (role === ROLES.CLIENT) {
       return (
         <ErrorBoundary minimal>
           <ClientContent

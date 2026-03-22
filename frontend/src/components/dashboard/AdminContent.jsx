@@ -20,6 +20,8 @@ import ConfirmationModal from "../modals/ConfirmationModal";
 import ReservationDetailsModal from "../modals/ReservationDetailsModal";
 import ResolveReportModal from "../modals/ResolveReportModal";
 import Pagination from "../features/Pagination";
+import { ROLES } from "../../constants/roles";
+import { REPORT_STATUS } from "../../constants/statuses";
 const AdminContent = ({
   activeTab,
   statisticsSubTab,
@@ -91,9 +93,9 @@ const AdminContent = ({
       : "bg-red-100 text-red-600";
   const getRoleBadge = (role) => {
     const badges = {
-      super_admin: "bg-purple-100 text-purple-600",
-      agency_admin: "bg-blue-100 text-blue-600",
-      client: "bg-gray-100 text-gray-600",
+      [ROLES.SUPER_ADMIN]: "bg-purple-100 text-purple-600",
+      [ROLES.AGENCY_ADMIN]: "bg-blue-100 text-blue-600",
+      [ROLES.CLIENT]: "bg-gray-100 text-gray-600",
     };
     return badges[role] || "bg-gray-100 text-gray-600";
   };
@@ -374,7 +376,7 @@ const AdminContent = ({
   if (activeTab === "users") {
     // Filter out super_admin users - only show agency_admin and client
     const filteredUsers = (users || []).filter(
-      (user) => user.role !== "super_admin",
+      (user) => user.role !== ROLES.SUPER_ADMIN,
     );
     const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -394,7 +396,7 @@ const AdminContent = ({
                 name: "",
                 email: "",
                 phone: "",
-                role: "client",
+                role: ROLES.CLIENT,
                 agency_id: null,
               })
             }
@@ -432,9 +434,9 @@ const AdminContent = ({
                 <span
                   className={`px-2 py-1 rounded-full text-xs font-medium ${getRoleBadge(user.role)}`}
                 >
-                  {user.role === "client"
+                  {user.role === ROLES.CLIENT
                     ? "Client"
-                    : user.role === "agency_admin"
+                    : user.role === ROLES.AGENCY_ADMIN
                       ? "Admin Agence"
                       : "Super Admin"}
                 </span>
@@ -504,9 +506,9 @@ const AdminContent = ({
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-medium ${getRoleBadge(user.role)}`}
                     >
-                      {user.role === "client"
+                      {user.role === ROLES.CLIENT
                         ? "Client"
-                        : user.role === "agency_admin"
+                        : user.role === ROLES.AGENCY_ADMIN
                           ? "Admin Agence"
                           : "Super Admin"}
                     </span>
@@ -848,7 +850,9 @@ const AdminContent = ({
     );
 
     // Get resolved reports for history
-    const resolvedReports = reports.filter((r) => r.status === "resolved");
+    const resolvedReports = reports.filter(
+      (r) => r.status === REPORT_STATUS.RESOLVED,
+    );
 
     return (
       <div className="space-y-5">
@@ -856,19 +860,19 @@ const AdminContent = ({
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">
-              {user?.role === "agency_admin"
+              {user?.role === ROLES.AGENCY_ADMIN
                 ? "Signalements de mes véhicules"
                 : reportsView === "active"
                   ? "Signalements"
                   : "Corbeille"}
             </h2>
-            {reportsView === "trash" && user?.role === "super_admin" && (
+            {reportsView === "trash" && user?.role === ROLES.SUPER_ADMIN && (
               <p className="text-sm text-gray-500 mt-1">
                 Suppression automatique après 30 jours
               </p>
             )}
           </div>
-          {user?.role === "super_admin" && (
+          {user?.role === ROLES.SUPER_ADMIN && (
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => {
@@ -954,43 +958,54 @@ const AdminContent = ({
             </button>
             <button
               onClick={() => {
-                setReportsFilter("pending");
+                setReportsFilter(REPORT_STATUS.PENDING);
                 setCurrentPage(1);
               }}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                reportsFilter === "pending"
+                reportsFilter === REPORT_STATUS.PENDING
                   ? "bg-yellow-600 text-white shadow-md"
                   : "bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
               }`}
             >
-              En attente ({reports.filter((r) => r.status === "pending").length}
+              En attente (
+              {reports.filter((r) => r.status === REPORT_STATUS.PENDING).length}
               )
             </button>
             <button
               onClick={() => {
-                setReportsFilter("resolved");
+                setReportsFilter(REPORT_STATUS.RESOLVED);
                 setCurrentPage(1);
               }}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                reportsFilter === "resolved"
+                reportsFilter === REPORT_STATUS.RESOLVED
                   ? "bg-green-600 text-white shadow-md"
                   : "bg-green-100 text-green-700 hover:bg-green-200"
               }`}
             >
-              Résolus ({reports.filter((r) => r.status === "resolved").length})
+              Résolus (
+              {
+                reports.filter((r) => r.status === REPORT_STATUS.RESOLVED)
+                  .length
+              }
+              )
             </button>
             <button
               onClick={() => {
-                setReportsFilter("dismissed");
+                setReportsFilter(REPORT_STATUS.DISMISSED);
                 setCurrentPage(1);
               }}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                reportsFilter === "dismissed"
+                reportsFilter === REPORT_STATUS.DISMISSED
                   ? "bg-gray-600 text-white shadow-md"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
             >
-              Rejetés ({reports.filter((r) => r.status === "dismissed").length})
+              Rejetés (
+              {
+                reports.filter((r) => r.status === REPORT_STATUS.DISMISSED)
+                  .length
+              }
+              )
             </button>
           </div>
         )}
@@ -1052,9 +1067,9 @@ const AdminContent = ({
                 : reportsFilter === "all"
                   ? "Aucun signalement pour le moment"
                   : `Aucun signalement ${
-                      reportsFilter === "pending"
+                      reportsFilter === REPORT_STATUS.PENDING
                         ? "en attente"
-                        : reportsFilter === "resolved"
+                        : reportsFilter === REPORT_STATUS.RESOLVED
                           ? "résolu"
                           : "rejeté"
                     }`}
@@ -1076,7 +1091,7 @@ const AdminContent = ({
               {paginatedReports.map((report) => (
                 <div
                   key={report.id}
-                  className={`bg-white rounded-xl border p-4 shadow-sm ${reportsView === "active" ? "cursor-pointer" : ""} ${report.status === "pending" ? "border-yellow-200 bg-yellow-50/40" : "border-gray-200"}`}
+                  className={`bg-white rounded-xl border p-4 shadow-sm ${reportsView === "active" ? "cursor-pointer" : ""} ${report.status === REPORT_STATUS.PENDING ? "border-yellow-200 bg-yellow-50/40" : "border-gray-200"}`}
                   onClick={() =>
                     reportsView === "active" && onViewReportDetails(report)
                   }
@@ -1092,11 +1107,11 @@ const AdminContent = ({
                       </span>
                       {reportsView === "active" && (
                         <span
-                          className={`px-2 py-1 rounded-full text-xs font-medium ${report.status === "pending" ? "bg-yellow-100 text-yellow-800" : report.status === "resolved" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${report.status === REPORT_STATUS.PENDING ? "bg-yellow-100 text-yellow-800" : report.status === REPORT_STATUS.RESOLVED ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}
                         >
-                          {report.status === "pending"
+                          {report.status === REPORT_STATUS.PENDING
                             ? "En attente"
-                            : report.status === "resolved"
+                            : report.status === REPORT_STATUS.RESOLVED
                               ? "Résolu"
                               : "Rejeté"}
                         </span>
@@ -1127,49 +1142,50 @@ const AdminContent = ({
                       jours
                     </p>
                   )}
-                  {reportsView === "active" && user?.role === "super_admin" && (
-                    <div className="flex items-center gap-2 pt-3 mt-2 border-t border-gray-100">
-                      {report.status === "pending" && (
-                        <>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setResolveModal({
-                                isOpen: true,
-                                type: "resolve",
-                                report,
-                              });
-                            }}
-                            className="flex-1 py-1.5 text-xs font-medium text-green-600 bg-green-50 rounded-lg hover:bg-green-100"
-                          >
-                            Résoudre
-                          </button>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setResolveModal({
-                                isOpen: true,
-                                type: "dismiss",
-                                report,
-                              });
-                            }}
-                            className="flex-1 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
-                          >
-                            Rejeter
-                          </button>
-                        </>
-                      )}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onDeleteReport(report);
-                        }}
-                        className="py-1.5 px-3 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100"
-                      >
-                        Corbeille
-                      </button>
-                    </div>
-                  )}
+                  {reportsView === "active" &&
+                    user?.role === ROLES.SUPER_ADMIN && (
+                      <div className="flex items-center gap-2 pt-3 mt-2 border-t border-gray-100">
+                        {report.status === REPORT_STATUS.PENDING && (
+                          <>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setResolveModal({
+                                  isOpen: true,
+                                  type: "resolve",
+                                  report,
+                                });
+                              }}
+                              className="flex-1 py-1.5 text-xs font-medium text-green-600 bg-green-50 rounded-lg hover:bg-green-100"
+                            >
+                              Résoudre
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setResolveModal({
+                                  isOpen: true,
+                                  type: "dismiss",
+                                  report,
+                                });
+                              }}
+                              className="flex-1 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
+                            >
+                              Rejeter
+                            </button>
+                          </>
+                        )}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDeleteReport(report);
+                          }}
+                          className="py-1.5 px-3 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100"
+                        >
+                          Corbeille
+                        </button>
+                      </div>
+                    )}
                   {reportsView === "trash" && (
                     <div className="flex items-center gap-2 pt-3 mt-2 border-t border-gray-100">
                       <button
@@ -1235,7 +1251,7 @@ const AdminContent = ({
                       onClick={() =>
                         reportsView === "active" && onViewReportDetails(report)
                       }
-                      className={`${reportsView === "active" ? "cursor-pointer" : ""} transition-colors ${report.status === "pending" ? "bg-yellow-50/50 hover:bg-yellow-100/70" : "hover:bg-gray-50"}`}
+                      className={`${reportsView === "active" ? "cursor-pointer" : ""} transition-colors ${report.status === REPORT_STATUS.PENDING ? "bg-yellow-50/50 hover:bg-yellow-100/70" : "hover:bg-gray-50"}`}
                     >
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
@@ -1267,18 +1283,18 @@ const AdminContent = ({
                       {reportsView === "active" && (
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center gap-2">
-                            {report.status === "pending" && (
+                            {report.status === REPORT_STATUS.PENDING && (
                               <span className="flex h-2 w-2">
                                 <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-yellow-400 opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
                               </span>
                             )}
                             <span
-                              className={`px-2 py-1 rounded-full text-xs font-medium ${report.status === "pending" ? "bg-yellow-100 text-yellow-800" : report.status === "resolved" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}
+                              className={`px-2 py-1 rounded-full text-xs font-medium ${report.status === REPORT_STATUS.PENDING ? "bg-yellow-100 text-yellow-800" : report.status === REPORT_STATUS.RESOLVED ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}
                             >
-                              {report.status === "pending"
+                              {report.status === REPORT_STATUS.PENDING
                                 ? "En attente"
-                                : report.status === "resolved"
+                                : report.status === REPORT_STATUS.RESOLVED
                                   ? "Résolu"
                                   : "Rejeté"}
                             </span>
@@ -1298,9 +1314,9 @@ const AdminContent = ({
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         {reportsView === "active" ? (
                           <>
-                            {user?.role === "super_admin" && (
+                            {user?.role === ROLES.SUPER_ADMIN && (
                               <>
-                                {report.status === "pending" && (
+                                {report.status === REPORT_STATUS.PENDING && (
                                   <>
                                     <button
                                       onClick={(e) => {
@@ -1354,7 +1370,7 @@ const AdminContent = ({
                                 </button>
                               </>
                             )}
-                            {user?.role === "agency_admin" && (
+                            {user?.role === ROLES.AGENCY_ADMIN && (
                               <span className="text-gray-500 text-sm italic">
                                 Lecture seule
                               </span>

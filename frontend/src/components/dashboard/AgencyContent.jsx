@@ -3,6 +3,8 @@ import { agencyService } from "../../services/agencyService";
 import { reservationService } from "../../services/reservationService";
 import ReservationDetailsModal from "../modals/ReservationDetailsModal";
 import Toast from "../common/Toast";
+import { ROLES } from "../../constants/roles";
+import { REPORT_STATUS, RESERVATION_STATUS } from "../../constants/statuses";
 import {
   LineChart,
   Line,
@@ -162,13 +164,29 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      pending: { label: "En attente", class: "bg-yellow-100 text-yellow-700" },
-      confirmed: { label: "Confirmée", class: "bg-blue-100 text-blue-700" },
-      ongoing: { label: "En cours", class: "bg-yellow-100 text-yellow-700" },
-      completed: { label: "Terminée", class: "bg-green-100 text-green-700" },
-      cancelled: { label: "Annulée", class: "bg-red-100 text-red-700" },
+      [RESERVATION_STATUS.PENDING]: {
+        label: "En attente",
+        class: "bg-yellow-100 text-yellow-700",
+      },
+      [RESERVATION_STATUS.CONFIRMED]: {
+        label: "Confirmée",
+        class: "bg-blue-100 text-blue-700",
+      },
+      [RESERVATION_STATUS.ONGOING]: {
+        label: "En cours",
+        class: "bg-yellow-100 text-yellow-700",
+      },
+      [RESERVATION_STATUS.COMPLETED]: {
+        label: "Terminée",
+        class: "bg-green-100 text-green-700",
+      },
+      [RESERVATION_STATUS.CANCELLED]: {
+        label: "Annulée",
+        class: "bg-red-100 text-red-700",
+      },
     };
-    const config = statusConfig[status] || statusConfig.pending;
+    const config =
+      statusConfig[status] || statusConfig[RESERVATION_STATUS.PENDING];
     return (
       <span
         className={`px-2 py-1 rounded-full text-xs font-medium ${config.class}`}
@@ -180,7 +198,11 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
 
   if (activeTab === "overview") {
     const activeReservations = reservations.filter((r) =>
-      ["pending", "confirmed", "ongoing"].includes(r.status),
+      [
+        RESERVATION_STATUS.PENDING,
+        RESERVATION_STATUS.CONFIRMED,
+        RESERVATION_STATUS.ONGOING,
+      ].includes(r.status),
     );
 
     return (
@@ -249,7 +271,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
             onClose={() =>
               setDetailsModal({ isOpen: false, reservation: null })
             }
-            userRole="agency_admin"
+            userRole={ROLES.AGENCY_ADMIN}
             onStatusUpdate={handleStatusUpdate}
             onPickup={handlePickup}
             onReturn={handleReturn}
@@ -336,7 +358,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
             onClose={() =>
               setDetailsModal({ isOpen: false, reservation: null })
             }
-            userRole="agency_admin"
+            userRole={ROLES.AGENCY_ADMIN}
             onStatusUpdate={handleStatusUpdate}
             onPickup={handlePickup}
             onReturn={handleReturn}
@@ -446,11 +468,11 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
 
   if (activeTab === "reports") {
     const statusLabel = (status) => {
-      if (status === "pending")
+      if (status === REPORT_STATUS.PENDING)
         return { label: "En attente", color: "bg-yellow-100 text-yellow-700" };
-      if (status === "resolved")
+      if (status === REPORT_STATUS.RESOLVED)
         return { label: "Résolu", color: "bg-green-100 text-green-700" };
-      if (status === "dismissed")
+      if (status === REPORT_STATUS.DISMISSED)
         return { label: "Rejeté", color: "bg-gray-100 text-gray-700" };
       return { label: status, color: "bg-gray-100 text-gray-700" };
     };
@@ -556,16 +578,16 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
   if (activeTab === "alerts") {
     // Filter alerts based on reservation statuses
     const pendingReservations = reservations.filter(
-      (r) => r.status === "pending",
+      (r) => r.status === RESERVATION_STATUS.PENDING,
     );
     const ongoingReservations = reservations.filter(
-      (r) => r.status === "ongoing",
+      (r) => r.status === RESERVATION_STATUS.ONGOING,
     );
 
     const alerts = [
       ...pendingReservations.map((r) => ({
-        id: `pending-${r.id}`,
-        type: "pending",
+        id: `${RESERVATION_STATUS.PENDING}-${r.id}`,
+        type: RESERVATION_STATUS.PENDING,
         title: "Réservation en attente",
         description: `${r.user?.name || "Client"} a réservé ${r.vehicle?.name || "un véhicule"} du ${new Date(r.start_date).toLocaleDateString()} au ${new Date(r.end_date).toLocaleDateString()}`,
         icon: "clock",
@@ -574,8 +596,8 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
         timestamp: r.created_at,
       })),
       ...ongoingReservations.map((r) => ({
-        id: `ongoing-${r.id}`,
-        type: "ongoing",
+        id: `${RESERVATION_STATUS.ONGOING}-${r.id}`,
+        type: RESERVATION_STATUS.ONGOING,
         title: "Réservation en cours",
         description: `${r.vehicle?.name || "Un véhicule"} est actuellement réservé jusqu'au ${new Date(r.end_date).toLocaleDateString()}`,
         icon: "play",
@@ -587,7 +609,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
 
     const getAlertIcon = (type) => {
       switch (type) {
-        case "pending":
+        case RESERVATION_STATUS.PENDING:
           return (
             <svg
               className="w-5 h-5"
@@ -603,7 +625,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
               />
             </svg>
           );
-        case "ongoing":
+        case RESERVATION_STATUS.ONGOING:
           return (
             <svg
               className="w-5 h-5"

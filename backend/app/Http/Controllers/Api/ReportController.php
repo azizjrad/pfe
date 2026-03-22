@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreReportRequest;
+use App\Http\Requests\UpdateReportStatusRequest;
 use App\Http\Resources\ReportResource;
 use App\Models\Report;
 use App\Services\ReportService;
@@ -96,18 +98,11 @@ class ReportController extends Controller
     /**
      * Create a new report
      */
-    public function store(Request $request)
+    public function store(StoreReportRequest $request)
     {
         $this->authorize('create', Report::class);
 
-        $validated = $request->validate([
-            'report_type' => 'required|in:vehicle,agency,client',
-            'target_id' => 'required|integer',
-            'target_name' => 'required|string|max:255',
-            'reason' => 'required|string|max:255',
-            'description' => 'required|string',
-            'reported_by_name' => 'required|string|max:255',
-        ]);
+        $validated = $request->validated();
 
         try {
             $report = $this->reportService->create($validated, auth()->id());
@@ -129,15 +124,12 @@ class ReportController extends Controller
     /**
      * Update report status (resolve or dismiss)
      */
-    public function updateStatus(Request $request, $id)
+    public function updateStatus(UpdateReportStatusRequest $request, $id)
     {
         $report = Report::findOrFail($id);
         $this->authorize('update', $report);
 
-        $validated = $request->validate([
-            'status' => 'required|in:open,investigating,resolved,dismissed',
-            'admin_notes' => 'required_if:status,resolved,dismissed|string',
-        ]);
+        $validated = $request->validated();
 
         try {
             $report = $this->reportService->updateStatus($id, $validated['status'], $validated['admin_notes'] ?? null);

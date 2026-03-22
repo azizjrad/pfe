@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreVehicleRequest;
+use App\Http\Requests\UpdateVehicleRequest;
 use App\Http\Resources\VehicleResource;
 use App\Models\Vehicle;
 use App\Services\VehicleService;
@@ -65,25 +67,12 @@ class VehicleController extends Controller
     /**
      * Create a new vehicle (agency admins only)
      */
-    public function store(Request $request)
+    public function store(StoreVehicleRequest $request)
     {
         $user = $request->user();
         $this->authorize('create', Vehicle::class);
 
-        $validated = $request->validate([
-            'brand' => 'required|string|max:255',
-            'model' => 'required|string|max:255',
-            'year' => 'required|integer|min:2000|max:' . (date('Y') + 1),
-            'mileage' => 'required|integer|min:0',
-            'daily_price' => 'required|numeric|min:0',
-            'license_plate' => 'required|string|max:50|unique:vehicles',
-            'color' => 'required|string|max:50',
-            'seats' => 'required|integer|min:2|max:9',
-            'transmission' => 'required|in:manual,automatic',
-            'fuel_type' => 'required|in:petrol,diesel,electric,hybrid',
-            'status' => 'sometimes|in:available,rented,maintenance',
-            'image' => 'nullable|string',
-        ]);
+        $validated = $request->validated();
 
         try {
             $vehicle = $this->vehicleService->create($validated, $user->agency_id);
@@ -104,25 +93,12 @@ class VehicleController extends Controller
     /**
      * Update vehicle (agency admins can only update their own vehicles)
      */
-    public function update(Request $request, $id)
+    public function update(UpdateVehicleRequest $request, $id)
     {
         $vehicle = Vehicle::findOrFail($id);
         $this->authorize('update', $vehicle);
 
-        $validated = $request->validate([
-            'brand' => 'sometimes|string|max:255',
-            'model' => 'sometimes|string|max:255',
-            'year' => 'sometimes|integer|min:2000|max:' . (date('Y') + 1),
-            'mileage' => 'sometimes|integer|min:0',
-            'daily_price' => 'sometimes|numeric|min:0',
-            'license_plate' => 'sometimes|string|max:50|unique:vehicles,license_plate,' . $id,
-            'color' => 'sometimes|string|max:50',
-            'seats' => 'sometimes|integer|min:2|max:9',
-            'transmission' => 'sometimes|in:manual,automatic',
-            'fuel_type' => 'sometimes|in:petrol,diesel,electric,hybrid',
-            'status' => 'sometimes|in:available,rented,maintenance',
-            'image' => 'nullable|string',
-        ]);
+        $validated = $request->validated();
 
         try {
             $vehicle = $this->vehicleService->update($id, $validated);

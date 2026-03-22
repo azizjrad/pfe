@@ -4,6 +4,8 @@ import { clientService } from "../services/clientService";
 import { contactService } from "../services/contactService";
 import { reportService } from "../services/reportService";
 import { reviewService } from "../services/reviewService";
+import { ROLES } from "../constants/roles";
+import { normalizeArray, normalizeReport } from "../utils/normalizers";
 
 const DEFAULT_PLATFORM_STATS = {
   totalAgencies: 0,
@@ -20,26 +22,6 @@ const DEFAULT_FINANCIAL_STATS = {
   paymentMethods: [],
   totals: { revenue: 0, commission: 0, profit: 0, avgMonthly: 0 },
 };
-
-const normalizeArray = (payload) => {
-  if (Array.isArray(payload)) return payload;
-  if (Array.isArray(payload?.data)) return payload.data;
-  return [];
-};
-
-const normalizeReport = (report) => ({
-  id: report.id,
-  report_type: report.report_type || report.reportType,
-  target_id: report.target_id || report.targetId,
-  target_name: report.target_name || report.targetName,
-  reason: report.reason,
-  description: report.description,
-  reported_by_name: report.reported_by_name || report.reportedBy,
-  created_at: report.created_at || report.reportedAt,
-  status: report.status,
-  admin_notes: report.admin_notes || report.adminNotes,
-  resolved_at: report.resolved_at || report.resolvedAt,
-});
 
 export default function useAdminDashboard({
   user,
@@ -352,7 +334,7 @@ export default function useAdminDashboard({
   };
 
   useEffect(() => {
-    if (user?.role !== "super_admin") {
+    if (user?.role !== ROLES.SUPER_ADMIN) {
       setLoading(false);
       return;
     }
@@ -363,7 +345,7 @@ export default function useAdminDashboard({
 
   useEffect(() => {
     if (
-      user?.role === "super_admin" &&
+      user?.role === ROLES.SUPER_ADMIN &&
       activeTab === "statistics" &&
       statisticsSubTab === "finance"
     ) {

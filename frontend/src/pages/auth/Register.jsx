@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import Toast from "../../components/common/Toast";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
+import { ROLES } from "../../constants/roles";
 
 const Register = () => {
   const formAnim = useScrollAnimation({ threshold: 0.2 });
@@ -26,7 +27,7 @@ const Register = () => {
     lastName: "",
     email: "",
     phone: "",
-    role: "client",
+    role: ROLES.CLIENT,
     password: "",
     confirmPassword: "",
     agreeToTerms: false,
@@ -181,7 +182,7 @@ const Register = () => {
       };
 
       // Add agency-specific fields if registering as agency admin
-      if (formData.role === "agency_admin") {
+      if (formData.role === ROLES.AGENCY_ADMIN) {
         registrationData.agency_name = formData.agencyName;
         registrationData.agency_location = formData.agencyLocation;
       }
@@ -515,7 +516,7 @@ const Register = () => {
                     <button
                       type="button"
                       onClick={() =>
-                        setFormData({ ...formData, role: "client" })
+                        setFormData({ ...formData, role: ROLES.CLIENT })
                       }
                       onMouseEnter={() =>
                         setShowTooltip({ ...showTooltip, client: true })
@@ -524,14 +525,14 @@ const Register = () => {
                         setShowTooltip({ ...showTooltip, client: false })
                       }
                       className={`w-full relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all ${
-                        formData.role === "client"
+                        formData.role === ROLES.CLIENT
                           ? "border-primary-500 bg-primary-50"
                           : "border-gray-200 bg-gray-50 hover:border-primary-300"
                       }`}
                     >
                       <div
                         className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                          formData.role === "client"
+                          formData.role === ROLES.CLIENT
                             ? "bg-primary-500 text-white"
                             : "bg-gray-200 text-gray-500"
                         }`}
@@ -552,14 +553,14 @@ const Register = () => {
                       </div>
                       <span
                         className={`font-medium ${
-                          formData.role === "client"
+                          formData.role === ROLES.CLIENT
                             ? "text-primary-700"
                             : "text-gray-600"
                         }`}
                       >
                         Client
                       </span>
-                      {formData.role === "client" && (
+                      {formData.role === ROLES.CLIENT && (
                         <div className="absolute top-2 right-2 w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center">
                           <svg
                             className="w-3 h-3 text-white"
@@ -586,7 +587,7 @@ const Register = () => {
                     <button
                       type="button"
                       onClick={() =>
-                        setFormData({ ...formData, role: "agency_admin" })
+                        setFormData({ ...formData, role: ROLES.AGENCY_ADMIN })
                       }
                       onMouseEnter={() =>
                         setShowTooltip({ ...showTooltip, agency: true })
@@ -595,14 +596,14 @@ const Register = () => {
                         setShowTooltip({ ...showTooltip, agency: false })
                       }
                       className={`w-full relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all ${
-                        formData.role === "agency_admin"
+                        formData.role === ROLES.AGENCY_ADMIN
                           ? "border-primary-500 bg-primary-50"
                           : "border-gray-200 bg-gray-50 hover:border-primary-300"
                       }`}
                     >
                       <div
                         className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                          formData.role === "agency_admin"
+                          formData.role === ROLES.AGENCY_ADMIN
                             ? "bg-primary-500 text-white"
                             : "bg-gray-200 text-gray-500"
                         }`}
@@ -623,14 +624,14 @@ const Register = () => {
                       </div>
                       <span
                         className={`font-medium ${
-                          formData.role === "agency_admin"
+                          formData.role === ROLES.AGENCY_ADMIN
                             ? "text-primary-700"
                             : "text-gray-600"
                         }`}
                       >
                         Agence
                       </span>
-                      {formData.role === "agency_admin" && (
+                      {formData.role === ROLES.AGENCY_ADMIN && (
                         <div className="absolute top-2 right-2 w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center">
                           <svg
                             className="w-3 h-3 text-white"
@@ -657,7 +658,7 @@ const Register = () => {
               </div>
 
               {/* Champs conditionnels pour Client */}
-              {formData.role === "client" && (
+              {formData.role === ROLES.CLIENT && (
                 <>
                   <div className="relative">
                     <input
@@ -703,7 +704,7 @@ const Register = () => {
               )}
 
               {/* Champs conditionnels pour Agence */}
-              {formData.role === "agency_admin" && (
+              {formData.role === ROLES.AGENCY_ADMIN && (
                 <>
                   <div className="relative">
                     <input

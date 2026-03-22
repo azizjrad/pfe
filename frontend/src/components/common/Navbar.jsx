@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import ProfileMenu from "./ProfileMenu";
+import { ADMIN_ROLES } from "../../constants/roles";
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -59,7 +60,7 @@ const Navbar = () => {
 
   // Only show public navigation to clients and unauthenticated users
   // Admins should only access their dashboard
-  const isAdmin = user?.role === "super_admin" || user?.role === "agency_admin";
+  const isAdmin = ADMIN_ROLES.includes(user?.role);
 
   const allNavItems = [
     {

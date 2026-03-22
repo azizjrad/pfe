@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SuspendUserRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\AgencyResource;
 use App\Services\AdminService;
-use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -80,11 +80,9 @@ class AdminController extends Controller
     /**
      * Suspend user
      */
-    public function suspendUser(Request $request, $id)
+    public function suspendUser(SuspendUserRequest $request, $id)
     {
-        $validated = $request->validate([
-            'reason' => 'required|string|max:500',
-        ]);
+        $validated = $request->validated();
 
         try {
             $this->adminService->suspendUser($id, $validated['reason']);

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ResolveReportModal from "./ResolveReportModal";
 import ConfirmationModal from "./ConfirmationModal";
+import { REPORT_STATUS } from "../../constants/statuses";
 
 const ReportDetailsModal = ({
   isOpen,
@@ -68,11 +69,11 @@ const ReportDetailsModal = ({
 
   const getStatusBadge = (status) => {
     switch (status) {
-      case "resolved":
+      case REPORT_STATUS.RESOLVED:
         return "bg-green-100 text-green-800";
-      case "dismissed":
+      case REPORT_STATUS.DISMISSED:
         return "bg-gray-100 text-gray-800";
-      case "pending":
+      case REPORT_STATUS.PENDING:
         return "bg-yellow-100 text-yellow-800";
       default:
         return "bg-blue-100 text-blue-800";
@@ -81,11 +82,11 @@ const ReportDetailsModal = ({
 
   const getStatusLabel = (status) => {
     switch (status) {
-      case "resolved":
+      case REPORT_STATUS.RESOLVED:
         return "Résolu";
-      case "dismissed":
+      case REPORT_STATUS.DISMISSED:
         return "Rejeté";
-      case "pending":
+      case REPORT_STATUS.PENDING:
         return "En attente";
       default:
         return status;
@@ -239,10 +240,12 @@ const ReportDetailsModal = ({
 
         {/* Footer */}
         <div className="sticky bottom-0 bg-white/70 backdrop-blur-xl border-t border-gray-100/80 px-5 py-4 rounded-b-3xl">
-          {report.status === "pending" ? (
+          {report.status === REPORT_STATUS.PENDING ? (
             <div className="flex flex-col sm:flex-row gap-2">
               <button
-                onClick={() => setResolveModal({ isOpen: true, type: "resolve" })}
+                onClick={() =>
+                  setResolveModal({ isOpen: true, type: "resolve" })
+                }
                 className="flex-1 px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <svg
@@ -261,7 +264,9 @@ const ReportDetailsModal = ({
                 Résoudre
               </button>
               <button
-                onClick={() => setResolveModal({ isOpen: true, type: "dismiss" })}
+                onClick={() =>
+                  setResolveModal({ isOpen: true, type: "dismiss" })
+                }
                 className="flex-1 px-4 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <svg

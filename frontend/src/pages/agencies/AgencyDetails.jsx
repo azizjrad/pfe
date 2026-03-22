@@ -5,6 +5,7 @@ import Footer from "../../components/common/Footer";
 import VehicleCard from "../../components/cards/VehicleCard";
 import ReportButton from "../../components/features/ReportButton";
 import Toast from "../../components/common/Toast";
+import { ROLES } from "../../constants/roles";
 import { useAuth } from "../../contexts/AuthContext";
 import publicAgencyService from "../../services/publicAgencyService";
 import { reviewService } from "../../services/reviewService";
@@ -529,7 +530,7 @@ const AgencyDetails = () => {
             </div>
 
             <div className="p-4 sm:p-6">
-              {user && user.role === "client" && !showReviewForm && (
+              {user && user.role === ROLES.CLIENT && !showReviewForm && (
                 <div className="text-center mb-6 sm:mb-8">
                   <button
                     onClick={() => setShowReviewForm(true)}

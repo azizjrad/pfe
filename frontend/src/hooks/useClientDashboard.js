@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { clientService } from "../services/clientService";
+import { ROLES } from "../constants/roles";
 
 const DEFAULT_CLIENT_STATS = {
   activeReservations: 0,
@@ -51,7 +52,7 @@ export default function useClientDashboard({ user, showToast }) {
   };
 
   useEffect(() => {
-    if (user?.role !== "client") {
+    if (user?.role !== ROLES.CLIENT) {
       setLoading(false);
       return;
     }

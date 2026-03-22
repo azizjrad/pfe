@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReservationRequest;
 use App\Http\Requests\UpdateReservationRequest;
 use App\Http\Requests\CancelReservationRequest;
+use App\Http\Requests\ReturnVehicleRequest;
+use App\Http\Requests\UpdateReservationStatusRequest;
 use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
 use App\Services\ReservationService;
@@ -180,15 +182,13 @@ class ReservationController extends Controller
     /**
      * Update reservation status (agency admin only)
      */
-    public function updateStatus($id, Request $request)
+    public function updateStatus($id, UpdateReservationStatusRequest $request)
     {
         $reservation = Reservation::with(['vehicle', 'user'])->findOrFail($id);
 
         $this->authorize('updateStatus', $reservation);
 
-        $validated = $request->validate([
-            'status' => 'required|in:pending,confirmed,ongoing,completed,cancelled',
-        ]);
+        $validated = $request->validated();
 
         // Don't allow changing cancelled or completed reservations
         if (in_array($reservation->status, ['cancelled', 'completed'])) {
@@ -246,16 +246,13 @@ class ReservationController extends Controller
     /**
      * Mark reservation as returned and complete
      */
-    public function returnVehicle($id, Request $request)
+    public function returnVehicle($id, ReturnVehicleRequest $request)
     {
         $reservation = Reservation::with(['vehicle', 'user'])->findOrFail($id);
 
         $this->authorize('return', $reservation);
 
-        $validated = $request->validate([
-            'mileage_on_return' => 'nullable|integer',
-            'condition' => 'nullable|in:good,fair,damaged',
-        ]);
+        $validated = $request->validated();
 
         try {
             DB::beginTransaction();

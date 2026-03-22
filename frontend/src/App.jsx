@@ -6,6 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { ADMIN_ROLES } from "./constants/roles";
 import ProtectedRoute from "./components/features/ProtectedRoute";
 import ScrollToTop from "./components/common/ScrollToTop";
 import Chatbot from "./components/features/Chatbot";
@@ -44,7 +45,7 @@ const PageLoader = () => (
 // Component to redirect admins away from public pages
 const PublicRoute = ({ children }) => {
   const { user } = useAuth();
-  const isAdmin = user?.role === "super_admin" || user?.role === "agency_admin";
+  const isAdmin = ADMIN_ROLES.includes(user?.role);
 
   // Redirect admins to dashboard - they shouldn't access public pages
   if (isAdmin) {

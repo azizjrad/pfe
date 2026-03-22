@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
+import { ROLES } from "../constants/roles";
 import { authEventEmitter } from "../services/authEventEmitter";
 
 const AuthContext = createContext(null);
@@ -190,9 +191,9 @@ export const AuthProvider = ({ children }) => {
     hasRole,
     hasAnyRole,
     isAuthenticated: !!user,
-    isClient: user?.role === "client",
-    isAgencyAdmin: user?.role === "agency_admin",
-    isSuperAdmin: user?.role === "super_admin",
+    isClient: user?.role === ROLES.CLIENT,
+    isAgencyAdmin: user?.role === ROLES.AGENCY_ADMIN,
+    isSuperAdmin: user?.role === ROLES.SUPER_ADMIN,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

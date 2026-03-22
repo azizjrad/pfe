@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { agencyService } from "../services/agencyService";
 import { clientService } from "../services/clientService";
 import { reportService } from "../services/reportService";
+import { ROLES } from "../constants/roles";
+import { normalizeArray, normalizeReport } from "../utils/normalizers";
 
 const DEFAULT_AGENCY_STATS = {
   totalVehicles: 0,
@@ -10,12 +12,6 @@ const DEFAULT_AGENCY_STATS = {
   activeReservations: 0,
   monthlyRevenue: 0,
   alertsCount: 0,
-};
-
-const normalizeArray = (payload) => {
-  if (Array.isArray(payload)) return payload;
-  if (Array.isArray(payload?.data)) return payload.data;
-  return [];
 };
 
 export default function useAgencyDashboard({ user, showToast }) {
@@ -38,19 +34,22 @@ export default function useAgencyDashboard({ user, showToast }) {
     try {
       const response = await reportService.getAgencyReports();
       const source = normalizeArray(response);
-      const mappedReports = source.map((report) => ({
-        id: report.id,
-        reportType: report.report_type,
-        targetId: report.target_id,
-        targetName: report.target_name,
-        reason: report.reason,
-        description: report.description,
-        reportedBy: report.reported_by_name,
-        reportedAt: report.created_at,
-        status: report.status,
-        adminNotes: report.admin_notes,
-        resolvedAt: report.resolved_at,
-      }));
+      const mappedReports = source.map((report) => {
+        const normalized = normalizeReport(report);
+        return {
+          id: normalized.id,
+          reportType: normalized.report_type,
+          targetId: normalized.target_id,
+          targetName: normalized.target_name,
+          reason: normalized.reason,
+          description: normalized.description,
+          reportedBy: normalized.reported_by_name,
+          reportedAt: normalized.created_at,
+          status: normalized.status,
+          adminNotes: normalized.admin_notes,
+          resolvedAt: normalized.resolved_at,
+        };
+      });
       setReports(mappedReports);
     } catch (error) {
       console.error("Error fetching reports:", error);
@@ -80,7 +79,7 @@ export default function useAgencyDashboard({ user, showToast }) {
   };
 
   useEffect(() => {
-    if (user?.role !== "agency_admin") {
+    if (user?.role !== ROLES.AGENCY_ADMIN) {
       setLoading(false);
       return;
     }

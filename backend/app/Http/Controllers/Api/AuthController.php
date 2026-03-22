@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -19,27 +22,9 @@ class AuthController extends Controller
     /**
      * Register a new user
      */
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-                'confirmed',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/',
-            ],
-            'role' => 'required|in:client,agency_admin',
-            'phone' => 'required|string|size:8',
-            'address' => 'nullable|string|max:500',
-            'driver_license' => 'nullable|string|max:50',
-            'agency_name' => 'required_if:role,agency_admin|string|max:255',
-            'agency_location' => 'required_if:role,agency_admin|string|max:255',
-        ], [
-            'password.regex' => 'Password must contain at least one lowercase, one uppercase, one digit and one special character (@$!%*?&).',
-        ]);
+        $validated = $request->validated();
 
         try {
             $user = $this->authService->register($validated);
@@ -79,19 +64,15 @@ class AuthController extends Controller
     /**
      * Login user
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-            'remember_me' => 'sometimes|boolean',
-        ]);
+        $validated = $request->validated();
 
         try {
             $result = $this->authService->login(
-                $request->email,
-                $request->password,
-                $request->boolean('remember_me', false)
+                $validated['email'],
+                $validated['password'],
+                (bool) ($validated['remember_me'] ?? false)
             );
 
             $user = $result['user'];
@@ -188,26 +169,12 @@ class AuthController extends Controller
     /**
      * Update user profile
      */
-    public function updateProfile(Request $request)
+    public function updateProfile(UpdateProfileRequest $request)
     {
-        $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $request->user()->id,
-            'phone' => 'sometimes|required|string|size:8',
-            'address' => 'nullable|string|max:500',
-            'driver_license' => 'nullable|string|max:50',
-            'current_password' => 'required_with:new_password',
-            'new_password' => [
-                'sometimes',
-                'required',
-                'string',
-                'min:8',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/',
-            ],
-        ]);
+        $validated = $request->validated();
 
         try {
-            $user = $this->authService->updateProfile($request->user(), $request->all());
+            $user = $this->authService->updateProfile($request->user(), $validated);
             $user->load('agency', 'reliabilityScore');
 
             return response()->json([

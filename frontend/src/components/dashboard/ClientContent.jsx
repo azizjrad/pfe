@@ -5,6 +5,7 @@ import ReservationDetailsModal from "../modals/ReservationDetailsModal";
 import ConfirmationModal from "../modals/ConfirmationModal";
 import Toast from "../common/Toast";
 import VehicleCard from "../cards/VehicleCard";
+import { RESERVATION_STATUS } from "../../constants/statuses";
 
 // Client Content Component
 const ClientContent = ({
@@ -100,20 +101,20 @@ const ClientContent = ({
 
   const getStatusColor = (status) => {
     const colors = {
-      confirmed: "bg-green-100 text-green-600",
-      pending: "bg-yellow-100 text-yellow-600",
-      completed: "bg-gray-100 text-gray-600",
-      cancelled: "bg-red-100 text-red-600",
+      [RESERVATION_STATUS.CONFIRMED]: "bg-green-100 text-green-600",
+      [RESERVATION_STATUS.PENDING]: "bg-yellow-100 text-yellow-600",
+      [RESERVATION_STATUS.COMPLETED]: "bg-gray-100 text-gray-600",
+      [RESERVATION_STATUS.CANCELLED]: "bg-red-100 text-red-600",
     };
     return colors[status] || "bg-gray-100 text-gray-600";
   };
 
   const getStatusText = (status) => {
     const texts = {
-      confirmed: "Confirmée",
-      pending: "En attente",
-      completed: "Terminée",
-      cancelled: "Annulée",
+      [RESERVATION_STATUS.CONFIRMED]: "Confirmée",
+      [RESERVATION_STATUS.PENDING]: "En attente",
+      [RESERVATION_STATUS.COMPLETED]: "Terminée",
+      [RESERVATION_STATUS.CANCELLED]: "Annulée",
     };
     return texts[status] || status;
   };
@@ -240,7 +241,7 @@ const ClientContent = ({
                       >
                         Voir détails
                       </button>
-                      {reservation.status === "pending" && (
+                      {reservation.status === RESERVATION_STATUS.PENDING && (
                         <button
                           onClick={() =>
                             setCancelModal({
@@ -253,7 +254,7 @@ const ClientContent = ({
                           Annuler
                         </button>
                       )}
-                      {reservation.status === "confirmed" && (
+                      {reservation.status === RESERVATION_STATUS.CONFIRMED && (
                         <p className="text-xs text-gray-500">
                           Contactez l'agence pour annuler
                         </p>
@@ -482,10 +483,10 @@ const ClientContent = ({
               className="px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-sm"
             >
               <option value="all">Tous les statuts</option>
-              <option value="pending">En attente</option>
-              <option value="confirmed">Confirmée</option>
-              <option value="completed">Terminée</option>
-              <option value="cancelled">Annulée</option>
+              <option value={RESERVATION_STATUS.PENDING}>En attente</option>
+              <option value={RESERVATION_STATUS.CONFIRMED}>Confirmée</option>
+              <option value={RESERVATION_STATUS.COMPLETED}>Terminée</option>
+              <option value={RESERVATION_STATUS.CANCELLED}>Annulée</option>
             </select>
           </div>
         </div>

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { ROLES } from "../../constants/roles";
+import { RESERVATION_STATUS } from "../../constants/statuses";
 
 export default function ReservationDetailsModal({
   reservation,
   onClose,
-  userRole, // "client" or "agency_admin"
+  userRole,
   onStatusUpdate,
   onPickup,
   onReturn,
@@ -22,13 +24,29 @@ export default function ReservationDetailsModal({
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      pending: { label: "En attente", class: "bg-yellow-100 text-yellow-700" },
-      confirmed: { label: "Confirmée", class: "bg-blue-100 text-blue-700" },
-      ongoing: { label: "En cours", class: "bg-purple-100 text-purple-700" },
-      completed: { label: "Terminée", class: "bg-green-100 text-green-700" },
-      cancelled: { label: "Annulée", class: "bg-red-100 text-red-700" },
+      [RESERVATION_STATUS.PENDING]: {
+        label: "En attente",
+        class: "bg-yellow-100 text-yellow-700",
+      },
+      [RESERVATION_STATUS.CONFIRMED]: {
+        label: "Confirmée",
+        class: "bg-blue-100 text-blue-700",
+      },
+      [RESERVATION_STATUS.ONGOING]: {
+        label: "En cours",
+        class: "bg-purple-100 text-purple-700",
+      },
+      [RESERVATION_STATUS.COMPLETED]: {
+        label: "Terminée",
+        class: "bg-green-100 text-green-700",
+      },
+      [RESERVATION_STATUS.CANCELLED]: {
+        label: "Annulée",
+        class: "bg-red-100 text-red-700",
+      },
     };
-    const config = statusConfig[status] || statusConfig.pending;
+    const config =
+      statusConfig[status] || statusConfig[RESERVATION_STATUS.PENDING];
     return (
       <span
         className={`px-3 py-1 rounded-full text-sm font-medium ${config.class}`}
@@ -104,14 +122,17 @@ export default function ReservationDetailsModal({
             </div>
 
             {/* Actions for Agency Admin */}
-            {userRole === "agency_admin" && (
+            {userRole === ROLES.AGENCY_ADMIN && (
               <div className="space-y-3">
-                {reservation.status === "pending" && (
+                {reservation.status === RESERVATION_STATUS.PENDING && (
                   <div className="flex gap-3">
                     <button
                       onClick={() =>
                         onStatusUpdate &&
-                        onStatusUpdate(reservation.id, "confirmed")
+                        onStatusUpdate(
+                          reservation.id,
+                          RESERVATION_STATUS.CONFIRMED,
+                        )
                       }
                       className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
                     >
@@ -126,7 +147,7 @@ export default function ReservationDetailsModal({
                   </div>
                 )}
 
-                {reservation.status === "confirmed" && (
+                {reservation.status === RESERVATION_STATUS.CONFIRMED && (
                   <button
                     onClick={() => setActiveAction("pickup")}
                     className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
@@ -135,7 +156,7 @@ export default function ReservationDetailsModal({
                   </button>
                 )}
 
-                {reservation.status === "ongoing" && (
+                {reservation.status === RESERVATION_STATUS.ONGOING && (
                   <button
                     onClick={() => setActiveAction("return")}
                     className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
@@ -280,16 +301,17 @@ export default function ReservationDetailsModal({
             )}
 
             {/* Actions for Client */}
-            {userRole === "client" && reservation.status === "pending" && (
-              <button
-                onClick={() => setActiveAction("cancel")}
-                className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
-              >
-                Annuler la réservation
-              </button>
-            )}
+            {userRole === ROLES.CLIENT &&
+              reservation.status === RESERVATION_STATUS.PENDING && (
+                <button
+                  onClick={() => setActiveAction("cancel")}
+                  className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+                >
+                  Annuler la réservation
+                </button>
+              )}
 
-            {userRole === "client" && activeAction === "cancel" && (
+            {userRole === ROLES.CLIENT && activeAction === "cancel" && (
               <div className="mt-4 p-4 bg-red-50 rounded-lg border border-red-200">
                 <h5 className="font-semibold text-red-900 mb-3">
                   Annuler la réservation
@@ -368,7 +390,7 @@ export default function ReservationDetailsModal({
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                {userRole === "client" ? (
+                {userRole === ROLES.CLIENT ? (
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -384,12 +406,12 @@ export default function ReservationDetailsModal({
                   />
                 )}
               </svg>
-              {userRole === "client"
+              {userRole === ROLES.CLIENT
                 ? "Informations de l'Agence"
                 : "Informations du Client"}
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {userRole === "client" ? (
+              {userRole === ROLES.CLIENT ? (
                 <>
                   <div>
                     <p className="text-sm text-gray-600">Nom de l'agence</p>
@@ -551,7 +573,7 @@ export default function ReservationDetailsModal({
           )}
 
           {/* Cancellation Reason */}
-          {reservation.status === "cancelled" &&
+          {reservation.status === RESERVATION_STATUS.CANCELLED &&
             reservation.cancellation_reason && (
               <div className="bg-red-50 rounded-2xl p-6 border border-red-200">
                 <h4 className="text-lg font-semibold text-red-900 mb-2">

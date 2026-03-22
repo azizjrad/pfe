@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { ROLES } from "../../constants/roles";
+import { REPORT_STATUS, RESERVATION_STATUS } from "../../constants/statuses";
 
 export default function DetailsModal({
   isOpen,
@@ -27,13 +29,29 @@ export default function DetailsModal({
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      pending: { label: "En attente", class: "bg-yellow-100 text-yellow-700" },
-      confirmed: { label: "Confirmée", class: "bg-blue-100 text-blue-700" },
-      ongoing: { label: "En cours", class: "bg-purple-100 text-purple-700" },
-      completed: { label: "Terminée", class: "bg-green-100 text-green-700" },
-      cancelled: { label: "Annulée", class: "bg-red-100 text-red-700" },
+      [RESERVATION_STATUS.PENDING]: {
+        label: "En attente",
+        class: "bg-yellow-100 text-yellow-700",
+      },
+      [RESERVATION_STATUS.CONFIRMED]: {
+        label: "Confirmée",
+        class: "bg-blue-100 text-blue-700",
+      },
+      [RESERVATION_STATUS.ONGOING]: {
+        label: "En cours",
+        class: "bg-purple-100 text-purple-700",
+      },
+      [RESERVATION_STATUS.COMPLETED]: {
+        label: "Terminée",
+        class: "bg-green-100 text-green-700",
+      },
+      [RESERVATION_STATUS.CANCELLED]: {
+        label: "Annulée",
+        class: "bg-red-100 text-red-700",
+      },
     };
-    const config = statusConfig[status] || statusConfig.pending;
+    const config =
+      statusConfig[status] || statusConfig[RESERVATION_STATUS.PENDING];
     return (
       <span
         className={`px-2 py-1 rounded-full text-xs font-medium ${config.class}`}
@@ -45,9 +63,9 @@ export default function DetailsModal({
 
   const getRoleBadge = (role) => {
     const roleConfig = {
-      client: "bg-blue-100 text-blue-700",
-      agency_admin: "bg-purple-100 text-purple-700",
-      super_admin: "bg-red-100 text-red-700",
+      [ROLES.CLIENT]: "bg-blue-100 text-blue-700",
+      [ROLES.AGENCY_ADMIN]: "bg-purple-100 text-purple-700",
+      [ROLES.SUPER_ADMIN]: "bg-red-100 text-red-700",
     };
     return roleConfig[role] || "bg-gray-100 text-gray-700";
   };
@@ -354,11 +372,11 @@ export default function DetailsModal({
                               )}
                             </span>
                             <span
-                              className={`px-2 py-0.5 rounded-full text-xs font-medium ${report.status === "pending" ? "bg-yellow-50 text-yellow-600" : report.status === "resolved" ? "bg-green-50 text-green-600" : "bg-gray-50 text-gray-500"}`}
+                              className={`px-2 py-0.5 rounded-full text-xs font-medium ${report.status === REPORT_STATUS.PENDING ? "bg-yellow-50 text-yellow-600" : report.status === REPORT_STATUS.RESOLVED ? "bg-green-50 text-green-600" : "bg-gray-50 text-gray-500"}`}
                             >
-                              {report.status === "pending"
+                              {report.status === REPORT_STATUS.PENDING
                                 ? "En attente"
-                                : report.status === "resolved"
+                                : report.status === REPORT_STATUS.RESOLVED
                                   ? "Résolu"
                                   : "Rejeté"}
                             </span>
@@ -398,9 +416,9 @@ export default function DetailsModal({
                     <span
                       className={`px-2.5 py-1 rounded-full text-xs font-semibold border ${getRoleBadge(item.role)}`}
                     >
-                      {item.role === "client"
+                      {item.role === ROLES.CLIENT
                         ? "Client"
-                        : item.role === "agency_admin"
+                        : item.role === ROLES.AGENCY_ADMIN
                           ? "Admin Agence"
                           : "Super Admin"}
                     </span>
@@ -454,7 +472,7 @@ export default function DetailsModal({
               </div>
 
               {/* Reliability Score */}
-              {item.role === "client" &&
+              {item.role === ROLES.CLIENT &&
                 (() => {
                   const getScoreColor = (score) => {
                     if (!score && score !== 0)
@@ -690,11 +708,11 @@ export default function DetailsModal({
                               )}
                             </span>
                             <span
-                              className={`px-2 py-0.5 rounded-full text-xs font-medium ${report.status === "pending" ? "bg-yellow-50 text-yellow-600" : report.status === "resolved" ? "bg-green-50 text-green-600" : "bg-gray-50 text-gray-500"}`}
+                              className={`px-2 py-0.5 rounded-full text-xs font-medium ${report.status === REPORT_STATUS.PENDING ? "bg-yellow-50 text-yellow-600" : report.status === REPORT_STATUS.RESOLVED ? "bg-green-50 text-green-600" : "bg-gray-50 text-gray-500"}`}
                             >
-                              {report.status === "pending"
+                              {report.status === REPORT_STATUS.PENDING
                                 ? "En attente"
-                                : report.status === "resolved"
+                                : report.status === REPORT_STATUS.RESOLVED
                                   ? "Résolu"
                                   : "Rejeté"}
                             </span>
@@ -763,11 +781,11 @@ export default function DetailsModal({
                             )}
                           </span>
                           <span
-                            className={`px-2 py-0.5 rounded-full text-xs font-medium ${report.status === "pending" ? "bg-yellow-50 text-yellow-600" : report.status === "resolved" ? "bg-green-50 text-green-600" : "bg-gray-50 text-gray-500"}`}
+                            className={`px-2 py-0.5 rounded-full text-xs font-medium ${report.status === REPORT_STATUS.PENDING ? "bg-yellow-50 text-yellow-600" : report.status === REPORT_STATUS.RESOLVED ? "bg-green-50 text-green-600" : "bg-gray-50 text-gray-500"}`}
                           >
-                            {report.status === "pending"
+                            {report.status === REPORT_STATUS.PENDING
                               ? "En attente"
-                              : report.status === "resolved"
+                              : report.status === REPORT_STATUS.RESOLVED
                                 ? "Résolu"
                                 : "Rejeté"}
                           </span>
