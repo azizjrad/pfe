@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const TermsOfService = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-50">
       {/* Header */}
@@ -25,7 +28,7 @@ const TermsOfService = () => {
                 </svg>
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
-                Elite Drive
+                {t("app.name")}
               </span>
             </Link>
             <Link
@@ -45,7 +48,7 @@ const TermsOfService = () => {
                   d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                 />
               </svg>
-              Retour à l'accueil
+              {t("common.backHome")}
             </Link>
           </div>
         </div>
@@ -56,10 +59,10 @@ const TermsOfService = () => {
         {/* Title */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent mb-4">
-            Conditions d'utilisation
+            {t("terms.title")}
           </h1>
           <p className="text-gray-600">
-            Dernière mise à jour : {new Date().toLocaleDateString("fr-FR")}
+            {t("terms.lastUpdated")} : {new Date().toLocaleDateString("fr-FR")}
           </p>
         </div>
 
@@ -71,12 +74,10 @@ const TermsOfService = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 1
               </span>
-              Acceptation des conditions
+              {t("terms.sections.1.title")}
             </h2>
             <p className="text-gray-700 leading-relaxed ml-11">
-              En accédant et en utilisant le service Elite Drive, vous acceptez
-              d'être lié par ces conditions d'utilisation. Si vous n'acceptez
-              pas ces conditions, veuillez ne pas utiliser nos services.
+              {t("terms.sections.1.content")}
             </p>
           </section>
 
@@ -86,22 +87,16 @@ const TermsOfService = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 2
               </span>
-              Conditions de location
+              {t("terms.sections.2.title")}
             </h2>
             <div className="ml-11 space-y-3">
               <p className="text-gray-700 leading-relaxed">
-                Pour louer un véhicule via Elite Drive, vous devez :
+                {t("terms.sections.2.intro")}
               </p>
               <ul className="list-disc list-inside space-y-2 text-gray-700">
-                <li>Être âgé d'au moins 21 ans</li>
-                <li>
-                  Posséder un permis de conduire valide depuis au moins 1 an
-                </li>
-                <li>
-                  Fournir une carte de crédit valide pour le dépôt de garantie
-                </li>
-                <li>Présenter une pièce d'identité valide</li>
-                <li>Respecter les lois de la circulation en vigueur</li>
+                {t("terms.sections.2.items", { returnObjects: true }).map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
               </ul>
             </div>
           </section>
@@ -112,54 +107,44 @@ const TermsOfService = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 3
               </span>
-              Options et services supplémentaires
+              {t("terms.sections.3.title")}
             </h2>
             <div className="ml-11 space-y-3">
               <p className="text-gray-700 leading-relaxed">
-                Des frais supplémentaires s'appliquent pour les options
-                suivantes :
+                {t("terms.sections.3.intro")}
               </p>
               <div className="grid md:grid-cols-2 gap-3">
                 <div className="bg-gray-50 rounded-lg p-3">
                   <p className="font-semibold text-gray-900">
-                    Assurance & Protection
+                    {t("terms.sections.3.insurance.title")}
                   </p>
-                  <p className="text-sm text-gray-600">
-                    Assurance tous risques : selon tarification en vigueur
-                  </p>
+                  {t("terms.sections.3.insurance.items", { returnObjects: true }).map((item, idx) => (
+                    <p key={idx} className="text-sm text-gray-600">{item}</p>
+                  ))}
                 </div>
                 <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="font-semibold text-gray-900">Équipements</p>
-                  <p className="text-sm text-gray-600">GPS : 5 DT/jour</p>
-                  <p className="text-sm text-gray-600">
-                    Siège enfant : 3 DT/jour
+                  <p className="font-semibold text-gray-900">
+                    {t("terms.sections.3.equipment.title")}
                   </p>
+                  {t("terms.sections.3.equipment.items", { returnObjects: true }).map((item, idx) => (
+                    <p key={idx} className="text-sm text-gray-600">{item}</p>
+                  ))}
                 </div>
                 <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="font-semibold text-gray-900">Services</p>
-                  <p className="text-sm text-gray-600">
-                    Conducteur additionnel : 8 DT/jour
+                  <p className="font-semibold text-gray-900">
+                    {t("terms.sections.3.services.title")}
                   </p>
-                  <p className="text-sm text-gray-600">
-                    Livraison aéroport : selon tarification en vigueur
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    Livraison à domicile : selon tarification en vigueur
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    Prise en charge hors horaires : selon tarification en
-                    vigueur
-                  </p>
+                  {t("terms.sections.3.services.items", { returnObjects: true }).map((item, idx) => (
+                    <p key={idx} className="text-sm text-gray-600">{item}</p>
+                  ))}
                 </div>
                 <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="font-semibold text-gray-900">Kilométrage</p>
-                  <p className="text-sm text-gray-600">
-                    200 km/jour : Prix de base
+                  <p className="font-semibold text-gray-900">
+                    {t("terms.sections.3.mileage.title")}
                   </p>
-                  <p className="text-sm text-gray-600">Illimité : +10%</p>
-                  <p className="text-sm text-gray-600">
-                    Limite 100 km/jour : -5%
-                  </p>
+                  {t("terms.sections.3.mileage.items", { returnObjects: true }).map((item, idx) => (
+                    <p key={idx} className="text-sm text-gray-600">{item}</p>
+                  ))}
                 </div>
               </div>
             </div>
@@ -171,83 +156,66 @@ const TermsOfService = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 4
               </span>
-              Commission de la plateforme
+              {t("terms.sections.4.title")}
             </h2>
             <div className="ml-11 space-y-4">
               <div className="bg-gradient-to-r from-primary-50 to-blue-50 border-l-4 border-primary-500 p-4 rounded-r-lg">
                 <p className="text-sm font-semibold text-primary-900 mb-2">
-                  💼 Pour les agences partenaires
+                  {t("terms.sections.4.agencyPrefix")}
                 </p>
-                <p className="text-sm text-primary-800 leading-relaxed">
-                  Elite Drive prélève une commission de <strong>8%</strong> sur
-                  chaque réservation confirmée et payée. Cette commission couvre
-                  les frais de plateforme, le traitement des paiements, le
-                  support client et le marketing.
-                </p>
+                <p 
+                  className="text-sm text-primary-800 leading-relaxed" 
+                  dangerouslySetInnerHTML={{ __html: t("terms.sections.4.agencyDesc").replace(/<str>/g, '<strong>').replace(/<\/str>/g, '</strong>') }}
+                />
               </div>
 
               <div className="space-y-3">
                 <div className="bg-gray-50 rounded-lg p-4">
                   <h4 className="font-semibold text-gray-900 mb-2">
-                    Comment fonctionne la commission ?
+                    {t("terms.sections.4.howItWorks.title")}
                   </h4>
                   <div className="text-sm text-gray-700 space-y-2">
-                    <p>
-                      • <strong>Taux de commission :</strong> 8% du montant
-                      total de la réservation
-                    </p>
-                    <p>
-                      • <strong>Commission minimale :</strong> 5 DT par
-                      réservation
-                    </p>
-                    <p>
-                      • <strong>Calcul :</strong> Commission = max(Total × 8%, 5
-                      DT)
-                    </p>
+                    {t("terms.sections.4.howItWorks.items", { returnObjects: true }).map((item, idx) => (
+                      <p key={idx} dangerouslySetInnerHTML={{ __html: item.replace(/<str>/g, '<strong>').replace(/<\/str>/g, '</strong>') }} />
+                    ))}
                   </div>
                 </div>
 
                 <div className="bg-gray-50 rounded-lg p-4">
                   <h4 className="font-semibold text-gray-900 mb-2">
-                    Exemple de calcul
+                    {t("terms.sections.4.example.title")}
                   </h4>
                   <div className="text-sm text-gray-700 space-y-1 bg-white rounded p-3">
                     <div className="flex justify-between font-mono">
-                      <span>Prix total payé par le client :</span>
-                      <span className="font-semibold">245.00 DT</span>
+                      <span>{t("terms.sections.4.example.totalPaid")}</span>
+                      <span className="font-semibold">{t("terms.sections.4.example.totalPaidVal")}</span>
                     </div>
                     <div className="flex justify-between font-mono text-red-600">
-                      <span>Commission Elite Drive (8%) :</span>
-                      <span className="font-semibold">- 19.60 DT</span>
+                      <span>{t("terms.sections.4.example.commission")}</span>
+                      <span className="font-semibold">{t("terms.sections.4.example.commissionVal")}</span>
                     </div>
                     <div className="border-t border-gray-300 my-2"></div>
                     <div className="flex justify-between font-mono text-green-600">
-                      <span>Montant versé à l'agence :</span>
-                      <span className="font-bold text-lg">225.40 DT</span>
+                      <span>{t("terms.sections.4.example.agencyAmount")}</span>
+                      <span className="font-bold text-lg">{t("terms.sections.4.example.agencyAmountVal")}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="bg-blue-50 rounded-lg p-4">
                   <h4 className="font-semibold text-blue-900 mb-2">
-                    Ce qui est inclus dans la commission
+                    {t("terms.sections.4.included.title")}
                   </h4>
                   <ul className="text-sm text-blue-800 space-y-1 ml-4">
-                    <li>✓ Visibilité sur la plateforme</li>
-                    <li>✓ Système de réservation en ligne</li>
-                    <li>✓ Traitement sécurisé des paiements</li>
-                    <li>✓ Support client 24/7</li>
-                    <li>✓ Marketing et publicité</li>
-                    <li>✓ Gestion des avis et notations</li>
-                    <li>✓ Outils d'analyse et statistiques</li>
+                    {t("terms.sections.4.included.items", { returnObjects: true }).map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    ))}
                   </ul>
                 </div>
               </div>
 
               <p className="text-sm text-gray-600 italic mt-4">
-                Note : La commission est automatiquement déduite du montant de
-                chaque réservation avant le versement à l'agence. Les relevés
-                détaillés sont disponibles dans l'espace agence.
+                {t("terms.sections.4.note")}
               </p>
             </div>
           </section>
@@ -258,15 +226,11 @@ const TermsOfService = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 5
               </span>
-              Réservation et paiement
+              {t("terms.sections.5.title")}
             </h2>
             <div className="ml-11 space-y-3">
               <p className="text-gray-700 leading-relaxed">
-                Les réservations sont confirmées après réception du paiement
-                complet. Le prix affiché est calculé en fonction du tarif
-                journalier du véhicule multiplié par la durée de location,
-                auquel s'ajoutent les options et services supplémentaires
-                sélectionnés.
+                {t("terms.sections.5.content")}
               </p>
             </div>
           </section>
@@ -277,23 +241,16 @@ const TermsOfService = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 6
               </span>
-              Annulation et modification
+              {t("terms.sections.6.title")}
             </h2>
             <div className="ml-11 space-y-3">
               <p className="text-gray-700 leading-relaxed">
-                Vous pouvez annuler ou modifier votre réservation selon les
-                conditions suivantes :
+                {t("terms.sections.6.intro")}
               </p>
               <ul className="list-disc list-inside space-y-2 text-gray-700">
-                <li>
-                  Annulation gratuite jusqu'à 48 heures avant la prise en charge
-                </li>
-                <li>
-                  Annulation entre 24h et 48h : 50% du montant total sera retenu
-                </li>
-                <li>
-                  Annulation moins de 24h avant : 100% du montant sera retenu
-                </li>
+                {t("terms.sections.6.items", { returnObjects: true }).map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
               </ul>
             </div>
           </section>
@@ -304,21 +261,16 @@ const TermsOfService = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 7
               </span>
-              Utilisation du véhicule
+              {t("terms.sections.7.title")}
             </h2>
             <div className="ml-11 space-y-3">
               <p className="text-gray-700 leading-relaxed">
-                Le locataire s'engage à :
+                {t("terms.sections.7.intro")}
               </p>
               <ul className="list-disc list-inside space-y-2 text-gray-700">
-                <li>Utiliser le véhicule conformément aux lois en vigueur</li>
-                <li>Ne pas sous-louer ou prêter le véhicule à un tiers</li>
-                <li>Maintenir le véhicule en bon état</li>
-                <li>
-                  Ne pas utiliser le véhicule pour des courses ou compétitions
-                </li>
-                <li>Ne pas transporter de marchandises interdites</li>
-                <li>Signaler immédiatement tout accident ou dommage</li>
+                {t("terms.sections.7.items", { returnObjects: true }).map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
               </ul>
             </div>
           </section>
@@ -329,14 +281,10 @@ const TermsOfService = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 8
               </span>
-              Assurance et responsabilité
+              {t("terms.sections.8.title")}
             </h2>
             <p className="text-gray-700 leading-relaxed ml-11">
-              Tous nos véhicules sont assurés avec une couverture de base. Le
-              locataire reste responsable de la franchise en cas de dommages.
-              Une assurance complémentaire est disponible pour réduire ou
-              éliminer la franchise. Le locataire est entièrement responsable
-              des amendes de stationnement et de circulation.
+              {t("terms.sections.8.content")}
             </p>
           </section>
 
@@ -346,13 +294,10 @@ const TermsOfService = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 9
               </span>
-              Retard et prolongation
+              {t("terms.sections.9.title")}
             </h2>
             <p className="text-gray-700 leading-relaxed ml-11">
-              Tout retard dans la restitution du véhicule doit être signalé et
-              approuvé à l'avance. Des frais supplémentaires seront appliqués
-              pour les retards non autorisés. Un retard de plus de 2 heures non
-              signalé sera facturé comme une journée supplémentaire complète.
+              {t("terms.sections.9.content")}
             </p>
           </section>
 
@@ -362,13 +307,10 @@ const TermsOfService = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 10
               </span>
-              Modifications des conditions
+              {t("terms.sections.10.title")}
             </h2>
             <p className="text-gray-700 leading-relaxed ml-11">
-              Elite Drive se réserve le droit de modifier ces conditions
-              d'utilisation à tout moment. Les modifications seront effectives
-              dès leur publication sur le site. Il est de la responsabilité de
-              l'utilisateur de consulter régulièrement ces conditions.
+              {t("terms.sections.10.content")}
             </p>
           </section>
 
@@ -378,25 +320,22 @@ const TermsOfService = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 11
               </span>
-              Contact
+              {t("terms.sections.11.title")}
             </h2>
             <div className="ml-11 space-y-3">
               <p className="text-gray-700 leading-relaxed">
-                Pour toute question concernant ces conditions d'utilisation,
-                veuillez nous contacter :
+                {t("terms.sections.11.intro")}
               </p>
               <div className="bg-primary-50/50 rounded-2xl p-6 space-y-2">
                 <p className="text-gray-700">
-                  <span className="font-semibold">Email :</span>{" "}
-                  contact@elitedrive.com
+                  <span className="font-semibold">{t("terms.sections.11.email")}</span>{" "}
+                  {t("terms.sections.11.emailValue")}
                 </p>
                 <p className="text-gray-700">
-                  <span className="font-semibold">Téléphone :</span> +216 XX XXX
-                  XXX
+                  <span className="font-semibold">{t("terms.sections.11.phone")}</span> {t("terms.sections.11.phoneValue")}
                 </p>
                 <p className="text-gray-700">
-                  <span className="font-semibold">Adresse :</span> Hammamet,
-                  Nabeul, Tunisia
+                  <span className="font-semibold">{t("terms.sections.11.address")}</span> {t("terms.sections.11.addressValue")}
                 </p>
               </div>
             </div>
@@ -409,14 +348,14 @@ const TermsOfService = () => {
             to="/privacy-policy"
             className="text-primary-600 hover:text-primary-700 font-medium transition-colors"
           >
-            Politique de confidentialité
+            {t("privacy.title")}
           </Link>
           <span className="text-gray-300">•</span>
           <Link
             to="/"
             className="text-primary-600 hover:text-primary-700 font-medium transition-colors"
           >
-            Retour à l'accueil
+            {t("common.backHome")}
           </Link>
         </div>
       </div>

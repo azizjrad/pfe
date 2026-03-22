@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Navbar from "../../components/common/Navbar";
 import Footer from "../../components/common/Footer";
 import VehicleCard from "../../components/cards/VehicleCard";
@@ -9,6 +10,7 @@ import publicVehicleService from "../../services/publicVehicleService";
 import { FormControl, Select, MenuItem } from "@mui/material";
 
 const Vehicles = () => {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState([0, 500]);
@@ -18,6 +20,9 @@ const Vehicles = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [vehicles, setVehicles] = useState([]);
+
+  const transMap = { "Tous": "all", "Automatique": "auto", "Manuelle": "manual" };
+  const fuelMap = { "Tous": "all", "Essence": "gas", "Diesel": "diesel", "Hybride": "hybrid", "Électrique": "electric" };
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -160,11 +165,10 @@ const Vehicles = () => {
           >
             <div className="text-center mb-12">
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-                Notre <span className="text-primary-500">Flotte</span>
+                {t("vehicles.hero.titlePart1")}<span className="text-primary-500">{t("vehicles.hero.titlePart2")}</span>
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-                Trouvez le véhicule idéal parmi notre large sélection disponible
-                à travers toutes nos agences partenaires.
+                {t("vehicles.hero.subtitle")}
               </p>
             </div>
 
@@ -173,7 +177,7 @@ const Vehicles = () => {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Rechercher un véhicule..."
+                  placeholder={t("vehicles.search.placeholder")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setIsSearchFocused(true)}
@@ -239,7 +243,7 @@ const Vehicles = () => {
                           />
                         </svg>
                         <h3 className="text-xl font-bold">
-                          Résultats de recherche
+                          {t("vehicles.search.resultsTitle")}
                         </h3>
                       </div>
                       <div className="grid sm:grid-cols-3 gap-4 text-sm">
@@ -264,7 +268,7 @@ const Vehicles = () => {
                             />
                           </svg>
                           <div>
-                            <div className="text-primary-100 text-xs">Lieu</div>
+                            <div className="text-primary-100 text-xs">{t("vehicles.search.location")}</div>
                             <div className="font-semibold">
                               {searchCriteria.location}
                             </div>
@@ -286,13 +290,13 @@ const Vehicles = () => {
                           </svg>
                           <div>
                             <div className="text-primary-100 text-xs">
-                              Début
+                              {t("vehicles.search.start")}
                             </div>
                             <div className="font-semibold">
                               {new Date(
                                 searchCriteria.startDate,
                               ).toLocaleDateString("fr-FR")}{" "}
-                              à {searchCriteria.startTime}
+                              {t("vehicles.search.at")} {searchCriteria.startTime}
                             </div>
                           </div>
                         </div>
@@ -311,26 +315,24 @@ const Vehicles = () => {
                             />
                           </svg>
                           <div>
-                            <div className="text-primary-100 text-xs">Fin</div>
+                            <div className="text-primary-100 text-xs">{t("vehicles.search.end")}</div>
                             <div className="font-semibold">
                               {new Date(
                                 searchCriteria.endDate,
                               ).toLocaleDateString("fr-FR")}{" "}
-                              à {searchCriteria.endTime}
+                              {t("vehicles.search.at")} {searchCriteria.endTime}
                             </div>
                           </div>
                         </div>
                       </div>
                       <p className="mt-3 text-primary-100 text-sm">
-                        Affichage de {filteredVehicles.length} véhicule
-                        {filteredVehicles.length > 1 ? "s" : ""} disponible
-                        {filteredVehicles.length > 1 ? "s" : ""} pour vos dates
+                        {filteredVehicles.length === 1 ? t("vehicles.search.resultsCount_one") : t("vehicles.search.resultsCount_other", { count: filteredVehicles.length })}
                       </p>
                     </div>
                     <button
                       onClick={() => setSearchCriteria(null)}
                       className="self-end sm:self-auto p-2 hover:bg-white/20 rounded-lg transition-colors"
-                      title="Effacer la recherche"
+                      title={t("vehicles.search.clear")}
                     >
                       <svg
                         className="w-5 h-5"
@@ -370,7 +372,7 @@ const Vehicles = () => {
                     d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
                   />
                 </svg>
-                <span className="font-medium">Filtres avancés</span>
+                <span className="font-medium">{t("vehicles.filters.advanced")}</span>
                 {showFilters && (
                   <span className="bg-primary-500 text-white text-xs px-2 py-1 rounded-full">
                     {
@@ -415,10 +417,10 @@ const Vehicles = () => {
                     },
                   }}
                 >
-                  <MenuItem value="default">Trier par</MenuItem>
-                  <MenuItem value="price-asc">Prix croissant</MenuItem>
-                  <MenuItem value="price-desc">Prix décroissant</MenuItem>
-                  <MenuItem value="name">Nom (A-Z)</MenuItem>
+                  <MenuItem value="default">{t("vehicles.filters.sortBy")}</MenuItem>
+                  <MenuItem value="price-asc">{t("vehicles.filters.priceAsc")}</MenuItem>
+                  <MenuItem value="price-desc">{t("vehicles.filters.priceDesc")}</MenuItem>
+                  <MenuItem value="name">{t("vehicles.filters.nameAsc")}</MenuItem>
                 </Select>
               </FormControl>
 
@@ -439,15 +441,12 @@ const Vehicles = () => {
                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                   />
                 </svg>
-                Réinitialiser
+                {t("vehicles.filters.reset")}
               </button>
 
               <div className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-50 rounded-2xl">
                 <span className="font-semibold text-primary-600">
-                  {filteredVehicles.length}
-                </span>
-                <span className="text-gray-600">
-                  véhicule{filteredVehicles.length !== 1 ? "s" : ""}
+                  {filteredVehicles.length === 1 ? t("vehicles.filters.count_one") : t("vehicles.filters.count_other", { count: filteredVehicles.length })}
                 </span>
               </div>
             </div>
@@ -456,14 +455,14 @@ const Vehicles = () => {
             {showFilters && (
               <div className="bg-white border-2 border-gray-200 rounded-2xl p-4 sm:p-6 mb-8 animate-slideDown">
                 <h3 className="font-bold text-lg mb-6 text-gray-900">
-                  Filtres avancés
+                  {t("vehicles.filters.advanced")}
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {/* Price Range */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Prix par jour: {priceRange[0]}dt - {priceRange[1]}dt
+                      {t("vehicles.filters.priceRange", { min: priceRange[0], max: priceRange[1] })}
                     </label>
                     <div className="space-y-2">
                       <input
@@ -482,7 +481,7 @@ const Vehicles = () => {
                       <div className="flex gap-2">
                         <input
                           type="number"
-                          placeholder="Min"
+                          placeholder={t("vehicles.filters.min")}
                           value={priceRange[0]}
                           onChange={(e) =>
                             setPriceRange([
@@ -494,7 +493,7 @@ const Vehicles = () => {
                         />
                         <input
                           type="number"
-                          placeholder="Max"
+                          placeholder={t("vehicles.filters.max")}
                           value={priceRange[1]}
                           onChange={(e) =>
                             setPriceRange([
@@ -511,7 +510,7 @@ const Vehicles = () => {
                   {/* Transmission */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Transmission
+                      {t("vehicles.filters.transmission")}
                     </label>
                     <div className="space-y-2">
                       {["Tous", "Automatique", "Manuelle"].map((trans) => (
@@ -530,7 +529,7 @@ const Vehicles = () => {
                             className="w-4 h-4 text-primary-600 accent-primary-500"
                           />
                           <span className="group-hover:text-primary-600 transition-colors">
-                            {trans}
+                            {t(`vehicles.filters.transmissions.${transMap[trans]}`)}
                           </span>
                         </label>
                       ))}
@@ -540,7 +539,7 @@ const Vehicles = () => {
                   {/* Fuel Type */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Carburant
+                      {t("vehicles.filters.fuel")}
                     </label>
                     <div className="space-y-2">
                       {[
@@ -563,7 +562,7 @@ const Vehicles = () => {
                             className="w-4 h-4 text-primary-600 accent-primary-500"
                           />
                           <span className="group-hover:text-primary-600 transition-colors">
-                            {fuel}
+                            {t(`vehicles.filters.fuels.${fuelMap[fuel]}`)}
                           </span>
                         </label>
                       ))}
@@ -620,17 +619,16 @@ const Vehicles = () => {
                 />
               </svg>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                Aucun véhicule trouvé
+                {t("vehicles.empty.title")}
               </h3>
               <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                Essayez de modifier vos critères de recherche ou de
-                réinitialiser les filtres.
+                {t("vehicles.empty.subtitle")}
               </p>
               <button
                 onClick={resetFilters}
                 className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-full transition-all"
               >
-                Réinitialiser les filtres
+                {t("vehicles.empty.resetBtn")}
               </button>
             </div>
           )}

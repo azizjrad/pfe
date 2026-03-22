@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { adminService } from "../services/adminService";
 import { clientService } from "../services/clientService";
 import { contactService } from "../services/contactService";
@@ -29,6 +30,7 @@ export default function useAdminDashboard({
   statisticsSubTab,
   showToast,
 }) {
+  const { t } = useTranslation();
   const [platformStats, setPlatformStats] = useState(DEFAULT_PLATFORM_STATS);
   const [agencies, setAgencies] = useState([]);
   const [users, setUsers] = useState([]);
@@ -62,8 +64,7 @@ export default function useAdminDashboard({
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
       showToast?.(
-        error.response?.data?.message ||
-          "Erreur lors du chargement des données",
+        error.response?.data?.message || t("errors.loadData"),
         "error",
       );
     } finally {
@@ -90,8 +91,7 @@ export default function useAdminDashboard({
     } catch (error) {
       console.error("Error fetching reports:", error);
       showToast?.(
-        error.response?.data?.message ||
-          "Erreur lors du chargement des signalements",
+        error.response?.data?.message || t("errors.loadData"),
         "error",
       );
     }
@@ -116,8 +116,7 @@ export default function useAdminDashboard({
     } catch (error) {
       console.error("Error fetching contact messages:", error);
       showToast?.(
-        error.response?.data?.message ||
-          "Erreur lors du chargement des messages de contact",
+        error.response?.data?.message || t("errors.loadData"),
         "error",
       );
     }
@@ -139,8 +138,7 @@ export default function useAdminDashboard({
     } catch (error) {
       console.error("Error fetching financial stats:", error);
       showToast?.(
-        error.response?.data?.message ||
-          "Erreur lors du chargement des statistiques financières",
+        error.response?.data?.message || t("errors.loadData"),
         "error",
       );
     }
@@ -192,10 +190,10 @@ export default function useAdminDashboard({
           message.id === id ? { ...message, is_read: true } : message,
         ),
       );
-      showToast?.("Message marqué comme lu", "success");
+      showToast?.(t("admin.contact.markReadSuccess"), "success");
     } catch (error) {
       showToast?.(
-        error.response?.data?.message || "Erreur lors de la mise à jour",
+        error.response?.data?.message || t("errors.genericError"),
         "error",
       );
     }
@@ -205,10 +203,10 @@ export default function useAdminDashboard({
     try {
       await contactService.delete(id);
       setContactMessages((prev) => prev.filter((message) => message.id !== id));
-      showToast?.("Message supprimé avec succès", "success");
+      showToast?.(t("admin.contact.deleteSuccess"), "success");
     } catch (error) {
       showToast?.(
-        error.response?.data?.message || "Erreur lors de la suppression",
+        error.response?.data?.message || t("errors.genericError"),
         "error",
       );
     }
@@ -221,7 +219,7 @@ export default function useAdminDashboard({
       ...prev,
       totalAgencies: Math.max(0, (prev.totalAgencies || 0) - 1),
     }));
-    showToast?.("Agence supprimée avec succès", "success");
+    showToast?.(t("admin.agencies.deleteSuccess"), "success");
   };
 
   const handleDeleteUser = async (id) => {
@@ -231,7 +229,7 @@ export default function useAdminDashboard({
       ...prev,
       totalUsers: Math.max(0, (prev.totalUsers || 0) - 1),
     }));
-    showToast?.("Utilisateur supprimé avec succès", "success");
+    showToast?.(t("admin.users.deleteSuccess"), "success");
   };
 
   const handleEditAgency = async (updatedData) => {
@@ -244,7 +242,7 @@ export default function useAdminDashboard({
         a.id === updatedData.id ? { ...a, ...(response?.data || {}) } : a,
       ),
     );
-    showToast?.("Agence modifiée avec succès", "success");
+    showToast?.(t("admin.agencies.editSuccess"), "success");
   };
 
   const handleEditUser = async (updatedData) => {
@@ -254,7 +252,7 @@ export default function useAdminDashboard({
         u.id === updatedData.id ? { ...u, ...(response?.data || {}) } : u,
       ),
     );
-    showToast?.("Utilisateur modifié avec succès", "success");
+    showToast?.(t("admin.users.editSuccess"), "success");
   };
 
   const handleSuspendAgency = async (agency) => {
@@ -285,39 +283,39 @@ export default function useAdminDashboard({
       created_at: new Date().toISOString(),
     };
     setAgencyReviews((prev) => [newReview, ...prev]);
-    showToast?.("Avis publié avec succès", "success");
+    showToast?.(t("reviews.submitSuccess"), "success");
   };
 
   const handleResolveReport = async (report, notes) => {
     await reportService.resolve(report.id, notes);
     await Promise.all([fetchReports(), fetchTrashedReports()]);
-    showToast?.("Signalement résolu", "success");
+    showToast?.(t("admin.reports.resolveSuccess"), "success");
   };
 
   const handleDismissReport = async (report, notes) => {
     await reportService.dismiss(report.id, notes);
     await Promise.all([fetchReports(), fetchTrashedReports()]);
-    showToast?.("Signalement rejeté", "success");
+    showToast?.(t("admin.reports.dismissSuccess"), "success");
   };
 
   const handleDeleteReport = async (report) => {
     await reportService.moveToTrash(report.id);
     setReports((prev) => prev.filter((item) => item.id !== report.id));
     setTrashedReports((prev) => [report, ...prev]);
-    showToast?.("Signalement déplacé vers la corbeille", "success");
+    showToast?.(t("admin.reports.deleteSuccess"), "success");
   };
 
   const handleRestoreReport = async (report) => {
     await reportService.restore(report.id);
     setTrashedReports((prev) => prev.filter((item) => item.id !== report.id));
     setReports((prev) => [report, ...prev]);
-    showToast?.("Signalement restauré", "success");
+    showToast?.(t("admin.reports.restoreSuccess"), "success");
   };
 
   const handlePermanentDeleteReport = async (report) => {
     await reportService.forceDelete(report.id);
     setTrashedReports((prev) => prev.filter((item) => item.id !== report.id));
-    showToast?.("Signalement supprimé définitivement", "success");
+    showToast?.(t("admin.reports.forceDeleteSuccess"), "success");
   };
 
   const refreshData = async () => {

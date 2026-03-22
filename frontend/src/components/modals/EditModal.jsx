@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { ROLES } from "../../constants/roles";
 
 export default function EditModal({
@@ -9,6 +10,7 @@ export default function EditModal({
   type, // 'user' or 'agency'
   agencies = [], // For user role agency_admin
 }) {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({});
   const [originalData, setOriginalData] = useState({});
   const [errors, setErrors] = useState({});
@@ -44,19 +46,25 @@ export default function EditModal({
     const newErrors = {};
 
     if (type === "user") {
-      if (!formData.name?.trim()) newErrors.name = "Le nom est requis";
-      if (!formData.email?.trim()) newErrors.email = "L'email est requis";
-      if (!formData.phone?.trim()) newErrors.phone = "Le téléphone est requis";
-      if (!formData.role) newErrors.role = "Le rôle est requis";
+      if (!formData.name?.trim())
+        newErrors.name = t("modals.edit.errors.nameRequired");
+      if (!formData.email?.trim())
+        newErrors.email = t("modals.edit.errors.emailRequired");
+      if (!formData.phone?.trim())
+        newErrors.phone = t("modals.edit.errors.phoneRequired");
+      if (!formData.role) newErrors.role = t("modals.edit.errors.roleRequired");
       if (formData.role === ROLES.AGENCY_ADMIN && !formData.agency_id) {
-        newErrors.agency_id = "L'agence est requise pour un admin d'agence";
+        newErrors.agency_id = t("modals.edit.errors.agencyRequired");
       }
     } else if (type === "agency") {
-      if (!formData.name?.trim()) newErrors.name = "Le nom est requis";
+      if (!formData.name?.trim())
+        newErrors.name = t("modals.edit.errors.nameRequired");
       if (!formData.address?.trim())
-        newErrors.address = "L'adresse est requise";
-      if (!formData.phone?.trim()) newErrors.phone = "Le téléphone est requis";
-      if (!formData.email?.trim()) newErrors.email = "L'email est requis";
+        newErrors.address = t("modals.edit.errors.addressRequired");
+      if (!formData.phone?.trim())
+        newErrors.phone = t("modals.edit.errors.phoneRequired");
+      if (!formData.email?.trim())
+        newErrors.email = t("modals.edit.errors.emailRequired");
     }
 
     setErrors(newErrors);
@@ -79,13 +87,14 @@ export default function EditModal({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const noChangesMessage = t("modals.edit.errors.noChanges");
 
     if (!validate()) return;
 
     // Check if any changes were made
     if (!hasChanges()) {
       setErrors({
-        submit: "Aucune modification détectée",
+        submit: noChangesMessage,
       });
       setTimeout(() => {
         onClose();
@@ -100,7 +109,7 @@ export default function EditModal({
     } catch (error) {
       console.error("Error saving:", error);
       setErrors({
-        submit: error.response?.data?.message || "Une erreur est survenue",
+        submit: error.response?.data?.message || t("errors.genericError"),
       });
     } finally {
       setLoading(false);
@@ -138,7 +147,9 @@ export default function EditModal({
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-gray-900">
-                Modifier {type === "user" ? "l'utilisateur" : "l'agence"}
+                {type === "user"
+                  ? t("modals.edit.titleUser")
+                  : t("modals.edit.titleAgency")}
               </h3>
             </div>
             <button
@@ -167,14 +178,14 @@ export default function EditModal({
           {errors.submit && (
             <div
               className={`${
-                errors.submit === "Aucune modification détectée"
+                errors.submit === t("modals.edit.errors.noChanges")
                   ? "bg-blue-50 border-l-4 border-blue-500"
                   : "bg-red-50 border-l-4 border-red-500"
               } p-4 rounded`}
             >
               <p
                 className={`text-sm ${
-                  errors.submit === "Aucune modification détectée"
+                  errors.submit === t("modals.edit.errors.noChanges")
                     ? "text-blue-700"
                     : "text-red-700"
                 }`}
@@ -219,7 +230,7 @@ export default function EditModal({
                           : "text-gray-500"
                   }`}
                 >
-                  Nom complet
+                  {t("common.name")}
                 </label>
                 {errors.name && (
                   <p className="text-red-500 text-xs mt-1 ml-5">
@@ -301,7 +312,7 @@ export default function EditModal({
                           : "text-gray-500"
                   }`}
                 >
-                  Téléphone
+                  {t("common.phone")}
                 </label>
                 {errors.phone && (
                   <p className="text-red-500 text-xs mt-1 ml-5">
@@ -322,16 +333,20 @@ export default function EditModal({
                       : "border-gray-200 focus:border-primary-500"
                   } focus:outline-none focus:bg-white transition-all hover:border-primary-300 appearance-none cursor-pointer`}
                 >
-                  <option value="">Sélectionner un rôle</option>
-                  <option value={ROLES.CLIENT}>Client</option>
-                  <option value={ROLES.AGENCY_ADMIN}>Admin d'agence</option>
-                  <option value={ROLES.SUPER_ADMIN}>Super Admin</option>
+                  <option value="">{t("modals.edit.selectRole")}</option>
+                  <option value={ROLES.CLIENT}>{t("roles.client")}</option>
+                  <option value={ROLES.AGENCY_ADMIN}>
+                    {t("roles.agency_admin")}
+                  </option>
+                  <option value={ROLES.SUPER_ADMIN}>
+                    {t("roles.super_admin")}
+                  </option>
                 </select>
                 <label
                   htmlFor="user-role"
                   className="absolute left-5 -top-2 text-xs bg-white px-2 text-gray-700 pointer-events-none"
                 >
-                  Rôle
+                  {t("modals.edit.role")}
                 </label>
                 <svg
                   className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
@@ -366,7 +381,7 @@ export default function EditModal({
                         : "border-gray-200 focus:border-primary-500"
                     } focus:outline-none focus:bg-white transition-all hover:border-primary-300 appearance-none cursor-pointer`}
                   >
-                    <option value="">Sélectionner une agence</option>
+                    <option value="">{t("modals.edit.selectAgency")}</option>
                     {agencies.map((agency) => (
                       <option key={agency.id} value={agency.id}>
                         {agency.name}
@@ -377,7 +392,7 @@ export default function EditModal({
                     htmlFor="user-agency"
                     className="absolute left-5 -top-2 text-xs bg-white px-2 text-gray-700 pointer-events-none"
                   >
-                    Agence
+                    {t("reports.type.agency")}
                   </label>
                   <svg
                     className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
@@ -435,7 +450,7 @@ export default function EditModal({
                           : "text-gray-500"
                   }`}
                 >
-                  Nom de l'agence
+                  {t("modals.vehicleModal.name")}
                 </label>
                 {errors.name && (
                   <p className="text-red-500 text-xs mt-1 ml-5">
@@ -476,7 +491,7 @@ export default function EditModal({
                           : "text-gray-500"
                   }`}
                 >
-                  Adresse
+                  {t("common.address")}
                 </label>
                 {errors.address && (
                   <p className="text-red-500 text-xs mt-1 ml-5">
@@ -517,7 +532,7 @@ export default function EditModal({
                           : "text-gray-500"
                   }`}
                 >
-                  Téléphone
+                  {t("common.phone")}
                 </label>
                 {errors.phone && (
                   <p className="text-red-500 text-xs mt-1 ml-5">
@@ -577,7 +592,7 @@ export default function EditModal({
               disabled={loading}
               className="px-5 py-2.5 rounded-xl font-semibold text-gray-700 bg-white/60 hover:bg-white/80 border border-gray-200 transition-all duration-200 shadow-sm hover:shadow disabled:opacity-50"
             >
-              Annuler
+              {t("common.cancel")}
             </button>
             <button
               type="submit"
@@ -605,7 +620,7 @@ export default function EditModal({
                   />
                 </svg>
               )}
-              Enregistrer
+              {t("common.save")}
             </button>
           </div>
         </form>

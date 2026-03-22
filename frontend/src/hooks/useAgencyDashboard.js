@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { agencyService } from "../services/agencyService";
 import { clientService } from "../services/clientService";
 import { reportService } from "../services/reportService";
@@ -15,6 +16,7 @@ const DEFAULT_AGENCY_STATS = {
 };
 
 export default function useAgencyDashboard({ user, showToast }) {
+  const { t } = useTranslation();
   const [agencyStats, setAgencyStats] = useState(DEFAULT_AGENCY_STATS);
   const [reports, setReports] = useState([]);
   const [notifications, setNotifications] = useState([]);
@@ -26,7 +28,7 @@ export default function useAgencyDashboard({ user, showToast }) {
       setAgencyStats(response?.data?.data || DEFAULT_AGENCY_STATS);
     } catch (error) {
       console.error("Error fetching agency stats:", error);
-      showToast?.("Erreur lors du chargement des statistiques agence", "error");
+      showToast?.(t("errors.loadData"), "error");
     }
   };
 
@@ -54,8 +56,7 @@ export default function useAgencyDashboard({ user, showToast }) {
     } catch (error) {
       console.error("Error fetching reports:", error);
       showToast?.(
-        error.response?.data?.message ||
-          "Erreur lors du chargement des signalements",
+        error.response?.data?.message || t("errors.loadData"),
         "error",
       );
     }

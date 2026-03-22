@@ -1,0 +1,1424 @@
+{
+  "clientContent": {
+    "errorLoadingReservations": "Erreur lors du chargement des réservations",
+    "time": {
+      "now": "À l'instant",
+      "min": "Il y a {{count}} min",
+      "hour": "Il y a {{count}} h",
+      "day": "Il y a {{count}} j"
+    },
+    "myReservations": "Mes Réservations",
+    "newReservation": "Nouvelle réservation",
+    "noReservations": "Aucune réservation pour le moment",
+    "browseVehicles": "Parcourir les véhicules",
+    "start": "Début",
+    "end": "Fin",
+    "vehicle": "Véhicule",
+    "agency": "Agence",
+    "status": {
+      "confirmed": "Confirmée",
+      "pending": "En attente",
+      "completed": "Terminée",
+      "cancelled": "Annulée"
+    },
+    "viewDetails": "Voir détails",
+    "cancel": "Annuler",
+    "contactAgencyToCancel": "Contactez l'agence pour annuler",
+    "latestNotifications": "Dernières Notifications",
+    "viewAll": "Voir tout",
+    "noRecentNotifications": "Aucune notification récente.",
+    "savedVehicles": "Véhicules Sauvegardés",
+    "savedVehiclesCount": "{{count}} véhicule(s)",
+    "noSavedVehicles": "Aucun véhicule sauvegardé",
+    "savedVehiclesHint": "Parcourez nos véhicules et cliquez sur l'icône de sauvegarde pour les retrouver ici",
+    "discoverVehicles": "Découvrir les véhicules",
+    "reservationHistory": "Historique des Réservations",
+    "searchVehicleOrAgency": "Rechercher véhicule ou agence",
+    "allStatuses": "Tous les statuts",
+    "noHistoryResults": "Aucune réservation ne correspond à votre recherche",
+    "pageOf": "Page {{page}} / {{total}}",
+    "previous": "Précédent",
+    "next": "Suivant"
+  },
+  "agencyContent": {
+    "errorLoadingFinancial": "Erreur lors du chargement des données financières",
+    "errorLoadingReservations": "Erreur lors du chargement des réservations",
+    "statusUpdated": "Statut mis à jour avec succès",
+    "errorUpdatingStatus": "Erreur lors de la mise à jour",
+    "vehiclePickedUp": "Véhicule retiré avec succès",
+    "errorPickup": "Erreur lors du retrait",
+    "vehicleReturned": "Véhicule retourné avec succès",
+    "errorReturn": "Erreur lors du retour",
+    "reservationCancelled": "Réservation annulée avec succès",
+    "errorCancel": "Erreur lors de l'annulation",
+    "status": {
+      "pending": "En attente",
+      "confirmed": "Confirmée",
+      "results": "résultats",
+      "completed": "Terminée",
+      "cancelled": "Annulée"
+    },
+    "activeReservations": "Réservations Actives",
+    "noActiveReservations": "Aucune réservation active pour le moment",
+    "vehicle": "Véhicule",
+    "client": "Client",
+    "notAvailable": "N/A",
+    "from": "Du",
+    "to": "Au",
+    "amount": "Montant",
+    "payment": "Paiement",
+    "paid": "Payé",
+    "pending": "En attente",
+    "allReservations": "Toutes les Réservations",
+    "noReservations": "Aucune réservation pour le moment"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "retry": "Réessayer",
+    "back": "Retour",
+    "backHome": "Retour à l'accueil",
+    "submit": "Soumettre",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "all": "Tous",
+    "yes": "Oui",
+    "no": "Non",
+    "or": "OU",
+    "actions": "Actions",
+    "details": "Détails",
+    "status": "Statut",
+    "date": "Date",
+    "name": "Nom",
+    "email": "Email",
+    "phone": "Téléphone",
+    "address": "Adresse",
+    "location": "Localisation",
+    "registeredOn": "Inscrit le",
+    "description": "Description",
+    "price": "Prix",
+    "total": "Total",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "suspended": "Suspendu",
+    "success": "Succès",
+    "error": "Erreur",
+    "warning": "Avertissement",
+    "info": "Information",
+    "noData": "Aucune donnée disponible",
+    "noResults": "Aucun résultat trouvé",
+    "perDay": "/jour",
+    "currency": "DT",
+    "menu": "Menu",
+    "required": "Requis",
+    "optional": "Optionnel",
+    "unknown": "Inconnu",
+    "notSpecified": "Non spécifié",
+    "notAvailable": "N/A",
+    "refresh": "Actualiser",
+    "export": "Exporter",
+    "print": "Imprimer",
+    "previousPage": "Précédent",
+    "nextPage": "Suivant",
+    "showing": "Affichage de",
+    "to": "à",
+    "of": "sur",
+    "results": "résultat",
+    "results_plural": "résultats",
+    "page": "Page",
+    "main": "Principal",
+    "viewAll": "Voir tout",
+    "viewLess": "Voir moins",
+    "viewAllCount": "Voir tous ({{count}})",
+    "toast": {
+      "success": "Opération réussie",
+      "error": "Une erreur est survenue",
+      "info": "Information"
+    }
+  },
+
+  "app": {
+    "name": "Elite Drive",
+    "tagline": "Louez les meilleurs véhicules premium en Tunisie avec un service exceptionnel",
+    "copyright": "© 2026 Elite Drive. Tous droits réservés."
+  },
+
+  "roles": {
+    "client": "Client",
+    "agency_admin": "Administrateur Agence",
+    "super_admin": "Super Administrateur",
+    "user": "Utilisateur"
+  },
+
+  "nav": {
+    "home": "Accueil",
+    "vehicles": "Véhicules",
+    "agencies": "Agences",
+    "about": "À propos",
+    "contact": "Contact",
+    "login": "Connexion",
+    "register": "S'inscrire",
+    "dashboard": "Tableau de bord",
+    "logout": "Déconnexion",
+    "profile": "Profil",
+    "quit": "Quitter",
+    "profileSettings": "Paramètres du profil",
+    "menu": "Menu",
+    "tagline1": "Location simple et rapide 24/7"
+  },
+
+  "auth": {
+    "login": {
+      "title": "Bon retour",
+      "subtitle": "Connectez-vous pour gérer vos réservations",
+      "welcomeTitle": "Bienvenue sur",
+      "welcomeSubtitle": "Louez les meilleurs véhicules premium en Tunisie avec un service exceptionnel",
+      "emailLabel": "Adresse e-mail",
+      "passwordLabel": "Mot de passe",
+      "rememberMe": "Se souvenir de moi",
+      "forgotPassword": "Mot de passe oublié?",
+      "submitButton": "Se connecter",
+      "submitting": "Connexion en cours...",
+      "orContinueWith": "OU CONTINUER AVEC",
+      "noAccount": "Vous n'avez pas de compte?",
+      "createAccount": "Créer un compte",
+      "returnHome": "Retour à l'accueil",
+      "feature1": "Plus de 50 véhicules premium disponibles",
+      "feature2": "Réservation en ligne rapide et sécurisée",
+      "feature3": "Assistance client disponible 24/7",
+      "feature4": "Assurance complète incluse",
+      "errorInvalidCredentials": "Email ou mot de passe incorrect",
+      "errorGeneric": "Une erreur est survenue. Veuillez réessayer."
+    },
+    "register": {
+      "title": "Créer un compte",
+      "subtitle": "Commencez votre voyage avec Elite Drive",
+      "welcomeTitle1": "Rejoignez",
+      "welcomeTitle2": "Elite Drive",
+      "welcomeSubtitle": "Créez votre compte et profitez d'une expérience de location exceptionnelle",
+      "firstNameLabel": "Prénom",
+      "lastNameLabel": "Nom",
+      "emailLabel": "Adresse e-mail",
+      "phoneLabel": "Numéro de téléphone",
+      "phoneFormat": "Format: 8 chiffres (ex: 20123456)",
+      "accountType": "Type de compte",
+      "client": "Client",
+      "clientTooltip": "Pour les particuliers souhaitant louer des véhicules",
+      "agency": "Agence",
+      "agencyTooltip": "Pour les agences de location gérant leur flotte de véhicules",
+      "addressOptional": "Adresse (optionnel)",
+      "driverLicenseOptional": "Permis de conduire (optionnel)",
+      "agencyName": "Nom de l'agence *",
+      "agencyLocation": "Localisation de l'agence *",
+      "agencyAddress": "Adresse complète (optionnel)",
+      "passwordLabel": "Mot de passe",
+      "passwordHelpTitle": "Le mot de passe doit contenir:",
+      "passwordHelpLength": "Au moins 8 caractères",
+      "passwordHelpUppercase": "Une lettre majuscule",
+      "passwordHelpSymbol": "Un symbole (!@#$%^&*...)",
+      "confirmPasswordLabel": "Confirmer le mot de passe",
+      "submitButton": "Créer mon compte",
+      "submitting": "Inscription en cours...",
+      "orRegisterWith": "OU S'INSCRIRE AVEC",
+      "alreadyHaveAccount": "Vous avez déjà un compte?",
+      "loginLink": "Se connecter",
+      "termsText": "J'accepte les",
+      "termsLink": "conditions d'utilisation",
+      "andText": "et la",
+      "privacyLink": "politique de confidentialité",
+      "returnHome": "Retour à l'accueil",
+      "successMsg": "Compte créé avec succès! Bienvenue chez Elite Drive.",
+      "errors": {
+        "emailInvalid": "Adresse e-mail invalide",
+        "phoneDigits": "Le numéro doit contenir uniquement des chiffres",
+        "phoneLength": "Le numéro doit contenir exactement 8 chiffres",
+        "passwordLength": "Le mot de passe doit contenir au moins 8 caractères",
+        "passwordUppercase": "Le mot de passe doit contenir au moins une lettre majuscule",
+        "passwordSymbol": "Le mot de passe doit contenir au moins un symbole (!@#$%^&*...)",
+        "passwordMismatch": "Les mots de passe ne correspondent pas",
+        "agreeTerms": "Vous devez accepter les conditions d'utilisation"
+      }
+    },
+    "forgotPassword": {
+      "title": "Récupération de compte",
+      "subtitle": "Pas d'inquiétude, nous vous aiderons à retrouver l'accès à votre compte en toute sécurité",
+      "formTitle": "Mot de passe oublié?",
+      "formSubtitle": "Entrez votre adresse e-mail pour recevoir un lien de réinitialisation",
+      "emailLabel": "Adresse e-mail",
+      "submitButton": "Envoyer le lien de réinitialisation",
+      "backToLogin": "Retour à la connexion",
+      "successTitle": "E-mail envoyé !",
+      "successDesc1": "Nous avons envoyé un lien de réinitialisation de mot de passe à",
+      "successDesc2": "Vérifiez votre boîte de réception et suivez les instructions pour réinitialiser votre mot de passe.",
+      "feature1": "Processus sécurisé et rapide",
+      "feature2": "Lien de réinitialisation par email",
+      "feature3": "Réponse en quelques minutes",
+      "feature4": "Support disponible si besoin"
+    }
+  },
+
+  "errors": {
+    "notFound": {
+      "title": "Page introuvable",
+      "message": "Désolé, la page que vous recherchez n'existe pas ou a été déplacée."
+    },
+    "forbidden": {
+      "title": "Accès refusé",
+      "message": "Vous n'avez pas les permissions nécessaires pour accéder à cette page."
+    },
+    "boundary": {
+      "title": "Quelque chose s'est mal passé",
+      "messageMinimal": "Une erreur s'est produite dans ce composant.",
+      "messageFull": "Une erreur inattendue s'est produite. Veuillez réessayer ou contacter le support.",
+      "retry": "Réessayer",
+      "backHome": "Retour à l'accueil"
+    },
+    "loadData": "Erreur lors du chargement des données",
+    "genericError": "Une erreur est survenue"
+  },
+
+  "profile": {
+    "settings": "Paramètres du profil",
+    "editProfile": "Modifier le profil",
+    "changePassword": "Changer le mot de passe",
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le nouveau mot de passe",
+    "saveChanges": "Enregistrer les modifications",
+    "saving": "Enregistrement...",
+    "updateSuccess": "Profil mis à jour avec succès",
+    "passwordSuccess": "Mot de passe modifié avec succès"
+  },
+
+  "dashboard": {
+    "overviewTitle": "Aperçu de la plateforme",
+    "agencyPerformance": "Performances des agences",
+    "vehiclesCount": "{{count}} véhicules",
+    "recentActivity": "Activité récente",
+    "newAgencyCreated": "Nouvelle agence créée",
+    "timeAgo2Days": "Il y a 2 jours",
+    "newUsers": "{{count}} nouveaux utilisateurs",
+    "today": "Aujourd'hui",
+    "reservationsProcessed": "{{count}} réservations traitées",
+    "manageAgencies": "Gestion des Agences",
+    "addAgency": "Ajouter une agence",
+    "active": "Active",
+    "inactive": "Inactive",
+    "edit": "Modifier",
+    "unblock": "Débloquer",
+    "block": "Bloquer",
+    "delete": "Supprimer",
+    "agency": "Agence",
+    "location": "Localisation",
+    "vehicles": "Véhicules",
+    "revenue": "Revenu",
+    "status": "Statut",
+    "actions": "Actions",
+    "manageUsers": "Gestion des Utilisateurs",
+    "addUser": "Ajouter un utilisateur",
+    "client": "Client",
+    "agencyAdmin": "Admin Agence",
+    "superAdmin": "Super Admin",
+    "registeredOn": "Inscrit le {{date}}",
+    "registeredOnHeader": "Inscrit le",
+    "user": "Utilisateur",
+    "role": "Rôle",
+    "contactMessages": "Messages de contact",
+    "contactMessagesCount": "{{count}} message(s) dont {{unread}} non lu(s)",
+    "noMessages": "Aucun message disponible pour le moment",
+    "title": {
+      "super_admin": "Tableau de bord Super Admin",
+      "agency_admin": "Tableau de bord Agence",
+      "client": "Tableau de bord Client"
+    },
+    "subtitle": {
+      "super_admin": "Gestion complète de la plateforme",
+      "agency_admin": "Gestion de votre agence",
+      "client": "Gérez vos réservations"
+    },
+    "tabs": {
+      "overview": "Vue d'ensemble",
+      "agencies": "Agences",
+      "users": "Utilisateurs",
+      "vehicles": "Véhicules",
+      "reservations": "Réservations",
+      "reports": "Signalements",
+      "reviews": "Avis",
+      "contact": "Messages",
+      "statistics": "Statistiques",
+      "profile": "Profil"
+    },
+    "stats": {
+      "totalAgencies": "Agences totales",
+      "totalUsers": "Utilisateurs totaux",
+      "totalVehicles": "Véhicules totaux",
+      "totalReservations": "Réservations totales",
+      "monthlyRevenue": "Revenus mensuels",
+      "activeReservations": "Réservations actives",
+      "clientScore": "Score de fiabilité",
+      "myReservations": "Mes réservations"
+    }
+  },
+
+  "admin": {
+    "agencies": {
+      "title": "Gestion des agences",
+      "search": "Rechercher une agence...",
+      "add": "Ajouter une agence",
+      "edit": "Modifier l'agence",
+      "delete": "Supprimer l'agence",
+      "suspend": "Suspendre",
+      "activate": "Activer",
+      "noAgencies": "Aucune agence trouvée",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette agence ?",
+      "deleteSuccess": "Agence supprimée avec succès",
+      "editSuccess": "Agence modifiée avec succès",
+      "suspendSuccess": "Statut de l'agence mis à jour"
+    },
+    "users": {
+      "title": "Gestion des utilisateurs",
+      "search": "Rechercher un utilisateur...",
+      "delete": "Supprimer l'utilisateur",
+      "suspend": "Suspendre",
+      "unsuspend": "Réactiver",
+      "suspendConfirm": "Êtes-vous sûr de vouloir suspendre cet utilisateur ?",
+      "unsuspendConfirm": "Êtes-vous sûr de vouloir réactiver cet utilisateur ?",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
+      "deleteSuccess": "Utilisateur supprimé avec succès",
+      "editSuccess": "Utilisateur modifié avec succès",
+      "noUsers": "Aucun utilisateur trouvé"
+    },
+    "reports": {
+      "title": "Gestion des signalements",
+      "active": "Actifs",
+      "trashed": "Corbeille",
+      "resolve": "Résoudre",
+      "dismiss": "Rejeter",
+      "delete": "Déplacer vers la corbeille",
+      "restore": "Restaurer",
+      "forceDelete": "Supprimer définitivement",
+      "resolveSuccess": "Signalement résolu",
+      "dismissSuccess": "Signalement rejeté",
+      "deleteSuccess": "Signalement déplacé vers la corbeille",
+      "restoreSuccess": "Signalement restauré",
+      "forceDeleteSuccess": "Signalement supprimé définitivement",
+      "noReports": "Aucun signalement trouvé",
+      "filter": {
+        "all": "Tous",
+        "pending": "En attente",
+        "resolved": "Résolus",
+        "dismissed": "Rejetés"
+      }
+    },
+    "reviews": {
+      "title": "Gestion des avis",
+      "delete": "Supprimer l'avis",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cet avis ?",
+      "deleteSuccess": "Avis supprimé avec succès",
+      "noReviews": "Aucun avis trouvé"
+    },
+    "contact": {
+      "title": "Messages de contact",
+      "markRead": "Marquer comme lu",
+      "delete": "Supprimer le message",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce message ?",
+      "markReadSuccess": "Message marqué comme lu",
+      "deleteSuccess": "Message supprimé avec succès",
+      "noMessages": "Aucun message trouvé"
+    }
+  },
+
+  "agency": {
+    "vehicles": {
+      "title": "Mes véhicules",
+      "add": "Ajouter un véhicule",
+      "edit": "Modifier le véhicule",
+      "delete": "Supprimer le véhicule",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce véhicule ?",
+      "deleteSuccess": "Véhicule supprimé avec succès",
+      "addSuccess": "Véhicule ajouté avec succès",
+      "editSuccess": "Véhicule modifié avec succès",
+      "noVehicles": "Aucun véhicule trouvé"
+    },
+    "reservations": {
+      "title": "Réservations",
+      "confirm": "Confirmer",
+      "reject": "Rejeter",
+      "pickup": "Marquer comme récupéré",
+      "return": "Marquer comme retourné",
+      "confirmSuccess": "Réservation confirmée",
+      "rejectSuccess": "Réservation rejetée",
+      "pickupSuccess": "Véhicule marqué comme récupéré",
+      "returnSuccess": "Véhicule marqué comme retourné",
+      "noReservations": "Aucune réservation trouvée"
+    },
+    "reviews": {
+      "title": "Avis clients",
+      "noReviews": "Aucun avis pour le moment"
+    },
+    "reports": {
+      "title": "Signalements",
+      "noReports": "Aucun signalement trouvé"
+    },
+    "stats": {
+      "revenue": "Revenus",
+      "reservations": "Réservations",
+      "vehicles": "Véhicules",
+      "rating": "Note moyenne"
+    }
+  },
+
+  "client": {
+    "reservations": {
+      "title": "Mes réservations",
+      "new": "Nouvelle réservation",
+      "cancel": "Annuler la réservation",
+      "cancelConfirm": "Êtes-vous sûr de vouloir annuler cette réservation ?",
+      "cancelSuccess": "Réservation annulée avec succès",
+      "editSuccess": "Réservation modifiée avec succès",
+      "createSuccess": "Réservation créée avec succès",
+      "noReservations": "Vous n'avez pas encore de réservations"
+    },
+    "score": {
+      "title": "Score de fiabilité",
+      "excellent": "Excellent",
+      "good": "Bon",
+      "average": "Moyen",
+      "poor": "Faible"
+    }
+  },
+
+  "vehicles": {
+    "title": "Nos véhicules",
+    "subtitle": "Découvrez notre flotte de véhicules premium",
+    "searchPlaceholder": "Rechercher un véhicule...",
+    "filter": {
+      "all": "Tous",
+      "category": "Catégorie",
+      "price": "Prix",
+      "availability": "Disponibilité",
+      "available": "Disponible",
+      "unavailable": "Indisponible"
+    },
+    "sort": {
+      "default": "Trier par",
+      "priceAsc": "Prix croissant",
+      "priceDesc": "Prix décroissant",
+      "name": "Nom"
+    },
+    "hero": {
+      "titlePart1": "Notre ",
+      "titlePart2": "Flotte",
+      "subtitle": "Trouvez le véhicule idéal parmi notre large sélection disponible à travers toutes nos agences partenaires."
+    },
+    "search": {
+      "placeholder": "Rechercher un véhicule...",
+      "resultsTitle": "Résultats de recherche",
+      "location": "Lieu",
+      "start": "Début",
+      "end": "Fin",
+      "at": "à",
+      "resultsCount_one": "Affichage de 1 véhicule disponible pour vos dates",
+      "resultsCount_other": "Affichage de {{count}} véhicules disponibles pour vos dates",
+      "clear": "Effacer la recherche"
+    },
+    "filters": {
+      "advanced": "Filtres avancés",
+      "sortBy": "Trier par",
+      "priceAsc": "Prix croissant",
+      "priceDesc": "Prix décroissant",
+      "nameAsc": "Nom (A-Z)",
+      "reset": "Réinitialiser",
+      "count_one": "1 véhicule",
+      "count_other": "{{count}} véhicules",
+      "priceRange": "Prix par jour: {{min}}dt - {{max}}dt",
+      "min": "Min",
+      "max": "Max",
+      "transmission": "Transmission",
+      "fuel": "Carburant",
+      "transmissions": {
+        "all": "Tous",
+        "auto": "Automatique",
+        "manual": "Manuelle"
+      },
+      "fuels": {
+        "all": "Tous",
+        "gas": "Essence",
+        "diesel": "Diesel",
+        "hybrid": "Hybride",
+        "electric": "Électrique"
+      }
+    },
+    "empty": {
+      "title": "Aucun véhicule trouvé",
+      "subtitle": "Essayez de modifier vos critères de recherche ou de réinitialiser les filtres.",
+      "resetBtn": "Réinitialiser les filtres"
+    },
+    "details": {
+      "back": "Retour aux véhicules",
+      "loading": "Chargement des détails du véhicule...",
+      "specifications": "Spécifications",
+      "specsTitle": "Spécifications techniques",
+      "features": "Équipements",
+      "featuresTitle": "Équipements inclus",
+      "description": "Description",
+      "agency": {
+        "title": "Agence",
+        "managedBy": "Agence gérant ce véhicule",
+        "address": "Adresse",
+        "phone": "Téléphone",
+        "email": "Email",
+        "hours": "Horaires"
+      },
+      "stats": {
+        "year": "Année",
+        "seats": "Places",
+        "transmission": "Transmission",
+        "fuel": "Carburant"
+      },
+      "reserveBtn": "Réserver maintenant",
+      "contactBtn": "Contacter l'agence",
+      "report": "Signaler",
+      "share": "Partager",
+      "perDay": "/jour",
+      "noImages": "Aucune image disponible",
+      "messages": {
+        "reportSuccess": "Signalement envoyé avec succès. Notre équipe examinera votre rapport.",
+        "reportError": "Erreur lors de l'envoi du signalement. Veuillez réessayer.",
+        "reservationSuccess": "Réservation confirmée! Vous recevrez un email de confirmation ou un appel de l'agence bientôt.",
+        "authRequired": "Vous devez être connecté pour réserver un véhicule.",
+        "reservationError": "Erreur lors de la réservation. Veuillez réessayer."
+      }
+    },
+    "card": {
+      "reserve": "Réserver maintenant",
+      "perDay": "/jour",
+      "addFavorite": "Ajouter aux favoris",
+      "removeFavorite": "Retirer des favoris",
+      "unavailable": "Non disponible"
+    },
+    "noVehicles": "Aucun véhicule disponible",
+    "loadError": "Erreur lors du chargement des véhicules"
+  },
+
+  "agencies": {
+    "title": "Nos agences",
+    "subtitle": "Découvrez nos agences partenaires",
+    "searchPlaceholder": "Rechercher une agence...",
+    "details": {
+      "vehicles": "Véhicules disponibles",
+      "contact": "Contacter",
+      "reviews": "Avis clients",
+      "rating": "Note",
+      "writeReview": "Écrire un avis",
+      "messages": {
+        "reportSuccess": "Signalement envoyé avec succès. Notre équipe examinera votre rapport.",
+        "reportError": "Erreur lors de l'envoi du signalement. Veuillez réessayer.",
+        "commentRequired": "Veuillez ajouter un commentaire",
+        "reviewSuccess": "Avis publié avec succès",
+        "reviewError": "Erreur lors de la publication de l'avis",
+        "loading": "Chargement de l'agence..."
+      },
+      "breadcrumb": {
+        "home": "Accueil",
+        "agencies": "Agences"
+      },
+      "stats": {
+        "reviews": "avis"
+      },
+      "contactCard": {
+        "title": "Informations de Contact",
+        "address": "Adresse",
+        "phone": "Téléphone",
+        "email": "Email",
+        "hours": "Horaires"
+      },
+      "features": {
+        "title": "Services & Avantages",
+        "contactBtn": "Nous Contacter"
+      },
+      "vehiclesSection": {
+        "title": "Nos Véhicules",
+        "subtitle_one": "Découvrez notre flotte de 1 véhicule disponible",
+        "subtitle_other": "Découvrez notre flotte de {{count}} véhicules disponibles",
+        "emptyTitle": "Aucun véhicule disponible",
+        "emptyDesc": "Cette agence n'a pas encore de véhicules enregistrés",
+        "viewAllBtn": "Voir tous les véhicules"
+      },
+      "reviewsModal": {
+        "title": "Avis des Clients",
+        "leaveReviewBtn": "Laisser un avis",
+        "formTitle": "Votre avis",
+        "ratingLabel": "Note",
+        "commentLabel": "Commentaire",
+        "commentPlaceholder": "Partagez votre expérience...",
+        "submitBtn": "Publier",
+        "submittingBtn": "Envoi...",
+        "cancelBtn": "Annuler",
+        "emptyTitle": "Aucun avis pour le moment",
+        "emptyDesc": "Soyez le premier à partager votre expérience !"
+      }
+    },
+    "noAgencies": "Aucune agence disponible",
+    "loadError": "Erreur lors du chargement des agences",
+    "hero": {
+      "title": "Nos Agences",
+      "subtitle": "Trouvez l'agence Elite Drive la plus proche de vous et découvrez notre flotte de véhicules premium"
+    },
+    "search": {
+      "placeholder": "Rechercher une agence par nom ou ville...",
+      "results_one": "agence trouvée",
+      "results_other": "agences trouvées"
+    },
+    "empty": {
+      "title": "Aucune agence trouvée",
+      "subtitle": "Essayez de modifier votre recherche",
+      "button": "Voir toutes les agences"
+    },
+    "card": {
+      "viewBtn": "Voir l'agence"
+    }
+  },
+
+  "reservations": {
+    "create": "Créer une réservation",
+    "dateStart": "Date de début",
+    "dateEnd": "Date de fin",
+    "pickupLocation": "Lieu de prise en charge",
+    "returnLocation": "Lieu de retour",
+    "paymentMethod": "Mode de paiement",
+    "status": {
+      "pending": "En attente",
+      "confirmed": "Confirmée",
+      "active": "Active",
+      "completed": "Terminée",
+      "cancelled": "Annulée",
+      "rejected": "Rejetée"
+    },
+    "payment": {
+      "cash": "Espèces",
+      "card": "Carte bancaire",
+      "online": "En ligne"
+    },
+    "summary": {
+      "title": "Récapitulatif",
+      "duration": "Durée",
+      "days": "jour(s)",
+      "dailyRate": "Tarif journalier",
+      "subtotal": "Sous-total",
+      "commission": "Commission",
+      "total": "Total à payer"
+    },
+    "validation": {
+      "selectDates": "Veuillez sélectionner des dates",
+      "invalidDates": "Les dates sélectionnées ne sont pas valides",
+      "vehicleUnavailable": "Ce véhicule n'est pas disponible pour ces dates"
+    }
+  },
+
+  "reports": {
+    "submit": "Soumettre un signalement",
+    "type": {
+      "vehicle": "Véhicule",
+      "agency": "Agence",
+      "client": "Client"
+    },
+    "reason": "Raison",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Décrivez le problème en détail...",
+    "submitSuccess": "Signalement soumis avec succès",
+    "adminNotes": "Notes administrateur",
+    "resolvedAt": "Résolu le",
+    "reportedBy": "Signalé par",
+    "reportedAt": "Signalé le",
+    "targetLabel": "Cible",
+    "button": {
+      "icon": "Signaler",
+      "text": "Signaler",
+      "full": "Signaler un problème"
+    }
+  },
+
+  "reviews": {
+    "submit": "Soumettre un avis",
+    "rating": "Note",
+    "comment": "Commentaire",
+    "commentPlaceholder": "Partagez votre expérience...",
+    "submitSuccess": "Avis publié avec succès",
+    "noReviews": "Aucun avis pour le moment",
+    "verifiedStay": "Séjour vérifié"
+  },
+
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Marquer tout comme lu",
+    "noNotifications": "Aucune notification",
+    "markReadSuccess": "Notification marquée comme lue",
+    "markAllReadSuccess": "Toutes les notifications ont été marquées comme lues",
+    "timeAgo": {
+      "now": "À l'instant",
+      "min": "Il y a {{count}} min",
+      "hour": "Il y a {{count}} h",
+      "day": "Il y a {{count}} j"
+    },
+    "new": "nouveau",
+    "new_plural": "nouveaux",
+    "upToDate": "Vous êtes à jour !"
+  },
+
+  "modals": {
+    "confirmation": {
+      "title": "Confirmation",
+      "areYouSure": "Êtes-vous sûr ?",
+      "cannotUndo": "Cette action est irréversible.",
+      "confirm": "Confirmer",
+      "cancel": "Annuler"
+    },
+    "details": {
+      "vehicleDetails": "Détails du véhicule",
+      "agencyDetails": "Détails de l'agence",
+      "reservationDetails": "Détails de la réservation",
+      "userDetails": "Détails de l'utilisateur"
+    },
+    "edit": {
+      "titleUser": "Modifier l'utilisateur",
+      "titleAgency": "Modifier l'agence",
+      "role": "Rôle",
+      "selectRole": "Sélectionner un rôle",
+      "selectAgency": "Sélectionner une agence",
+      "errors": {
+        "nameRequired": "Le nom est requis",
+        "emailRequired": "L'email est requis",
+        "phoneRequired": "Le téléphone est requis",
+        "roleRequired": "Le rôle est requis",
+        "agencyRequired": "L'agence est requise pour un admin d'agence",
+        "addressRequired": "L'adresse est requise",
+        "noChanges": "Aucune modification détectée"
+      }
+    },
+    "reportDetails": {
+      "title": "Signalement #{{id}}",
+      "reportedTarget": "Signalé",
+      "descriptionDetailed": "Description détaillée",
+      "trashTitle": "Déplacer vers la corbeille ?",
+      "trashMessage": "Êtes-vous sûr de vouloir déplacer le signalement \"{{targetName}}\" vers la corbeille ? Il sera automatiquement supprimé après 30 jours."
+    },
+    "profileSettings": {
+      "title": "Paramètres du profil",
+      "personalInfo": "Informations personnelles",
+      "security": "Sécurité"
+    },
+    "vehicleModal": {
+      "addTitle": "Ajouter un véhicule",
+      "editTitle": "Modifier un véhicule",
+      "name": "Nom du véhicule",
+      "brand": "Marque",
+      "model": "Modèle",
+      "year": "Année",
+      "category": "Catégorie",
+      "price": "Prix / jour (DT)",
+      "images": "Images",
+      "addImages": "Ajouter des images",
+      "features": "Équipements",
+      "description": "Description",
+      "submit": "Enregistrer le véhicule"
+    },
+    "resolveReport": {
+      "title": "Résoudre le signalement",
+      "dismissTitle": "Rejeter le signalement",
+      "notesLabel": "Notes de résolution",
+      "notesPlaceholder": "Décrivez comment ce signalement a été résolu...",
+      "dismissPlaceholder": "Expliquez pourquoi ce signalement a été rejeté...",
+      "notesHint": "Ces notes seront visibles dans l'historique du signalement",
+      "resolveButton": "Marquer comme résolu",
+      "dismissButton": "Rejeter le signalement"
+    }
+  },
+
+  "contact": {
+    "hero": {
+      "titlePart1": "Contactez",
+      "titlePart2": " nous",
+      "description": "Notre équipe est là pour répondre à toutes vos questions. Parlez-nous de votre projet de location."
+    },
+    "info": {
+      "title": "Informations de contact:",
+      "address": "Adresse:",
+      "addressValue": "123 Avenue Habib Bourguiba, Tunis 1000, Tunisie",
+      "phone": "Téléphone:",
+      "phoneValue": "+216 71 123 456 / +216 98 765 432",
+      "email": "Email:",
+      "emailValue": "contact@elitedrive.tn",
+      "hours": "Horaires:",
+      "hoursValue": "Lun-Ven 8h-18h, Sam 9h-17h"
+    },
+    "social": {
+      "title": "Suivez-nous:"
+    },
+    "form": {
+      "successTitle": "Merci pour votre message.",
+      "successDesc": "Notre équipe a bien reçu votre demande et vous contactera dans les plus brefs délais.",
+      "nameLabel": "Nom complet*",
+      "emailLabel": "Email*",
+      "phoneLabel": "Téléphone*",
+      "subjectLabel": "Sujet*",
+      "messageLabel": "Message*",
+      "requiredError": "Veuillez compléter ce champ obligatoire.",
+      "privacyPrefix": "En soumettant ce formulaire, vous acceptez notre ",
+      "privacyLink": "politique de confidentialité",
+      "privacySuffix": ".",
+      "submitting": "Envoi en cours...",
+      "submitBtn": "Envoyer le message"
+    }
+  },
+
+  "footer": {
+    "description": "Votre partenaire pour une expérience de location premium.",
+    "quickLinks": "Liens rapides",
+    "legal": "Légal",
+    "termsOfService": "Conditions d'utilisation",
+    "privacyPolicy": "Politique de confidentialité",
+    "followUs": "Suivez-nous",
+    "allRightsReserved": "Tous droits réservés",
+    "madeWith": "Fait avec ❤️ en Tunisie",
+    "hours": {
+      "title": "Horaires",
+      "weekdays": "Lun - Ven: 8h - 18h",
+      "saturday": "Samedi: 9h - 16h",
+      "sunday": "Dimanche: Fermé"
+    },
+    "contact": {
+      "title": "Contact",
+      "address": "Tunis, Tunisie",
+      "phone": "+216 XX XXX XXX",
+      "email": "contact@elitedrive.tn"
+    }
+  },
+
+  "terms": {
+    "title": "Conditions d'utilisation",
+    "lastUpdated": "Dernière mise à jour",
+    "sections": {
+      "1": {
+        "title": "Acceptation des conditions",
+        "content": "En accédant et en utilisant le service Elite Drive, vous acceptez d'être lié par ces conditions d'utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser nos services."
+      },
+      "2": {
+        "title": "Conditions de location",
+        "intro": "Pour louer un véhicule via Elite Drive, vous devez :",
+        "items": [
+          "Être âgé d'au moins 21 ans",
+          "Posséder un permis de conduire valide depuis au moins 1 an",
+          "Fournir une carte de crédit valide pour le dépôt de garantie",
+          "Présenter une pièce d'identité valide",
+          "Respecter les lois de la circulation en vigueur"
+        ]
+      },
+      "3": {
+        "title": "Options et services supplémentaires",
+        "intro": "Des frais supplémentaires s'appliquent pour les options suivantes :",
+        "insurance": {
+          "title": "Assurance & Protection",
+          "items": ["Assurance tous risques : selon tarification en vigueur"]
+        },
+        "equipment": {
+          "title": "Équipements",
+          "items": ["GPS : 5 DT/jour", "Siège enfant : 3 DT/jour"]
+        },
+        "services": {
+          "title": "Services",
+          "items": [
+            "Conducteur additionnel : 8 DT/jour",
+            "Livraison aéroport : selon tarification en vigueur",
+            "Livraison à domicile : selon tarification en vigueur",
+            "Prise en charge hors horaires : selon tarification en vigueur"
+          ]
+        },
+        "mileage": {
+          "title": "Kilométrage",
+          "items": [
+            "200 km/jour : Prix de base",
+            "Illimité : +10%",
+            "Limite 100 km/jour : -5%"
+          ]
+        }
+      },
+      "4": {
+        "title": "Commission de la plateforme",
+        "agencyPrefix": "💼 Pour les agences partenaires",
+        "agencyDesc": "Elite Drive prélève une commission de <str>8%</str> sur chaque réservation confirmée et payée. Cette commission couvre les frais de plateforme, le traitement des paiements, le support client et le marketing.",
+        "howItWorks": {
+          "title": "Comment fonctionne la commission ?",
+          "items": [
+            "• <str>Taux de commission :</str> 8% du montant total de la réservation",
+            "• <str>Commission minimale :</str> 5 DT par réservation",
+            "• <str>Calcul :</str> Commission = max(Total × 8%, 5 DT)"
+          ]
+        },
+        "example": {
+          "title": "Exemple de calcul",
+          "totalPaid": "Prix total payé par le client :",
+          "totalPaidVal": "245.00 DT",
+          "commission": "Commission Elite Drive (8%) :",
+          "commissionVal": "- 19.60 DT",
+          "agencyAmount": "Montant versé à l'agence :",
+          "agencyAmountVal": "225.40 DT"
+        },
+        "included": {
+          "title": "Ce qui est inclus dans la commission",
+          "items": [
+            "✓ Visibilité sur la plateforme",
+            "✓ Système de réservation en ligne",
+            "✓ Traitement sécurisé des paiements",
+            "✓ Support client 24/7",
+            "✓ Marketing et publicité",
+            "✓ Gestion des avis et notations",
+            "✓ Outils d'analyse et statistiques"
+          ]
+        },
+        "note": "Note : La commission est automatiquement déduite du montant de chaque réservation avant le versement à l'agence. Les relevés détaillés sont disponibles dans l'espace agence."
+      },
+      "5": {
+        "title": "Réservation et paiement",
+        "content": "Les réservations sont confirmées après réception du paiement complet. Le prix affiché est calculé en fonction du tarif journalier du véhicule multiplié par la durée de location, auquel s'ajoutent les options et services supplémentaires sélectionnés."
+      },
+      "6": {
+        "title": "Annulation et modification",
+        "intro": "Vous pouvez annuler ou modifier votre réservation selon les conditions suivantes :",
+        "items": [
+          "Annulation gratuite jusqu'à 48 heures avant la prise en charge",
+          "Annulation entre 24h et 48h : 50% du montant total sera retenu",
+          "Annulation moins de 24h avant : 100% du montant sera retenu"
+        ]
+      },
+      "7": {
+        "title": "Utilisation du véhicule",
+        "intro": "Le locataire s'engage à :",
+        "items": [
+          "Utiliser le véhicule conformément aux lois en vigueur",
+          "Ne pas sous-louer ou prêter le véhicule à un tiers",
+          "Maintenir le véhicule en bon état",
+          "Ne pas utiliser le véhicule pour des courses ou compétitions",
+          "Ne pas transporter de marchandises interdites",
+          "Signaler immédiatement tout accident ou dommage"
+        ]
+      },
+      "8": {
+        "title": "Assurance et responsabilité",
+        "content": "Tous nos véhicules sont assurés avec une couverture de base. Le locataire reste responsable de la franchise en cas de dommages. Une assurance complémentaire est disponible pour réduire ou éliminer la franchise. Le locataire est entièrement responsable des amendes de stationnement et de circulation."
+      },
+      "9": {
+        "title": "Retard et prolongation",
+        "content": "Tout retard dans la restitution du véhicule doit être signalé et approuvé à l'avance. Des frais supplémentaires seront appliqués pour les retards non autorisés. Un retard de plus de 2 heures non signalé sera facturé comme une journée supplémentaire complète."
+      },
+      "10": {
+        "title": "Modifications des conditions",
+        "content": "Elite Drive se réserve le droit de modifier ces conditions d'utilisation à tout moment. Les modifications seront effectives dès leur publication sur le site. Il est de la responsabilité de l'utilisateur de consulter régulièrement ces conditions."
+      },
+      "11": {
+        "title": "Contact",
+        "intro": "Pour toute question concernant ces conditions d'utilisation, veuillez nous contacter :",
+        "email": "Email :",
+        "emailValue": "contact@elitedrive.com",
+        "phone": "Téléphone :",
+        "phoneValue": "+216 XX XXX XXX",
+        "address": "Adresse :",
+        "addressValue": "Hammamet, Nabeul, Tunisia"
+      }
+    }
+  },
+
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "lastUpdated": "Dernière mise à jour",
+    "sections": {
+      "1": {
+        "title": "Introduction",
+        "content": "Elite Drive s'engage à protéger votre vie privée. Cette politique de confidentialité explique comment nous collectons, utilisons et protégeons vos informations personnelles lorsque vous utilisez notre service de location de véhicules."
+      },
+      "2": {
+        "title": "Informations collectées",
+        "intro": "Nous collectons les informations suivantes :",
+        "id": {
+          "title": "Informations d'identification",
+          "items": [
+            "Nom et prénom",
+            "Adresse e-mail",
+            "Numéro de téléphone",
+            "Adresse postale",
+            "Date de naissance"
+          ]
+        },
+        "driving": {
+          "title": "Informations de conduite",
+          "items": [
+            "Numéro de permis de conduire",
+            "Date d'obtention du permis",
+            "Catégorie du permis"
+          ]
+        },
+        "payment": {
+          "title": "Informations de paiement",
+          "items": [
+            "Informations de carte bancaire (cryptées)",
+            "Historique des transactions"
+          ]
+        },
+        "nav": {
+          "title": "Données de navigation",
+          "items": [
+            "Adresse IP",
+            "Type de navigateur",
+            "Pages visitées",
+            "Temps passé sur le site"
+          ]
+        }
+      },
+      "3": {
+        "title": "Utilisation des informations",
+        "intro": "Nous utilisons vos informations personnelles pour :",
+        "items": [
+          "Traiter vos réservations et paiements",
+          "Vérifier votre identité et votre permis de conduire",
+          "Communiquer avec vous concernant votre location",
+          "Améliorer nos services et votre expérience utilisateur",
+          "Vous envoyer des offres promotionnelles (avec votre consentement)",
+          "Respecter nos obligations légales et réglementaires",
+          "Prévenir la fraude et assurer la sécurité"
+        ]
+      },
+      "4": {
+        "title": "Partage des informations",
+        "intro": "Nous ne vendons jamais vos informations personnelles. Nous pouvons partager vos données uniquement avec :",
+        "items": [
+          "Nos partenaires de paiement sécurisé pour traiter les transactions",
+          "Nos assureurs en cas d'accident ou de réclamation",
+          "Les autorités compétentes si requis par la loi",
+          "Nos prestataires de services (hébergement, support client) sous contrat de confidentialité"
+        ]
+      },
+      "5": {
+        "title": "Cookies",
+        "intro": "Nous utilisons des cookies pour améliorer votre expérience sur notre site :",
+        "essential": {
+          "title": "Cookies essentiels",
+          "desc": "Nécessaires au fonctionnement du site (connexion, panier)"
+        },
+        "performance": {
+          "title": "Cookies de performance",
+          "desc": "Analysent l'utilisation du site pour améliorer nos services"
+        },
+        "marketing": {
+          "title": "Cookies marketing",
+          "desc": "Personnalisent les publicités (nécessitent votre consentement)"
+        },
+        "outro": "Vous pouvez gérer vos préférences de cookies à tout moment dans les paramètres de votre navigateur."
+      },
+      "6": {
+        "title": "Sécurité des données",
+        "intro": "Nous prenons la sécurité de vos données très au sérieux et mettons en œuvre :",
+        "items": [
+          "Cryptage SSL/TLS pour toutes les transmissions de données",
+          "Stockage sécurisé des informations de paiement (conformité PCI-DSS)",
+          "Authentification à deux facteurs pour les comptes",
+          "Audits de sécurité réguliers",
+          "Accès restreint aux données personnelles",
+          "Sauvegardes régulières et chiffrées"
+        ]
+      },
+      "7": {
+        "title": "Vos droits",
+        "intro": "Conformément au RGPD, vous disposez des droits suivants :",
+        "access": {
+          "title": "Droit d'accès",
+          "desc": "Consulter vos données personnelles"
+        },
+        "rectification": {
+          "title": "Droit de rectification",
+          "desc": "Corriger vos informations"
+        },
+        "erasure": {
+          "title": "Droit à l'oubli",
+          "desc": "Supprimer vos données"
+        },
+        "portability": {
+          "title": "Droit de portabilité",
+          "desc": "Récupérer vos données"
+        },
+        "objection": {
+          "title": "Droit d'opposition",
+          "desc": "Refuser le traitement de vos données"
+        },
+        "restriction": {
+          "title": "Droit de limitation",
+          "desc": "Limiter l'utilisation de vos données"
+        },
+        "outro": "Pour exercer ces droits, contactez-nous à "
+      },
+      "8": {
+        "title": "Conservation des données",
+        "content": "Nous conservons vos données personnelles aussi longtemps que nécessaire pour fournir nos services et respecter nos obligations légales. En général, nous conservons vos données pendant 3 ans après votre dernière location, sauf obligation légale de conservation plus longue."
+      },
+      "9": {
+        "title": "Modifications de cette politique",
+        "content": "Nous pouvons mettre à jour cette politique de confidentialité périodiquement. Toute modification sera publiée sur cette page avec une date de mise à jour actualisée. Nous vous encourageons à consulter régulièrement cette page pour rester informé."
+      },
+      "10": {
+        "title": "Contact",
+        "intro": "Pour toute question concernant cette politique de confidentialité ou pour exercer vos droits, contactez notre délégué à la protection des données :",
+        "email": "Email :",
+        "phone": "Téléphone :",
+        "address": "Adresse :",
+        "addressValue": "Elite Drive - Service Protection des Données\\nHammamet, Nabeul, Tunisia"
+      }
+    }
+  },
+
+  "chatbot": {
+    "title": "Assistant Elite Drive",
+    "status": "En ligne",
+    "placeholder": "Tapez votre message...",
+    "send": "Envoyer",
+    "typing": "En train d'écrire...",
+    "greeting": "Bonjour! Je suis l'assistant virtuel d'Elite Drive. Comment puis-je vous aider aujourd'hui?",
+    "openButton": "Ouvrir le chatbot",
+    "closeButton": "Fermer le chatbot",
+    "faqTitle": "Questions fréquentes:",
+    "faq": {
+      "q1": "Quels sont vos tarifs?",
+      "q2": "Comment réserver?",
+      "q3": "Où êtes-vous situés?",
+      "q4": "Quels sont vos horaires?"
+    },
+    "responses": {
+      "pricing": "Nos tarifs commencent à partir de 40 DT/jour pour les véhicules économiques. Pour plus de détails, consultez notre page Véhicules ou contactez-nous au +216 71 123 456.",
+      "booking": "Pour réserver un véhicule, visitez notre page Véhicules, choisissez votre voiture préférée et cliquez sur 'Réserver maintenant'. Vous pouvez également nous appeler au +216 71 123 456.",
+      "hours": "Nos agences sont ouvertes du Lundi au Samedi de 8h00 à 19h00, et le Dimanche de 9h00 à 17h00.",
+      "contact": "Vous pouvez nous contacter au +216 71 123 456 ou par email à contact@elitedrive.tn. Visitez aussi notre page Contact pour plus d'informations.",
+      "location": "Nous avons plusieurs agences en Tunisie: Tunis Centre-Ville (45 Avenue Habib Bourguiba), La Marsa, et Sousse. Consultez notre page Contact pour toutes les adresses.",
+      "greeting": "Bonjour! Comment puis-je vous aider aujourd'hui? Je peux vous renseigner sur nos véhicules, tarifs, réservations, ou nos agences.",
+      "thanks": "Avec plaisir! N'hésitez pas si vous avez d'autres questions. Bonne journée! 😊",
+      "default": "Je suis là pour vous aider! Vous pouvez me poser des questions sur nos véhicules, tarifs, réservations, horaires ou nos agences. Pour une assistance personnalisée, appelez-nous au +216 71 123 456."
+    }
+  },
+
+  "gallery": {
+    "previousImage": "Image précédente",
+    "nextImage": "Image suivante",
+    "imageAlt": "Véhicule - Image",
+    "thumbnailAlt": "Miniature",
+    "mainBadge": "Principal"
+  },
+
+  "pagination": {
+    "previous": "Précédent",
+    "next": "Suivant",
+    "showing": "Affichage de",
+    "to": "à",
+    "of": "sur",
+    "result": "résultat",
+    "results": "résultats"
+  },
+  "home": {
+    "search": {
+      "title": "Rechercher un véhicule",
+      "locationLabel": "Lieu de prise en charge et de retour",
+      "airport": "Tunis Carthage aéroport",
+      "center": "Tunis Centre",
+      "sfax": "Sfax",
+      "sousse": "Sousse",
+      "differentLocation": "lieu de retour différent",
+      "pickupDate": "Date de prise en charge",
+      "returnDate": "Date de retour",
+      "vehicleType": "Type de véhicule (optionnel)",
+      "categoryAll": "Tous les véhicules",
+      "categoryEco": "Économique",
+      "categorySUV": "SUV",
+      "categoryLuxury": "Luxe",
+      "categorySport": "Sport",
+      "submitButton": "Rechercher des véhicules",
+      "validationError": "Veuillez sélectionner les dates de prise en charge et de retour"
+    },
+    "featured": {
+      "title": "Véhicules en vedette",
+      "subtitle": "Notre sélection de véhicules premium"
+    },
+    "features": {
+      "badge": "Nos avantages",
+      "title": "Pourquoi nous choisir?",
+      "subtitle": "Des services pensés pour votre confort et votre sérénité",
+      "list": {
+        "booking": {
+          "title": "Réservation 24/7",
+          "desc": "Réservez votre véhicule à tout moment en ligne"
+        },
+        "insurance": {
+          "title": "Assurance complète",
+          "desc": "Protection optimale pour une conduite en toute sérénité"
+        },
+        "price": {
+          "title": "Meilleurs prix",
+          "desc": "Tarifs compétitifs et transparents sans frais cachés"
+        },
+        "support": {
+          "title": "Service client",
+          "desc": "Assistance personnalisée pour chaque besoin"
+        }
+      }
+    },
+    "cta": {
+      "title": "Prêt à prendre la route?",
+      "subtitle": "Réservez maintenant et profitez de nos offres exceptionnelles avec des véhicules premium",
+      "offersButton": "Voir les offres",
+      "contactButton": "Nous contacter",
+      "trust": {
+        "payment": "Paiement sécurisé",
+        "cancellation": "Annulation gratuite",
+        "support": "Support 24/7"
+      }
+    }
+  },
+  "about": {
+    "hero": {
+      "titlePart1": "À Propos d'",
+      "description": "Location de véhicules haut de gamme en Tunisie. Une approche centrée sur la qualité du service et la satisfaction client."
+    },
+    "story": {
+      "badge": "Depuis 2015",
+      "title": "Qui sommes-nous",
+      "p1": "Elite Drive est une entreprise tunisienne spécialisée dans la location de véhicules. Nous proposons une gamme variée allant des citadines économiques aux véhicules haut de gamme.",
+      "p2": "Notre flotte de plus de 150 véhicules est régulièrement renouvelée et soigneusement entretenue. Chaque véhicule fait l'objet d'un contrôle technique rigoureux avant chaque location.",
+      "p3": "Avec des agences à Tunis, Sousse et Sfax, nous servons aussi bien les particuliers que les professionnels pour leurs besoins ponctuels ou réguliers."
+    },
+    "stats": {
+      "year": "Année de création",
+      "vehicles": "Véhicules",
+      "agencies": "Agences",
+      "support": "Assistance"
+    },
+    "values": {
+      "badge": "Nos engagements",
+      "title": "Ce qui nous guide",
+      "list": {
+        "quality": {
+          "title": "Qualité",
+          "desc": "Véhicules récents et bien entretenus. Contrôle systématique avant chaque location."
+        },
+        "transparency": {
+          "title": "Transparence",
+          "desc": "Tarifs clairs affichés en ligne. Pas de frais cachés. État des lieux détaillé."
+        },
+        "availability": {
+          "title": "Disponibilité",
+          "desc": "Réservation en ligne 24/7. Service client joignable tous les jours. Réponse rapide."
+        },
+        "flexibility": {
+          "title": "Flexibilité",
+          "desc": "Formules adaptées à tous les besoins. Modifications possibles. Plusieurs modes de paiement."
+        }
+      }
+    },
+    "support": {
+      "title": "Satisfaction Client",
+      "description": "Nos clients sont notre priorité. Questions ou commentaires? Nous sommes là pour vous aider, avec un support disponible 24h/24.",
+      "contactBtn": "Contacter le service client"
+    },
+    "dashboard": {
+      "title": {
+        "superAdmin": "Administration Globale",
+        "superAdminSubtitle": "Gérez l'ensemble de la plateforme Elite Drive",
+        "agencyAdmin": "Tableau de Bord Agence",
+        "agencyAdminSubtitle": "Gérez votre agence et vos véhicules",
+        "client": "Mon Espace Client",
+        "clientSubtitle": "Gérez vos réservations et consultez votre historique",
+        "default": "Tableau de Bord"
+      },
+      "messages": {
+        "notificationsMarkedRead": "Toutes les notifications sont marquées comme lues",
+        "notificationsMarkReadError": "Erreur lors du marquage des notifications",
+        "dataRefreshed": "Données actualisées avec succès",
+        "dataRefreshError": "Erreur lors de l'actualisation des données",
+        "detailsOpenError": "Erreur lors de l'ouverture des détails",
+        "roleUnrecognized": "Rôle utilisateur non reconnu",
+        "statusChangeError": "Erreur lors de la modification du statut",
+        "agencyUnblocked": "Agence débloquée avec succès",
+        "agencyBlocked": "Agence bloquée avec succès",
+        "userUnblocked": "Utilisateur débloqué avec succès",
+        "userBlocked": "Utilisateur bloqué avec succès"
+      },
+      "tabs": {
+        "overview": "Vue d'ensemble",
+        "users": "Gérer Utilisateurs",
+        "agencies": "Gérer Agences",
+        "contactMessages": "Messages Contact",
+        "statisticsSuper": "Consulter Statistiques",
+        "active": "Actives",
+        "all": "Toutes",
+        "vehicles": "Véhicules",
+        "reports": "Signalements",
+        "financial": "Finances",
+        "alerts": "Alertes",
+        "statistics": "Statistiques",
+        "myReservations": "Mes Réservations",
+        "savedVehicles": "Véhicules Sauvegardés",
+        "notifications": "Notifications",
+        "history": "Historique"
+      },
+      "stats": {
+        "agencies": { "title": "Agences", "change": "Total" },
+        "users": { "title": "Utilisateurs", "change": "Inscrits" },
+        "vehicles": { "title": "Véhicules", "change": "Total" },
+        "monthlyRevenue": { "title": "Revenu Mensuel", "change": "Ce mois" },
+        "totalVehicles": {
+          "title": "Véhicules Totaux",
+          "change": "disponibles"
+        },
+        "activeReservations": {
+          "title": "Réservations Actives",
+          "change": "En cours"
+        },
+        "agencyRevenue": { "title": "Revenu du Mois", "change": "Ce mois" },
+        "alerts": { "title": "Alertes", "change": "maintenances" },
+        "totalHistory": {
+          "title": "Historique Total",
+          "change": "Locations complétées"
+        },
+        "totalSpend": { "title": "Dépenses Totales", "change": "Cette année" },
+        "reliabilityScore": { "title": "Score Fiabilité" }
+      },
+      "actions": {
+        "refreshData": "Actualiser les données",
+        "menu": "Menu",
+        "delete": "Supprimer",
+        "cancel": "Annuler",
+        "block": "Bloquer",
+        "unblock": "Débloquer"
+      },
+      "modals": {
+        "deleteAgencyTitle": "Supprimer l'agence",
+        "deleteUserTitle": "Supprimer l'utilisateur",
+        "deleteAgencyDesc": "Êtes-vous sûr de vouloir supprimer l'agence \"{{name}}\" ? Cette action est irréversible.",
+        "deleteUserDesc": "Êtes-vous sûr de vouloir supprimer l'utilisateur \"{{name}}\" ? Cette action est irréversible.",
+        "unblockAgencyTitle": "Débloquer l'agence",
+        "blockAgencyTitle": "Bloquer l'agence",
+        "unblockUserTitle": "Débloquer l'utilisateur",
+        "blockUserTitle": "Bloquer l'utilisateur",
+        "unblockAgencyDesc": "Êtes-vous sûr de vouloir débloquer l'agence \"{{name}}\" ? Elle pourra à nouveau fonctionner normalement.",
+        "blockAgencyDesc": "Êtes-vous sûr de vouloir bloquer l'agence \"{{name}}\" ? Elle ne pourra plus accepter de réservations.",
+        "unblockUserDesc": "Êtes-vous sûr de vouloir débloquer l'utilisateur \"{{name}}\" ? Il pourra à nouveau accéder à son compte.",
+        "blockUserDesc": "Êtes-vous sûr de vouloir bloquer l'utilisateur \"{{name}}\" ? Il ne pourra plus se connecter."
+      }
+    },
+    "cta": {
+      "title": "Besoin d'un véhicule?",
+      "description": "Consultez notre flotte et réservez en ligne en quelques clics. Notre équipe reste à votre disposition pour toute question.",
+      "discoverBtn": "Découvrir nos véhicules",
+      "contactBtn": "Nous contacter"
+    }
+  }
+}

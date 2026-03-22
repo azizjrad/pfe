@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Navbar from "../../components/common/Navbar";
 import Footer from "../../components/common/Footer";
 import Pagination from "../../components/features/Pagination";
@@ -7,6 +8,7 @@ import useScrollAnimation from "../../hooks/useScrollAnimation";
 import publicAgencyService from "../../services/publicAgencyService";
 
 const Agencies = () => {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [agencies, setAgencies] = useState([]);
@@ -89,11 +91,10 @@ const Agencies = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6">
-              Nos Agences
+              {t("agencies.hero.title")}
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-primary-100 mb-6 sm:mb-8 px-2 sm:px-0">
-              Trouvez l'agence Elite Drive la plus proche de vous et découvrez
-              notre flotte de véhicules premium
+              {t("agencies.hero.subtitle")}
             </p>
 
             {/* Search Bar */}
@@ -105,7 +106,7 @@ const Agencies = () => {
               >
                 <input
                   type="text"
-                  placeholder="Rechercher une agence par nom ou ville..."
+                  placeholder={t("agencies.search.placeholder")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setIsSearchFocused(true)}
@@ -152,8 +153,8 @@ const Agencies = () => {
             <p className="text-sm sm:text-base text-primary-100 mt-5 sm:mt-6">
               {filteredAgencies.length}{" "}
               {filteredAgencies.length === 1
-                ? "agence trouvée"
-                : "agences trouvées"}
+                ? t("agencies.search.results_one")
+                : t("agencies.search.results_other")}
             </p>
           </div>
         </div>
@@ -181,16 +182,16 @@ const Agencies = () => {
                 />
               </svg>
               <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
-                Aucune agence trouvée
+                {t("agencies.empty.title")}
               </h3>
               <p className="text-sm sm:text-base text-gray-600 mb-6">
-                Essayez de modifier votre recherche
+                {t("agencies.empty.subtitle")}
               </p>
               <button
                 onClick={() => setSearchQuery("")}
                 className="px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors font-semibold"
               >
-                Voir toutes les agences
+                {t("agencies.empty.button")}
               </button>
             </div>
           ) : (
@@ -223,12 +224,13 @@ const Agencies = () => {
 
 // Agency Card Component
 const AgencyCard = ({ agency, index }) => {
+  const { t } = useTranslation();
   const card = useScrollAnimation({ threshold: 0.2 });
 
   return (
     <Link
       to={`/agency/${agency.id}`}
-      aria-label={`Voir les details de ${agency.name}`}
+      aria-label={`${t("agencies.card.viewBtn")} ${agency.name}`}
       ref={card.ref}
       className={`group block bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 ${
         card.isVisible
@@ -377,7 +379,7 @@ const AgencyCard = ({ agency, index }) => {
 
         {/* CTA Button */}
         <div className="block w-full text-center px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-xl transition-all duration-300 font-semibold shadow-lg group-hover:from-primary-700 group-hover:to-primary-800 group-hover:shadow-xl group-hover:scale-[1.02]">
-          Voir l'agence
+          {t("agencies.card.viewBtn")}
         </div>
       </div>
     </Link>

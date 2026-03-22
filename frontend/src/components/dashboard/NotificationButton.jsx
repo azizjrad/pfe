@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function NotificationButton({
   userRole,
@@ -6,6 +7,7 @@ export default function NotificationButton({
   onMarkAllRead,
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
   const unreadCount = notifications.filter((n) => !n.is_read).length;
 
   const getNotificationIcon = (type) => {
@@ -78,11 +80,10 @@ export default function NotificationButton({
     const notifDate = new Date(date);
     const diffInMinutes = Math.floor((now - notifDate) / (1000 * 60));
 
-    if (diffInMinutes < 1) return "À l'instant";
-    if (diffInMinutes < 60) return `Il y a ${diffInMinutes} min`;
-    if (diffInMinutes < 1440)
-      return `Il y a ${Math.floor(diffInMinutes / 60)} h`;
-    return `Il y a ${Math.floor(diffInMinutes / 1440)} j`;
+    if (diffInMinutes < 1) return t("notifications.timeAgo.now");
+    if (diffInMinutes < 60) return t("notifications.timeAgo.min", { count: diffInMinutes });
+    if (diffInMinutes < 1440) return t("notifications.timeAgo.hour", { count: Math.floor(diffInMinutes / 60) });
+    return t("notifications.timeAgo.day", { count: Math.floor(diffInMinutes / 1440) });
   };
 
   return (
@@ -128,10 +129,10 @@ export default function NotificationButton({
             {/* Header */}
             <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-primary-600 to-primary-700">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-white">Notifications</h3>
+                <h3 className="text-lg font-bold text-white">{t("notifications.title")}</h3>
                 {unreadCount > 0 && (
                   <span className="px-2 py-1 bg-white/20 text-white text-xs font-semibold rounded-full">
-                    {unreadCount} nouveau{unreadCount > 1 ? "x" : ""}
+                    {unreadCount} {unreadCount > 1 ? t("notifications.new_plural") : t("notifications.new")}
                   </span>
                 )}
               </div>
@@ -155,10 +156,10 @@ export default function NotificationButton({
                     />
                   </svg>
                   <p className="text-gray-500 font-medium">
-                    Aucune notification
+                    {t("notifications.noNotifications")}
                   </p>
                   <p className="text-gray-400 text-sm mt-1">
-                    Vous êtes à jour !
+                    {t("notifications.upToDate")}
                   </p>
                 </div>
               ) : (
@@ -218,7 +219,7 @@ export default function NotificationButton({
                   onClick={() => onMarkAllRead?.()}
                   className="w-full text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
                 >
-                  Marquer tout comme lu
+                  {t("notifications.markAllRead")}
                 </button>
               </div>
             )}

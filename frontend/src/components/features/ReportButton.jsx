@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ReportModal from "../modals/ReportModal";
+import { useTranslation } from "react-i18next";
 
 const ReportButton = ({
   reportType, // 'vehicle', 'agency', or 'client'
@@ -9,6 +10,7 @@ const ReportButton = ({
   onReportSubmit,
 }) => {
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const { t } = useTranslation();
 
   const handleReportClick = (e) => {
     e.preventDefault();
@@ -30,7 +32,7 @@ const ReportButton = ({
           <button
             onClick={handleReportClick}
             className={`p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all ${className}`}
-            title="Signaler"
+            title={t("reports.button.icon")}
           >
             <svg
               className="w-5 h-5"
@@ -67,7 +69,7 @@ const ReportButton = ({
                 d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"
               />
             </svg>
-            <span>Signaler</span>
+            <span>{t("reports.button.text")}</span>
           </button>
         );
 
@@ -90,7 +92,7 @@ const ReportButton = ({
                 d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"
               />
             </svg>
-            <span>Signaler un problème</span>
+            <span>{t("reports.button.full")}</span>
           </button>
         );
 

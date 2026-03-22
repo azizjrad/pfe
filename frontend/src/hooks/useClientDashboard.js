@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { clientService } from "../services/clientService";
 import { ROLES } from "../constants/roles";
 
@@ -11,6 +12,7 @@ const DEFAULT_CLIENT_STATS = {
 };
 
 export default function useClientDashboard({ user, showToast }) {
+  const { t } = useTranslation();
   const [clientStats, setClientStats] = useState(DEFAULT_CLIENT_STATS);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +25,7 @@ export default function useClientDashboard({ user, showToast }) {
       );
     } catch (error) {
       console.error("Error marking notifications as read:", error);
-      showToast?.("Erreur lors du marquage des notifications", "error");
+      showToast?.(t("errors.loadData"), "error");
       throw error;
     }
   };
@@ -34,7 +36,7 @@ export default function useClientDashboard({ user, showToast }) {
       setClientStats(response?.data?.data || DEFAULT_CLIENT_STATS);
     } catch (error) {
       console.error("Error fetching client stats:", error);
-      showToast?.("Erreur lors du chargement des statistiques client", "error");
+      showToast?.(t("errors.loadData"), "error");
     }
   };
 

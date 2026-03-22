@@ -1,4 +1,5 @@
 import React from "react";
+import { withTranslation } from "react-i18next";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -36,6 +37,8 @@ class ErrorBoundary extends React.Component {
   };
 
   render() {
+    const { t } = this.props;
+
     if (this.state.hasError) {
       const isDevelopment = import.meta.env.DEV;
 
@@ -65,12 +68,12 @@ class ErrorBoundary extends React.Component {
 
             {/* Error Message */}
             <h2 className="text-2xl font-bold text-gray-900 text-center mb-3">
-              Quelque chose s'est mal passé
+              {t("errors.boundary.title")}
             </h2>
             <p className="text-gray-600 text-center mb-6">
               {this.props.minimal
-                ? "Une erreur s'est produite dans ce composant."
-                : "Une erreur inattendue s'est produite. Veuillez réessayer ou contacter le support."}
+                ? t("errors.boundary.messageMinimal")
+                : t("errors.boundary.messageFull")}
             </p>
 
             {/* Development Error Details */}
@@ -93,14 +96,14 @@ class ErrorBoundary extends React.Component {
                 onClick={this.resetError}
                 className="w-full px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
               >
-                Réessayer
+                {t("errors.boundary.retry")}
               </button>
               {!this.props.minimal && (
                 <button
                   onClick={() => (window.location.href = "/")}
                   className="w-full px-4 py-2 bg-gray-200 text-gray-900 rounded-lg hover:bg-gray-300 transition-colors font-medium"
                 >
-                  Retour à l'accueil
+                  {t("errors.boundary.backHome")}
                 </button>
               )}
             </div>
@@ -113,4 +116,5 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-export default ErrorBoundary;
+// withTranslation is used because ErrorBoundary is a class component (hooks can't be used in class components)
+export default withTranslation()(ErrorBoundary);

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
 import Footer from "../components/common/Footer";
 import DashboardHeader from "../components/dashboard/DashboardHeader";
@@ -19,6 +20,7 @@ import { ROLES } from "../constants/roles";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -99,11 +101,11 @@ const Dashboard = () => {
       try {
         await clientDashboard.markAllNotificationsAsRead();
         showToast(
-          "Toutes les notifications sont marquées comme lues",
+          t("dashboard.messages.notificationsMarkedRead"),
           "success",
         );
       } catch (error) {
-        showToast("Erreur lors du marquage des notifications", "error");
+        showToast(t("dashboard.messages.notificationsMarkReadError"), "error");
       }
     }
   };
@@ -136,10 +138,10 @@ const Dashboard = () => {
       } else if (user?.role === ROLES.CLIENT) {
         await clientDashboard.refreshData();
       }
-      showToast("Données actualisées avec succès", "success");
+      showToast(t("dashboard.messages.dataRefreshed"), "success");
     } catch (error) {
       console.error("Error refreshing data:", error);
-      showToast("Erreur lors de l'actualisation des données", "error");
+      showToast(t("dashboard.messages.dataRefreshError"), "error");
     } finally {
       setRefreshing(false);
     }
@@ -155,7 +157,7 @@ const Dashboard = () => {
         ...details,
       });
     } catch (error) {
-      showToast("Erreur lors de l'ouverture des détails", "error");
+      showToast(t("dashboard.messages.detailsOpenError"), "error");
     }
   };
 
@@ -172,7 +174,7 @@ const Dashboard = () => {
         userReportsSubmitted: [],
       });
     } catch (error) {
-      showToast("Erreur lors de l'ouverture des détails", "error");
+      showToast(t("dashboard.messages.detailsOpenError"), "error");
     }
   };
 
@@ -181,28 +183,28 @@ const Dashboard = () => {
     switch (user?.role) {
       case ROLES.SUPER_ADMIN:
         return [
-          { id: "overview", label: "Vue d'ensemble", icon: "home" },
-          { id: "users", label: "Gérer Utilisateurs", icon: "users" },
-          { id: "agencies", label: "Gérer Agences", icon: "building" },
-          { id: "messages", label: "Messages Contact", icon: "mail" },
-          { id: "statistics", label: "Consulter Statistiques", icon: "chart" },
+          { id: "overview", label: t("dashboard.tabs.overview"), icon: "home" },
+          { id: "users", label: t("dashboard.tabs.users"), icon: "users" },
+          { id: "agencies", label: t("dashboard.tabs.agencies"), icon: "building" },
+          { id: "messages", label: t("dashboard.tabs.contactMessages"), icon: "mail" },
+          { id: "statistics", label: t("dashboard.tabs.statisticsSuper"), icon: "chart" },
         ];
       case ROLES.AGENCY_ADMIN:
         return [
-          { id: "overview", label: "Actives", icon: "clipboard" },
-          { id: "reservations", label: "Toutes", icon: "list" },
-          { id: "vehicles", label: "Véhicules", icon: "car" },
-          { id: "reports", label: "Signalements", icon: "flag" },
-          { id: "financial", label: "Finances", icon: "credit-card" },
-          { id: "alerts", label: "Alertes", icon: "bell" },
-          { id: "statistics", label: "Statistiques", icon: "chart" },
+          { id: "overview", label: t("dashboard.tabs.active"), icon: "clipboard" },
+          { id: "reservations", label: t("dashboard.tabs.all"), icon: "list" },
+          { id: "vehicles", label: t("dashboard.tabs.vehicles"), icon: "car" },
+          { id: "reports", label: t("dashboard.tabs.reports"), icon: "flag" },
+          { id: "financial", label: t("dashboard.tabs.financial"), icon: "credit-card" },
+          { id: "alerts", label: t("dashboard.tabs.alerts"), icon: "bell" },
+          { id: "statistics", label: t("dashboard.tabs.statistics"), icon: "chart" },
         ];
       case ROLES.CLIENT:
         return [
-          { id: "overview", label: "Mes Réservations", icon: "clipboard" },
-          { id: "saved", label: "Véhicules Sauvegardés", icon: "heart" },
-          { id: "notifications", label: "Notifications", icon: "bell" },
-          { id: "history", label: "Historique", icon: "clock" },
+          { id: "overview", label: t("dashboard.tabs.myReservations"), icon: "clipboard" },
+          { id: "saved", label: t("dashboard.tabs.savedVehicles"), icon: "heart" },
+          { id: "notifications", label: t("dashboard.tabs.notifications"), icon: "bell" },
+          { id: "history", label: t("dashboard.tabs.history"), icon: "clock" },
         ];
       default:
         return [];
@@ -216,21 +218,21 @@ const Dashboard = () => {
     switch (user?.role) {
       case ROLES.SUPER_ADMIN:
         return {
-          title: "Administration Globale",
-          subtitle: "Gérez l'ensemble de la plateforme Elite Drive",
+          title: t("dashboard.title.superAdmin"),
+          subtitle: t("dashboard.title.superAdminSubtitle"),
         };
       case ROLES.AGENCY_ADMIN:
         return {
-          title: "Tableau de Bord Agence",
-          subtitle: "Gérez votre agence et vos véhicules",
+          title: t("dashboard.title.agencyAdmin"),
+          subtitle: t("dashboard.title.agencyAdminSubtitle"),
         };
       case ROLES.CLIENT:
         return {
-          title: "Mon Espace Client",
-          subtitle: "Gérez vos réservations et consultez votre historique",
+          title: t("dashboard.title.client"),
+          subtitle: t("dashboard.title.clientSubtitle"),
         };
       default:
-        return { title: "Tableau de Bord", subtitle: "" };
+        return { title: t("dashboard.title.default"), subtitle: "" };
     }
   };
 
@@ -242,35 +244,35 @@ const Dashboard = () => {
       case ROLES.SUPER_ADMIN:
         return [
           {
-            title: "Agences",
+            title: t("dashboard.stats.agencies.title"),
             value: platformStats.totalAgencies?.toString() || "0",
-            change: "Total",
+            change: t("dashboard.stats.agencies.change"),
             trend: "neutral",
             icon: "building",
             color: "blue",
           },
           {
-            title: "Utilisateurs",
+            title: t("dashboard.stats.users.title"),
             value: platformStats.totalUsers?.toString() || "0",
-            change: "Inscrits",
+            change: t("dashboard.stats.users.change"),
             trend: "up",
             icon: "users",
             color: "green",
           },
           {
-            title: "Véhicules",
+            title: t("dashboard.stats.vehicles.title"),
             value: platformStats.totalVehicles?.toString() || "0",
-            change: "Total",
+            change: t("dashboard.stats.vehicles.change"),
             trend: "neutral",
             icon: "car",
             color: "purple",
           },
           {
-            title: "Revenu Mensuel",
+            title: t("dashboard.stats.monthlyRevenue.title"),
             value: platformStats.monthlyRevenue
               ? `${platformStats.monthlyRevenue.toLocaleString()} DT`
               : "0 DT",
-            change: "Ce mois",
+            change: t("dashboard.stats.monthlyRevenue.change"),
             trend: "up",
             icon: "money",
             color: "emerald",
@@ -279,33 +281,33 @@ const Dashboard = () => {
       case ROLES.AGENCY_ADMIN:
         return [
           {
-            title: "Véhicules Totaux",
+            title: t("dashboard.stats.totalVehicles.title"),
             value: agencyStats.totalVehicles.toString(),
-            change: `${agencyStats.availableVehicles} disponibles`,
+            change: `${agencyStats.availableVehicles} ${t("dashboard.stats.totalVehicles.change")}`,
             trend: "neutral",
             icon: "car",
             color: "blue",
           },
           {
-            title: "Réservations Actives",
+            title: t("dashboard.stats.activeReservations.title"),
             value: agencyStats.activeReservations.toString(),
-            change: "En cours",
+            change: t("dashboard.stats.activeReservations.change"),
             trend: "up",
             icon: "clipboard",
             color: "green",
           },
           {
-            title: "Revenu du Mois",
+            title: t("dashboard.stats.agencyRevenue.title"),
             value: `${agencyStats.monthlyRevenue.toLocaleString()} DT`,
-            change: "Ce mois",
+            change: t("dashboard.stats.agencyRevenue.change"),
             trend: "up",
             icon: "money",
             color: "emerald",
           },
           {
-            title: "Alertes",
+            title: t("dashboard.stats.alerts.title"),
             value: agencyStats.alertsCount.toString(),
-            change: `${agencyStats.maintenanceVehicles} maintenances`,
+            change: `${agencyStats.maintenanceVehicles} ${t("dashboard.stats.alerts.change")}`,
             trend: agencyStats.alertsCount > 0 ? "warning" : "neutral",
             icon: "bell",
             color: "yellow",
@@ -314,31 +316,31 @@ const Dashboard = () => {
       case ROLES.CLIENT:
         return [
           {
-            title: "Réservations Actives",
+            title: t("dashboard.stats.activeReservations.title"),
             value: clientStats.activeReservations.toString(),
-            change: "En cours",
+            change: t("dashboard.stats.activeReservations.change"),
             trend: "neutral",
             icon: "clipboard",
             color: "blue",
           },
           {
-            title: "Historique Total",
+            title: t("dashboard.stats.totalHistory.title"),
             value: clientStats.completedReservations.toString(),
-            change: "Locations complétées",
+            change: t("dashboard.stats.totalHistory.change"),
             trend: "neutral",
             icon: "clock",
             color: "green",
           },
           {
-            title: "Dépenses Totales",
+            title: t("dashboard.stats.totalSpend.title"),
             value: `${Number(clientStats.totalSpend).toLocaleString()} DT`,
-            change: "Cette année",
+            change: t("dashboard.stats.totalSpend.change"),
             trend: "neutral",
             icon: "money",
             color: "purple",
           },
           {
-            title: "Score Fiabilité",
+            title: t("dashboard.stats.reliabilityScore.title"),
             value: `${clientStats.reliabilityScore}%`,
             change: clientStats.riskLabel,
             trend: "up",
@@ -695,7 +697,7 @@ const Dashboard = () => {
                 await openUserDetailsModal(user);
               } catch (error) {
                 console.error("Error viewing user details:", error);
-                showToast("Erreur lors de l'ouverture des détails", "error");
+                showToast(t("dashboard.messages.detailsOpenError"), "error");
               }
             }}
             onViewAgencyDetails={async (agency) => {
@@ -703,7 +705,7 @@ const Dashboard = () => {
                 await openAgencyDetailsModal(agency);
               } catch (error) {
                 console.error("Error viewing agency details:", error);
-                showToast("Erreur lors de l'ouverture des détails", "error");
+                showToast(t("dashboard.messages.detailsOpenError"), "error");
               }
             }}
             onResolveReport={adminDashboard.handleResolveReport}
@@ -744,7 +746,7 @@ const Dashboard = () => {
 
     return (
       <div className="text-center py-12 text-gray-500">
-        Rôle utilisateur non reconnu
+        {t("dashboard.messages.roleUnrecognized")}
       </div>
     );
   };
@@ -769,7 +771,7 @@ const Dashboard = () => {
               className={`group p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all duration-300 shadow-md hover:shadow-lg ${
                 refreshing ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              title="Actualiser les données"
+              title={t("dashboard.actions.refreshData")}
             >
               <svg
                 className={`w-5 h-5 transition-transform duration-500 ${
@@ -860,7 +862,7 @@ const Dashboard = () => {
                 </svg>
               </button>
               <span className="text-sm font-semibold text-gray-700">
-                {tabs.find((t) => t.id === activeTab)?.label || "Dashboard"}
+                {tabs.find((t) => t.id === activeTab)?.label || t("dashboard.title.default")}
               </span>
               <div className="w-10"></div>
             </div>
@@ -898,7 +900,7 @@ const Dashboard = () => {
                 <div className="lg:hidden fixed left-0 top-0 bottom-0 w-72 z-[110] animate-slideInLeft">
                   <div className="h-full bg-gradient-to-br from-white/95 to-white/80 backdrop-blur-2xl border-r border-white/60 shadow-2xl rounded-r-3xl flex flex-col">
                     <div className="flex items-center justify-between p-6 border-b border-white/40">
-                      <h3 className="text-lg font-bold text-gray-900">Menu</h3>
+                      <h3 className="text-lg font-bold text-gray-900">{t("dashboard.actions.menu")}</h3>
                       <button
                         onClick={() => setIsSidebarOpen(false)}
                         className="p-2 rounded-lg hover:bg-white/60 transition-colors"
@@ -972,10 +974,10 @@ const Dashboard = () => {
           }
           setDeleteModal({ isOpen: false, type: null, item: null });
         }}
-        title={`Supprimer ${deleteModal.type === "agency" ? "l'agence" : "l'utilisateur"}`}
-        message={`Êtes-vous sûr de vouloir supprimer ${deleteModal.type === "agency" ? `l'agence "${deleteModal.item?.name}"` : `l'utilisateur "${deleteModal.item?.name}"`} ? Cette action est irréversible.`}
-        confirmText="Supprimer"
-        cancelText="Annuler"
+        title={deleteModal.type === "agency" ? t("dashboard.modals.deleteAgencyTitle") : t("dashboard.modals.deleteUserTitle")}
+        message={deleteModal.type === "agency" ? t("dashboard.modals.deleteAgencyDesc", { name: deleteModal.item?.name }) : t("dashboard.modals.deleteUserDesc", { name: deleteModal.item?.name })}
+        confirmText={t("dashboard.actions.delete")}
+        cancelText={t("dashboard.actions.cancel")}
         danger
       />
 
@@ -992,8 +994,8 @@ const Dashboard = () => {
               await adminDashboard.handleSuspendAgency(agency);
               showToast(
                 agency.status === "inactive"
-                  ? "Agence débloquée avec succès"
-                  : "Agence bloquée avec succès",
+                  ? t("dashboard.messages.agencyUnblocked")
+                  : t("dashboard.messages.agencyBlocked"),
                 "success",
               );
             } else if (suspendModal.type === "user") {
@@ -1001,46 +1003,46 @@ const Dashboard = () => {
               await adminDashboard.handleSuspendUser(selectedUser);
               showToast(
                 selectedUser.is_suspended
-                  ? "Utilisateur débloqué avec succès"
-                  : "Utilisateur bloqué avec succès",
+                  ? t("dashboard.messages.userUnblocked")
+                  : t("dashboard.messages.userBlocked"),
                 "success",
               );
             }
             await adminDashboard.refreshData();
           } catch (error) {
             console.error("Error suspending:", error);
-            showToast("Erreur lors de la modification du statut", "error");
+            showToast(t("dashboard.messages.statusChangeError"), "error");
           }
           setSuspendModal({ isOpen: false, type: null, item: null });
         }}
         title={
           suspendModal.type === "agency"
             ? suspendModal.item?.status === "inactive"
-              ? "Débloquer l'agence"
-              : "Bloquer l'agence"
+              ? t("dashboard.modals.unblockAgencyTitle")
+              : t("dashboard.modals.blockAgencyTitle")
             : suspendModal.item?.is_suspended
-              ? "Débloquer l'utilisateur"
-              : "Bloquer l'utilisateur"
+              ? t("dashboard.modals.unblockUserTitle")
+              : t("dashboard.modals.blockUserTitle")
         }
         message={
           suspendModal.type === "agency"
             ? suspendModal.item?.status === "inactive"
-              ? `Êtes-vous sûr de vouloir débloquer l'agence "${suspendModal.item?.name}" ? Elle pourra à nouveau fonctionner normalement.`
-              : `Êtes-vous sûr de vouloir bloquer l'agence "${suspendModal.item?.name}" ? Elle ne pourra plus accepter de réservations.`
+              ? t("dashboard.modals.unblockAgencyDesc", { name: suspendModal.item?.name })
+              : t("dashboard.modals.blockAgencyDesc", { name: suspendModal.item?.name })
             : suspendModal.item?.is_suspended
-              ? `Êtes-vous sûr de vouloir débloquer l'utilisateur "${suspendModal.item?.name}" ? Il pourra à nouveau accéder à son compte.`
-              : `Êtes-vous sûr de vouloir bloquer l'utilisateur "${suspendModal.item?.name}" ? Il ne pourra plus se connecter.`
+              ? t("dashboard.modals.unblockUserDesc", { name: suspendModal.item?.name })
+              : t("dashboard.modals.blockUserDesc", { name: suspendModal.item?.name })
         }
         confirmText={
           suspendModal.type === "agency"
             ? suspendModal.item?.status === "inactive"
-              ? "Débloquer"
-              : "Bloquer"
+              ? t("dashboard.actions.unblock")
+              : t("dashboard.actions.block")
             : suspendModal.item?.is_suspended
-              ? "Débloquer"
-              : "Bloquer"
+              ? t("dashboard.actions.unblock")
+              : t("dashboard.actions.block")
         }
-        cancelText="Annuler"
+        cancelText={t("dashboard.actions.cancel")}
         danger={
           suspendModal.type === "agency"
             ? suspendModal.item?.status === "active"
@@ -1180,5 +1182,4 @@ const Dashboard = () => {
   );
 };
 
-// Super Admin Content Component
 export default Dashboard;

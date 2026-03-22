@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Navbar from "../../components/common/Navbar";
 import Footer from "../../components/common/Footer";
 import VehicleCard from "../../components/cards/VehicleCard";
@@ -14,6 +15,7 @@ const AgencyDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [agency, setAgency] = useState(null);
   const [agencyVehicles, setAgencyVehicles] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -38,13 +40,13 @@ const AgencyDetails = () => {
   const handleReportSubmit = async (reportData) => {
     try {
       showToast(
-        "Signalement envoyé avec succès. Notre équipe examinera votre rapport.",
+        t("agencies.details.messages.reportSuccess"),
         "success",
       );
     } catch (error) {
       console.error("Report submission error:", error);
       showToast(
-        "Erreur lors de l'envoi du signalement. Veuillez réessayer.",
+        t("agencies.details.messages.reportError"),
         "error",
       );
     }
@@ -52,7 +54,7 @@ const AgencyDetails = () => {
 
   const handleSubmitReview = async () => {
     if (!reviewData.comment.trim()) {
-      showToast("Veuillez ajouter un commentaire", "error");
+      showToast(t("agencies.details.messages.commentRequired"), "error");
       return;
     }
 
@@ -69,17 +71,17 @@ const AgencyDetails = () => {
         setReviews([response.data, ...reviews]);
         setShowReviewForm(false);
         setReviewData({ rating: 5, comment: "" });
-        showToast("Avis publié avec succès", "success");
+        showToast(t("agencies.details.messages.reviewSuccess"), "success");
       } else {
         showToast(
-          response.message || "Erreur lors de la publication de l'avis",
+          response.message || t("agencies.details.messages.reviewError"),
           "error",
         );
       }
     } catch (error) {
       showToast(
         error.response?.data?.message ||
-          "Erreur lors de la publication de l'avis",
+          t("agencies.details.messages.reviewError"),
         "error",
       );
     } finally {
@@ -122,7 +124,7 @@ const AgencyDetails = () => {
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-500 mx-auto mb-4"></div>
-          <p className="text-gray-600">Chargement de l'agence...</p>
+          <p className="text-gray-600">{t("agencies.details.messages.loading")}</p>
         </div>
       </div>
     );
@@ -152,7 +154,7 @@ const AgencyDetails = () => {
           <div className="absolute top-6 sm:top-8 left-0 right-0 container mx-auto px-4">
             <div className="hidden sm:flex items-center gap-2 text-white/80 text-sm">
               <Link to="/" className="hover:text-white transition-colors">
-                Accueil
+                {t("agencies.details.breadcrumb.home")}
               </Link>
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path
@@ -165,7 +167,7 @@ const AgencyDetails = () => {
                 to="/agencies"
                 className="hover:text-white transition-colors"
               >
-                Agences
+                {t("agencies.details.breadcrumb.agencies")}
               </Link>
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path
@@ -220,7 +222,7 @@ const AgencyDetails = () => {
                     {averageRating.toFixed(1)}
                   </span>
                   <span className="text-xs sm:text-sm text-gray-600">
-                    ({reviewsCount} avis)
+                    ({reviewsCount} {t("agencies.details.stats.reviews")})
                   </span>
                 </button>
               </div>
@@ -263,7 +265,7 @@ const AgencyDetails = () => {
                       d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  Informations de Contact
+                  {t("agencies.details.contactCard.title")}
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
@@ -292,7 +294,7 @@ const AgencyDetails = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">
-                        Adresse
+                        {t("agencies.details.contactCard.address")}
                       </h3>
                       <p className="text-sm sm:text-base text-gray-600 break-words">
                         {agency.address}
@@ -319,7 +321,7 @@ const AgencyDetails = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">
-                        Téléphone
+                        {t("agencies.details.contactCard.phone")}
                       </h3>
                       <a
                         href={`tel:${agency.phone}`}
@@ -349,7 +351,7 @@ const AgencyDetails = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">
-                        Email
+                        {t("agencies.details.contactCard.email")}
                       </h3>
                       <a
                         href={`mailto:${agency.email}`}
@@ -379,7 +381,7 @@ const AgencyDetails = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">
-                        Horaires
+                        {t("agencies.details.contactCard.hours")}
                       </h3>
                       <p className="text-sm sm:text-base text-gray-600">
                         {agency.hours}
@@ -394,7 +396,7 @@ const AgencyDetails = () => {
             <div className="lg:col-span-1">
               <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl p-5 sm:p-6 md:p-8 shadow-lg text-white">
                 <h2 className="text-xl sm:text-2xl font-bold mb-5 sm:mb-6">
-                  Services & Avantages
+                  {t("agencies.details.features.title")}
                 </h2>
                 <ul className="space-y-3 sm:space-y-4">
                   {agency.features.map((feature, index) => (
@@ -422,7 +424,7 @@ const AgencyDetails = () => {
                     to="/contact"
                     className="block w-full text-center px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-white text-primary-600 rounded-xl hover:bg-primary-50 transition-all duration-300 font-semibold shadow-lg"
                   >
-                    Nous Contacter
+                    {t("agencies.details.features.contactBtn")}
                   </Link>
                 </div>
               </div>
@@ -436,13 +438,12 @@ const AgencyDetails = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-8 sm:mb-10 md:mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
-              Nos Véhicules
+              {t("agencies.details.vehiclesSection.title")}
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-600">
-              Découvrez notre flotte de{" "}
               {agencyVehicles.length === 1
-                ? "1 véhicule disponible"
-                : `${agencyVehicles.length} véhicules disponibles`}
+                ? t("agencies.details.vehiclesSection.subtitle_one")
+                : t("agencies.details.vehiclesSection.subtitle_other", { count: agencyVehicles.length })}
             </p>
           </div>
 
@@ -462,16 +463,16 @@ const AgencyDetails = () => {
                 />
               </svg>
               <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
-                Aucun véhicule disponible
+                {t("agencies.details.vehiclesSection.emptyTitle")}
               </h3>
               <p className="text-sm sm:text-base text-gray-600 mb-6">
-                Cette agence n'a pas encore de véhicules enregistrés
+                {t("agencies.details.vehiclesSection.emptyDesc")}
               </p>
               <Link
                 to="/vehicles"
                 className="inline-block px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors font-semibold"
               >
-                Voir tous les véhicules
+                {t("agencies.details.vehiclesSection.viewAllBtn")}
               </Link>
             </div>
           ) : (
@@ -497,14 +498,14 @@ const AgencyDetails = () => {
             <div className="sticky top-0 z-10 px-4 sm:px-6 py-4 bg-white/95 backdrop-blur-sm border-b border-gray-200 rounded-t-2xl sm:rounded-t-3xl flex items-center justify-between gap-3">
               <div>
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
-                  Avis des Clients
+                  {t("agencies.details.reviewsModal.title")}
                 </h2>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="text-primary-600 font-semibold">
                     {averageRating.toFixed(1)}
                   </span>
                   <span className="text-sm text-gray-600">
-                    ({reviewsCount} avis)
+                    ({reviewsCount} {t("agencies.details.stats.reviews")})
                   </span>
                 </div>
               </div>
@@ -536,7 +537,7 @@ const AgencyDetails = () => {
                     onClick={() => setShowReviewForm(true)}
                     className="px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-xl hover:from-primary-700 hover:to-primary-800 transition-all shadow-lg"
                   >
-                    Laisser un avis
+                    {t("agencies.details.reviewsModal.leaveReviewBtn")}
                   </button>
                 </div>
               )}
@@ -544,12 +545,12 @@ const AgencyDetails = () => {
               {showReviewForm && (
                 <div className="mb-8 bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-200">
                   <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">
-                    Votre avis
+                    {t("agencies.details.reviewsModal.formTitle")}
                   </h3>
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Note
+                        {t("agencies.details.reviewsModal.ratingLabel")}
                       </label>
                       <div className="flex gap-2">
                         {[1, 2, 3, 4, 5].map((star) => (
@@ -578,7 +579,7 @@ const AgencyDetails = () => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Commentaire
+                        {t("agencies.details.reviewsModal.commentLabel")}
                       </label>
                       <textarea
                         value={reviewData.comment}
@@ -590,7 +591,7 @@ const AgencyDetails = () => {
                         }
                         rows={4}
                         className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
-                        placeholder="Partagez votre expérience..."
+                        placeholder={t("agencies.details.reviewsModal.commentPlaceholder")}
                       />
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3">
@@ -599,7 +600,7 @@ const AgencyDetails = () => {
                         disabled={submittingReview}
                         className="w-full sm:w-auto px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50"
                       >
-                        {submittingReview ? "Envoi..." : "Publier"}
+                        {submittingReview ? t("agencies.details.reviewsModal.submittingBtn") : t("agencies.details.reviewsModal.submitBtn")}
                       </button>
                       <button
                         onClick={() => {
@@ -608,7 +609,7 @@ const AgencyDetails = () => {
                         }}
                         className="w-full sm:w-auto px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition-colors"
                       >
-                        Annuler
+                        {t("agencies.details.reviewsModal.cancelBtn")}
                       </button>
                     </div>
                   </div>
@@ -658,10 +659,10 @@ const AgencyDetails = () => {
                 ) : (
                   <div className="text-center py-12 bg-white rounded-2xl">
                     <p className="text-gray-500 text-lg">
-                      Aucun avis pour le moment
+                      {t("agencies.details.reviewsModal.emptyTitle")}
                     </p>
                     <p className="text-gray-400 mt-2">
-                      Soyez le premier à partager votre expérience !
+                      {t("agencies.details.reviewsModal.emptyDesc")}
                     </p>
                   </div>
                 )}

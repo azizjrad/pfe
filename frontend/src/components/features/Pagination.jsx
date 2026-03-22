@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const Pagination = ({
   currentPage,
@@ -7,6 +8,8 @@ const Pagination = ({
   itemsPerPage,
   totalItems,
 }) => {
+  const { t } = useTranslation();
+
   // Generate page numbers to display
   const getPageNumbers = () => {
     const pages = [];
@@ -56,12 +59,13 @@ const Pagination = ({
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 pt-8 border-t border-gray-200">
       {/* Items info */}
       <div className="text-sm text-gray-600">
-        Affichage de{" "}
-        <span className="font-semibold text-gray-900">{startItem}</span> à{" "}
-        <span className="font-semibold text-gray-900">{endItem}</span> sur{" "}
+        {t("pagination.showing")}{" "}
+        <span className="font-semibold text-gray-900">{startItem}</span>{" "}
+        {t("pagination.to")}{" "}
+        <span className="font-semibold text-gray-900">{endItem}</span>{" "}
+        {t("pagination.of")}{" "}
         <span className="font-semibold text-gray-900">{totalItems}</span>{" "}
-        résultat
-        {totalItems > 1 ? "s" : ""}
+        {totalItems > 1 ? t("pagination.results") : t("pagination.result")}
       </div>
 
       {/* Pagination controls */}
@@ -89,7 +93,7 @@ const Pagination = ({
               d="M15 19l-7-7 7-7"
             />
           </svg>
-          <span className="hidden sm:inline">Précédent</span>
+          <span className="hidden sm:inline">{t("pagination.previous")}</span>
         </button>
 
         {/* Page numbers */}
@@ -132,7 +136,7 @@ const Pagination = ({
               : "bg-white text-gray-700 hover:bg-primary-50 hover:text-primary-600 border border-gray-200 hover:border-primary-300 shadow-sm hover:shadow"
           }`}
         >
-          <span className="hidden sm:inline">Suivant</span>
+          <span className="hidden sm:inline">{t("pagination.next")}</span>
           <svg
             className="w-5 h-5"
             fill="none"

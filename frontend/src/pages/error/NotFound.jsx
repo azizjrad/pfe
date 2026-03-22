@@ -1,16 +1,17 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function NotFound() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   // Get error details from location state or use defaults
   const errorCode = location.state?.errorCode || "404";
-  const errorTitle = location.state?.errorTitle || "Page introuvable";
+  const errorTitle = location.state?.errorTitle || t("errors.notFound.title");
   const errorMessage =
-    location.state?.errorMessage ||
-    "Désolé, la page que vous recherchez n'existe pas ou a été déplacée.";
+    location.state?.errorMessage || t("errors.notFound.message");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 flex items-center justify-center px-4">
@@ -53,7 +54,7 @@ export default function NotFound() {
               d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
             />
           </svg>
-          Retour à l'accueil
+          {t("common.backHome")}
         </button>
       </div>
     </div>

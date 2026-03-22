@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 const ProfileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -45,11 +47,11 @@ const ProfileMenu = () => {
 
   const getRoleLabel = () => {
     const roleLabels = {
-      client: "Client",
-      agency_admin: "Administrateur Agence",
-      super_admin: "Super Administrateur",
+      client: t("roles.client"),
+      agency_admin: t("roles.agency_admin"),
+      super_admin: t("roles.super_admin"),
     };
-    return roleLabels[user?.role] || "Utilisateur";
+    return roleLabels[user?.role] || t("roles.user");
   };
 
   const getInitials = () => {
@@ -128,7 +130,7 @@ const ProfileMenu = () => {
                 />
               </svg>
               <span className="text-gray-700 group-hover:text-primary-700 font-medium">
-                Tableau de bord
+                {t("nav.dashboard")}
               </span>
             </Link>
 
@@ -154,7 +156,7 @@ const ProfileMenu = () => {
                 />
               </svg>
               <span className="text-gray-700 group-hover:text-red-600 font-medium">
-                Déconnexion
+                {t("nav.logout")}
               </span>
             </button>
           </div>

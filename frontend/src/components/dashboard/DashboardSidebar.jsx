@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 /**
  * DashboardSidebar Component
@@ -13,6 +14,7 @@ export default function DashboardSidebar({
   children,
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <div className="bg-gradient-to-br from-white/90 to-white/50 backdrop-blur-2xl rounded-3xl border border-white/60 shadow-2xl overflow-hidden">
@@ -75,7 +77,7 @@ export default function DashboardSidebar({
           <div className="lg:hidden fixed left-0 top-0 bottom-0 w-72 z-[110] animate-slideInLeft">
             <div className="h-full bg-gradient-to-br from-white/95 to-white/80 backdrop-blur-2xl border-r border-white/60 shadow-2xl rounded-r-3xl flex flex-col">
               <div className="flex items-center justify-between p-6 border-b border-white/40">
-                <h3 className="text-lg font-bold text-gray-900">Menu</h3>
+                <h3 className="text-lg font-bold text-gray-900">{t("common.menu")}</h3>
                 <button
                   onClick={() => setIsSidebarOpen(false)}
                   className="p-2 rounded-lg hover:bg-white/60 transition-colors"

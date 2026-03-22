@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 import { ROLES } from "../../constants/roles";
 
 const VehicleCard = ({
@@ -13,6 +14,7 @@ const VehicleCard = ({
 }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
@@ -90,7 +92,7 @@ const VehicleCard = ({
             <button
               onClick={handleSaveToggle}
               className="absolute top-3 right-3 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-all flex items-center justify-center group/save z-10"
-              title={isSaved ? "Retirer des favoris" : "Ajouter aux favoris"}
+              title={isSaved ? t("vehicles.card.removeFavorite") : t("vehicles.card.addFavorite")}
             >
               <svg
                 className={`w-6 h-6 transition-all ${
@@ -142,9 +144,9 @@ const VehicleCard = ({
         {/* Price */}
         <div className="text-center mb-5 sm:mb-6 flex-shrink-0">
           <span className="text-2xl sm:text-3xl font-bold text-gray-900">
-            {vehicle.price} DT
+            {vehicle.price} {t("common.currency")}
           </span>
-          <span className="text-gray-700 text-sm ml-1">/jour</span>
+          <span className="text-gray-700 text-sm ml-1">{t("vehicles.card.perDay")}</span>
         </div>
 
         {/* Spacer to push button to bottom */}
@@ -152,7 +154,7 @@ const VehicleCard = ({
 
         {/* Reserve Button */}
         <button className="w-full bg-primary-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base font-semibold flex-shrink-0">
-          Réserver maintenant
+          {t("vehicles.card.reserve")}
         </button>
       </div>
     </div>

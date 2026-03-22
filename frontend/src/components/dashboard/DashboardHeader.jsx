@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 import ProfileSettingsModal from "../modals/ProfileSettingsModal";
 
 const DashboardHeader = ({ title, subtitle }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -34,11 +36,11 @@ const DashboardHeader = ({ title, subtitle }) => {
 
   const getRoleLabel = () => {
     const roleLabels = {
-      client: "Client",
-      agency_admin: "Administrateur Agence",
-      super_admin: "Super Administrateur",
+      client: t("roles.client"),
+      agency_admin: t("roles.agency_admin"),
+      super_admin: t("roles.super_admin"),
     };
-    return roleLabels[user?.role] || "Utilisateur";
+    return roleLabels[user?.role] || t("roles.user");
   };
 
   const getInitials = () => {
@@ -125,7 +127,7 @@ const DashboardHeader = ({ title, subtitle }) => {
                 <button
                   onClick={() => setShowProfileModal(true)}
                   className="group relative px-3 sm:px-4 py-2.5 font-semibold rounded-2xl transition-all duration-500 overflow-hidden bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-lg hover:shadow-xl hover:shadow-primary-500/25 hover:scale-105"
-                  title="Paramètres du profil"
+                  title={t("nav.profileSettings")}
                 >
                   <span className="relative z-10 flex items-center gap-2">
                     <svg
@@ -141,7 +143,7 @@ const DashboardHeader = ({ title, subtitle }) => {
                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                       />
                     </svg>
-                    <span className="hidden sm:inline">Profil</span>
+                    <span className="hidden sm:inline">{t("nav.profile")}</span>
                   </span>
 
                   {/* Glass overlay */}
@@ -158,7 +160,7 @@ const DashboardHeader = ({ title, subtitle }) => {
                 <button
                   onClick={handleLogout}
                   className="group relative px-3 sm:px-4 py-2.5 font-semibold rounded-2xl transition-all duration-500 overflow-hidden bg-gradient-to-r from-red-600 to-red-700 text-white shadow-lg hover:shadow-xl hover:shadow-red-500/25 hover:scale-105"
-                  title="Déconnexion"
+                  title={t("nav.logout")}
                 >
                   <span className="relative z-10 flex items-center gap-2">
                     <svg
@@ -174,7 +176,7 @@ const DashboardHeader = ({ title, subtitle }) => {
                         d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                       />
                     </svg>
-                    <span className="hidden sm:inline">Quitter</span>
+                    <span className="hidden sm:inline">{t("nav.quit")}</span>
                   </span>
 
                   {/* Glass overlay */}

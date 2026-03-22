@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../../contexts/AuthContext";
 import ProfileMenu from "./ProfileMenu";
 import { ADMIN_ROLES } from "../../constants/roles";
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
+  const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -64,7 +66,7 @@ const Navbar = () => {
 
   const allNavItems = [
     {
-      name: "Accueil",
+      name: t("common.homeDir"),
       path: "/",
       icon: (
         <svg
@@ -83,7 +85,7 @@ const Navbar = () => {
       ),
     },
     {
-      name: "Véhicules",
+      name: t("common.vehicles"),
       path: "/vehicles",
       icon: (
         <svg
@@ -102,7 +104,7 @@ const Navbar = () => {
       ),
     },
     {
-      name: "Agences",
+      name: t("common.agencies"),
       path: "/agencies",
       icon: (
         <svg
@@ -121,7 +123,7 @@ const Navbar = () => {
       ),
     },
     {
-      name: "À propos",
+      name: t("common.about"),
       path: "/about",
       icon: (
         <svg
@@ -140,7 +142,7 @@ const Navbar = () => {
       ),
     },
     {
-      name: "Contact",
+      name: t("common.contact"),
       path: "/contact",
       icon: (
         <svg
@@ -189,6 +191,7 @@ const Navbar = () => {
               <div className="md:hidden flex-shrink-0 order-1">
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  aria-label={t("nav.menu")}
                   className="group relative p-2.5 rounded-2xl transition-all duration-500 bg-gray-100/60 hover:bg-gray-200/60 backdrop-blur-[20px] border border-gray-300/30 hover:border-gray-400/50 shadow-lg hover:shadow-xl hover:shadow-primary-500/15 hover:scale-105"
                 >
                   <div className="w-6 h-6 flex flex-col justify-center items-center relative z-10">
@@ -220,12 +223,12 @@ const Navbar = () => {
                   <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center shadow-lg">
                     <img
                       src="/car-logo.svg"
-                      alt="Elite Drive"
+                      alt={t("app.name")}
                       className="w-6 h-6"
                     />
                   </div>
                   <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
-                    Elite Drive
+                    {t("app.name")}
                   </span>
                 </Link>
               </div>
@@ -266,7 +269,7 @@ const Navbar = () => {
                     to="/login"
                     className="group relative px-6 py-2.5 font-semibold rounded-2xl transition-all duration-500 overflow-hidden bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-lg hover:shadow-xl hover:shadow-primary-500/25 hover:scale-105"
                   >
-                    <span className="relative z-10">Connexion</span>
+                    <span className="relative z-10">{t("nav.login")}</span>
 
                     {/* Glass overlay */}
                     <div className="absolute inset-0 bg-gradient-to-r from-white/25 via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 rounded-2xl"></div>
@@ -331,7 +334,7 @@ const Navbar = () => {
                   </svg>
                 </div>
                 <h2 className="text-xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
-                  Menu
+                  {t("nav.menu")}
                 </h2>
               </div>
               <button
@@ -438,7 +441,7 @@ const Navbar = () => {
                             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                           />
                         </svg>
-                        <span className="relative z-10">Tableau de bord</span>
+                        <span className="relative z-10">{t("nav.dashboard")}</span>
                         <div className="absolute inset-0 bg-gradient-to-r from-white/25 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
                       </Link>
 
@@ -467,7 +470,7 @@ const Navbar = () => {
                             d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                           />
                         </svg>
-                        <span className="relative z-10">Déconnexion</span>
+                        <span className="relative z-10">{t("nav.logout")}</span>
                       </button>
                     </>
                   ) : (
@@ -495,16 +498,16 @@ const Navbar = () => {
                           d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
                         />
                       </svg>
-                      <span className="relative z-10">Connexion</span>
+                      <span className="relative z-10">{t("nav.login")}</span>
                       <div className="absolute inset-0 bg-gradient-to-r from-white/25 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
                       <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
                     </Link>
                   )}
 
                   <div className="pt-2 text-center">
-                    <p className="text-xs text-gray-500">Elite Drive</p>
+                    <p className="text-xs text-gray-500">{t("app.name")}</p>
                     <p className="text-[11px] text-gray-400 mt-1">
-                      Location simple et rapide 24/7
+                      {t("nav.tagline1")}
                     </p>
                   </div>
                 </div>

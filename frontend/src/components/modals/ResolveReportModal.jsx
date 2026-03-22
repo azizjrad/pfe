@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const ResolveReportModal = ({ isOpen, onClose, report, onConfirm, type }) => {
+  const { t } = useTranslation();
   const [notes, setNotes] = useState("");
 
   if (!isOpen) return null;
@@ -68,10 +70,12 @@ const ResolveReportModal = ({ isOpen, onClose, report, onConfirm, type }) => {
             <div>
               <h3 className="text-lg font-bold">
                 {isResolve
-                  ? "Résoudre le signalement"
-                  : "Rejeter le signalement"}
+                  ? t("modals.resolveReport.title")
+                  : t("modals.resolveReport.dismissTitle")}
               </h3>
-              <p className="text-sm opacity-90">Signalement #{report?.id}</p>
+              <p className="text-sm opacity-90">
+                {t("modals.reportDetails.title", { id: report?.id })}
+              </p>
             </div>
           </div>
         </div>
@@ -80,7 +84,7 @@ const ResolveReportModal = ({ isOpen, onClose, report, onConfirm, type }) => {
         <div className="p-6 space-y-4">
           {/* Report Info */}
           <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-            <p className="text-sm text-gray-600">Signalement</p>
+            <p className="text-sm text-gray-600">{t("reports.submit")}</p>
             <p className="font-medium text-gray-900">{report?.targetName}</p>
             <p className="text-sm text-gray-500 mt-1">{report?.reason}</p>
           </div>
@@ -88,21 +92,21 @@ const ResolveReportModal = ({ isOpen, onClose, report, onConfirm, type }) => {
           {/* Notes Input */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Notes administratives <span className="text-red-500">*</span>
+              {t("reports.adminNotes")} <span className="text-red-500">*</span>
             </label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder={
                 isResolve
-                  ? "Expliquez comment le problème a été résolu..."
-                  : "Expliquez pourquoi ce signalement a été rejeté..."
+                  ? t("modals.resolveReport.notesPlaceholder")
+                  : t("modals.resolveReport.dismissPlaceholder")
               }
               rows={5}
               className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none resize-none"
             />
             <p className="text-xs text-gray-500 mt-2">
-              Ces notes seront visibles dans l'historique du signalement
+              {t("modals.resolveReport.notesHint")}
             </p>
           </div>
 
@@ -112,7 +116,7 @@ const ResolveReportModal = ({ isOpen, onClose, report, onConfirm, type }) => {
               onClick={onClose}
               className="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
             >
-              Annuler
+              {t("common.cancel")}
             </button>
             <button
               onClick={handleSubmit}
@@ -132,7 +136,7 @@ const ResolveReportModal = ({ isOpen, onClose, report, onConfirm, type }) => {
                   d="M5 13l4 4L19 7"
                 />
               </svg>
-              Confirmer
+              {t("common.confirm")}
             </button>
           </div>
         </div>

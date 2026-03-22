@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 /**
  * Vehicle Image Gallery Component
@@ -7,6 +8,7 @@ import React, { useState } from "react";
  */
 export default function VehicleImageGallery({ images = [] }) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const { t } = useTranslation();
 
   // Fallback to default image if no images provided
   const displayImages =
@@ -20,7 +22,7 @@ export default function VehicleImageGallery({ images = [] }) {
       <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden bg-white/50 backdrop-blur-sm shadow-2xl">
         <img
           src={mainImage}
-          alt={`Véhicule - Image ${selectedImageIndex + 1}`}
+          alt={`${t("gallery.imageAlt")} ${selectedImageIndex + 1}`}
           className="w-full h-full object-cover transition-transform duration-300"
         />
 
@@ -43,7 +45,7 @@ export default function VehicleImageGallery({ images = [] }) {
                 )
               }
               className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-900 p-3 rounded-full shadow-lg transition-all hover:shadow-xl z-10"
-              title="Image précédente"
+              title={t("gallery.previousImage")}
             >
               <svg
                 className="w-6 h-6"
@@ -69,7 +71,7 @@ export default function VehicleImageGallery({ images = [] }) {
                 )
               }
               className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-900 p-3 rounded-full shadow-lg transition-all hover:shadow-xl z-10"
-              title="Image suivante"
+              title={t("gallery.nextImage")}
             >
               <svg
                 className="w-6 h-6"
@@ -101,11 +103,11 @@ export default function VehicleImageGallery({ images = [] }) {
                   ? "ring-3 ring-primary-500 shadow-lg scale-105"
                   : "ring-2 ring-gray-300 hover:ring-primary-400 hover:scale-102"
               }`}
-              title={`Image ${index + 1}`}
+              title={`${t("gallery.imageAlt")} ${index + 1}`}
             >
               <img
                 src={image}
-                alt={`Thumbnail ${index + 1}`}
+                alt={`${t("gallery.thumbnailAlt")} ${index + 1}`}
                 className="w-full h-full object-cover"
               />
 
@@ -113,7 +115,7 @@ export default function VehicleImageGallery({ images = [] }) {
               {index === 0 && (
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end justify-center p-1">
                   <span className="text-white text-xs font-bold bg-blue-500 px-2 py-0.5 rounded">
-                    Principal
+                    {t("gallery.mainBadge")}
                   </span>
                 </div>
               )}

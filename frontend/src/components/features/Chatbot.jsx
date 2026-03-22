@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const Chatbot = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
       type: "bot",
-      text: "Bonjour! Je suis l'assistant virtuel d'Elite Drive. Comment puis-je vous aider aujourd'hui?",
+      text: t("chatbot.greeting"),
       time: new Date().toLocaleTimeString("fr-FR", {
         hour: "2-digit",
         minute: "2-digit",
@@ -81,44 +83,49 @@ const Chatbot = () => {
     const lowerMessage = userMessage.toLowerCase();
 
     if (lowerMessage.includes("prix") || lowerMessage.includes("tarif")) {
-      return "Nos tarifs commencent à partir de 40 DT/jour pour les véhicules économiques. Pour plus de détails, consultez notre page Véhicules ou contactez-nous au +216 71 123 456.";
+      return t("chatbot.responses.pricing");
     } else if (
       lowerMessage.includes("réserver") ||
-      lowerMessage.includes("reservation")
+      lowerMessage.includes("reservation") ||
+      lowerMessage.includes("reserver")
     ) {
-      return "Pour réserver un véhicule, visitez notre page Véhicules, choisissez votre voiture préférée et cliquez sur 'Réserver maintenant'. Vous pouvez également nous appeler au +216 71 123 456.";
+      return t("chatbot.responses.booking");
     } else if (
       lowerMessage.includes("horaire") ||
-      lowerMessage.includes("ouvert")
+      lowerMessage.includes("ouvert") ||
+      lowerMessage.includes("fermé")
     ) {
-      return "Nos agences sont ouvertes du Lundi au Samedi de 8h00 à 19h00, et le Dimanche de 9h00 à 17h00.";
+      return t("chatbot.responses.hours");
     } else if (
       lowerMessage.includes("contact") ||
-      lowerMessage.includes("téléphone")
+      lowerMessage.includes("téléphone") ||
+      lowerMessage.includes("email")
     ) {
-      return "Vous pouvez nous contacter au +216 71 123 456 ou par email à contact@elitedrive.tn. Visitez aussi notre page Contact pour plus d'informations.";
+      return t("chatbot.responses.contact");
     } else if (
       lowerMessage.includes("agence") ||
-      lowerMessage.includes("adresse")
+      lowerMessage.includes("adresse") ||
+      lowerMessage.includes("où")
     ) {
-      return "Nous avons plusieurs agences en Tunisie: Tunis Centre-Ville (45 Avenue Habib Bourguiba), La Marsa, et Sousse. Consultez notre page Contact pour toutes les adresses.";
+      return t("chatbot.responses.location");
     } else if (
       lowerMessage.includes("bonjour") ||
-      lowerMessage.includes("salut")
+      lowerMessage.includes("salut") ||
+      lowerMessage.includes("coucou")
     ) {
-      return "Bonjour! Comment puis-je vous aider aujourd'hui? Je peux vous renseigner sur nos véhicules, tarifs, réservations, ou nos agences.";
+      return t("chatbot.responses.greeting");
     } else if (lowerMessage.includes("merci")) {
-      return "Avec plaisir! N'hésitez pas si vous avez d'autres questions. Bonne journée! 😊";
+      return t("chatbot.responses.thanks");
     } else {
-      return "Je suis là pour vous aider! Vous pouvez me poser des questions sur nos véhicules, tarifs, réservations, horaires ou nos agences. Pour une assistance personnalisée, appelez-nous au +216 71 123 456.";
+      return t("chatbot.responses.default");
     }
   };
 
   const quickQuestions = [
-    "Quels sont vos tarifs?",
-    "Comment réserver?",
-    "Où êtes-vous situés?",
-    "Quels sont vos horaires?",
+    t("chatbot.faq.q1"),
+    t("chatbot.faq.q2"),
+    t("chatbot.faq.q3"),
+    t("chatbot.faq.q4"),
   ];
 
   const handleTextareaKeyDown = (e) => {
@@ -132,7 +139,7 @@ const Chatbot = () => {
     <>
       {isOpen && (
         <button
-          aria-label="Fermer le chatbot"
+          aria-label={t("chatbot.closeButton")}
           onClick={() => setIsOpen(false)}
           className="fixed inset-0 z-40 bg-black/30 backdrop-blur-[2px] sm:hidden"
         />
@@ -141,7 +148,7 @@ const Chatbot = () => {
       {/* Chat Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        aria-label="Ouvrir le chatbot"
+        aria-label={t("chatbot.openButton")}
         className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center group ${
           isOpen ? "scale-0" : "scale-100"
         }`}
@@ -191,9 +198,9 @@ const Chatbot = () => {
             </div>
             <div>
               <h3 className="font-bold text-base sm:text-lg">
-                Elite Drive Assistant
+                {t("chatbot.title")}
               </h3>
-              <p className="text-primary-100 text-xs">En ligne</p>
+              <p className="text-primary-100 text-xs">{t("chatbot.status")}</p>
             </div>
           </div>
           <button
@@ -252,7 +259,7 @@ const Chatbot = () => {
         {messages.length === 1 && (
           <div className="px-3 py-3 sm:p-4 bg-white border-t border-gray-200">
             <p className="text-xs text-gray-600 mb-2 font-semibold">
-              Questions fréquentes:
+              {t("chatbot.faqTitle")}
             </p>
             <div className="flex flex-wrap gap-2">
               {quickQuestions.map((question, index) => (
@@ -285,7 +292,7 @@ const Chatbot = () => {
                 autoResizeTextarea();
               }}
               onKeyDown={handleTextareaKeyDown}
-              placeholder="Tapez votre message..."
+              placeholder={t("chatbot.placeholder")}
               rows={1}
               className="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-100 focus:outline-none text-sm resize-none overflow-y-auto leading-5 max-h-32"
             />
@@ -306,6 +313,7 @@ const Chatbot = () => {
                   d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
                 />
               </svg>
+              <span className="sr-only">{t("chatbot.send")}</span>
             </button>
           </div>
         </form>

@@ -1,10 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Navbar from "../../components/common/Navbar";
 import Footer from "../../components/common/Footer";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
 
 const About = () => {
+  const { t } = useTranslation();
+
   // Scroll animations
   const hero = useScrollAnimation({ threshold: 0.2 });
   const story = useScrollAnimation({ threshold: 0.2 });
@@ -14,9 +17,8 @@ const About = () => {
 
   const companyValues = [
     {
-      title: "Qualité",
-      description:
-        "Véhicules récents et bien entretenus. Contrôle systématique avant chaque location.",
+      title: t("about.values.list.quality.title"),
+      description: t("about.values.list.quality.desc"),
       icon: (
         <svg
           className="w-10 h-10"
@@ -34,9 +36,8 @@ const About = () => {
       ),
     },
     {
-      title: "Transparence",
-      description:
-        "Tarifs clairs affichés en ligne. Pas de frais cachés. État des lieux détaillé.",
+      title: t("about.values.list.transparency.title"),
+      description: t("about.values.list.transparency.desc"),
       icon: (
         <svg
           className="w-10 h-10"
@@ -54,9 +55,8 @@ const About = () => {
       ),
     },
     {
-      title: "Disponibilité",
-      description:
-        "Réservation en ligne 24/7. Service client joignable tous les jours. Réponse rapide.",
+      title: t("about.values.list.availability.title"),
+      description: t("about.values.list.availability.desc"),
       icon: (
         <svg
           className="w-10 h-10"
@@ -74,9 +74,8 @@ const About = () => {
       ),
     },
     {
-      title: "Flexibilité",
-      description:
-        "Formules adaptées à tous les besoins. Modifications possibles. Plusieurs modes de paiement.",
+      title: t("about.values.list.flexibility.title"),
+      description: t("about.values.list.flexibility.desc"),
       icon: (
         <svg
           className="w-10 h-10"
@@ -96,10 +95,10 @@ const About = () => {
   ];
 
   const companyStats = [
-    { number: "2015", label: "Année de création" },
-    { number: "150+", label: "Véhicules" },
-    { number: "3", label: "Agences" },
-    { number: "24/7", label: "Assistance" },
+    { number: "2015", label: t("about.stats.year") },
+    { number: "150+", label: t("about.stats.vehicles") },
+    { number: "3", label: t("about.stats.agencies") },
+    { number: "24/7", label: t("about.stats.support") },
   ];
 
   return (
@@ -114,11 +113,10 @@ const About = () => {
             className={`text-center transition-all duration-700 ${hero.isVisible ? "animate-fadeIn" : "opacity-0"}`}
           >
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
-              À Propos d'<span className="text-primary-600">Elite Drive</span>
+              {t("about.hero.titlePart1")}<span className="text-primary-600">{t("app.name")}</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Location de véhicules haut de gamme en Tunisie. Une approche
-              centrée sur la qualité du service et la satisfaction client.
+              {t("about.hero.description")}
             </p>
           </div>
         </div>
@@ -135,30 +133,16 @@ const About = () => {
               <div className="space-y-6">
                 <div>
                   <span className="inline-block px-4 py-2 bg-primary-100 text-primary-600 rounded-full text-sm font-semibold mb-4">
-                    Depuis 2015
+                    {t("about.story.badge")}
                   </span>
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                    Qui sommes-nous
+                    {t("about.story.title")}
                   </h2>
                 </div>
                 <div className="space-y-4 text-gray-700 text-base sm:text-lg leading-relaxed">
-                  <p>
-                    Elite Drive est une entreprise tunisienne spécialisée dans
-                    la location de véhicules. Nous proposons une gamme variée
-                    allant des citadines économiques aux véhicules haut de
-                    gamme.
-                  </p>
-                  <p>
-                    Notre flotte de plus de 150 véhicules est régulièrement
-                    renouvelée et soigneusement entretenue. Chaque véhicule fait
-                    l'objet d'un contrôle technique rigoureux avant chaque
-                    location.
-                  </p>
-                  <p>
-                    Avec des agences à Tunis, Sousse et Sfax, nous servons aussi
-                    bien les particuliers que les professionnels pour leurs
-                    besoins ponctuels ou réguliers.
-                  </p>
+                  <p>{t("about.story.p1")}</p>
+                  <p>{t("about.story.p2")}</p>
+                  <p>{t("about.story.p3")}</p>
                 </div>
               </div>
             </div>
@@ -214,10 +198,10 @@ const About = () => {
           >
             <div className="text-center mb-8 sm:mb-12">
               <span className="inline-block px-4 py-2 bg-primary-100 text-primary-600 rounded-full text-sm font-semibold mb-4">
-                Nos engagements
+                {t("about.values.badge")}
               </span>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
-                Ce qui nous guide
+                {t("about.values.title")}
               </h2>
             </div>
 
@@ -278,16 +262,14 @@ const About = () => {
                     </svg>
                   </div>
                   <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 group-hover:text-yellow-600 transition-colors duration-300">
-                    Satisfaction Client
+                    {t("about.support.title")}
                   </h3>
                 </div>
               </div>
 
               <div className="max-w-5xl flex-grow relative z-10">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-8 sm:mb-10 text-gray-900 leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
-                  Nos clients sont notre priorité. Questions ou commentaires?
-                  Nous sommes là pour vous aider, avec un support disponible
-                  24h/24.
+                  {t("about.support.description")}
                 </h2>
               </div>
 
@@ -306,7 +288,7 @@ const About = () => {
                   <div className="absolute inset-0 shadow-inner shadow-white/20 rounded-full transition-all duration-500"></div>
 
                   <span className="relative z-10">
-                    Contacter le service client
+                    {t("about.support.contactBtn")}
                   </span>
                 </Link>
               </div>
@@ -323,24 +305,23 @@ const About = () => {
             className={`bg-gradient-to-r from-primary-600 to-primary-800 rounded-3xl p-6 sm:p-8 lg:p-12 text-center text-white shadow-2xl transition-all duration-700 ${cta.isVisible ? "animate-scaleIn" : "opacity-0"}`}
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-              Besoin d'un véhicule?
+              {t("about.cta.title")}
             </h2>
             <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-primary-50 max-w-2xl mx-auto">
-              Consultez notre flotte et réservez en ligne en quelques clics.
-              Notre équipe reste à votre disposition pour toute question.
+              {t("about.cta.description")}
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
               <Link
                 to="/vehicles"
                 className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white text-primary-600 font-semibold rounded-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
               >
-                Découvrir nos véhicules
+                {t("about.cta.discoverBtn")}
               </Link>
               <Link
                 to="/contact"
                 className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-primary-700 text-white font-semibold rounded-xl border-2 border-white hover:bg-primary-600 hover:shadow-2xl hover:scale-105 transition-all duration-300"
               >
-                Nous contacter
+                {t("about.cta.contactBtn")}
               </Link>
             </div>
           </div>

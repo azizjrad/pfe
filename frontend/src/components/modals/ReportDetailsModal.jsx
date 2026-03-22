@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import ResolveReportModal from "./ResolveReportModal";
 import ConfirmationModal from "./ConfirmationModal";
 import { REPORT_STATUS } from "../../constants/statuses";
@@ -11,6 +12,8 @@ const ReportDetailsModal = ({
   onDismiss,
   onDelete,
 }) => {
+  const { t } = useTranslation();
+
   const [resolveModal, setResolveModal] = useState({
     isOpen: false,
     type: null,
@@ -83,13 +86,26 @@ const ReportDetailsModal = ({
   const getStatusLabel = (status) => {
     switch (status) {
       case REPORT_STATUS.RESOLVED:
-        return "Résolu";
+        return t("admin.reports.filter.resolved");
       case REPORT_STATUS.DISMISSED:
-        return "Rejeté";
+        return t("admin.reports.filter.dismissed");
       case REPORT_STATUS.PENDING:
-        return "En attente";
+        return t("admin.reports.filter.pending");
       default:
         return status;
+    }
+  };
+
+  const getReportTypeLabel = (type) => {
+    switch (type) {
+      case "vehicle":
+        return t("reports.type.vehicle");
+      case "agency":
+        return t("reports.type.agency");
+      case "client":
+        return t("reports.type.client");
+      default:
+        return t("roles.user");
     }
   };
 
@@ -115,14 +131,10 @@ const ReportDetailsModal = ({
               </div>
               <div>
                 <h2 className="text-base font-semibold text-gray-900">
-                  Signalement #{report.id}
+                  {t("modals.reportDetails.title", { id: report.id })}
                 </h2>
                 <p className="text-xs text-gray-500">
-                  {report.reportType === "vehicle"
-                    ? "Véhicule"
-                    : report.reportType === "agency"
-                      ? "Agence"
-                      : "Client"}
+                  {getReportTypeLabel(report.reportType)}
                 </p>
               </div>
             </div>
@@ -175,7 +187,7 @@ const ReportDetailsModal = ({
               <div className="flex items-center gap-2 mb-2">
                 <span className="w-1 h-4 bg-red-400 rounded-full inline-block" />
                 <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  Signalé
+                  {t("modals.reportDetails.reportedTarget")}
                 </span>
               </div>
               <p className="text-sm font-medium text-gray-900">
@@ -191,11 +203,11 @@ const ReportDetailsModal = ({
               <div className="flex items-center gap-2 mb-2">
                 <span className="w-1 h-4 bg-gray-400 rounded-full inline-block" />
                 <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  Signalé par
+                  {t("reports.reportedBy")}
                 </span>
               </div>
               <p className="text-sm font-medium text-gray-900">
-                {report.reportedBy || "Utilisateur"}
+                {report.reportedBy || t("roles.user")}
               </p>
             </div>
           </div>
@@ -205,7 +217,7 @@ const ReportDetailsModal = ({
             <div className="flex items-center gap-2 mb-3">
               <span className="w-1 h-4 bg-amber-400 rounded-full inline-block" />
               <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                Raison
+                {t("reports.reason")}
               </span>
             </div>
             <p className="text-sm font-medium text-gray-900">{report.reason}</p>
@@ -216,7 +228,7 @@ const ReportDetailsModal = ({
             <div className="flex items-center gap-2 mb-3">
               <span className="w-1 h-4 bg-primary-400 rounded-full inline-block" />
               <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                Description détaillée
+                {t("modals.reportDetails.descriptionDetailed")}
               </span>
             </div>
             <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
@@ -230,7 +242,7 @@ const ReportDetailsModal = ({
               <div className="flex items-center gap-2 mb-3">
                 <span className="w-1 h-4 bg-blue-400 rounded-full inline-block" />
                 <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  Notes administratives
+                  {t("reports.adminNotes")}
                 </span>
               </div>
               <p className="text-sm text-gray-700">{report.adminNotes}</p>
@@ -261,7 +273,7 @@ const ReportDetailsModal = ({
                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                Résoudre
+                {t("admin.reports.resolve")}
               </button>
               <button
                 onClick={() =>
@@ -282,7 +294,7 @@ const ReportDetailsModal = ({
                     d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
                   />
                 </svg>
-                Rejeter
+                {t("admin.reports.dismiss")}
               </button>
               <button
                 onClick={() => setDeleteConfirmModal(true)}
@@ -301,7 +313,7 @@ const ReportDetailsModal = ({
                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                   />
                 </svg>
-                Supprimer
+                {t("common.delete")}
               </button>
             </div>
           ) : (
@@ -310,7 +322,7 @@ const ReportDetailsModal = ({
                 onClick={onClose}
                 className="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-xl transition-colors"
               >
-                Fermer
+                {t("common.close")}
               </button>
             </div>
           )}
@@ -342,10 +354,12 @@ const ReportDetailsModal = ({
           setDeleteConfirmModal(false);
           onClose();
         }}
-        title="Déplacer vers la corbeille ?"
-        message={`Êtes-vous sûr de vouloir déplacer le signalement "${report?.targetName}" vers la corbeille ? Il sera automatiquement supprimé après 30 jours.`}
-        confirmText="Déplacer vers la corbeille"
-        cancelText="Annuler"
+        title={t("modals.reportDetails.trashTitle")}
+        message={t("modals.reportDetails.trashMessage", {
+          targetName: report?.targetName,
+        })}
+        confirmText={t("admin.reports.delete")}
+        cancelText={t("common.cancel")}
         danger={true}
       />
     </div>

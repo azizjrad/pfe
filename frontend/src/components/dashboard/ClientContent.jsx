@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../../contexts/AuthContext";
 import { reservationService } from "../../services/reservationService";
 import ReservationDetailsModal from "../modals/ReservationDetailsModal";
@@ -15,6 +16,7 @@ const ClientContent = ({
   onChangeTab,
   onMarkAllNotificationsRead,
 }) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [reservations, setReservations] = useState([]);
   const [savedVehicles, setSavedVehicles] = useState([]);
@@ -66,7 +68,7 @@ const ClientContent = ({
       setReservations(response.data.data || []);
     } catch (error) {
       console.error("Error fetching reservations:", error);
-      showToast("Erreur lors du chargement des réservations", "error");
+      showToast(t("clientContent.errorLoadingReservations"), "error");
     } finally {
       setLoading(false);
     }
@@ -126,11 +128,16 @@ const ClientContent = ({
     const notifDate = new Date(date);
     const diffInMinutes = Math.floor((now - notifDate) / (1000 * 60));
 
-    if (diffInMinutes < 1) return "À l'instant";
-    if (diffInMinutes < 60) return `Il y a ${diffInMinutes} min`;
+    if (diffInMinutes < 1) return t("clientContent.time.now");
+    if (diffInMinutes < 60)
+      return t("clientContent.time.min", { count: diffInMinutes });
     if (diffInMinutes < 1440)
-      return `Il y a ${Math.floor(diffInMinutes / 60)} h`;
-    return `Il y a ${Math.floor(diffInMinutes / 1440)} j`;
+      return t("clientContent.time.hour", {
+        count: Math.floor(diffInMinutes / 60),
+      });
+    return t("clientContent.time.day", {
+      count: Math.floor(diffInMinutes / 1440),
+    });
   };
 
   const filteredHistory = reservations.filter((reservation) => {
@@ -408,10 +415,12 @@ const ClientContent = ({
       <div className="space-y-5">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold text-gray-900">
-            Véhicules Sauvegardés
+            {t("clientContent.savedVehicles")}
           </h2>
           <span className="text-sm text-gray-500">
-            {savedVehicles.length} véhicule{savedVehicles.length > 1 ? "s" : ""}
+            {t("clientContent.savedVehiclesCount", {
+              count: savedVehicles.length,
+            })}
           </span>
         </div>
 
@@ -430,16 +439,17 @@ const ClientContent = ({
                 d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
               />
             </svg>
-            <p className="text-gray-500 mb-2">Aucun véhicule sauvegardé</p>
+            <p className="text-gray-500 mb-2">
+              {t("clientContent.noSavedVehicles")}
+            </p>
             <p className="text-sm text-gray-400 mb-6">
-              Parcourez nos véhicules et cliquez sur l'icône de sauvegarde pour
-              les retrouver ici
+              {t("clientContent.savedVehiclesHint")}
             </p>
             <button
               onClick={() => navigate("/vehicles")}
               className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-semibold"
             >
-              Découvrir les véhicules
+              {t("clientContent.discoverVehicles")}
             </button>
           </div>
         ) : (
@@ -465,7 +475,7 @@ const ClientContent = ({
       <div className="space-y-5">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <h2 className="text-xl font-bold text-gray-900">
-            Historique des Réservations
+            {t("clientContent.reservationHistory")}
           </h2>
 
           <div className="flex flex-col sm:flex-row gap-3">
@@ -473,7 +483,7 @@ const ClientContent = ({
               type="text"
               value={historySearch}
               onChange={(e) => setHistorySearch(e.target.value)}
-              placeholder="Rechercher véhicule ou agence"
+              placeholder={t("clientContent.searchVehicleOrAgency")}
               className="px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-sm"
             />
 
@@ -482,11 +492,19 @@ const ClientContent = ({
               onChange={(e) => setHistoryStatus(e.target.value)}
               className="px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-sm"
             >
-              <option value="all">Tous les statuts</option>
-              <option value={RESERVATION_STATUS.PENDING}>En attente</option>
-              <option value={RESERVATION_STATUS.CONFIRMED}>Confirmée</option>
-              <option value={RESERVATION_STATUS.COMPLETED}>Terminée</option>
-              <option value={RESERVATION_STATUS.CANCELLED}>Annulée</option>
+              <option value="all">{t("clientContent.allStatuses")}</option>
+              <option value={RESERVATION_STATUS.PENDING}>
+                {t("clientContent.status.pending")}
+              </option>
+              <option value={RESERVATION_STATUS.CONFIRMED}>
+                {t("clientContent.status.confirmed")}
+              </option>
+              <option value={RESERVATION_STATUS.COMPLETED}>
+                {t("clientContent.status.completed")}
+              </option>
+              <option value={RESERVATION_STATUS.CANCELLED}>
+                {t("clientContent.status.cancelled")}
+              </option>
             </select>
           </div>
         </div>
@@ -498,7 +516,7 @@ const ClientContent = ({
         ) : filteredHistory.length === 0 ? (
           <div className="bg-white rounded-xl p-12 text-center border border-gray-200">
             <p className="text-gray-500">
-              Aucune réservation ne correspond à votre recherche
+              {t("clientContent.noHistoryResults")}
             </p>
           </div>
         ) : (
@@ -560,7 +578,10 @@ const ClientContent = ({
 
             <div className="flex items-center justify-between pt-2">
               <p className="text-sm text-gray-500">
-                Page {historyPage} / {totalHistoryPages}
+                {t("clientContent.pageOf", {
+                  page: historyPage,
+                  total: totalHistoryPages,
+                })}
               </p>
               <div className="flex items-center gap-2">
                 <button
@@ -570,7 +591,7 @@ const ClientContent = ({
                   disabled={historyPage === 1}
                   className="px-3 py-2 text-sm rounded-lg border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
                 >
-                  Précédent
+                  {t("clientContent.previous")}
                 </button>
                 <button
                   onClick={() =>
@@ -581,7 +602,7 @@ const ClientContent = ({
                   disabled={historyPage === totalHistoryPages}
                   className="px-3 py-2 text-sm rounded-lg border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
                 >
-                  Suivant
+                  {t("clientContent.next")}
                 </button>
               </div>
             </div>

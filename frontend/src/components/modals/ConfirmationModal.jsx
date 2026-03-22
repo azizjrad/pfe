@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function ConfirmationModal({
   isOpen,
@@ -6,10 +7,15 @@ export default function ConfirmationModal({
   onConfirm,
   title,
   message,
-  confirmText = "Confirmer",
-  cancelText = "Annuler",
+  confirmText,
+  cancelText,
   danger = false,
 }) {
+  const { t } = useTranslation();
+
+  const resolvedConfirmText = confirmText || t("common.confirm");
+  const resolvedCancelText = cancelText || t("common.cancel");
+
   if (!isOpen) return null;
 
   return (
@@ -69,7 +75,7 @@ export default function ConfirmationModal({
             onClick={onClose}
             className="px-5 py-2.5 rounded-xl font-semibold text-gray-700 bg-white/60 hover:bg-white/80 border border-gray-200 transition-all duration-200 shadow-sm hover:shadow"
           >
-            {cancelText}
+            {resolvedCancelText}
           </button>
           <button
             onClick={() => {
@@ -82,7 +88,7 @@ export default function ConfirmationModal({
                 : "bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800"
             }`}
           >
-            {confirmText}
+            {resolvedConfirmText}
           </button>
         </div>
       </div>

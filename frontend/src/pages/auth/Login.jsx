@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
 import Toast from "../../components/common/Toast";
 
@@ -9,6 +10,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { login, error, user, isAuthenticated } = useAuth();
+  const { t } = useTranslation();
   const returnTo = searchParams.get("returnTo");
 
   // Redirect if already logged in (preserve session persistence)
@@ -97,15 +99,14 @@ const Login = () => {
       // Handle authentication errors (401)
       else if (err.response?.status === 401) {
         setErrors({
-          email: "Email ou mot de passe incorrect",
-          password: "Email ou mot de passe incorrect",
+          email: t("auth.login.errorInvalidCredentials"),
+          password: t("auth.login.errorInvalidCredentials"),
         });
       }
       // Handle other errors
       else {
         setLoginError(
-          err.response?.data?.message ||
-            "Une erreur est survenue. Veuillez réessayer.",
+          err.response?.data?.message || t("auth.login.errorGeneric"),
         );
       }
     } finally {
@@ -127,115 +128,56 @@ const Login = () => {
               <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
                 <img
                   src="/car-logo.svg"
-                  alt="Elite Drive"
+                  alt={t("app.name")}
                   className="w-7 h-7"
                 />
               </div>
-              <span className="text-2xl font-bold">Elite Drive</span>
+              <span className="text-2xl font-bold">{t("app.name")}</span>
             </Link>
           </div>
 
           <div className="space-y-8">
             <div>
               <h1 className="text-5xl font-bold mb-6 leading-tight">
-                Bienvenue sur
+                {t("auth.login.welcomeTitle")}
                 <br />
-                Elite Drive
+                {t("app.name")}
               </h1>
               <p className="text-xl text-primary-100 leading-relaxed">
-                Louez les meilleurs véhicules premium en Tunisie avec un service
-                exceptionnel
+                {t("auth.login.welcomeSubtitle")}
               </p>
             </div>
 
             <div className="space-y-6">
               {[
-                {
-                  icon: (
-                    <svg
-                      className="w-6 h-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  ),
-                  text: "Plus de 50 véhicules premium disponibles",
-                },
-                {
-                  icon: (
-                    <svg
-                      className="w-6 h-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  ),
-                  text: "Réservation en ligne rapide et sécurisée",
-                },
-                {
-                  icon: (
-                    <svg
-                      className="w-6 h-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  ),
-                  text: "Assistance client disponible 24/7",
-                },
-                {
-                  icon: (
-                    <svg
-                      className="w-6 h-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  ),
-                  text: "Assurance complète incluse",
-                },
+                t("auth.login.feature1"),
+                t("auth.login.feature2"),
+                t("auth.login.feature3"),
+                t("auth.login.feature4"),
               ].map((feature, index) => (
                 <div key={index} className="flex items-center gap-4">
                   <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0">
-                    {feature.icon}
+                    <svg
+                      className="w-6 h-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
                   </div>
-                  <span className="text-primary-50">{feature.text}</span>
+                  <span className="text-primary-50">{feature}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="text-sm text-primary-200">
-            © 2026 Elite Drive. Tous droits réservés.
-          </div>
+          <div className="text-sm text-primary-200">{t("app.copyright")}</div>
         </div>
       </div>
 
@@ -253,25 +195,23 @@ const Login = () => {
               <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
                 <img
                   src="/car-logo.svg"
-                  alt="Elite Drive"
+                  alt={t("app.name")}
                   className="w-7 h-7"
                 />
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
-                Elite Drive
+                {t("app.name")}
               </span>
             </Link>
             <h2 className="text-4xl font-bold text-gray-900 mb-3">
-              Bon retour
+              {t("auth.login.title")}
             </h2>
-            <p className="text-gray-600">
-              Connectez-vous pour gérer vos réservations
-            </p>
+            <p className="text-gray-600">{t("auth.login.subtitle")}</p>
           </div>
 
           <div className="bg-white rounded-3xl shadow-2xl border border-gray-100">
             <form className="p-8 space-y-6" onSubmit={handleSubmit}>
-              {/* Messages d'erreur */}
+              {/* Error messages */}
               {(loginError || error) && (
                 <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
                   <div className="flex items-center">
@@ -319,7 +259,7 @@ const Login = () => {
                       : "text-gray-500 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-gray-700"
                   }`}
                 >
-                  Adresse e-mail
+                  {t("auth.login.emailLabel")}
                 </label>
                 {errors.email && (
                   <p className="text-red-500 text-xs mt-1 ml-5">
@@ -395,7 +335,7 @@ const Login = () => {
                       : "text-gray-500 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-gray-700"
                   }`}
                 >
-                  Mot de passe
+                  {t("auth.login.passwordLabel")}
                 </label>
                 {errors.password && (
                   <p className="text-red-500 text-xs mt-1 ml-5">
@@ -419,14 +359,14 @@ const Login = () => {
                     htmlFor="remember-me"
                     className="ml-2 block text-sm text-gray-700"
                   >
-                    Se souvenir de moi
+                    {t("auth.login.rememberMe")}
                   </label>
                 </div>
                 <Link
                   to="/forgot-password"
                   className="text-sm font-medium text-primary-600 hover:text-primary-500 transition-colors"
                 >
-                  Mot de passe oublié?
+                  {t("auth.login.forgotPassword")}
                 </Link>
               </div>
 
@@ -457,10 +397,10 @@ const Login = () => {
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       ></path>
                     </svg>
-                    Connexion en cours...
+                    {t("auth.login.submitting")}
                   </span>
                 ) : (
-                  "Se connecter"
+                  t("auth.login.submitButton")
                 )}
               </button>
 
@@ -470,7 +410,7 @@ const Login = () => {
                 </div>
                 <div className="relative flex justify-center text-xs">
                   <span className="px-4 bg-white text-gray-400 font-medium">
-                    OU CONTINUER AVEC
+                    {t("auth.login.orContinueWith")}
                   </span>
                 </div>
               </div>
@@ -518,12 +458,12 @@ const Login = () => {
           </div>
 
           <p className="text-center text-sm text-gray-600">
-            Vous n'avez pas de compte?{" "}
+            {t("auth.login.noAccount")}{" "}
             <Link
               to="/register"
               className="font-semibold text-primary-600 hover:text-primary-700 transition-colors"
             >
-              Créer un compte
+              {t("auth.login.createAccount")}
             </Link>
           </p>
 
@@ -545,7 +485,7 @@ const Login = () => {
                   d="M10 19l-7-7m0 0l7-7m-7 7h18"
                 />
               </svg>
-              Retour à l'accueil
+              {t("auth.login.returnHome")}
             </Link>
           </div>
         </div>

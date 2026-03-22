@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const PrivacyPolicy = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-50">
       {/* Header */}
@@ -25,7 +28,7 @@ const PrivacyPolicy = () => {
                 </svg>
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
-                Elite Drive
+                {t("app.name")}
               </span>
             </Link>
             <Link
@@ -45,7 +48,7 @@ const PrivacyPolicy = () => {
                   d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                 />
               </svg>
-              Retour à l'accueil
+              {t("common.backHome")}
             </Link>
           </div>
         </div>
@@ -56,7 +59,7 @@ const PrivacyPolicy = () => {
         {/* Title */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent mb-4">
-            Politique de confidentialité
+            {t("privacy.title")}
           </h1>
         </div>
 
@@ -68,13 +71,10 @@ const PrivacyPolicy = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 1
               </span>
-              Introduction
+              {t("privacy.sections.1.title")}
             </h2>
             <p className="text-gray-700 leading-relaxed ml-11">
-              Elite Drive s'engage à protéger votre vie privée. Cette politique
-              de confidentialité explique comment nous collectons, utilisons et
-              protégeons vos informations personnelles lorsque vous utilisez
-              notre service de location de véhicules.
+              {t("privacy.sections.1.content")}
             </p>
           </section>
 
@@ -84,53 +84,51 @@ const PrivacyPolicy = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 2
               </span>
-              Informations collectées
+              {t("privacy.sections.2.title")}
             </h2>
             <div className="ml-11 space-y-3">
               <p className="text-gray-700 leading-relaxed">
-                Nous collectons les informations suivantes :
+                {t("privacy.sections.2.intro")}
               </p>
               <div className="space-y-4">
                 <div className="bg-primary-50/30 rounded-2xl p-4">
                   <h3 className="font-semibold text-gray-900 mb-2">
-                    Informations d'identification
+                    {t("privacy.sections.2.id.title")}
                   </h3>
                   <ul className="list-disc list-inside space-y-1 text-gray-700">
-                    <li>Nom et prénom</li>
-                    <li>Adresse e-mail</li>
-                    <li>Numéro de téléphone</li>
-                    <li>Adresse postale</li>
-                    <li>Date de naissance</li>
+                    {t("privacy.sections.2.id.items", { returnObjects: true }).map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    ))}
                   </ul>
                 </div>
                 <div className="bg-primary-50/30 rounded-2xl p-4">
                   <h3 className="font-semibold text-gray-900 mb-2">
-                    Informations de conduite
+                    {t("privacy.sections.2.driving.title")}
                   </h3>
                   <ul className="list-disc list-inside space-y-1 text-gray-700">
-                    <li>Numéro de permis de conduire</li>
-                    <li>Date d'obtention du permis</li>
-                    <li>Catégorie du permis</li>
+                    {t("privacy.sections.2.driving.items", { returnObjects: true }).map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    ))}
                   </ul>
                 </div>
                 <div className="bg-primary-50/30 rounded-2xl p-4">
                   <h3 className="font-semibold text-gray-900 mb-2">
-                    Informations de paiement
+                    {t("privacy.sections.2.payment.title")}
                   </h3>
                   <ul className="list-disc list-inside space-y-1 text-gray-700">
-                    <li>Informations de carte bancaire (cryptées)</li>
-                    <li>Historique des transactions</li>
+                    {t("privacy.sections.2.payment.items", { returnObjects: true }).map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    ))}
                   </ul>
                 </div>
                 <div className="bg-primary-50/30 rounded-2xl p-4">
                   <h3 className="font-semibold text-gray-900 mb-2">
-                    Données de navigation
+                    {t("privacy.sections.2.nav.title")}
                   </h3>
                   <ul className="list-disc list-inside space-y-1 text-gray-700">
-                    <li>Adresse IP</li>
-                    <li>Type de navigateur</li>
-                    <li>Pages visitées</li>
-                    <li>Temps passé sur le site</li>
+                    {t("privacy.sections.2.nav.items", { returnObjects: true }).map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -143,23 +141,16 @@ const PrivacyPolicy = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 3
               </span>
-              Utilisation des informations
+              {t("privacy.sections.3.title")}
             </h2>
             <div className="ml-11 space-y-3">
               <p className="text-gray-700 leading-relaxed">
-                Nous utilisons vos informations personnelles pour :
+                {t("privacy.sections.3.intro")}
               </p>
               <ul className="list-disc list-inside space-y-2 text-gray-700">
-                <li>Traiter vos réservations et paiements</li>
-                <li>Vérifier votre identité et votre permis de conduire</li>
-                <li>Communiquer avec vous concernant votre location</li>
-                <li>Améliorer nos services et votre expérience utilisateur</li>
-                <li>
-                  Vous envoyer des offres promotionnelles (avec votre
-                  consentement)
-                </li>
-                <li>Respecter nos obligations légales et réglementaires</li>
-                <li>Prévenir la fraude et assurer la sécurité</li>
+                {t("privacy.sections.3.items", { returnObjects: true }).map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
               </ul>
             </div>
           </section>
@@ -170,24 +161,16 @@ const PrivacyPolicy = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 4
               </span>
-              Partage des informations
+              {t("privacy.sections.4.title")}
             </h2>
             <div className="ml-11 space-y-3">
               <p className="text-gray-700 leading-relaxed">
-                Nous ne vendons jamais vos informations personnelles. Nous
-                pouvons partager vos données uniquement avec :
+                {t("privacy.sections.4.intro")}
               </p>
               <ul className="list-disc list-inside space-y-2 text-gray-700">
-                <li>
-                  Nos partenaires de paiement sécurisé pour traiter les
-                  transactions
-                </li>
-                <li>Nos assureurs en cas d'accident ou de réclamation</li>
-                <li>Les autorités compétentes si requis par la loi</li>
-                <li>
-                  Nos prestataires de services (hébergement, support client)
-                  sous contrat de confidentialité
-                </li>
+                {t("privacy.sections.4.items", { returnObjects: true }).map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
               </ul>
             </div>
           </section>
@@ -198,43 +181,40 @@ const PrivacyPolicy = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 5
               </span>
-              Cookies
+              {t("privacy.sections.5.title")}
             </h2>
             <div className="ml-11 space-y-3">
               <p className="text-gray-700 leading-relaxed">
-                Nous utilisons des cookies pour améliorer votre expérience sur
-                notre site :
+                {t("privacy.sections.5.intro")}
               </p>
               <div className="space-y-3">
                 <div className="bg-gray-50 rounded-xl p-4">
                   <p className="font-semibold text-gray-900">
-                    Cookies essentiels
+                    {t("privacy.sections.5.essential.title")}
                   </p>
                   <p className="text-gray-600 text-sm mt-1">
-                    Nécessaires au fonctionnement du site (connexion, panier)
+                    {t("privacy.sections.5.essential.desc")}
                   </p>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-4">
                   <p className="font-semibold text-gray-900">
-                    Cookies de performance
+                    {t("privacy.sections.5.performance.title")}
                   </p>
                   <p className="text-gray-600 text-sm mt-1">
-                    Analysent l'utilisation du site pour améliorer nos services
+                    {t("privacy.sections.5.performance.desc")}
                   </p>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-4">
                   <p className="font-semibold text-gray-900">
-                    Cookies marketing
+                    {t("privacy.sections.5.marketing.title")}
                   </p>
                   <p className="text-gray-600 text-sm mt-1">
-                    Personnalisent les publicités (nécessitent votre
-                    consentement)
+                    {t("privacy.sections.5.marketing.desc")}
                   </p>
                 </div>
               </div>
               <p className="text-gray-700 leading-relaxed mt-3">
-                Vous pouvez gérer vos préférences de cookies à tout moment dans
-                les paramètres de votre navigateur.
+                {t("privacy.sections.5.outro")}
               </p>
             </div>
           </section>
@@ -245,25 +225,16 @@ const PrivacyPolicy = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 6
               </span>
-              Sécurité des données
+              {t("privacy.sections.6.title")}
             </h2>
             <div className="ml-11 space-y-3">
               <p className="text-gray-700 leading-relaxed">
-                Nous prenons la sécurité de vos données très au sérieux et
-                mettons en œuvre :
+                {t("privacy.sections.6.intro")}
               </p>
               <ul className="list-disc list-inside space-y-2 text-gray-700">
-                <li>
-                  Cryptage SSL/TLS pour toutes les transmissions de données
-                </li>
-                <li>
-                  Stockage sécurisé des informations de paiement (conformité
-                  PCI-DSS)
-                </li>
-                <li>Authentification à deux facteurs pour les comptes</li>
-                <li>Audits de sécurité réguliers</li>
-                <li>Accès restreint aux données personnelles</li>
-                <li>Sauvegardes régulières et chiffrées</li>
+                {t("privacy.sections.6.items", { returnObjects: true }).map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
               </ul>
             </div>
           </section>
@@ -274,60 +245,64 @@ const PrivacyPolicy = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 7
               </span>
-              Vos droits
+              {t("privacy.sections.7.title")}
             </h2>
             <div className="ml-11 space-y-3">
               <p className="text-gray-700 leading-relaxed">
-                Conformément au RGPD, vous disposez des droits suivants :
+                {t("privacy.sections.7.intro")}
               </p>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="bg-gradient-to-br from-primary-50 to-primary-100/30 rounded-xl p-4">
                   <p className="font-semibold text-gray-900 mb-1">
-                    Droit d'accès
+                    {t("privacy.sections.7.access.title")}
                   </p>
                   <p className="text-gray-600 text-sm">
-                    Consulter vos données personnelles
+                    {t("privacy.sections.7.access.desc")}
                   </p>
                 </div>
                 <div className="bg-gradient-to-br from-primary-50 to-primary-100/30 rounded-xl p-4">
                   <p className="font-semibold text-gray-900 mb-1">
-                    Droit de rectification
+                    {t("privacy.sections.7.rectification.title")}
                   </p>
                   <p className="text-gray-600 text-sm">
-                    Corriger vos informations
+                    {t("privacy.sections.7.rectification.desc")}
                   </p>
                 </div>
                 <div className="bg-gradient-to-br from-primary-50 to-primary-100/30 rounded-xl p-4">
                   <p className="font-semibold text-gray-900 mb-1">
-                    Droit à l'oubli
-                  </p>
-                  <p className="text-gray-600 text-sm">Supprimer vos données</p>
-                </div>
-                <div className="bg-gradient-to-br from-primary-50 to-primary-100/30 rounded-xl p-4">
-                  <p className="font-semibold text-gray-900 mb-1">
-                    Droit de portabilité
-                  </p>
-                  <p className="text-gray-600 text-sm">Récupérer vos données</p>
-                </div>
-                <div className="bg-gradient-to-br from-primary-50 to-primary-100/30 rounded-xl p-4">
-                  <p className="font-semibold text-gray-900 mb-1">
-                    Droit d'opposition
+                    {t("privacy.sections.7.erasure.title")}
                   </p>
                   <p className="text-gray-600 text-sm">
-                    Refuser le traitement de vos données
+                    {t("privacy.sections.7.erasure.desc")}
                   </p>
                 </div>
                 <div className="bg-gradient-to-br from-primary-50 to-primary-100/30 rounded-xl p-4">
                   <p className="font-semibold text-gray-900 mb-1">
-                    Droit de limitation
+                    {t("privacy.sections.7.portability.title")}
                   </p>
                   <p className="text-gray-600 text-sm">
-                    Limiter l'utilisation de vos données
+                    {t("privacy.sections.7.portability.desc")}
+                  </p>
+                </div>
+                <div className="bg-gradient-to-br from-primary-50 to-primary-100/30 rounded-xl p-4">
+                  <p className="font-semibold text-gray-900 mb-1">
+                    {t("privacy.sections.7.objection.title")}
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    {t("privacy.sections.7.objection.desc")}
+                  </p>
+                </div>
+                <div className="bg-gradient-to-br from-primary-50 to-primary-100/30 rounded-xl p-4">
+                  <p className="font-semibold text-gray-900 mb-1">
+                    {t("privacy.sections.7.restriction.title")}
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    {t("privacy.sections.7.restriction.desc")}
                   </p>
                 </div>
               </div>
               <p className="text-gray-700 leading-relaxed mt-4">
-                Pour exercer ces droits, contactez-nous à{" "}
+                {t("privacy.sections.7.outro")}
                 <a
                   href="mailto:privacy@elitedrive.com"
                   className="text-primary-600 hover:text-primary-700 font-semibold"
@@ -344,14 +319,10 @@ const PrivacyPolicy = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 8
               </span>
-              Conservation des données
+              {t("privacy.sections.8.title")}
             </h2>
             <p className="text-gray-700 leading-relaxed ml-11">
-              Nous conservons vos données personnelles aussi longtemps que
-              nécessaire pour fournir nos services et respecter nos obligations
-              légales. En général, nous conservons vos données pendant 3 ans
-              après votre dernière location, sauf obligation légale de
-              conservation plus longue.
+              {t("privacy.sections.8.content")}
             </p>
           </section>
 
@@ -361,13 +332,10 @@ const PrivacyPolicy = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 9
               </span>
-              Modifications de cette politique
+              {t("privacy.sections.9.title")}
             </h2>
             <p className="text-gray-700 leading-relaxed ml-11">
-              Nous pouvons mettre à jour cette politique de confidentialité
-              périodiquement. Toute modification sera publiée sur cette page
-              avec une date de mise à jour actualisée. Nous vous encourageons à
-              consulter régulièrement cette page pour rester informé.
+              {t("privacy.sections.9.content")}
             </p>
           </section>
 
@@ -377,17 +345,15 @@ const PrivacyPolicy = () => {
               <span className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
                 10
               </span>
-              Contact
+              {t("privacy.sections.10.title")}
             </h2>
             <div className="ml-11 space-y-3">
               <p className="text-gray-700 leading-relaxed">
-                Pour toute question concernant cette politique de
-                confidentialité ou pour exercer vos droits, contactez notre
-                délégué à la protection des données :
+                {t("privacy.sections.10.intro")}
               </p>
               <div className="bg-gradient-to-br from-primary-50 to-primary-100/50 rounded-2xl p-6 space-y-3">
                 <p className="text-gray-700">
-                  <span className="font-semibold">Email :</span>{" "}
+                  <span className="font-semibold">{t("privacy.sections.10.email")}</span>{" "}
                   <a
                     href="mailto:privacy@elitedrive.com"
                     className="text-primary-600 hover:text-primary-700"
@@ -396,14 +362,10 @@ const PrivacyPolicy = () => {
                   </a>
                 </p>
                 <p className="text-gray-700">
-                  <span className="font-semibold">Téléphone :</span> +216 XX XXX
-                  XXX
+                  <span className="font-semibold">{t("privacy.sections.10.phone")}</span> +216 XX XXX XXX
                 </p>
-                <p className="text-gray-700">
-                  <span className="font-semibold">Adresse :</span> Elite Drive -
-                  Service Protection des Données
-                  <br />
-                  Hammamet, Nabeul, Tunisia
+                <p className="text-gray-700" style={{ whiteSpace: "pre-line" }}>
+                  <span className="font-semibold">{t("privacy.sections.10.address")}</span> {t("privacy.sections.10.addressValue")}
                 </p>
               </div>
             </div>
@@ -416,14 +378,14 @@ const PrivacyPolicy = () => {
             to="/terms-of-service"
             className="text-primary-600 hover:text-primary-700 font-medium transition-colors"
           >
-            Conditions d'utilisation
+            {t("footer.termsOfService")}
           </Link>
           <span className="text-gray-300">•</span>
           <Link
             to="/"
             className="text-primary-600 hover:text-primary-700 font-medium transition-colors"
           >
-            Retour à l'accueil
+            {t("common.backHome")}
           </Link>
         </div>
       </div>

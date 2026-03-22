@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../../contexts/AuthContext";
 import Toast from "../../components/common/Toast";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
@@ -8,6 +9,7 @@ import { ROLES } from "../../constants/roles";
 const Register = () => {
   const formAnim = useScrollAnimation({ threshold: 0.2 });
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const {
     register: registerUser,
     error: authError,
@@ -74,7 +76,7 @@ const Register = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) return "";
     if (!emailRegex.test(email)) {
-      return "Adresse e-mail invalide";
+      return t("auth.register.errors.emailInvalid");
     }
     return "";
   };
@@ -82,10 +84,10 @@ const Register = () => {
   const validatePhone = (phone) => {
     if (!phone) return "";
     if (!/^\d+$/.test(phone)) {
-      return "Le numéro doit contenir uniquement des chiffres";
+      return t("auth.register.errors.phoneDigits");
     }
     if (phone.length !== 8) {
-      return "Le numéro doit contenir exactement 8 chiffres";
+      return t("auth.register.errors.phoneLength");
     }
     return "";
   };
@@ -96,13 +98,13 @@ const Register = () => {
     const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
     if (password.length < 8) {
-      return "Le mot de passe doit contenir au moins 8 caractères";
+      return t("auth.register.errors.passwordLength");
     }
     if (!hasUppercase) {
-      return "Le mot de passe doit contenir au moins une lettre majuscule";
+      return t("auth.register.errors.passwordUppercase");
     }
     if (!hasSymbol) {
-      return "Le mot de passe doit contenir au moins un symbole (!@#$%^&*...)";
+      return t("auth.register.errors.passwordSymbol");
     }
     return "";
   };
@@ -131,7 +133,7 @@ const Register = () => {
     if (confirmPassword && confirmPassword !== formData.password) {
       setErrors({
         ...errors,
-        confirmPassword: "Les mots de passe ne correspondent pas",
+        confirmPassword: t("auth.register.errors.passwordMismatch"),
       });
     } else {
       setErrors({ ...errors, confirmPassword: "" });
@@ -148,7 +150,7 @@ const Register = () => {
     const passwordError = validatePassword(formData.password);
     const confirmPasswordError =
       formData.password !== formData.confirmPassword
-        ? "Les mots de passe ne correspondent pas"
+        ? t("auth.register.errors.passwordMismatch")
         : "";
 
     if (emailError || phoneError || passwordError || confirmPasswordError) {
@@ -162,7 +164,7 @@ const Register = () => {
     }
 
     if (!formData.agreeToTerms) {
-      setRegisterError("Vous devez accepter les conditions d'utilisation");
+      setRegisterError(t("auth.register.errors.agreeTerms"));
       return;
     }
 
@@ -191,7 +193,7 @@ const Register = () => {
 
       // Show success toast
       showToast(
-        "Compte créé avec succès! Bienvenue chez Elite Drive.",
+        t("auth.register.successMsg"),
         "success",
       );
 
@@ -223,24 +225,23 @@ const Register = () => {
               <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
                 <img
                   src="/car-logo.svg"
-                  alt="Elite Drive"
+                  alt={t("app.name")}
                   className="w-7 h-7"
                 />
               </div>
-              <span className="text-2xl font-bold">Elite Drive</span>
+              <span className="text-2xl font-bold">{t("app.name")}</span>
             </Link>
           </div>
 
           <div className="space-y-8">
             <div>
               <h1 className="text-5xl font-bold mb-6 leading-tight">
-                Rejoignez
+                {t("auth.register.welcomeTitle1")}
                 <br />
-                Elite Drive
+                {t("app.name")}
               </h1>
               <p className="text-xl text-primary-100 leading-relaxed">
-                Créez votre compte et profitez d'une expérience de location
-                exceptionnelle
+                {t("auth.register.welcomeSubtitle")}
               </p>
             </div>
 
@@ -262,7 +263,7 @@ const Register = () => {
                       />
                     </svg>
                   ),
-                  text: "Réservation rapide en quelques clics",
+                  text: t("auth.login.feature1"),
                 },
                 {
                   icon: (
@@ -280,7 +281,7 @@ const Register = () => {
                       />
                     </svg>
                   ),
-                  text: "Meilleurs prix garantis",
+                  text: t("auth.login.feature2"),
                 },
                 {
                   icon: (
@@ -298,7 +299,7 @@ const Register = () => {
                       />
                     </svg>
                   ),
-                  text: "Paiement 100% sécurisé",
+                  text: t("auth.login.feature3"),
                 },
                 {
                   icon: (
@@ -316,7 +317,7 @@ const Register = () => {
                       />
                     </svg>
                   ),
-                  text: "Programme de fidélité exclusif",
+                  text: t("auth.login.feature4"),
                 },
               ].map((feature, index) => (
                 <div key={index} className="flex items-center gap-4">
@@ -328,9 +329,8 @@ const Register = () => {
               ))}
             </div>
           </div>
-
           <div className="text-sm text-primary-200">
-            © 2026 Elite Drive. Tous droits réservés.
+            {t("app.copyright")}
           </div>
         </div>
       </div>
@@ -349,19 +349,19 @@ const Register = () => {
               <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
                 <img
                   src="/car-logo.svg"
-                  alt="Elite Drive"
+                  alt={t("app.name")}
                   className="w-7 h-7"
                 />
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
-                Elite Drive
+                {t("app.name")}
               </span>
             </Link>
             <h2 className="text-4xl font-bold text-gray-900 mb-3">
-              Créer un compte
+              {t("auth.register.title")}
             </h2>
             <p className="text-gray-600">
-              Commencez votre voyage avec Elite Drive
+              {t("auth.register.subtitle")}
             </p>
           </div>
 
@@ -406,7 +406,7 @@ const Register = () => {
                     htmlFor="firstName"
                     className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
                   >
-                    Prénom
+                    {t("auth.register.firstNameLabel")}
                   </label>
                 </div>
                 <div className="relative">
@@ -425,7 +425,7 @@ const Register = () => {
                     htmlFor="lastName"
                     className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
                   >
-                    Nom
+                    {t("auth.register.lastNameLabel")}
                   </label>
                 </div>
               </div>
@@ -453,7 +453,7 @@ const Register = () => {
                       : "text-gray-500 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-gray-700"
                   }`}
                 >
-                  Adresse e-mail
+                  {t("auth.register.emailLabel")}
                 </label>
                 {errors.email && (
                   <p className="text-red-500 text-xs mt-1 ml-5">
@@ -492,11 +492,11 @@ const Register = () => {
                       : "text-gray-500 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-gray-700"
                   }`}
                 >
-                  Numéro de téléphone
+                  {t("auth.register.phoneLabel")}
                 </label>
                 {showTooltip.phone && !errors.phone && (
                   <div className="absolute left-0 -bottom-7 bg-gray-800 text-white text-xs px-3 py-1.5 rounded-lg shadow-lg z-10">
-                    Format: 8 chiffres (ex: 20123456)
+                    {t("auth.register.phoneFormat")}
                   </div>
                 )}
                 {errors.phone && (
@@ -509,7 +509,7 @@ const Register = () => {
               {/* Role Selection */}
               <div className="space-y-3">
                 <label className="block text-sm font-medium text-gray-700">
-                  Type de compte
+                  {t("auth.register.accountType")}
                 </label>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="relative">
@@ -558,7 +558,7 @@ const Register = () => {
                             : "text-gray-600"
                         }`}
                       >
-                        Client
+                        {t("auth.register.client")}
                       </span>
                       {formData.role === ROLES.CLIENT && (
                         <div className="absolute top-2 right-2 w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center">
@@ -578,7 +578,7 @@ const Register = () => {
                     </button>
                     {showTooltip.client && (
                       <div className="absolute left-1/2 -translate-x-1/2 -bottom-16 bg-gray-800 text-white text-xs px-3 py-2 rounded-lg shadow-lg z-10 w-56 text-center">
-                        Pour les particuliers souhaitant louer des véhicules
+                        {t("auth.register.clientTooltip")}
                       </div>
                     )}
                   </div>
@@ -629,7 +629,7 @@ const Register = () => {
                             : "text-gray-600"
                         }`}
                       >
-                        Agence
+                        {t("auth.register.agency")}
                       </span>
                       {formData.role === ROLES.AGENCY_ADMIN && (
                         <div className="absolute top-2 right-2 w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center">
@@ -649,8 +649,7 @@ const Register = () => {
                     </button>
                     {showTooltip.agency && (
                       <div className="absolute left-1/2 -translate-x-1/2 -bottom-16 bg-gray-800 text-white text-xs px-3 py-2 rounded-lg shadow-lg z-10 w-56 text-center">
-                        Pour les agences de location gérant leur flotte de
-                        véhicules
+                        {t("auth.register.agencyTooltip")}
                       </div>
                     )}
                   </div>
@@ -675,7 +674,7 @@ const Register = () => {
                       htmlFor="address"
                       className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
                     >
-                      Adresse (optionnel)
+                      {t("auth.register.addressOptional")}
                     </label>
                   </div>
 
@@ -697,7 +696,7 @@ const Register = () => {
                       htmlFor="driverLicense"
                       className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
                     >
-                      Permis de conduire (optionnel)
+                      {t("auth.register.driverLicenseOptional")}
                     </label>
                   </div>
                 </>
@@ -722,7 +721,7 @@ const Register = () => {
                       htmlFor="agencyName"
                       className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
                     >
-                      Nom de l'agence *
+                      {t("auth.register.agencyName")}
                     </label>
                   </div>
 
@@ -745,7 +744,7 @@ const Register = () => {
                       htmlFor="agencyLocation"
                       className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
                     >
-                      Localisation de l'agence *
+                      {t("auth.register.agencyLocation")}
                     </label>
                   </div>
 
@@ -764,7 +763,7 @@ const Register = () => {
                       htmlFor="agencyAddress"
                       className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
                     >
-                      Adresse complète (optionnel)
+                      {t("auth.register.agencyAddress")}
                     </label>
                   </div>
                 </>
@@ -840,17 +839,17 @@ const Register = () => {
                       : "text-gray-500 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-gray-700"
                   }`}
                 >
-                  Mot de passe
+                  {t("auth.register.passwordLabel")}
                 </label>
                 {showTooltip.password && !errors.password && (
                   <div className="absolute left-0 -bottom-16 bg-gray-800 text-white text-xs px-3 py-2 rounded-lg shadow-lg z-10 w-64">
                     <p className="font-semibold mb-1">
-                      Le mot de passe doit contenir:
+                      {t("auth.register.passwordHelpTitle")}
                     </p>
                     <ul className="space-y-0.5">
-                      <li>• Au moins 8 caractères</li>
-                      <li>• Une lettre majuscule</li>
-                      <li>• Un symbole (!@#$%^&*...)</li>
+                      <li>• {t("auth.register.passwordHelpLength")}</li>
+                      <li>• {t("auth.register.passwordHelpUppercase")}</li>
+                      <li>• {t("auth.register.passwordHelpSymbol")}</li>
                     </ul>
                   </div>
                 )}
@@ -925,7 +924,7 @@ const Register = () => {
                       : "text-gray-500 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-gray-700"
                   }`}
                 >
-                  Confirmer le mot de passe
+                  {t("auth.register.confirmPasswordLabel")}
                 </label>
                 {errors.confirmPassword && (
                   <p className="text-red-500 text-xs mt-1 ml-5">
@@ -952,19 +951,19 @@ const Register = () => {
                 </div>
                 <div className="ml-3 text-sm">
                   <label htmlFor="terms" className="text-gray-700">
-                    J'accepte les{" "}
+                    {t("auth.register.termsText")}{" "}
                     <Link
                       to="/terms-of-service"
                       className="font-medium text-primary-600 hover:text-primary-500 transition-colors"
                     >
-                      conditions d'utilisation
+                      {t("auth.register.termsLink")}
                     </Link>{" "}
-                    et la{" "}
+                    {t("auth.register.andText")}{" "}
                     <Link
                       to="/privacy-policy"
                       className="font-medium text-primary-600 hover:text-primary-500 transition-colors"
                     >
-                      politique de confidentialité
+                      {t("auth.register.privacyLink")}
                     </Link>
                   </label>
                 </div>
@@ -997,10 +996,10 @@ const Register = () => {
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       ></path>
                     </svg>
-                    Inscription en cours...
+                    {t("auth.register.submitting")}
                   </span>
                 ) : (
-                  "Créer mon compte"
+                  t("auth.register.submitButton")
                 )}
               </button>
 
@@ -1010,7 +1009,7 @@ const Register = () => {
                 </div>
                 <div className="relative flex justify-center text-xs">
                   <span className="px-4 bg-white text-gray-400 font-medium">
-                    OU S'INSCRIRE AVEC
+                    {t("auth.register.orRegisterWith")}
                   </span>
                 </div>
               </div>
@@ -1058,12 +1057,12 @@ const Register = () => {
           </div>
 
           <p className="text-center text-sm text-gray-600">
-            Vous avez déjà un compte?{" "}
+            {t("auth.register.alreadyHaveAccount")}{" "}
             <Link
               to="/login"
               className="font-semibold text-primary-600 hover:text-primary-700 transition-colors"
             >
-              Se connecter
+              {t("auth.register.loginLink")}
             </Link>
           </p>
 
@@ -1085,7 +1084,7 @@ const Register = () => {
                   d="M10 19l-7-7m0 0l7-7m-7 7h18"
                 />
               </svg>
-              Retour à l'accueil
+              {t("auth.register.returnHome")}
             </Link>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Navbar from "../../components/common/Navbar";
 import Footer from "../../components/common/Footer";
 import VehicleCard from "../../components/cards/VehicleCard";
@@ -8,6 +9,7 @@ import useScrollAnimation from "../../hooks/useScrollAnimation";
 import publicVehicleService from "../../services/publicVehicleService";
 
 const Home = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [featuredVehicles, setFeaturedVehicles] = useState([]);
 
@@ -143,7 +145,7 @@ const Home = () => {
   const handleSearchSubmit = () => {
     // Validate dates are selected
     if (!searchData.pickupDate || !searchData.returnDate) {
-      alert("Veuillez sélectionner les dates de prise en charge et de retour");
+      alert(t("home.search.validationError"));
       return;
     }
 
@@ -181,8 +183,8 @@ const Home = () => {
           />
         </svg>
       ),
-      title: "Réservation 24/7",
-      description: "Réservez votre véhicule à tout moment en ligne",
+      title: t("home.features.list.booking.title"),
+      description: t("home.features.list.booking.desc"),
     },
     {
       icon: (
@@ -200,8 +202,8 @@ const Home = () => {
           />
         </svg>
       ),
-      title: "Assurance complète",
-      description: "Protection optimale pour une conduite en toute sérénité",
+      title: t("home.features.list.insurance.title"),
+      description: t("home.features.list.insurance.desc"),
     },
     {
       icon: (
@@ -219,8 +221,8 @@ const Home = () => {
           />
         </svg>
       ),
-      title: "Meilleurs prix",
-      description: "Tarifs compétitifs et transparents sans frais cachés",
+      title: t("home.features.list.price.title"),
+      description: t("home.features.list.price.desc"),
     },
     {
       icon: (
@@ -238,8 +240,8 @@ const Home = () => {
           />
         </svg>
       ),
-      title: "Service client",
-      description: "Assistance personnalisée pour chaque besoin",
+      title: t("home.features.list.support.title"),
+      description: t("home.features.list.support.desc"),
     },
   ];
 
@@ -289,14 +291,14 @@ const Home = () => {
                     </svg>
                   </div>
                   <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
-                    Rechercher un véhicule
+                    {t("home.search.title")}
                   </h2>
                 </div>
 
                 {/* Pick up and return location */}
                 <div className="mb-5">
                   <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
-                    Lieu de prise en charge et de retour
+                    {t("home.search.locationLabel")}
                   </label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
@@ -359,11 +361,11 @@ const Home = () => {
                         }}
                       >
                         <MenuItem value="Tunis Carthage aéroport">
-                          Tunis Carthage aéroport
+                          {t("home.search.airport")}
                         </MenuItem>
-                        <MenuItem value="Tunis Centre">Tunis Centre</MenuItem>
-                        <MenuItem value="Sfax">Sfax</MenuItem>
-                        <MenuItem value="Sousse">Sousse</MenuItem>
+                        <MenuItem value="Tunis Centre">{t("home.search.center")}</MenuItem>
+                        <MenuItem value="Sfax">{t("home.search.sfax")}</MenuItem>
+                        <MenuItem value="Sousse">{t("home.search.sousse")}</MenuItem>
                       </Select>
                     </FormControl>
                   </div>
@@ -377,7 +379,7 @@ const Home = () => {
                       htmlFor="differentLocation"
                       className="ml-2 text-xs sm:text-sm text-gray-600 cursor-pointer hover:text-gray-900 transition-colors"
                     >
-                      lieu de retour différent
+                      {t("home.search.differentLocation")}
                     </label>
                   </div>
                 </div>
@@ -385,7 +387,7 @@ const Home = () => {
                 {/* Pick up date */}
                 <div className="mb-5">
                   <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
-                    Date de prise en charge
+                    {t("home.search.pickupDate")}
                   </label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3">
                     <div className="relative group">
@@ -472,7 +474,7 @@ const Home = () => {
                 {/* Return date */}
                 <div className="mb-5">
                   <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
-                    Date de retour
+                    {t("home.search.returnDate")}
                   </label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3">
                     <div className="relative group">
@@ -559,7 +561,7 @@ const Home = () => {
                 {/* Category selection */}
                 <div className="mb-6">
                   <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
-                    Type de véhicule (optionnel)
+                    {t("home.search.vehicleType")}
                   </label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
@@ -615,11 +617,11 @@ const Home = () => {
                           },
                         }}
                       >
-                        <MenuItem value="Tous">Tous les véhicules</MenuItem>
-                        <MenuItem value="Économique">Économique</MenuItem>
-                        <MenuItem value="SUV">SUV</MenuItem>
-                        <MenuItem value="Luxe">Luxe</MenuItem>
-                        <MenuItem value="Sport">Sport</MenuItem>
+                        <MenuItem value="Tous">{t("home.search.categoryAll")}</MenuItem>
+                        <MenuItem value="Économique">{t("home.search.categoryEco")}</MenuItem>
+                        <MenuItem value="SUV">{t("home.search.categorySUV")}</MenuItem>
+                        <MenuItem value="Luxe">{t("home.search.categoryLuxury")}</MenuItem>
+                        <MenuItem value="Sport">{t("home.search.categorySport")}</MenuItem>
                       </Select>
                     </FormControl>
                   </div>
@@ -630,7 +632,7 @@ const Home = () => {
                   onClick={handleSearchSubmit}
                   className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold py-3 sm:py-4 px-4 sm:px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 group text-sm sm:text-base"
                 >
-                  <span>Rechercher des véhicules</span>
+                  <span>{t("home.search.submitButton")}</span>
                   <svg
                     className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-200"
                     fill="none"
@@ -669,10 +671,10 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 sm:mb-10 md:mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4">
-              Véhicules en vedette
+              {t("home.featured.title")}
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-600">
-              Notre sélection de véhicules premium
+              {t("home.featured.subtitle")}
             </p>
           </div>
 
@@ -786,13 +788,13 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
             <span className="inline-block px-4 py-2 bg-primary-100 text-primary-600 rounded-full text-sm font-semibold mb-4">
-              Nos avantages
+              {t("home.features.badge")}
             </span>
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-              Pourquoi nous choisir?
+              {t("home.features.title")}
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Des services pensés pour votre confort et votre sérénité
+              {t("home.features.subtitle")}
             </p>
           </div>
 
@@ -893,16 +895,15 @@ const Home = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
             <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              Prêt à prendre la route?
+              {t("home.cta.title")}
             </h2>
             <p className="text-xl md:text-2xl mb-10 text-primary-100 max-w-3xl mx-auto leading-relaxed">
-              Réservez maintenant et profitez de nos offres exceptionnelles avec
-              des véhicules premium
+              {t("home.cta.subtitle")}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <button className="group bg-white text-primary-600 px-10 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 flex items-center justify-center gap-2">
-                <span>Voir les offres</span>
+                <span>{t("home.cta.offersButton")}</span>
                 <svg
                   className="w-5 h-5 group-hover:translate-x-1 transition-transform"
                   fill="none"
@@ -931,7 +932,7 @@ const Home = () => {
                     d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                   />
                 </svg>
-                <span>Nous contacter</span>
+                <span>{t("home.cta.contactButton")}</span>
               </button>
             </div>
 
@@ -949,7 +950,7 @@ const Home = () => {
                     clipRule="evenodd"
                   />
                 </svg>
-                <span className="font-semibold">Paiement sécurisé</span>
+                <span className="font-semibold">{t("home.cta.trust.payment")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <svg
@@ -963,7 +964,7 @@ const Home = () => {
                     clipRule="evenodd"
                   />
                 </svg>
-                <span className="font-semibold">Annulation gratuite</span>
+                <span className="font-semibold">{t("home.cta.trust.cancellation")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <svg
@@ -974,7 +975,7 @@ const Home = () => {
                   <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                   <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                 </svg>
-                <span className="font-semibold">Support 24/7</span>
+                <span className="font-semibold">{t("home.cta.trust.support")}</span>
               </div>
             </div>
           </div>

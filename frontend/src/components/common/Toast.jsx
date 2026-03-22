@@ -1,12 +1,17 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Toast({
   message,
+  messageKey,
+  messageValues,
   type = "success",
   isVisible,
   onClose,
   duration = 3000,
 }) {
+  const { t } = useTranslation();
+
   useEffect(() => {
     if (isVisible && duration > 0) {
       const timer = setTimeout(() => {
@@ -17,6 +22,16 @@ export default function Toast({
   }, [isVisible, duration, onClose]);
 
   if (!isVisible) return null;
+
+  const fallbackMessages = {
+    success: t("common.toast.success"),
+    error: t("common.toast.error"),
+    info: t("common.toast.info"),
+  };
+
+  const resolvedMessage = messageKey
+    ? t(messageKey, messageValues)
+    : message || fallbackMessages[type] || fallbackMessages.info;
 
   const bgColor =
     type === "success"
@@ -63,9 +78,11 @@ export default function Toast({
             {icon}
           </svg>
         </div>
-        <p className="font-semibold text-gray-800 flex-1">{message}</p>
+        <p className="font-semibold text-gray-800 flex-1">{resolvedMessage}</p>
         <button
           onClick={onClose}
+          aria-label={t("common.close")}
+          title={t("common.close")}
           className="text-gray-400 hover:text-gray-600 transition-colors"
         >
           <svg

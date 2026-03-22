@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Navbar from "../../components/common/Navbar";
 import Footer from "../../components/common/Footer";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
 import { contactService } from "../../services/contactService";
 
 const Contact = () => {
+  const { t } = useTranslation();
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -73,12 +76,12 @@ const Contact = () => {
                   <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
                     <img
                       src="/car-logo.svg"
-                      alt="Elite Drive"
+                      alt={t("app.name")}
                       className="w-8 h-8"
                     />
                   </div>
                   <span className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
-                    Elite Drive
+                    {t("app.name")}
                   </span>
                 </Link>
               </div>
@@ -88,13 +91,12 @@ const Contact = () => {
                 className={`transition-all duration-700 delay-200 ${title.isVisible ? "animate-slideUp" : "opacity-0"}`}
               >
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                  <span className="text-gray-900">Contactez</span>{" "}
-                  <span className="text-primary-500">nous</span>
+                  <span className="text-gray-900">{t("contact.hero.titlePart1")}</span>{" "}
+                  <span className="text-primary-500">{t("contact.hero.titlePart2")}</span>
                 </h1>
 
                 <p className="text-base text-gray-600 mb-8 leading-relaxed">
-                  Notre équipe est là pour répondre à toutes vos questions.
-                  Parlez-nous de votre projet de location.
+                  {t("contact.hero.description")}
                 </p>
               </div>
 
@@ -103,33 +105,31 @@ const Contact = () => {
                 className={`mb-8 transition-all duration-700 delay-300 ${contactInfo.isVisible ? "animate-fadeIn" : "opacity-0"}`}
               >
                 <h3 className="text-base font-semibold text-gray-900 mb-4">
-                  Informations de contact:
+                  {t("contact.info.title")}
                 </h3>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
                     <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
                     <span className="text-sm text-gray-700">
-                      <strong>Adresse:</strong> 123 Avenue Habib Bourguiba,
-                      Tunis 1000, Tunisie
+                      <strong>{t("contact.info.address")}</strong> {t("contact.info.addressValue")}
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
                     <span className="text-sm text-gray-700">
-                      <strong>Téléphone:</strong> +216 71 123 456 / +216 98 765
-                      432
+                      <strong>{t("contact.info.phone")}</strong> {t("contact.info.phoneValue")}
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
                     <span className="text-sm text-gray-700">
-                      <strong>Email:</strong> contact@elitedrive.tn
+                      <strong>{t("contact.info.email")}</strong> {t("contact.info.emailValue")}
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
                     <span className="text-sm text-gray-700">
-                      <strong>Horaires:</strong> Lun-Ven 8h-18h, Sam 9h-17h
+                      <strong>{t("contact.info.hours")}</strong> {t("contact.info.hoursValue")}
                     </span>
                   </li>
                 </ul>
@@ -140,7 +140,7 @@ const Contact = () => {
                 className={`mb-8 transition-all duration-700 delay-[400ms] ${social.isVisible ? "animate-fadeIn" : "opacity-0"}`}
               >
                 <h3 className="text-base font-semibold text-gray-900 mb-4">
-                  Suivez-nous:
+                  {t("contact.social.title")}
                 </h3>
                 <div className="flex space-x-3">
                   <a
@@ -203,11 +203,10 @@ const Contact = () => {
               {submitted ? (
                 <div className="bg-gray-100 rounded-2xl p-12 text-center">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                    Merci pour votre message.
+                    {t("contact.form.successTitle")}
                   </h2>
                   <p className="text-lg text-gray-700 leading-relaxed max-w-md mx-auto">
-                    Notre équipe a bien reçu votre demande et vous contactera
-                    dans les plus brefs délais.
+                    {t("contact.form.successDesc")}
                   </p>
                 </div>
               ) : (
@@ -229,11 +228,11 @@ const Contact = () => {
                       placeholder=" "
                     />
                     <label className="absolute left-4 top-4 text-black text-lg transition-all duration-300 peer-focus:text-sm peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-sm peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
-                      Nom complet*
+                      {t("contact.form.nameLabel")}
                     </label>
                     {touched.name && !formData.name.trim() && (
                       <p className="mt-1 text-sm text-primary-500">
-                        Veuillez compléter ce champ obligatoire.
+                        {t("contact.form.requiredError")}
                       </p>
                     )}
                   </div>
@@ -256,11 +255,11 @@ const Contact = () => {
                         placeholder=" "
                       />
                       <label className="absolute left-4 top-4 text-black text-lg transition-all duration-300 peer-focus:text-sm peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-sm peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
-                        Email*
+                        {t("contact.form.emailLabel")}
                       </label>
                       {touched.email && !formData.email.trim() && (
                         <p className="mt-1 text-sm text-primary-500">
-                          Veuillez compléter ce champ obligatoire.
+                          {t("contact.form.requiredError")}
                         </p>
                       )}
                     </div>
@@ -281,11 +280,11 @@ const Contact = () => {
                         placeholder=" "
                       />
                       <label className="absolute left-4 top-4 text-black text-lg transition-all duration-300 peer-focus:text-sm peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-sm peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
-                        Téléphone*
+                        {t("contact.form.phoneLabel")}
                       </label>
                       {touched.phone && !formData.phone.trim() && (
                         <p className="mt-1 text-sm text-primary-500">
-                          Veuillez compléter ce champ obligatoire.
+                          {t("contact.form.requiredError")}
                         </p>
                       )}
                     </div>
@@ -308,11 +307,11 @@ const Contact = () => {
                       placeholder=" "
                     />
                     <label className="absolute left-4 top-4 text-black text-lg transition-all duration-300 peer-focus:text-sm peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-sm peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
-                      Sujet*
+                      {t("contact.form.subjectLabel")}
                     </label>
                     {touched.subject && !formData.subject.trim() && (
                       <p className="mt-1 text-sm text-primary-500">
-                        Veuillez compléter ce champ obligatoire.
+                        {t("contact.form.requiredError")}
                       </p>
                     )}
                   </div>
@@ -334,25 +333,25 @@ const Contact = () => {
                       placeholder=" "
                     />
                     <label className="absolute left-4 top-4 text-black text-lg transition-all duration-300 peer-focus:text-sm peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-sm peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
-                      Message*
+                      {t("contact.form.messageLabel")}
                     </label>
                     {touched.message && !formData.message.trim() && (
                       <p className="mt-1 text-sm text-primary-500">
-                        Veuillez compléter ce champ obligatoire.
+                        {t("contact.form.requiredError")}
                       </p>
                     )}
                   </div>
 
                   {/* Privacy Notice */}
                   <div className="text-sm text-gray-600 leading-relaxed">
-                    En soumettant ce formulaire, vous acceptez notre{" "}
+                    {t("contact.form.privacyPrefix")}
                     <Link
                       to="/privacy-policy"
                       className="text-gray-800 hover:text-primary-500 font-bold underline"
                     >
-                      politique de confidentialité
+                      {t("contact.form.privacyLink")}
                     </Link>
-                    .
+                    {t("contact.form.privacySuffix")}
                   </div>
 
                   {/* Submit Button */}
@@ -364,10 +363,10 @@ const Contact = () => {
                     {isSubmitting ? (
                       <div className="flex items-center justify-center gap-2">
                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                        <span>Envoi en cours...</span>
+                        <span>{t("contact.form.submitting")}</span>
                       </div>
                     ) : (
-                      "Envoyer le message"
+                      t("contact.form.submitBtn")
                     )}
                   </button>
                 </form>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { agencyService } from "../../services/agencyService";
 import { reservationService } from "../../services/reservationService";
 import ReservationDetailsModal from "../modals/ReservationDetailsModal";
@@ -21,6 +22,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 const AgencyContent = ({ activeTab, reports = [] }) => {
+  const { t } = useTranslation();
   const COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"];
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -61,7 +63,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
     } catch (error) {
       setToast({
         show: true,
-        message: "Erreur lors du chargement des données financières",
+        message: t("agencyContent.errorLoadingFinancial"),
         type: "error",
       });
     } finally {
@@ -77,7 +79,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
     } catch (error) {
       setToast({
         show: true,
-        message: "Erreur lors du chargement des réservations",
+        message: t("agencyContent.errorLoadingReservations"),
         type: "error",
       });
     } finally {
@@ -90,7 +92,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
       await reservationService.updateStatus(id, newStatus);
       setToast({
         show: true,
-        message: "Statut mis à jour avec succès",
+        message: t("agencyContent.statusUpdated"),
         type: "success",
       });
       fetchReservations();
@@ -99,7 +101,8 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
       setToast({
         show: true,
         message:
-          error.response?.data?.message || "Erreur lors de la mise à jour",
+          error.response?.data?.message ||
+          t("agencyContent.errorUpdatingStatus"),
         type: "error",
       });
     }
@@ -110,7 +113,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
       await reservationService.pickup(id, notes);
       setToast({
         show: true,
-        message: "Véhicule retiré avec succès",
+        message: t("agencyContent.vehiclePickedUp"),
         type: "success",
       });
       fetchReservations();
@@ -118,7 +121,8 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
     } catch (error) {
       setToast({
         show: true,
-        message: error.response?.data?.message || "Erreur lors du retrait",
+        message:
+          error.response?.data?.message || t("agencyContent.errorPickup"),
         type: "error",
       });
     }
@@ -129,7 +133,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
       await reservationService.return(id, returnData);
       setToast({
         show: true,
-        message: "Véhicule retourné avec succès",
+        message: t("agencyContent.vehicleReturned"),
         type: "success",
       });
       fetchReservations();
@@ -137,7 +141,8 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
     } catch (error) {
       setToast({
         show: true,
-        message: error.response?.data?.message || "Erreur lors du retour",
+        message:
+          error.response?.data?.message || t("agencyContent.errorReturn"),
         type: "error",
       });
     }
@@ -148,7 +153,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
       await reservationService.cancel(id, reason);
       setToast({
         show: true,
-        message: "Réservation annulée avec succès",
+        message: t("agencyContent.reservationCancelled"),
         type: "success",
       });
       fetchReservations();
@@ -156,7 +161,8 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
     } catch (error) {
       setToast({
         show: true,
-        message: error.response?.data?.message || "Erreur lors de l'annulation",
+        message:
+          error.response?.data?.message || t("agencyContent.errorCancel"),
         type: "error",
       });
     }
@@ -165,23 +171,23 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
   const getStatusBadge = (status) => {
     const statusConfig = {
       [RESERVATION_STATUS.PENDING]: {
-        label: "En attente",
+        label: t("agencyContent.status.pending"),
         class: "bg-yellow-100 text-yellow-700",
       },
       [RESERVATION_STATUS.CONFIRMED]: {
-        label: "Confirmée",
+        label: t("agencyContent.status.confirmed"),
         class: "bg-blue-100 text-blue-700",
       },
       [RESERVATION_STATUS.ONGOING]: {
-        label: "En cours",
+        label: t("agencyContent.status.ongoing"),
         class: "bg-yellow-100 text-yellow-700",
       },
       [RESERVATION_STATUS.COMPLETED]: {
-        label: "Terminée",
+        label: t("agencyContent.status.completed"),
         class: "bg-green-100 text-green-700",
       },
       [RESERVATION_STATUS.CANCELLED]: {
-        label: "Annulée",
+        label: t("agencyContent.status.cancelled"),
         class: "bg-red-100 text-red-700",
       },
     };
@@ -208,7 +214,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
     return (
       <div className="space-y-6">
         <h2 className="text-xl font-bold text-gray-900">
-          Réservations Actives
+          {t("agencyContent.activeReservations")}
         </h2>
         {loading ? (
           <div className="flex justify-center py-8">
@@ -216,7 +222,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
           </div>
         ) : activeReservations.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
-            Aucune réservation active pour le moment
+            {t("agencyContent.noActiveReservations")}
           </div>
         ) : (
           <div className="space-y-4">
@@ -229,34 +235,44 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h3 className="font-semibold text-gray-900">
-                      {reservation.vehicle?.name || "Véhicule"}
+                      {reservation.vehicle?.name || t("agencyContent.vehicle")}
                     </h3>
                     <p className="text-sm text-gray-600">
-                      Client: {reservation.user?.name || "N/A"}
+                      {t("agencyContent.client")}:{" "}
+                      {reservation.user?.name ||
+                        t("agencyContent.notAvailable")}
                     </p>
                   </div>
                   {getStatusBadge(reservation.status)}
                 </div>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-gray-600">Du:</span>{" "}
+                    <span className="text-gray-600">
+                      {t("agencyContent.from")}:
+                    </span>{" "}
                     {new Date(reservation.start_date).toLocaleDateString()}
                   </div>
                   <div>
-                    <span className="text-gray-600">Au:</span>{" "}
+                    <span className="text-gray-600">
+                      {t("agencyContent.to")}:
+                    </span>{" "}
                     {new Date(reservation.end_date).toLocaleDateString()}
                   </div>
                   <div>
-                    <span className="text-gray-600">Montant:</span>{" "}
+                    <span className="text-gray-600">
+                      {t("agencyContent.amount")}:
+                    </span>{" "}
                     <span className="font-semibold text-primary-600">
                       {reservation.total_price} DT
                     </span>
                   </div>
                   <div>
-                    <span className="text-gray-600">Paiement:</span>{" "}
+                    <span className="text-gray-600">
+                      {t("agencyContent.payment")}:
+                    </span>{" "}
                     {reservation.payment_status === "paid"
-                      ? "Payé"
-                      : "En attente"}
+                      ? t("agencyContent.paid")
+                      : t("agencyContent.pending")}
                   </div>
                 </div>
               </div>
@@ -295,7 +311,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
     return (
       <div className="space-y-6">
         <h2 className="text-xl font-bold text-gray-900">
-          Toutes les Réservations
+          {t("agencyContent.allReservations")}
         </h2>
         {loading ? (
           <div className="flex justify-center py-8">
@@ -303,7 +319,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
           </div>
         ) : reservations.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
-            Aucune réservation pour le moment
+            {t("agencyContent.noReservations")}
           </div>
         ) : (
           <div className="space-y-4">
@@ -316,34 +332,44 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h3 className="font-semibold text-gray-900">
-                      {reservation.vehicle?.name || "Véhicule"}
+                      {reservation.vehicle?.name || t("agencyContent.vehicle")}
                     </h3>
                     <p className="text-sm text-gray-600">
-                      Client: {reservation.user?.name || "N/A"}
+                      {t("agencyContent.client")}:{" "}
+                      {reservation.user?.name ||
+                        t("agencyContent.notAvailable")}
                     </p>
                   </div>
                   {getStatusBadge(reservation.status)}
                 </div>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-gray-600">Du:</span>{" "}
+                    <span className="text-gray-600">
+                      {t("agencyContent.from")}:
+                    </span>{" "}
                     {new Date(reservation.start_date).toLocaleDateString()}
                   </div>
                   <div>
-                    <span className="text-gray-600">Au:</span>{" "}
+                    <span className="text-gray-600">
+                      {t("agencyContent.to")}:
+                    </span>{" "}
                     {new Date(reservation.end_date).toLocaleDateString()}
                   </div>
                   <div>
-                    <span className="text-gray-600">Montant:</span>{" "}
+                    <span className="text-gray-600">
+                      {t("agencyContent.amount")}:
+                    </span>{" "}
                     <span className="font-semibold text-primary-600">
                       {reservation.total_price} DT
                     </span>
                   </div>
                   <div>
-                    <span className="text-gray-600">Paiement:</span>{" "}
+                    <span className="text-gray-600">
+                      {t("agencyContent.payment")}:
+                    </span>{" "}
                     {reservation.payment_status === "paid"
-                      ? "Payé"
-                      : "En attente"}
+                      ? t("agencyContent.paid")
+                      : t("agencyContent.pending")}
                   </div>
                 </div>
               </div>

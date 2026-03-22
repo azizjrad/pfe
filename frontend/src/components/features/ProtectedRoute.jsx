@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 /**
  * Protected route component for authentication and role-based access control
@@ -16,6 +17,7 @@ const ProtectedRoute = ({
 }) => {
   const { user, loading, isAuthenticated } = useAuth();
   const location = useLocation();
+  const { t } = useTranslation();
 
   // Show loader during authentication check
   if (loading) {
@@ -23,7 +25,7 @@ const ProtectedRoute = ({
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-          <p className="mt-4 text-gray-600">Chargement...</p>
+          <p className="mt-4 text-gray-600">{t("common.loading")}</p>
         </div>
       </div>
     );

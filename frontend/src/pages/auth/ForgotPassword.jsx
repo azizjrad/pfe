@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
 
 const ForgotPassword = () => {
   const formAnim = useScrollAnimation({ threshold: 0.2 });
+  const { t } = useTranslation();
 
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -27,24 +29,21 @@ const ForgotPassword = () => {
               <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
                 <img
                   src="/car-logo.svg"
-                  alt="Elite Drive"
+                  alt={t("app.name")}
                   className="w-7 h-7"
                 />
               </div>
-              <span className="text-2xl font-bold">Elite Drive</span>
+              <span className="text-2xl font-bold">{t("app.name")}</span>
             </Link>
           </div>
 
           <div className="space-y-8">
             <div>
-              <h1 className="text-5xl font-bold mb-6 leading-tight">
-                Récupération
-                <br />
-                de compte
+              <h1 className="text-5xl font-bold mb-6 leading-tight whitespace-pre-line">
+                {t("auth.forgotPassword.title").replace(" ", "\n")}
               </h1>
               <p className="text-xl text-primary-100 leading-relaxed">
-                Pas d'inquiétude, nous vous aiderons à retrouver l'accès à votre
-                compte en toute sécurité
+                {t("auth.forgotPassword.subtitle")}
               </p>
             </div>
 
@@ -66,7 +65,7 @@ const ForgotPassword = () => {
                       />
                     </svg>
                   ),
-                  text: "Processus sécurisé et rapide",
+                  text: t("auth.forgotPassword.feature1"),
                 },
                 {
                   icon: (
@@ -84,7 +83,7 @@ const ForgotPassword = () => {
                       />
                     </svg>
                   ),
-                  text: "Lien de réinitialisation par email",
+                  text: t("auth.forgotPassword.feature2"),
                 },
                 {
                   icon: (
@@ -102,7 +101,7 @@ const ForgotPassword = () => {
                       />
                     </svg>
                   ),
-                  text: "Réponse en quelques minutes",
+                  text: t("auth.forgotPassword.feature3"),
                 },
                 {
                   icon: (
@@ -120,7 +119,7 @@ const ForgotPassword = () => {
                       />
                     </svg>
                   ),
-                  text: "Support disponible si besoin",
+                  text: t("auth.forgotPassword.feature4"),
                 },
               ].map((feature, index) => (
                 <div key={index} className="flex items-center gap-4">
@@ -134,7 +133,7 @@ const ForgotPassword = () => {
           </div>
 
           <div className="text-sm text-primary-200">
-            © 2026 Elite Drive. Tous droits réservés.
+            {t("app.copyright")}
           </div>
         </div>
       </div>
@@ -153,20 +152,19 @@ const ForgotPassword = () => {
               <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
                 <img
                   src="/car-logo.svg"
-                  alt="Elite Drive"
+                  alt={t("app.name")}
                   className="w-7 h-7"
                 />
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
-                Elite Drive
+                {t("app.name")}
               </span>
             </Link>
             <h2 className="text-4xl font-bold text-gray-900 mb-3">
-              Mot de passe oublié?
+              {t("auth.forgotPassword.formTitle")}
             </h2>
             <p className="text-gray-600">
-              Entrez votre adresse e-mail pour recevoir un lien de
-              réinitialisation
+              {t("auth.forgotPassword.formSubtitle")}
             </p>
           </div>
 
@@ -188,7 +186,7 @@ const ForgotPassword = () => {
                     htmlFor="email"
                     className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
                   >
-                    Adresse e-mail
+                    {t("auth.forgotPassword.emailLabel")}
                   </label>
                 </div>
                 <button
@@ -196,7 +194,7 @@ const ForgotPassword = () => {
                   disabled={!email.trim()}
                   className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
                 >
-                  Envoyer le lien de réinitialisation
+                  {t("auth.forgotPassword.submitButton")}
                 </button>
               </form>
             ) : (
@@ -217,18 +215,16 @@ const ForgotPassword = () => {
                   </svg>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900">
-                  E-mail envoyé !
+                  {t("auth.forgotPassword.successTitle")}
                 </h3>
                 <p className="text-gray-600">
-                  Nous avons envoyé un lien de réinitialisation de mot de passe
-                  à{" "}
+                  {t("auth.forgotPassword.successDesc1")}{" "}
                   <span className="font-semibold text-primary-600">
                     {email}
                   </span>
                 </p>
                 <p className="text-sm text-gray-500">
-                  Vérifiez votre boîte de réception et suivez les instructions
-                  pour réinitialiser votre mot de passe.
+                  {t("auth.forgotPassword.successDesc2")}
                 </p>
               </div>
             )}
@@ -252,7 +248,7 @@ const ForgotPassword = () => {
                   d="M10 19l-7-7m0 0l7-7m-7 7h18"
                 />
               </svg>
-              Retour à la connexion
+              {t("auth.forgotPassword.backToLogin")}
             </Link>
           </p>
 
@@ -274,7 +270,7 @@ const ForgotPassword = () => {
                   d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                 />
               </svg>
-              Retour à l'accueil
+              {t("common.backHome")}
             </Link>
           </div>
         </div>

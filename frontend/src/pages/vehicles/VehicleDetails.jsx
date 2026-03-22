@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../../contexts/AuthContext";
 import Navbar from "../../components/common/Navbar";
 import Footer from "../../components/common/Footer";
@@ -16,6 +17,7 @@ const VehicleDetails = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { user, isAuthenticated } = useAuth();
+  const { t } = useTranslation();
   const [vehicle, setVehicle] = useState(null);
   const [isReservationOpen, setIsReservationOpen] = useState(false);
   const [toast, setToast] = useState({
@@ -35,13 +37,13 @@ const VehicleDetails = () => {
   const handleReportSubmit = async (reportData) => {
     try {
       showToast(
-        "Signalement envoyé avec succès. Notre équipe examinera votre rapport.",
+        t("vehicles.details.messages.reportSuccess"),
         "success",
       );
     } catch (error) {
       console.error("Report submission error:", error);
       showToast(
-        "Erreur lors de l'envoi du signalement. Veuillez réessayer.",
+        t("vehicles.details.messages.reportError"),
         "error",
       );
     }
@@ -83,7 +85,7 @@ const VehicleDetails = () => {
       if (response.data.success) {
         showToast(
           response.data.message ||
-            "Réservation confirmée! Vous recevrez un email de confirmation ou un appel de l'agence bientôt.",
+            t("vehicles.details.messages.reservationSuccess"),
           "success",
         );
         setIsReservationOpen(false);
@@ -98,13 +100,13 @@ const VehicleDetails = () => {
         showToast(error.response.data.message, "error");
       } else if (error.response?.status === 401) {
         showToast(
-          "Vous devez être connecté pour réserver un véhicule.",
+          t("vehicles.details.messages.authRequired"),
           "error",
         );
         navigate(`/login?returnTo=/vehicles/${id}&openModal=reservation`);
       } else {
         showToast(
-          "Erreur lors de la réservation. Veuillez réessayer.",
+          t("vehicles.details.messages.reservationError"),
           "error",
         );
       }
@@ -114,7 +116,7 @@ const VehicleDetails = () => {
   // Handle reserve button click with authentication check
   const handleReserveClick = () => {
     if (!isAuthenticated) {
-      showToast("Vous devez être connecté pour réserver un véhicule.", "error");
+      showToast(t("vehicles.details.messages.authRequired"), "error");
       navigate(`/login?returnTo=/vehicles/${id}&openModal=reservation`);
       return;
     }
@@ -157,7 +159,7 @@ const VehicleDetails = () => {
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-500 mx-auto mb-4"></div>
-          <p className="text-gray-600">Chargement des détails du véhicule...</p>
+          <p className="text-gray-600">{t("vehicles.details.loading")}</p>
           <p className="text-sm text-gray-400 mt-2">ID: {id}</p>
         </div>
       </div>
@@ -189,7 +191,7 @@ const VehicleDetails = () => {
                 d="M10 19l-7-7m0 0l7-7m-7 7h18"
               />
             </svg>
-            Retour aux véhicules
+            {t("vehicles.details.back")}
           </button>
 
           <div
@@ -235,7 +237,7 @@ const VehicleDetails = () => {
                       {vehicle.price} dt
                     </span>
                     <span className="text-lg sm:text-xl text-gray-600">
-                      /jour
+                      {t("vehicles.details.perDay")}
                     </span>
                   </div>
                 </div>
@@ -243,27 +245,27 @@ const VehicleDetails = () => {
                 {/* Quick Stats */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                   <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-3 sm:p-4 border border-gray-200">
-                    <div className="text-gray-600 text-sm mb-1">Année</div>
+                    <div className="text-gray-600 text-sm mb-1">{t("vehicles.details.stats.year")}</div>
                     <div className="text-lg sm:text-xl font-bold text-gray-900">
                       {vehicle.year}
                     </div>
                   </div>
                   <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-3 sm:p-4 border border-gray-200">
-                    <div className="text-gray-600 text-sm mb-1">Places</div>
+                    <div className="text-gray-600 text-sm mb-1">{t("vehicles.details.stats.seats")}</div>
                     <div className="text-lg sm:text-xl font-bold text-gray-900">
                       {vehicle.seats}
                     </div>
                   </div>
                   <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-3 sm:p-4 border border-gray-200">
                     <div className="text-gray-600 text-sm mb-1">
-                      Transmission
+                      {t("vehicles.details.stats.transmission")}
                     </div>
                     <div className="text-base sm:text-lg font-bold text-gray-900 break-words">
                       {vehicle.transmission}
                     </div>
                   </div>
                   <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-3 sm:p-4 border border-gray-200">
-                    <div className="text-gray-600 text-sm mb-1">Carburant</div>
+                    <div className="text-gray-600 text-sm mb-1">{t("vehicles.details.stats.fuel")}</div>
                     <div className="text-base sm:text-lg font-bold text-gray-900 break-words">
                       {vehicle.fuel}
                     </div>
@@ -288,7 +290,7 @@ const VehicleDetails = () => {
                       d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                     />
                   </svg>
-                  Réserver maintenant
+                  {t("vehicles.details.reserveBtn")}
                 </button>
 
                 {/* Contact Agency */}
@@ -309,7 +311,7 @@ const VehicleDetails = () => {
                       d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                     />
                   </svg>
-                  Contacter l'agence
+                  {t("vehicles.details.contactBtn")}
                 </button>
 
                 {/* Report Vehicle - Text variant */}
@@ -339,7 +341,7 @@ const VehicleDetails = () => {
               <div className="lg:col-span-2 space-y-5 sm:space-y-6 md:space-y-8">
                 <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-5 sm:p-6 md:p-8 border border-gray-200 shadow-lg">
                   <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
-                    Description
+                    {t("vehicles.details.description")}
                   </h2>
                   <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed">
                     {vehicle.description}
@@ -349,7 +351,7 @@ const VehicleDetails = () => {
                 {/* Specifications */}
                 <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-5 sm:p-6 md:p-8 border border-gray-200 shadow-lg">
                   <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
-                    Spécifications techniques
+                    {t("vehicles.details.specsTitle")}
                   </h2>
                   <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
                     {vehicle.specifications.map((spec, index) => (
@@ -376,7 +378,7 @@ const VehicleDetails = () => {
                   className={`bg-white/60 backdrop-blur-sm rounded-3xl p-5 sm:p-6 md:p-8 border border-gray-200 shadow-lg transition-all duration-700 delay-300 ${features.isVisible ? "animate-slideInRight" : ""}`}
                 >
                   <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
-                    Équipements inclus
+                    {t("vehicles.details.featuresTitle")}
                   </h2>
                   <div className="space-y-2.5 sm:space-y-3">
                     {vehicle.features.map((feature, index) => (
@@ -442,7 +444,7 @@ const VehicleDetails = () => {
                     {vehicle.agency.name}
                   </h2>
                   <p className="text-sm sm:text-base text-primary-100">
-                    Agence gérant ce véhicule
+                    {t("vehicles.details.agency.managedBy")}
                   </p>
                 </div>
               </div>
@@ -472,7 +474,7 @@ const VehicleDetails = () => {
                   </div>
                   <div>
                     <div className="text-xs sm:text-sm text-primary-200 mb-1">
-                      Adresse
+                      {t("vehicles.details.agency.address")}
                     </div>
                     <div className="text-sm sm:text-base font-semibold break-words">
                       {vehicle.agency.address}
@@ -498,7 +500,7 @@ const VehicleDetails = () => {
                   </div>
                   <div>
                     <div className="text-xs sm:text-sm text-primary-200 mb-1">
-                      Téléphone
+                      {t("vehicles.details.agency.phone")}
                     </div>
                     <a
                       href={`tel:${vehicle.agency.phone}`}
@@ -527,7 +529,7 @@ const VehicleDetails = () => {
                   </div>
                   <div>
                     <div className="text-xs sm:text-sm text-primary-200 mb-1">
-                      Email
+                      {t("vehicles.details.agency.email")}
                     </div>
                     <a
                       href={`mailto:${vehicle.agency.email}`}
@@ -556,7 +558,7 @@ const VehicleDetails = () => {
                   </div>
                   <div>
                     <div className="text-xs sm:text-sm text-primary-200 mb-1">
-                      Horaires
+                      {t("vehicles.details.agency.hours")}
                     </div>
                     <div className="text-sm sm:text-base font-semibold break-words">
                       {vehicle.agency.hours}

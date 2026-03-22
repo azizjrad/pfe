@@ -1,4 +1,5 @@
 ﻿import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   LineChart,
   Line,
@@ -57,6 +58,7 @@ const AdminContent = ({
   onDeleteContactMessage,
   onViewReportDetails,
 }) => {
+  const { t } = useTranslation();
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -104,12 +106,12 @@ const AdminContent = ({
     return (
       <div className="space-y-6">
         <h2 className="text-xl font-bold text-gray-900">
-          Aperçu de la plateforme
+          {t("dashboard.overviewTitle")}
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Performances des agences
+              {t("dashboard.agencyPerformance")}
             </h3>
             <div className="space-y-3">
               {agencies.slice(0, 3).map((agency) => (
@@ -120,7 +122,7 @@ const AdminContent = ({
                   <div>
                     <p className="font-medium text-gray-800">{agency.name}</p>
                     <p className="text-sm text-gray-500">
-                      {agency.vehicles} véhicules
+                      {t("dashboard.vehiclesCount", { count: agency.vehicles })}
                     </p>
                   </div>
                   <p className="font-bold text-primary-600">
@@ -133,34 +135,40 @@ const AdminContent = ({
 
           <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Activité récente
+              {t("dashboard.recentActivity")}
             </h3>
             <div className="space-y-3">
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 mt-1.5 rounded-full bg-green-500"></div>
                 <div>
                   <p className="text-sm font-medium text-gray-800">
-                    Nouvelle agence créée
+                    {t("dashboard.newAgencyCreated")}
                   </p>
-                  <p className="text-xs text-gray-500">Il y a 2 jours</p>
+                  <p className="text-xs text-gray-500">
+                    {t("dashboard.timeAgo2Days")}
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 mt-1.5 rounded-full bg-blue-500"></div>
                 <div>
                   <p className="text-sm font-medium text-gray-800">
-                    15 nouveaux utilisateurs
+                    {t("dashboard.newUsers", { count: 15 })}
                   </p>
-                  <p className="text-xs text-gray-500">Aujourd'hui</p>
+                  <p className="text-xs text-gray-500">
+                    {t("dashboard.today")}
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 mt-1.5 rounded-full bg-yellow-500"></div>
                 <div>
                   <p className="text-sm font-medium text-gray-800">
-                    45 réservations traitées
+                    {t("dashboard.reservationsProcessed", { count: 45 })}
                   </p>
-                  <p className="text-xs text-gray-500">Aujourd'hui</p>
+                  <p className="text-xs text-gray-500">
+                    {t("dashboard.today")}
+                  </p>
                 </div>
               </div>
             </div>
@@ -180,7 +188,7 @@ const AdminContent = ({
       <div className="space-y-5">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold text-gray-900">
-            Gestion des Agences
+            {t("dashboard.manageAgencies")}
           </h2>
           <button
             onClick={() =>
@@ -208,7 +216,7 @@ const AdminContent = ({
                 d="M12 4v16m8-8H4"
               />
             </svg>
-            Ajouter une agence
+            {t("dashboard.addAgency")}
           </button>
         </div>
         {/* Mobile cards */}
@@ -229,11 +237,15 @@ const AdminContent = ({
                 <span
                   className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(agency.status)}`}
                 >
-                  {agency.status === "active" ? "Active" : "Inactive"}
+                  {agency.status === "active"
+                    ? t("dashboard.active")
+                    : t("dashboard.inactive")}
                 </span>
               </div>
               <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
-                <span>{agency.vehicles} véhicules</span>
+                <span>
+                  {t("dashboard.vehiclesCount", { count: agency.vehicles })}
+                </span>
                 <span className="font-medium text-primary-600">
                   {(agency.revenue ?? 0).toLocaleString()} DT
                 </span>
@@ -246,7 +258,7 @@ const AdminContent = ({
                   }}
                   className="flex-1 py-1.5 text-sm font-medium text-primary-600 bg-primary-50 rounded-lg hover:bg-primary-100"
                 >
-                  Modifier
+                  {t("dashboard.edit")}
                 </button>
                 <button
                   onClick={(e) => {
@@ -255,7 +267,9 @@ const AdminContent = ({
                   }}
                   className={`flex-1 py-1.5 text-sm font-medium rounded-lg ${agency.status === "inactive" ? "text-green-600 bg-green-50 hover:bg-green-100" : "text-orange-600 bg-orange-50 hover:bg-orange-100"}`}
                 >
-                  {agency.status === "inactive" ? "Débloquer" : "Bloquer"}
+                  {agency.status === "inactive"
+                    ? t("dashboard.unblock")
+                    : t("dashboard.block")}
                 </button>
                 <button
                   onClick={(e) => {
@@ -264,7 +278,7 @@ const AdminContent = ({
                   }}
                   className="flex-1 py-1.5 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100"
                 >
-                  Supprimer
+                  {t("dashboard.delete")}
                 </button>
               </div>
             </div>
@@ -277,22 +291,22 @@ const AdminContent = ({
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Agence
+                  {t("dashboard.agency")}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Localisation
+                  {t("dashboard.location")}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Véhicules
+                  {t("dashboard.vehicles")}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Revenu
+                  {t("dashboard.revenue")}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Statut
+                  {t("dashboard.status")}
                 </th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                  Actions
+                  {t("dashboard.actions")}
                 </th>
               </tr>
             </thead>
@@ -387,7 +401,7 @@ const AdminContent = ({
       <div className="space-y-5">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold text-gray-900">
-            Gestion des Utilisateurs
+            {t("dashboard.manageUsers")}
           </h2>
           <button
             onClick={() =>
@@ -415,7 +429,7 @@ const AdminContent = ({
                 d="M12 4v16m8-8H4"
               />
             </svg>
-            Ajouter un utilisateur
+            {t("dashboard.addUser")}
           </button>
         </div>
         {/* Mobile cards */}
@@ -435,15 +449,17 @@ const AdminContent = ({
                   className={`px-2 py-1 rounded-full text-xs font-medium ${getRoleBadge(user.role)}`}
                 >
                   {user.role === ROLES.CLIENT
-                    ? "Client"
+                    ? t("dashboard.client")
                     : user.role === ROLES.AGENCY_ADMIN
-                      ? "Admin Agence"
-                      : "Super Admin"}
+                      ? t("dashboard.agencyAdmin")
+                      : t("dashboard.superAdmin")}
                 </span>
               </div>
               <div className="flex items-center gap-3 text-sm text-gray-500 mb-3">
                 {user.agency && <span>{user.agency}</span>}
-                <span>Inscrit le {user.registeredAt}</span>
+                <span>
+                  {t("dashboard.registeredOn", { date: user.registeredAt })}
+                </span>
               </div>
               <div className="flex items-center gap-3 pt-3 border-t border-gray-100">
                 <button
@@ -453,7 +469,7 @@ const AdminContent = ({
                   }}
                   className="flex-1 py-1.5 text-sm font-medium text-primary-600 bg-primary-50 rounded-lg hover:bg-primary-100"
                 >
-                  Modifier
+                  {t("dashboard.edit")}
                 </button>
                 <button
                   onClick={(e) => {
@@ -462,7 +478,9 @@ const AdminContent = ({
                   }}
                   className={`flex-1 py-1.5 text-sm font-medium rounded-lg ${user.is_suspended ? "text-green-600 bg-green-50 hover:bg-green-100" : "text-orange-600 bg-orange-50 hover:bg-orange-100"}`}
                 >
-                  {user.is_suspended ? "Débloquer" : "Bloquer"}
+                  {user.is_suspended
+                    ? t("dashboard.unblock")
+                    : t("dashboard.block")}
                 </button>
               </div>
             </div>
@@ -475,19 +493,19 @@ const AdminContent = ({
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Utilisateur
+                  {t("dashboard.user")}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Rôle
+                  {t("dashboard.role")}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Agence
+                  {t("dashboard.agency")}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Inscrit le
+                  {t("dashboard.registeredOnHeader")}
                 </th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                  Actions
+                  {t("dashboard.actions")}
                 </th>
               </tr>
             </thead>
@@ -583,16 +601,19 @@ const AdminContent = ({
       <div className="space-y-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="text-2xl font-bold text-gray-900">
-            Messages de contact
+            {t("dashboard.contactMessages")}
           </h2>
           <p className="text-sm text-gray-500 mt-1">
-            {contactMessages.length} message(s) dont {unreadCount} non lu(s)
+            {t("dashboard.contactMessagesCount", {
+              count: contactMessages.length,
+              unread: unreadCount,
+            })}
           </p>
         </div>
 
         {paginatedMessages.length === 0 ? (
           <div className="bg-white rounded-xl shadow-sm p-10 text-center text-gray-500">
-            Aucun message disponible pour le moment
+            {t("dashboard.noMessages")}
           </div>
         ) : (
           <div className="space-y-4">
