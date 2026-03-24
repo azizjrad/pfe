@@ -222,9 +222,9 @@ const Navbar = () => {
                 <Link to="/" className="flex items-center space-x-2">
                   <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center shadow-lg">
                     <img
-                      src="/car-logo.svg"
+                      src="/logo.png"
                       alt={t("app.name")}
-                      className="w-6 h-6"
+                      className="w-8 h-8 object-contain"
                     />
                   </div>
                   <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
@@ -441,7 +441,9 @@ const Navbar = () => {
                             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                           />
                         </svg>
-                        <span className="relative z-10">{t("nav.dashboard")}</span>
+                        <span className="relative z-10">
+                          {t("nav.dashboard")}
+                        </span>
                         <div className="absolute inset-0 bg-gradient-to-r from-white/25 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
                       </Link>
 
