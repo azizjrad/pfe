@@ -238,6 +238,61 @@ class AdminService
     }
 
     /**
+     * Update agency attributes (status, name, location)
+     */
+    public function updateAgency(int $agencyId, array $data)
+    {
+        $agency = Agency::find($agencyId);
+
+        if (!$agency) {
+            throw new \Exception('Agency not found', 404);
+        }
+
+        $allowed = array_intersect_key($data, array_flip(['status','name','location']));
+
+        if (!empty($allowed)) {
+            $agency->update($allowed);
+        }
+
+        return $agency;
+    }
+
+    /**
+     * Update user attributes or toggle suspension
+     */
+    public function updateUser(int $userId, array $data)
+    {
+        $user = User::find($userId);
+
+        if (!$user) {
+            throw new \Exception('User not found', 404);
+        }
+
+        // Handle suspension toggle
+        if (array_key_exists('is_suspended', $data)) {
+            $suspend = (bool) $data['is_suspended'];
+            if ($suspend) {
+                $this->suspendUser($userId, $data['suspension_reason'] ?? null);
+                // reload
+                $user = User::find($userId);
+                return $user;
+            } else {
+                $this->unsuspendUser($userId);
+                $user = User::find($userId);
+                return $user;
+            }
+        }
+
+        // Update allowed profile fields
+        $allowed = array_intersect_key($data, array_flip(['name','email','phone','role']));
+        if (!empty($allowed)) {
+            $user->update($allowed);
+        }
+
+        return $user;
+    }
+
+    /**
      * Get financial statistics for admin dashboard
      */
     public function getFinancialStats(): array

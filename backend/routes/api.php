@@ -74,6 +74,8 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
 
     // Agency details
     Route::get('/admin/agencies/{id}', [AdminController::class, 'getAgencyDetails']);
+    // Update agency (supports status changes)
+    Route::put('/admin/agencies/{id}', [AdminController::class, 'updateAgency']);
 
     // Financial statistics for admin
     Route::get('/admin/financial-stats', [AdminController::class, 'getFinancialStats']);
@@ -83,6 +85,8 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
     Route::get('/admin/users/{id}', [AdminController::class, 'getUserDetails']);
     Route::post('/admin/users/{id}/suspend', [AdminController::class, 'suspendUser']);
     Route::post('/admin/users/{id}/unsuspend', [AdminController::class, 'unsuspendUser']);
+    // Update user (supports is_suspended toggle and profile updates)
+    Route::put('/admin/users/{id}', [AdminController::class, 'updateUser']);
     Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser']);
 
     // Report management (view, update status, soft/hard delete)

@@ -7,6 +7,7 @@ use App\Http\Requests\SuspendUserRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\AgencyResource;
 use App\Services\AdminService;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -176,6 +177,50 @@ class AdminController extends Controller
                 'success' => false,
                 'message' => $e->getMessage(),
             ], in_array($e->getCode(), [400, 404]) ? $e->getCode() : 500);
+        }
+    }
+
+    /**
+     * Update user (suspend toggle or profile fields)
+     */
+    public function updateUser(Request $request, $id)
+    {
+        $data = $request->only(['is_suspended', 'suspension_reason', 'name', 'email', 'phone', 'role']);
+
+        try {
+            $user = $this->adminService->updateUser($id, $data);
+
+            return response()->json([
+                'success' => true,
+                'data' => new UserResource($user),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], in_array($e->getCode(), [400,404]) ? $e->getCode() : 400);
+        }
+    }
+
+    /**
+     * Update agency (e.g., status)
+     */
+    public function updateAgency(Request $request, $id)
+    {
+        $data = $request->only(['status', 'name', 'location']);
+
+        try {
+            $agency = $this->adminService->updateAgency($id, $data);
+
+            return response()->json([
+                'success' => true,
+                'data' => new AgencyResource($agency),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], in_array($e->getCode(), [400,404]) ? $e->getCode() : 400);
         }
     }
 
