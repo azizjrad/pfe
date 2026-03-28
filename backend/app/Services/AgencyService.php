@@ -157,6 +157,15 @@ class AgencyService
     }
 
     /**
+     * Create a new agency
+     */
+    public function create(array $data): Agency
+    {
+        $allowed = array_intersect_key($data, array_flip(['name','address','city','phone','email','opening_time','closing_time','status','location']));
+        return Agency::create($allowed);
+    }
+
+    /**
      * Suspend/unsuspend agency
      */
     public function updateStatus(Agency $agency, string $status): Agency

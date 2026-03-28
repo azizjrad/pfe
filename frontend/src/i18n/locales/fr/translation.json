@@ -243,6 +243,7 @@
       "passwordHelpUppercase": "Une lettre majuscule",
       "passwordHelpSymbol": "Un symbole (!@#$%^&*...)",
       "confirmPasswordLabel": "Confirmer le mot de passe",
+      "showPassword": "Afficher le mot de passe",
       "submitButton": "Créer mon compte",
       "submitting": "Inscription en cours...",
       "orRegisterWith": "OU S'INSCRIRE AVEC",
@@ -280,6 +281,21 @@
       "feature2": "Lien de réinitialisation par email",
       "feature3": "Réponse en quelques minutes",
       "feature4": "Support disponible si besoin"
+    },
+    "reset": {
+      "title": "Réinitialiser le mot de passe",
+      "subtitle": "Définissez un nouveau mot de passe pour votre compte",
+      "formTitle": "Définir un nouveau mot de passe",
+      "formSubtitle": "Entrez un nouveau mot de passe sécurisé",
+      "submitButton": "Enregistrer le mot de passe",
+      "successTitle": "Mot de passe réinitialisé",
+      "successDesc": "Votre mot de passe a été mis à jour. Vous allez être redirigé vers la page de connexion.",
+      "backToLogin": "Retour à la connexion",
+      "noToken": "Jeton manquant ou invalide",
+      "requestLink": "Demandez un nouveau lien de réinitialisation",
+      "error": "Impossible de réinitialiser le mot de passe",
+      "missingToken": "Jeton manquant. Veuillez demander un lien de réinitialisation.",
+      "backLoginLink": "Retour à la connexion"
     }
   },
 

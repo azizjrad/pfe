@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Models\ClientReliabilityScore;
 use App\Models\UserNotification;
+use Illuminate\Support\Facades\Hash;
 
 class ClientService
 {
@@ -127,5 +128,33 @@ class ClientService
             'score' => max(0, min(100, $score->score + $delta)),
             'last_calculated_at' => now(),
         ]);
+    }
+
+    /**
+     * Create a new client user
+     */
+    public function create(array $data): User
+    {
+        if (isset($data['email']) && User::where('email', $data['email'])->exists()) {
+            throw new \Exception('Email already in use', 400);
+        }
+
+        $password = $data['password'] ?? null;
+        if (!$password) {
+            $password = '';
+        }
+
+        $user = User::create([
+            'name' => $data['name'] ?? 'Unnamed',
+            'email' => $data['email'] ?? null,
+            'password' => $password ? Hash::make($password) : null,
+            'role' => 'client',
+            'agency_id' => $data['agency_id'] ?? null,
+            'phone' => $data['phone'] ?? null,
+            'address' => $data['address'] ?? null,
+            'driver_license' => $data['driver_license'] ?? null,
+        ]);
+
+        return $user;
     }
 }

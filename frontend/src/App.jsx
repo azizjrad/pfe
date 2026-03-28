@@ -17,6 +17,7 @@ const Home = React.lazy(() => import("./pages/public/Home"));
 const Login = React.lazy(() => import("./pages/auth/Login"));
 const Register = React.lazy(() => import("./pages/auth/Register"));
 const ForgotPassword = React.lazy(() => import("./pages/auth/ForgotPassword"));
+const ResetPassword = React.lazy(() => import("./pages/auth/ResetPassword"));
 const TermsOfService = React.lazy(
   () => import("./pages/public/TermsOfService"),
 );
@@ -97,6 +98,14 @@ function App() {
                 element={
                   <React.Suspense fallback={<PageLoader />}>
                     <ForgotPassword />
+                  </React.Suspense>
+                }
+              />
+              <Route
+                path="/set-password"
+                element={
+                  <React.Suspense fallback={<PageLoader />}>
+                    <ResetPassword />
                   </React.Suspense>
                 }
               />

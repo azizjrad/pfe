@@ -5,51 +5,83 @@ namespace App\Services;
 use App\Models\User;
 use App\Models\Agency;
 use App\Models\ClientReliabilityScore;
+use App\Services\ClientService;
+use App\Services\AgencyService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class AuthService
 {
+    private ClientService $clientService;
+    private AgencyService $agencyService;
+
+    public function __construct(ClientService $clientService, AgencyService $agencyService)
+    {
+        $this->clientService = $clientService;
+        $this->agencyService = $agencyService;
+    }
+
     /**
      * Register a new user (client or agency_admin)
      * Auto-creates agency for agency_admin and reliability score for clients
      */
     public function register(array $data): User
     {
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'role' => $data['role'],
-            'phone' => $data['phone'],
-            'address' => $data['address'] ?? null,
-            'driver_license' => $data['driver_license'] ?? null,
-        ]);
+        // Wrap registration in a transaction to ensure atomicity
+        return DB::transaction(function () use ($data) {
+            // Create user (clients via ClientService, others inline)
+            $userPayload = [
+                'name' => $data['name'] ?? null,
+                'email' => $data['email'] ?? null,
+                'password' => $data['password'] ?? null,
+                'role' => $data['role'] ?? 'client',
+                'phone' => $data['phone'] ?? null,
+                'address' => $data['address'] ?? null,
+                'driver_license' => $data['driver_license'] ?? null,
+            ];
 
-        // Auto-create agency for agency_admin users
-        if ($data['role'] === 'agency_admin') {
-            $agency = Agency::create([
-                'name' => $data['agency_name'],
-                'location' => $data['agency_location'],
-                'phone' => $data['phone'],
-                'email' => $data['email'],
-                'address' => $data['address'] ?? '',
-            ]);
+            if (($data['role'] ?? null) === 'client') {
+                $user = $this->clientService->create($userPayload);
+            } else {
+                // create non-client users directly
+                $user = User::create([
+                    'name' => $userPayload['name'],
+                    'email' => $userPayload['email'],
+                    'password' => $userPayload['password'] ? Hash::make($userPayload['password']) : null,
+                    'role' => $userPayload['role'],
+                    'phone' => $userPayload['phone'] ?? null,
+                    'address' => $userPayload['address'] ?? null,
+                    'driver_license' => $userPayload['driver_license'] ?? null,
+                ]);
+            }
 
-            $user->update(['agency_id' => $agency->id]);
-        }
+            // Auto-create agency for agency_admin users using AgencyService
+            if (($data['role'] ?? null) === 'agency_admin') {
+                $agencyPayload = [
+                    'name' => $data['agency_name'] ?? ($data['name'] . "'s Agency"),
+                    'location' => $data['agency_location'] ?? null,
+                    'phone' => $data['phone'] ?? null,
+                    'email' => $data['email'] ?? null,
+                    'address' => $data['address'] ?? '',
+                ];
 
-        // Initialize reliability score for clients (starts at 100)
-        if ($data['role'] === 'client') {
-            ClientReliabilityScore::create([
-                'user_id' => $user->id,
-                'score' => 100,
-                'last_calculated_at' => now(),
-            ]);
-        }
+                $agency = $this->agencyService->create($agencyPayload);
+                $user->update(['agency_id' => $agency->id]);
+            }
 
-        return $user->load('agency', 'reliabilityScore');
+            // Initialize reliability score for clients (starts at 100)
+            if (($data['role'] ?? null) === 'client') {
+                ClientReliabilityScore::create([
+                    'user_id' => $user->id,
+                    'score' => 100,
+                    'last_calculated_at' => now(),
+                ]);
+            }
+
+            return $user->load('agency', 'reliabilityScore');
+        });
     }
 
     /**

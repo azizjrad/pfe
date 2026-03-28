@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Agency;
 use App\Models\Reservation;
 
+
 class AdminService
 {
     /**
@@ -256,6 +257,11 @@ class AdminService
 
         return $agency;
     }
+
+    /**
+     * Create a new agency
+     */
+    // Agency/user creation moved to AuthService (users) and AgencyService (agencies)
 
     /**
      * Update user attributes or toggle suspension

@@ -107,4 +107,19 @@ class User extends Authenticatable
     {
         return $this->role === 'client';
     }
+
+    /**
+     * Override the default password reset notification to use branded ResetPasswordMail.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $frontend = config('app.frontend_url', env('FRONTEND_URL', config('app.url')));
+        $link = rtrim($frontend, '/') . '/set-password?token=' . urlencode($token) . '&email=' . urlencode($this->email);
+
+        // Queue the branded mailable instead of the default notification
+        \Illuminate\Support\Facades\Mail::to($this->email)->queue(new \App\Mail\ResetPasswordMail($link, $this->email));
+    }
 }

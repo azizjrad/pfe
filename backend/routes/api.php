@@ -45,6 +45,8 @@ Route::prefix('public')->group(function () {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])
     ->middleware('throttle:5,1');  // Rate limit: 5 attempts per minute (brute force protection)
+// Password reset (set password via token sent in invite/reset)
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 // Protected routes - All authenticated users
 Route::middleware('auth:sanctum')->group(function () {
@@ -76,6 +78,8 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
     Route::get('/admin/agencies/{id}', [AdminController::class, 'getAgencyDetails']);
     // Update agency (supports status changes)
     Route::put('/admin/agencies/{id}', [AdminController::class, 'updateAgency']);
+    // Create agency
+    Route::post('/admin/agencies', [AdminController::class, 'createAgency']);
 
     // Financial statistics for admin
     Route::get('/admin/financial-stats', [AdminController::class, 'getFinancialStats']);
@@ -83,6 +87,8 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
     // User management
     Route::get('/admin/users', [AdminController::class, 'getUsers']);
     Route::get('/admin/users/{id}', [AdminController::class, 'getUserDetails']);
+    // Create a user
+    Route::post('/admin/users', [AdminController::class, 'createUser']);
     Route::post('/admin/users/{id}/suspend', [AdminController::class, 'suspendUser']);
     Route::post('/admin/users/{id}/unsuspend', [AdminController::class, 'unsuspendUser']);
     // Update user (supports is_suspended toggle and profile updates)
