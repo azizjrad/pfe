@@ -12,8 +12,17 @@ export const adminService = {
 
   /** Get all agencies with their statistics */
   getAgencies: async () => {
-    const response = await http.get("/admin/agencies");
-    return response.data;
+    // Try admin endpoint first; if missing, fall back to public agencies
+    try {
+      const response = await http.get("/admin/agencies");
+      return response.data;
+    } catch (err) {
+      if (err.response?.status === 404) {
+        const resp = await http.get("/public/agencies");
+        return resp.data;
+      }
+      throw err;
+    }
   },
 
   /** Get all users */
@@ -68,8 +77,28 @@ export const adminService = {
 
   /** Get financial statistics with monthly breakdown */
   getFinancialStats: async () => {
-    const response = await http.get("/admin/financial-stats");
-    return response.data;
+    // Some deployments expose agency-level financial stats at /agency/financial-stats
+    // while others may expose admin-level endpoints. Try admin first, then agency.
+    try {
+      const response = await http.get("/admin/financial-stats");
+      return response.data;
+    } catch (err) {
+      if (err.response?.status === 404) {
+        try {
+          const resp = await http.get("/agency/financial-stats");
+          return resp.data;
+        } catch (err2) {
+          // Fallback to empty structure when endpoint isn't available
+          return {
+            monthly: [],
+            byAgency: [],
+            paymentMethods: [],
+            totals: { revenue: 0, commission: 0, profit: 0, avgMonthly: 0 },
+          };
+        }
+      }
+      throw err;
+    }
   },
 
   /** Get all agency reviews (super admin sees all) */

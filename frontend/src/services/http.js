@@ -30,10 +30,16 @@ http.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Authorization failed - emit event for AuthContext to handle
-      // This prevents race conditions where context state isn't properly cleaned up
-      const reason = error.response?.data?.message || "Unauthorized";
-      authEventEmitter.emit("unauthorized", { reason, error });
+      // Avoid emitting 'unauthorized' for logout requests to prevent an
+      // infinite loop: when logout() calls POST /logout without a valid
+      // session the response is 401 and would retrigger the unauthorized
+      // handler which calls logout() again.
+      const requestUrl = error.config?.url || "";
+      if (!requestUrl.includes("/logout")) {
+        const reason = error.response?.data?.message || "Unauthorized";
+        authEventEmitter.emit("unauthorized", { reason, error });
+      }
+      // Otherwise, swallow here and let the caller handle the 401 as needed.
     }
     return Promise.reject(error);
   },

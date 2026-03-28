@@ -66,7 +66,7 @@ const Navbar = () => {
 
   const allNavItems = [
     {
-      name: t("common.homeDir"),
+      name: t("nav.home"),
       path: "/",
       icon: (
         <svg
@@ -85,7 +85,7 @@ const Navbar = () => {
       ),
     },
     {
-      name: t("common.vehicles"),
+      name: t("nav.vehicles"),
       path: "/vehicles",
       icon: (
         <svg
@@ -104,7 +104,7 @@ const Navbar = () => {
       ),
     },
     {
-      name: t("common.agencies"),
+      name: t("nav.agencies"),
       path: "/agencies",
       icon: (
         <svg
@@ -123,7 +123,7 @@ const Navbar = () => {
       ),
     },
     {
-      name: t("common.about"),
+      name: t("nav.about"),
       path: "/about",
       icon: (
         <svg
@@ -142,7 +142,7 @@ const Navbar = () => {
       ),
     },
     {
-      name: t("common.contact"),
+      name: t("nav.contact"),
       path: "/contact",
       icon: (
         <svg
@@ -220,16 +220,13 @@ const Navbar = () => {
               {/* Logo - Right on mobile, Left on desktop */}
               <div className="relative flex-shrink-0 order-3 md:order-1">
                 <Link to="/" className="flex items-center space-x-2">
-                  <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center shadow-lg">
+                  <div className="w-20 h-20 flex items-center justify-center">
                     <img
                       src="/logo.png"
                       alt={t("app.name")}
-                      className="w-8 h-8 object-contain"
+                      className="w-16 h-16 object-contain"
                     />
                   </div>
-                  <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
-                    {t("app.name")}
-                  </span>
                 </Link>
               </div>
 

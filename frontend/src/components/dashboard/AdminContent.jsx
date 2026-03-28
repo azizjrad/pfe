@@ -1534,6 +1534,20 @@ const AdminContent = ({
         totalRevenue > 0 ? (totalCommission / totalRevenue) * 100 : 0;
 
       if (monthlyRevenue.length === 0) {
+        // If the overall dashboard loading finished and we still have no
+        // monthly data, show a friendly empty state instead of an infinite spinner
+        if (!loading) {
+          return (
+            <div className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <p className="text-gray-600">
+                  Aucune donnée financière disponible.
+                </p>
+              </div>
+            </div>
+          );
+        }
+
         return (
           <div className="flex items-center justify-center h-64">
             <div className="text-center">
@@ -1947,7 +1961,7 @@ const AdminContent = ({
               </div>
               <div className="flex justify-between items-center mt-2">
                 <span className="text-3xl font-bold text-purple-900">
-                  {platformStats.monthlyRevenue.toLocaleString()} DT
+                  {(platformStats?.monthlyRevenue ?? 0).toLocaleString()} DT
                 </span>
               </div>
             </div>

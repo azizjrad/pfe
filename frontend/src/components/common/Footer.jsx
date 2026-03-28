@@ -14,18 +14,16 @@ const Footer = () => {
               to="/"
               className="flex items-center space-x-2 mb-4 hover:opacity-80 transition-opacity"
             >
-              <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 flex items-center justify-center">
                 <img
-                  src="/car-logo.svg"
+                  src="/logo.png"
                   alt={t("app.name")}
-                  className="w-6 h-6"
+                  className="w-8 h-8 object-contain"
                 />
               </div>
               <span className="text-xl font-bold">{t("app.name")}</span>
             </Link>
-            <p className="text-gray-400">
-              {t("footer.description")}
-            </p>
+            <p className="text-gray-400">{t("footer.description")}</p>
           </div>
 
           <div>
@@ -57,12 +55,12 @@ const Footer = () => {
                   href="#vehicles"
                   className="hover:text-white transition-colors"
                 >
-                  {t("common.vehicles")}
+                  {t("nav.vehicles")}
                 </a>
               </li>
               <li>
                 <a href="#about" className="hover:text-white transition-colors">
-                  {t("common.about")}
+                  {t("nav.about")}
                 </a>
               </li>
               <li>
@@ -70,7 +68,7 @@ const Footer = () => {
                   to="/contact"
                   className="hover:text-white transition-colors"
                 >
-                  {t("common.contact")}
+                  {t("nav.contact")}
                 </Link>
               </li>
             </ul>
@@ -239,7 +237,8 @@ const Footer = () => {
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm">
-              &copy; {new Date().getFullYear()} {t("app.name")}. {t("footer.allRightsReserved")}.
+              &copy; {new Date().getFullYear()} {t("app.name")}.{" "}
+              {t("footer.allRightsReserved")}.
             </p>
             <div className="flex gap-6 text-sm">
               <Link

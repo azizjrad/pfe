@@ -58,6 +58,46 @@ class AdminController extends Controller
     }
 
     /**
+     * Get agencies list
+     */
+    public function getAgencies()
+    {
+        try {
+            $agencies = $this->adminService->getAgencies();
+
+            return response()->json([
+                'success' => true,
+                'data' => $agencies,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Get financial statistics for platform
+     */
+    public function getFinancialStats()
+    {
+        try {
+            $stats = $this->adminService->getFinancialStats();
+
+            return response()->json([
+                'success' => true,
+                'data' => $stats,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
      * Get user details
      */
     public function getUserDetails($id)

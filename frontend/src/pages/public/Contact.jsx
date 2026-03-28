@@ -8,7 +8,7 @@ import { contactService } from "../../services/contactService";
 
 const Contact = () => {
   const { t } = useTranslation();
-  
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -73,9 +73,9 @@ const Contact = () => {
                   to="/"
                   className="inline-flex items-center space-x-2 mb-8"
                 >
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
+                  <div className="w-12 h-12 flex items-center justify-center">
                     <img
-                      src="/car-logo.svg"
+                      src="/logo.png"
                       alt={t("app.name")}
                       className="w-8 h-8"
                     />
@@ -91,8 +91,12 @@ const Contact = () => {
                 className={`transition-all duration-700 delay-200 ${title.isVisible ? "animate-slideUp" : "opacity-0"}`}
               >
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                  <span className="text-gray-900">{t("contact.hero.titlePart1")}</span>{" "}
-                  <span className="text-primary-500">{t("contact.hero.titlePart2")}</span>
+                  <span className="text-gray-900">
+                    {t("contact.hero.titlePart1")}
+                  </span>{" "}
+                  <span className="text-primary-500">
+                    {t("contact.hero.titlePart2")}
+                  </span>
                 </h1>
 
                 <p className="text-base text-gray-600 mb-8 leading-relaxed">
@@ -111,25 +115,29 @@ const Contact = () => {
                   <li className="flex items-start gap-3">
                     <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
                     <span className="text-sm text-gray-700">
-                      <strong>{t("contact.info.address")}</strong> {t("contact.info.addressValue")}
+                      <strong>{t("contact.info.address")}</strong>{" "}
+                      {t("contact.info.addressValue")}
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
                     <span className="text-sm text-gray-700">
-                      <strong>{t("contact.info.phone")}</strong> {t("contact.info.phoneValue")}
+                      <strong>{t("contact.info.phone")}</strong>{" "}
+                      {t("contact.info.phoneValue")}
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
                     <span className="text-sm text-gray-700">
-                      <strong>{t("contact.info.email")}</strong> {t("contact.info.emailValue")}
+                      <strong>{t("contact.info.email")}</strong>{" "}
+                      {t("contact.info.emailValue")}
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
                     <span className="text-sm text-gray-700">
-                      <strong>{t("contact.info.hours")}</strong> {t("contact.info.hoursValue")}
+                      <strong>{t("contact.info.hours")}</strong>{" "}
+                      {t("contact.info.hoursValue")}
                     </span>
                   </li>
                 </ul>

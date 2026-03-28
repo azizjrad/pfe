@@ -100,10 +100,7 @@ const Dashboard = () => {
     if (user?.role === ROLES.CLIENT) {
       try {
         await clientDashboard.markAllNotificationsAsRead();
-        showToast(
-          t("dashboard.messages.notificationsMarkedRead"),
-          "success",
-        );
+        showToast(t("dashboard.messages.notificationsMarkedRead"), "success");
       } catch (error) {
         showToast(t("dashboard.messages.notificationsMarkReadError"), "error");
       }
@@ -185,25 +182,61 @@ const Dashboard = () => {
         return [
           { id: "overview", label: t("dashboard.tabs.overview"), icon: "home" },
           { id: "users", label: t("dashboard.tabs.users"), icon: "users" },
-          { id: "agencies", label: t("dashboard.tabs.agencies"), icon: "building" },
-          { id: "messages", label: t("dashboard.tabs.contactMessages"), icon: "mail" },
-          { id: "statistics", label: t("dashboard.tabs.statisticsSuper"), icon: "chart" },
+          {
+            id: "agencies",
+            label: t("dashboard.tabs.agencies"),
+            icon: "building",
+          },
+          {
+            id: "messages",
+            label: t("dashboard.tabs.contactMessages"),
+            icon: "mail",
+          },
+          {
+            id: "statistics",
+            label: t("dashboard.tabs.statisticsSuper"),
+            icon: "chart",
+          },
         ];
       case ROLES.AGENCY_ADMIN:
         return [
-          { id: "overview", label: t("dashboard.tabs.active"), icon: "clipboard" },
+          {
+            id: "overview",
+            label: t("dashboard.tabs.active"),
+            icon: "clipboard",
+          },
           { id: "reservations", label: t("dashboard.tabs.all"), icon: "list" },
           { id: "vehicles", label: t("dashboard.tabs.vehicles"), icon: "car" },
           { id: "reports", label: t("dashboard.tabs.reports"), icon: "flag" },
-          { id: "financial", label: t("dashboard.tabs.financial"), icon: "credit-card" },
+          {
+            id: "financial",
+            label: t("dashboard.tabs.financial"),
+            icon: "credit-card",
+          },
           { id: "alerts", label: t("dashboard.tabs.alerts"), icon: "bell" },
-          { id: "statistics", label: t("dashboard.tabs.statistics"), icon: "chart" },
+          {
+            id: "statistics",
+            label: t("dashboard.tabs.statistics"),
+            icon: "chart",
+          },
         ];
       case ROLES.CLIENT:
         return [
-          { id: "overview", label: t("dashboard.tabs.myReservations"), icon: "clipboard" },
-          { id: "saved", label: t("dashboard.tabs.savedVehicles"), icon: "heart" },
-          { id: "notifications", label: t("dashboard.tabs.notifications"), icon: "bell" },
+          {
+            id: "overview",
+            label: t("dashboard.tabs.myReservations"),
+            icon: "clipboard",
+          },
+          {
+            id: "saved",
+            label: t("dashboard.tabs.savedVehicles"),
+            icon: "heart",
+          },
+          {
+            id: "notifications",
+            label: t("dashboard.tabs.notifications"),
+            icon: "bell",
+          },
           { id: "history", label: t("dashboard.tabs.history"), icon: "clock" },
         ];
       default:
@@ -218,8 +251,8 @@ const Dashboard = () => {
     switch (user?.role) {
       case ROLES.SUPER_ADMIN:
         return {
-          title: t("dashboard.title.superAdmin"),
-          subtitle: t("dashboard.title.superAdminSubtitle"),
+          title: t("dashboard.title.super_admin"),
+          subtitle: t("dashboard.subtitle.super_admin"),
         };
       case ROLES.AGENCY_ADMIN:
         return {
@@ -245,7 +278,7 @@ const Dashboard = () => {
         return [
           {
             title: t("dashboard.stats.agencies.title"),
-            value: platformStats.totalAgencies?.toString() || "0",
+            value: String(platformStats?.totalAgencies ?? "0"),
             change: t("dashboard.stats.agencies.change"),
             trend: "neutral",
             icon: "building",
@@ -253,7 +286,7 @@ const Dashboard = () => {
           },
           {
             title: t("dashboard.stats.users.title"),
-            value: platformStats.totalUsers?.toString() || "0",
+            value: String(platformStats?.totalUsers ?? "0"),
             change: t("dashboard.stats.users.change"),
             trend: "up",
             icon: "users",
@@ -261,7 +294,7 @@ const Dashboard = () => {
           },
           {
             title: t("dashboard.stats.vehicles.title"),
-            value: platformStats.totalVehicles?.toString() || "0",
+            value: String(platformStats?.totalVehicles ?? "0"),
             change: t("dashboard.stats.vehicles.change"),
             trend: "neutral",
             icon: "car",
@@ -269,7 +302,7 @@ const Dashboard = () => {
           },
           {
             title: t("dashboard.stats.monthlyRevenue.title"),
-            value: platformStats.monthlyRevenue
+            value: platformStats?.monthlyRevenue
               ? `${platformStats.monthlyRevenue.toLocaleString()} DT`
               : "0 DT",
             change: t("dashboard.stats.monthlyRevenue.change"),
@@ -282,7 +315,7 @@ const Dashboard = () => {
         return [
           {
             title: t("dashboard.stats.totalVehicles.title"),
-            value: agencyStats.totalVehicles.toString(),
+            value: String(agencyStats?.totalVehicles ?? "0"),
             change: `${agencyStats.availableVehicles} ${t("dashboard.stats.totalVehicles.change")}`,
             trend: "neutral",
             icon: "car",
@@ -290,7 +323,7 @@ const Dashboard = () => {
           },
           {
             title: t("dashboard.stats.activeReservations.title"),
-            value: agencyStats.activeReservations.toString(),
+            value: String(agencyStats?.activeReservations ?? "0"),
             change: t("dashboard.stats.activeReservations.change"),
             trend: "up",
             icon: "clipboard",
@@ -298,7 +331,9 @@ const Dashboard = () => {
           },
           {
             title: t("dashboard.stats.agencyRevenue.title"),
-            value: `${agencyStats.monthlyRevenue.toLocaleString()} DT`,
+            value: agencyStats?.monthlyRevenue
+              ? `${agencyStats.monthlyRevenue.toLocaleString()} DT`
+              : "0 DT",
             change: t("dashboard.stats.agencyRevenue.change"),
             trend: "up",
             icon: "money",
@@ -306,7 +341,7 @@ const Dashboard = () => {
           },
           {
             title: t("dashboard.stats.alerts.title"),
-            value: agencyStats.alertsCount.toString(),
+            value: String(agencyStats?.alertsCount ?? "0"),
             change: `${agencyStats.maintenanceVehicles} ${t("dashboard.stats.alerts.change")}`,
             trend: agencyStats.alertsCount > 0 ? "warning" : "neutral",
             icon: "bell",
@@ -317,7 +352,7 @@ const Dashboard = () => {
         return [
           {
             title: t("dashboard.stats.activeReservations.title"),
-            value: clientStats.activeReservations.toString(),
+            value: String(clientStats?.activeReservations ?? "0"),
             change: t("dashboard.stats.activeReservations.change"),
             trend: "neutral",
             icon: "clipboard",
@@ -325,7 +360,7 @@ const Dashboard = () => {
           },
           {
             title: t("dashboard.stats.totalHistory.title"),
-            value: clientStats.completedReservations.toString(),
+            value: String(clientStats?.completedReservations ?? "0"),
             change: t("dashboard.stats.totalHistory.change"),
             trend: "neutral",
             icon: "clock",
@@ -333,7 +368,7 @@ const Dashboard = () => {
           },
           {
             title: t("dashboard.stats.totalSpend.title"),
-            value: `${Number(clientStats.totalSpend).toLocaleString()} DT`,
+            value: `${Number(clientStats?.totalSpend ?? 0).toLocaleString()} DT`,
             change: t("dashboard.stats.totalSpend.change"),
             trend: "neutral",
             icon: "money",
@@ -341,7 +376,7 @@ const Dashboard = () => {
           },
           {
             title: t("dashboard.stats.reliabilityScore.title"),
-            value: `${clientStats.reliabilityScore}%`,
+            value: `${clientStats?.reliabilityScore ?? 0}%`,
             change: clientStats.riskLabel,
             trend: "up",
             icon: "star",
@@ -771,7 +806,7 @@ const Dashboard = () => {
               className={`group p-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-all duration-300 shadow-md hover:shadow-lg ${
                 refreshing ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              title={t("dashboard.actions.refreshData")}
+              title={t("dashboard.actionLabels.refreshData")}
             >
               <svg
                 className={`w-5 h-5 transition-transform duration-500 ${
@@ -862,7 +897,8 @@ const Dashboard = () => {
                 </svg>
               </button>
               <span className="text-sm font-semibold text-gray-700">
-                {tabs.find((t) => t.id === activeTab)?.label || t("dashboard.title.default")}
+                {tabs.find((t) => t.id === activeTab)?.label ||
+                  t("dashboard.title.default")}
               </span>
               <div className="w-10"></div>
             </div>
@@ -900,7 +936,9 @@ const Dashboard = () => {
                 <div className="lg:hidden fixed left-0 top-0 bottom-0 w-72 z-[110] animate-slideInLeft">
                   <div className="h-full bg-gradient-to-br from-white/95 to-white/80 backdrop-blur-2xl border-r border-white/60 shadow-2xl rounded-r-3xl flex flex-col">
                     <div className="flex items-center justify-between p-6 border-b border-white/40">
-                      <h3 className="text-lg font-bold text-gray-900">{t("dashboard.actions.menu")}</h3>
+                      <h3 className="text-lg font-bold text-gray-900">
+                        {t("dashboard.actionLabels.menu")}
+                      </h3>
                       <button
                         onClick={() => setIsSidebarOpen(false)}
                         className="p-2 rounded-lg hover:bg-white/60 transition-colors"
@@ -974,10 +1012,22 @@ const Dashboard = () => {
           }
           setDeleteModal({ isOpen: false, type: null, item: null });
         }}
-        title={deleteModal.type === "agency" ? t("dashboard.modals.deleteAgencyTitle") : t("dashboard.modals.deleteUserTitle")}
-        message={deleteModal.type === "agency" ? t("dashboard.modals.deleteAgencyDesc", { name: deleteModal.item?.name }) : t("dashboard.modals.deleteUserDesc", { name: deleteModal.item?.name })}
-        confirmText={t("dashboard.actions.delete")}
-        cancelText={t("dashboard.actions.cancel")}
+        title={
+          deleteModal.type === "agency"
+            ? t("dashboard.modals.deleteAgencyTitle")
+            : t("dashboard.modals.deleteUserTitle")
+        }
+        message={
+          deleteModal.type === "agency"
+            ? t("dashboard.modals.deleteAgencyDesc", {
+                name: deleteModal.item?.name,
+              })
+            : t("dashboard.modals.deleteUserDesc", {
+                name: deleteModal.item?.name,
+              })
+        }
+        confirmText={t("dashboard.actionLabels.delete")}
+        cancelText={t("dashboard.actionLabels.cancel")}
         danger
       />
 
@@ -1027,22 +1077,30 @@ const Dashboard = () => {
         message={
           suspendModal.type === "agency"
             ? suspendModal.item?.status === "inactive"
-              ? t("dashboard.modals.unblockAgencyDesc", { name: suspendModal.item?.name })
-              : t("dashboard.modals.blockAgencyDesc", { name: suspendModal.item?.name })
+              ? t("dashboard.modals.unblockAgencyDesc", {
+                  name: suspendModal.item?.name,
+                })
+              : t("dashboard.modals.blockAgencyDesc", {
+                  name: suspendModal.item?.name,
+                })
             : suspendModal.item?.is_suspended
-              ? t("dashboard.modals.unblockUserDesc", { name: suspendModal.item?.name })
-              : t("dashboard.modals.blockUserDesc", { name: suspendModal.item?.name })
+              ? t("dashboard.modals.unblockUserDesc", {
+                  name: suspendModal.item?.name,
+                })
+              : t("dashboard.modals.blockUserDesc", {
+                  name: suspendModal.item?.name,
+                })
         }
         confirmText={
           suspendModal.type === "agency"
             ? suspendModal.item?.status === "inactive"
-              ? t("dashboard.actions.unblock")
-              : t("dashboard.actions.block")
+              ? t("dashboard.actionLabels.unblock")
+              : t("dashboard.actionLabels.block")
             : suspendModal.item?.is_suspended
-              ? t("dashboard.actions.unblock")
-              : t("dashboard.actions.block")
+              ? t("dashboard.actionLabels.unblock")
+              : t("dashboard.actionLabels.block")
         }
-        cancelText={t("dashboard.actions.cancel")}
+        cancelText={t("dashboard.actionLabels.cancel")}
         danger={
           suspendModal.type === "agency"
             ? suspendModal.item?.status === "active"

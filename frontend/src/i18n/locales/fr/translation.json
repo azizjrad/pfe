@@ -83,6 +83,7 @@
     "retry": "Réessayer",
     "back": "Retour",
     "backHome": "Retour à l'accueil",
+    "homeDir": "Accueil",
     "submit": "Soumettre",
     "search": "Rechercher",
     "filter": "Filtrer",
@@ -90,7 +91,27 @@
     "yes": "Oui",
     "no": "Non",
     "or": "OU",
-    "actions": "Actions",
+    "actions": {
+      "refreshData": "Actualiser les données",
+      "menu": "Menu",
+      "delete": "Supprimer",
+      "cancel": "Annuler",
+      "block": "Bloquer",
+      "unblock": "Débloquer"
+    },
+    "messages": {
+      "notificationsMarkedRead": "Toutes les notifications sont marquées comme lues",
+      "notificationsMarkReadError": "Erreur lors du marquage des notifications",
+      "dataRefreshed": "Données actualisées avec succès",
+      "dataRefreshError": "Erreur lors de l'actualisation des données",
+      "detailsOpenError": "Erreur lors de l'ouverture des détails",
+      "roleUnrecognized": "Rôle utilisateur non reconnu",
+      "statusChangeError": "Erreur lors de la modification du statut",
+      "agencyUnblocked": "Agence débloquée avec succès",
+      "agencyBlocked": "Agence bloquée avec succès",
+      "userUnblocked": "Utilisateur débloqué avec succès",
+      "userBlocked": "Utilisateur bloqué avec succès"
+    },
     "details": "Détails",
     "status": "Statut",
     "date": "Date",
@@ -334,12 +355,18 @@
     "title": {
       "super_admin": "Tableau de bord Super Admin",
       "agency_admin": "Tableau de bord Agence",
-      "client": "Tableau de bord Client"
+      "client": "Tableau de bord Client",
+      "superAdmin": "Tableau de bord Super Admin",
+      "agencyAdmin": "Tableau de bord Agence",
+      "clientTitle": "Tableau de bord Client"
     },
     "subtitle": {
       "super_admin": "Gestion complète de la plateforme",
       "agency_admin": "Gestion de votre agence",
-      "client": "Gérez vos réservations"
+      "client": "Gérez vos réservations",
+      "superAdminSubtitle": "Gestion complète de la plateforme",
+      "agencyAdminSubtitle": "Gestion de votre agence",
+      "clientSubtitle": "Gérez vos réservations"
     },
     "tabs": {
       "overview": "Vue d'ensemble",
@@ -350,8 +377,38 @@
       "reports": "Signalements",
       "reviews": "Avis",
       "contact": "Messages",
+      "contactMessages": "Messages",
+      "statisticsSuper": "Statistiques (plateforme)",
+      "active": "Vue d'ensemble",
+      "all": "Tous",
+      "financial": "Finances",
+      "alerts": "Alertes",
+      "myReservations": "Mes réservations",
+      "savedVehicles": "Véhicules sauvegardés",
+      "notifications": "Notifications",
+      "history": "Historique",
       "statistics": "Statistiques",
       "profile": "Profil"
+    },
+    "actionLabels": {
+      "cancel": "Annuler",
+      "block": "Bloquer",
+      "unblock": "Débloquer",
+      "delete": "Supprimer",
+      "refreshData": "Actualiser les données",
+      "menu": "Menu"
+    },
+    "modals": {
+      "blockUserTitle": "Bloquer l'utilisateur",
+      "blockUserDesc": "Êtes-vous sûr de vouloir bloquer {{name}} ? Cela les empêchera d'accéder au service.",
+      "unblockUserTitle": "Débloquer l'utilisateur",
+      "unblockUserDesc": "Voulez-vous débloquer {{name}} ?",
+      "blockAgencyTitle": "Bloquer l'agence",
+      "blockAgencyDesc": "Êtes-vous sûr de vouloir bloquer l'agence {{name}} ?",
+      "unblockAgencyTitle": "Débloquer l'agence",
+      "unblockAgencyDesc": "Voulez-vous débloquer l'agence {{name}} ?",
+      "deleteUserDesc": "Supprimer définitivement {{name}} ? Cette action est irréversible.",
+      "deleteAgencyDesc": "Supprimer définitivement l'agence {{name}} ? Cette action est irréversible."
     },
     "stats": {
       "totalAgencies": "Agences totales",
@@ -361,7 +418,51 @@
       "monthlyRevenue": "Revenus mensuels",
       "activeReservations": "Réservations actives",
       "clientScore": "Score de fiabilité",
-      "myReservations": "Mes réservations"
+      "myReservations": "Mes réservations",
+      "agencies": {
+        "title": "Agences totales",
+        "change": "par rapport au mois précédent"
+      },
+      "users": {
+        "title": "Utilisateurs totaux",
+        "change": "par rapport au mois précédent"
+      },
+      "vehicles": {
+        "title": "Véhicules totaux",
+        "change": "par rapport au mois précédent"
+      },
+      "monthlyRevenue": {
+        "title": "Revenus mensuels",
+        "change": "variation mensuelle"
+      },
+      "totalVehicles": {
+        "title": "Véhicules totaux",
+        "change": "disponibles"
+      },
+      "agencyRevenue": {
+        "title": "Revenu agence",
+        "change": "par rapport au mois précédent"
+      },
+      "alerts": {
+        "title": "Alertes",
+        "change": "véhicules en maintenance"
+      },
+      "totalHistory": {
+        "title": "Historique total",
+        "change": "par rapport à la période précédente"
+      },
+      "totalSpend": {
+        "title": "Dépenses totales",
+        "change": "par rapport à la période précédente"
+      },
+      "activeReservations": {
+        "title": "Réservations actives",
+        "change": "par rapport à la période précédente"
+      },
+      "reliabilityScore": {
+        "title": "Score de fiabilité",
+        "change": ""
+      }
     }
   },
 

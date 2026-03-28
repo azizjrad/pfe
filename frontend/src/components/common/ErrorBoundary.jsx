@@ -40,6 +40,25 @@ class ErrorBoundary extends React.Component {
     const { t } = this.props;
 
     if (this.state.hasError) {
+      // If backend returned a specific HTTP error, redirect to the
+      // appropriate page (403 -> /forbidden, 404 -> /not-found).
+      // Many errors are axios errors with `response.status` available.
+      const err = this.state.error;
+      const status = err?.response?.status || err?.status || null;
+      if (status === 403) {
+        window.location.href = "/forbidden";
+        return null;
+      }
+      if (status === 404) {
+        // Pass optional info via history state is handled by route if needed
+        window.location.href = "/not-found";
+        return null;
+      }
+
+      // For any other error, swallow the generic error page and render nothing.
+      // This keeps only 403/404 visible while preventing the large error UI.
+      console.error("Non-HTTP error caught by ErrorBoundary:", err);
+      return null;
       const isDevelopment = import.meta.env.DEV;
 
       return (

@@ -169,8 +169,6 @@ const ClientContent = ({
   }, [historySearch, historyStatus]);
 
   if (activeTab === "overview") {
-    const recentNotifications = notifications.slice(0, 3);
-
     return (
       <div className="space-y-5">
         <div className="flex justify-between items-center">
@@ -273,49 +271,6 @@ const ClientContent = ({
             ))}
           </div>
         )}
-
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">
-              Dernières Notifications
-            </h3>
-            <button
-              onClick={() => onChangeTab?.("notifications")}
-              className="text-sm font-medium text-primary-600 hover:text-primary-700"
-            >
-              Voir tout
-            </button>
-          </div>
-
-          {recentNotifications.length === 0 ? (
-            <p className="text-sm text-gray-500">
-              Aucune notification récente.
-            </p>
-          ) : (
-            <div className="space-y-3">
-              {recentNotifications.map((notification) => (
-                <div
-                  key={notification.id}
-                  className="p-3 rounded-lg border border-gray-100 bg-gray-50"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <p className="text-sm font-semibold text-gray-900">
-                        {notification.title}
-                      </p>
-                      <p className="text-sm text-gray-600 mt-0.5">
-                        {notification.message}
-                      </p>
-                    </div>
-                    <span className="text-xs text-gray-400 whitespace-nowrap">
-                      {getTimeAgo(notification.created_at)}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
 
         {/* Reservation Details Modal */}
         {detailsModal.isOpen && detailsModal.reservation && (

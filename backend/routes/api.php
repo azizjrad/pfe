@@ -69,8 +69,14 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
     // Admin dashboard statistics
     Route::get('/admin/stats', [AdminController::class, 'getDashboardStats']);
 
+    // Admin agencies list
+    Route::get('/admin/agencies', [AdminController::class, 'getAgencies']);
+
     // Agency details
     Route::get('/admin/agencies/{id}', [AdminController::class, 'getAgencyDetails']);
+
+    // Financial statistics for admin
+    Route::get('/admin/financial-stats', [AdminController::class, 'getFinancialStats']);
 
     // User management
     Route::get('/admin/users', [AdminController::class, 'getUsers']);

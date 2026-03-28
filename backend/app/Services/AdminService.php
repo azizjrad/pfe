@@ -203,8 +203,76 @@ class AdminService
             'total_reservations' => $totalReservations,
             'completed_reservations' => $completedReservations,
             'total_revenue' => round($totalRevenue, 2),
-            'admin_count' => $agency->users()->count(),
+            'admin_count' => $agency->admins()->count(),
             'avg_rating' => round($agency->reviews()->avg('rating') ?? 0, 2),
+        ];
+    }
+
+    /**
+     * Get list of agencies with basic stats for admin listing
+     */
+    public function getAgencies()
+    {
+        $agencies = Agency::withCount('vehicles')->get();
+
+        $result = $agencies->map(function ($agency) {
+            // Compute revenue for this agency (sum of completed reservations for agency vehicles)
+            $vehicleIds = $agency->vehicles()->pluck('id')->toArray();
+            $revenue = 0;
+            if (!empty($vehicleIds)) {
+                $revenue = Reservation::whereIn('vehicle_id', $vehicleIds)
+                    ->where('status', 'completed')
+                    ->sum('total_price');
+            }
+
+            return [
+                'id' => $agency->id,
+                'name' => $agency->name,
+                'status' => $agency->status,
+                'vehicles' => $agency->vehicles_count ?? 0,
+                'revenue' => round($revenue, 2),
+            ];
+        });
+
+        return $result;
+    }
+
+    /**
+     * Get financial statistics for admin dashboard
+     */
+    public function getFinancialStats(): array
+    {
+        // Monthly revenue (YYYY-MM)
+        $monthly = Reservation::where('status', 'completed')
+            ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, SUM(total_price) as revenue")
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get()
+            ->map(fn($r) => ['month' => $r->month, 'revenue' => round($r->revenue, 2)])
+            ->toArray();
+
+        // Revenue by agency
+        $byAgency = Agency::all()->map(function ($agency) {
+            $vehicleIds = $agency->vehicles()->pluck('id')->toArray();
+            $revenue = 0;
+            if (!empty($vehicleIds)) {
+                $revenue = Reservation::whereIn('vehicle_id', $vehicleIds)
+                    ->where('status', 'completed')
+                    ->sum('total_price');
+            }
+            return ['agency_id' => $agency->id, 'agency_name' => $agency->name, 'revenue' => round($revenue, 2)];
+        })->toArray();
+
+        $totals = [];
+        $totals['revenue'] = Reservation::where('status', 'completed')->sum('total_price');
+        $totals['commission'] = Reservation::where('status', 'completed')->sum('platform_commission');
+        $totals['profit'] = $totals['revenue'] - $totals['commission'];
+        $totals['avgMonthly'] = !empty($monthly) ? round(array_sum(array_column($monthly, 'revenue')) / count($monthly), 2) : 0;
+
+        return [
+            'monthly' => $monthly,
+            'byAgency' => $byAgency,
+            'totals' => $totals,
         ];
     }
 }
