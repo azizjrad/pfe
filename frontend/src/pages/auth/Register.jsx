@@ -219,7 +219,7 @@ const Register = () => {
         <div className="relative z-10 flex flex-col justify-between w-full text-white">
           <div>
             <Link to="/" className="inline-flex items-center space-x-3 group">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <img src="/logo.png" alt={t("app.name")} className="w-7 h-7" />
               </div>
               <span className="text-2xl font-bold">{t("app.name")}</span>
@@ -337,7 +337,7 @@ const Register = () => {
               to="/"
               className="inline-flex items-center space-x-2 lg:hidden mb-8"
             >
-              <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 flex items-center justify-center">
                 <img src="/logo.png" alt={t("app.name")} className="w-7 h-7" />
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
