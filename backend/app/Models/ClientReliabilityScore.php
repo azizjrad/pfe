@@ -14,7 +14,6 @@ class ClientReliabilityScore extends Model
         'late_returns',
         'payment_delays',
         'damage_incidents',
-        'total_unpaid_amount',
         'reliability_score',
         'risk_level',
         'admin_notes',
@@ -28,7 +27,6 @@ class ClientReliabilityScore extends Model
         'late_returns' => 'integer',
         'payment_delays' => 'integer',
         'damage_incidents' => 'integer',
-        'total_unpaid_amount' => 'decimal:2',
         'reliability_score' => 'integer',
         'last_calculated_at' => 'datetime',
     ];
