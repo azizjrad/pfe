@@ -333,6 +333,19 @@
   },
 
   "dashboard": {
+    "messages": {
+      "notificationsMarkedRead": "Toutes les notifications sont marquées comme lues",
+      "notificationsMarkReadError": "Erreur lors du marquage des notifications",
+      "dataRefreshed": "Données actualisées avec succès",
+      "dataRefreshError": "Erreur lors de l'actualisation des données",
+      "detailsOpenError": "Erreur lors de l'ouverture des détails",
+      "roleUnrecognized": "Rôle utilisateur non reconnu",
+      "statusChangeError": "Erreur lors de la modification du statut",
+      "agencyUnblocked": "Agence débloquée avec succès",
+      "agencyBlocked": "Agence bloquée avec succès",
+      "userUnblocked": "Utilisateur débloqué avec succès",
+      "userBlocked": "Utilisateur bloqué avec succès"
+    },
     "overviewTitle": "Aperçu de la plateforme",
     "agencyPerformance": "Performances des agences",
     "vehiclesCount": "{{count}} véhicules",
