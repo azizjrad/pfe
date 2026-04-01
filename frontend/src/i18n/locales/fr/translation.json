@@ -404,7 +404,6 @@
       "vehicles": "Véhicules",
       "reservations": "Réservations",
       "reports": "Signalements",
-      "reviews": "Avis",
       "contact": "Messages",
       "contactMessages": "Messages",
       "statisticsSuper": "Statistiques (plateforme)",
@@ -545,13 +544,6 @@
         "dismissed": "Rejetés"
       }
     },
-    "reviews": {
-      "title": "Gestion des avis",
-      "delete": "Supprimer l'avis",
-      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cet avis ?",
-      "deleteSuccess": "Avis supprimé avec succès",
-      "noReviews": "Aucun avis trouvé"
-    },
     "contact": {
       "title": "Messages de contact",
       "markRead": "Marquer comme lu",
@@ -586,10 +578,6 @@
       "pickupSuccess": "Véhicule marqué comme récupéré",
       "returnSuccess": "Véhicule marqué comme retourné",
       "noReservations": "Aucune réservation trouvée"
-    },
-    "reviews": {
-      "title": "Avis clients",
-      "noReviews": "Aucun avis pour le moment"
     },
     "reports": {
       "title": "Signalements",
@@ -743,23 +731,15 @@
     "details": {
       "vehicles": "Véhicules disponibles",
       "contact": "Contacter",
-      "reviews": "Avis clients",
       "rating": "Note",
-      "writeReview": "Écrire un avis",
       "messages": {
         "reportSuccess": "Signalement envoyé avec succès. Notre équipe examinera votre rapport.",
         "reportError": "Erreur lors de l'envoi du signalement. Veuillez réessayer.",
-        "commentRequired": "Veuillez ajouter un commentaire",
-        "reviewSuccess": "Avis publié avec succès",
-        "reviewError": "Erreur lors de la publication de l'avis",
         "loading": "Chargement de l'agence..."
       },
       "breadcrumb": {
         "home": "Accueil",
         "agencies": "Agences"
-      },
-      "stats": {
-        "reviews": "avis"
       },
       "contactCard": {
         "title": "Informations de Contact",
@@ -779,19 +759,6 @@
         "emptyTitle": "Aucun véhicule disponible",
         "emptyDesc": "Cette agence n'a pas encore de véhicules enregistrés",
         "viewAllBtn": "Voir tous les véhicules"
-      },
-      "reviewsModal": {
-        "title": "Avis des Clients",
-        "leaveReviewBtn": "Laisser un avis",
-        "formTitle": "Votre avis",
-        "ratingLabel": "Note",
-        "commentLabel": "Commentaire",
-        "commentPlaceholder": "Partagez votre expérience...",
-        "submitBtn": "Publier",
-        "submittingBtn": "Envoi...",
-        "cancelBtn": "Annuler",
-        "emptyTitle": "Aucun avis pour le moment",
-        "emptyDesc": "Soyez le premier à partager votre expérience !"
       }
     },
     "noAgencies": "Aucune agence disponible",
@@ -872,16 +839,6 @@
       "text": "Signaler",
       "full": "Signaler un problème"
     }
-  },
-
-  "reviews": {
-    "submit": "Soumettre un avis",
-    "rating": "Note",
-    "comment": "Commentaire",
-    "commentPlaceholder": "Partagez votre expérience...",
-    "submitSuccess": "Avis publié avec succès",
-    "noReviews": "Aucun avis pour le moment",
-    "verifiedStay": "Séjour vérifié"
   },
 
   "notifications": {

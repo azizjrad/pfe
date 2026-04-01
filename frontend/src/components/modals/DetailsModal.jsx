@@ -8,9 +8,7 @@ export default function DetailsModal({
   onClose,
   type, // 'agency' or 'user'
   item,
-  reviews = [], // For agencies - reviews received by agency
   reservations = [], // For users
-  userReviews = [], // For users - reviews written by user
   reports = [], // Reports against this agency/user
   userReportsSubmitted = [], // For users - reports submitted BY user
   vehicles = [], // For agencies - their car fleet (vitrine)
@@ -20,8 +18,6 @@ export default function DetailsModal({
 }) {
   const { t } = useTranslation();
   const [showAllReservations, setShowAllReservations] = useState(false);
-  const [showAllReviews, setShowAllReviews] = useState(false);
-  const [showAllUserReviews, setShowAllUserReviews] = useState(false);
   const [showAllReports, setShowAllReports] = useState(false);
   const [showAllUserReportsSubmitted, setShowAllUserReportsSubmitted] =
     useState(false);
@@ -116,13 +112,6 @@ export default function DetailsModal({
   const displayedReservations = showAllReservations
     ? userReservations
     : userReservations.slice(0, 3);
-
-  const displayedReviews = showAllReviews ? reviews : reviews.slice(0, 5);
-
-  const averageRating =
-    reviews.length > 0
-      ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
-      : 0;
 
   return (
     <div
@@ -655,72 +644,6 @@ export default function DetailsModal({
                     </div>
                   );
                 })()}
-
-              {/* User Written Reviews */}
-              {userReviews.length > 0 && (
-                <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-5 border border-gray-100/80">
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="w-1 h-4 bg-primary-500 rounded-full inline-block"></span>
-                    <h4 className="text-sm font-bold text-gray-900">
-                      {t("reviews.submit")}
-                    </h4>
-                    <span className="ml-auto px-2 py-0.5 rounded-full text-xs font-medium bg-primary-50 text-primary-600 border border-primary-100">
-                      {userReviews.length}
-                    </span>
-                  </div>
-                  <div className="space-y-2 max-h-56 overflow-y-auto">
-                    {(showAllUserReviews
-                      ? userReviews
-                      : userReviews.slice(0, 3)
-                    ).map((review) => (
-                      <div
-                        key={review.id}
-                        className="p-3 bg-white/80 rounded-xl border border-gray-100"
-                      >
-                        <div className="flex items-center justify-between mb-1">
-                          <p className="text-sm font-medium text-gray-900">
-                            {review.agency_name || t("reports.type.agency")}
-                          </p>
-                          <span className="text-xs text-gray-400">
-                            {new Date(review.created_at).toLocaleDateString(
-                              "fr-FR",
-                            )}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-0.5 mb-1">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <svg
-                              key={star}
-                              className={`w-3 h-3 ${star <= review.rating ? "text-yellow-400" : "text-gray-200"}`}
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                            </svg>
-                          ))}
-                        </div>
-                        <p className="text-xs text-gray-600">
-                          {review.comment}
-                        </p>
-                      </div>
-                    ))}
-                    {userReviews.length > 3 && (
-                      <button
-                        onClick={() =>
-                          setShowAllUserReviews(!showAllUserReviews)
-                        }
-                        className="w-full text-xs text-primary-600 hover:text-primary-700 font-medium py-2 hover:bg-primary-50/60 rounded-lg transition-colors"
-                      >
-                        {showAllUserReviews
-                          ? t("common.viewLess")
-                          : t("common.viewAllCount", {
-                              count: userReviews.length,
-                            })}
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
 
               {/* Reports Against User */}
               {reports.length > 0 && (

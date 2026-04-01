@@ -139,13 +139,12 @@ export default function useAdminDashboard({
       ]);
 
       return {
-        userReviews: [],
         reports: normalizeArray(reportsAgainst),
         userReportsSubmitted: normalizeArray(reportsSubmitted),
       };
     } catch (error) {
       console.error("Error fetching user details:", error);
-      return { userReviews: [], reports: [], userReportsSubmitted: [] };
+      return { reports: [], userReportsSubmitted: [] };
     }
   };
 

@@ -205,7 +205,7 @@ class AdminService
             'completed_reservations' => $completedReservations,
             'total_revenue' => round($totalRevenue, 2),
             'admin_count' => $agency->admins()->count(),
-            'avg_rating' => round($agency->reviews()->avg('rating') ?? 0, 2),
+            'avg_rating' => 0,
         ];
     }
 

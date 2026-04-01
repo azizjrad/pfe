@@ -49,7 +49,6 @@ const Dashboard = () => {
     isOpen: false,
     type: null,
     item: null,
-    userReviews: [],
     reports: [],
     userReportsSubmitted: [],
     vehicles: [],
@@ -166,7 +165,6 @@ const Dashboard = () => {
         item: agency,
         reports: details.reports,
         vehicles: details.vehicles,
-        userReviews: [],
         userReportsSubmitted: [],
       });
     } catch (error) {
@@ -1135,7 +1133,6 @@ const Dashboard = () => {
             isOpen: false,
             type: null,
             item: null,
-            userReviews: [],
             reports: [],
             userReportsSubmitted: [],
             vehicles: [],
@@ -1144,7 +1141,6 @@ const Dashboard = () => {
         type={detailsModal.type}
         item={detailsModal.item}
         reservations={allReservations}
-        userReviews={detailsModal.userReviews || []}
         reports={detailsModal.reports || []}
         userReportsSubmitted={detailsModal.userReportsSubmitted || []}
         vehicles={detailsModal.vehicles || []}
@@ -1153,7 +1149,6 @@ const Dashboard = () => {
             isOpen: false,
             type: null,
             item: null,
-            userReviews: [],
             reports: [],
             userReportsSubmitted: [],
             vehicles: [],
@@ -1169,7 +1164,6 @@ const Dashboard = () => {
             isOpen: false,
             type: null,
             item: null,
-            userReviews: [],
             reports: [],
             userReportsSubmitted: [],
             vehicles: [],
@@ -1185,7 +1179,6 @@ const Dashboard = () => {
             isOpen: false,
             type: null,
             item: null,
-            userReviews: [],
             reports: [],
             userReportsSubmitted: [],
             vehicles: [],
