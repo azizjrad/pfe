@@ -25,7 +25,6 @@ class AgencyResource extends JsonResource
             'logo_url' => $this->logo_url,
             'cover_image' => $this->cover_image,
             'rating' => $this->rating ?? 0,
-            'total_reviews' => $this->whenCounted('reviews'),
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
         ];

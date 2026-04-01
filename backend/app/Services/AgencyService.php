@@ -43,8 +43,7 @@ class AgencyService
      */
     public function getPublicAgencies(int $perPage = 12)
     {
-        return Agency::with(['reviews', 'vehicles'])
-            ->withCount('reviews')
+        return Agency::with(['vehicles'])
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
     }
@@ -54,13 +53,11 @@ class AgencyService
      */
     public function getPublicAgencyById(int $id): Agency
     {
-        return Agency::withCount('reviews')
-            ->with([
-                'reviews',
-                'vehicles' => function ($query) {
-                    $query->where('status', 'available');
-                },
-            ])
+        return Agency::with([
+            'vehicles' => function ($query) {
+                $query->where('status', 'available');
+            },
+        ])
             ->findOrFail($id);
     }
 
@@ -70,9 +67,7 @@ class AgencyService
     public function getPublicAgencyBySlug(string $slug): Agency
     {
         return Agency::where('slug', $slug)
-            ->withCount('reviews')
             ->with([
-                'reviews',
                 'vehicles' => function ($query) {
                     $query->where('status', 'available');
                 },
@@ -103,16 +98,14 @@ class AgencyService
             ->where('status', 'completed')
             ->sum('total_price');
 
-        $avgRating = $agency->reviews()->avg('rating');
-
         return [
             'agency_id' => $agency->id,
             'name' => $agency->name,
             'vehicles_count' => $vehicles,
             'active_reservations' => $activeReservations,
             'total_revenue' => round($totalRevenue, 2),
-            'avg_rating' => round($avgRating ?? 0, 2),
-            'total_reviews' => $agency->reviews()->count(),
+            'avg_rating' => 0,
+            'total_reviews' => 0,
         ];
     }
 

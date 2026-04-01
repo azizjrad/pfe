@@ -22,7 +22,6 @@ class DatabaseSeeder extends Seeder
             VehicleReturnSeeder::class,    // 7. Créer les retours (dépend des réservations)
             ClientReliabilityScoreSeeder::class, // 8. Créer les scores clients (dépend des users)
             ReportSeeder::class,           // 9. Créer les signalements (dépend des users)
-            ReviewSeeder::class,           // 10. Créer les avis agences (dépend des users et agences)
         ]);
     }
 }

@@ -113,7 +113,6 @@ const Dashboard = () => {
   const allReservations = adminDashboard.allReservations;
   const contactMessages = adminDashboard.contactMessages;
   const financialStats = adminDashboard.financialStats;
-  const agencyReviews = adminDashboard.agencyReviews;
   const agencyStats = agencyDashboard.agencyStats;
   const clientStats = clientDashboard.clientStats;
 
@@ -1122,19 +1121,11 @@ const Dashboard = () => {
         type={editModal.type}
         item={editModal.item}
         agencies={agencies}
-        reviews={
-          editModal.type === "agency" && editModal.item?.id
-            ? (Array.isArray(agencyReviews) ? agencyReviews : []).filter(
-                (r) => r.agency_id === editModal.item.id,
-              )
-            : []
-        }
         userRole={user?.role}
         userId={user?.id}
         userReservations={allReservations.filter(
           (r) => r.user_id === user?.id || r.client_id === user?.id,
         )}
-        onSubmitReview={adminDashboard.handleSubmitReview}
       />
 
       <DetailsModal
@@ -1152,13 +1143,6 @@ const Dashboard = () => {
         }
         type={detailsModal.type}
         item={detailsModal.item}
-        reviews={
-          detailsModal.type === "agency" && detailsModal.item?.id
-            ? (Array.isArray(agencyReviews) ? agencyReviews : []).filter(
-                (r) => r.agency_id === detailsModal.item.id,
-              )
-            : []
-        }
         reservations={allReservations}
         userReviews={detailsModal.userReviews || []}
         reports={detailsModal.reports || []}

@@ -101,15 +101,6 @@ export const adminService = {
     }
   },
 
-  /** Get all agency reviews (super admin sees all) */
-  getReviews: () => http.get("/admin/reviews"),
-
-  /** Delete a review (super admin only) */
-  deleteReview: async (id) => {
-    const response = await http.delete(`/admin/reviews/${id}`);
-    return response.data;
-  },
-
   /** Get all vehicles for a specific agency */
   getAgencyVehicles: async (agencyId) => {
     const response = await http.get(`/admin/agencies/${agencyId}/vehicles`);

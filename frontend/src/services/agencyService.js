@@ -26,7 +26,4 @@ export const agencyService = {
 
   /** Get financial stats for the authenticated agency admin */
   getFinancialStats: () => http.get("/agency/financial-stats"),
-
-  /** Get reviews for the authenticated agency */
-  getReviews: () => http.get("/agency/reviews"),
 };

@@ -6,7 +6,6 @@ use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AgencyController;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\ReportController;
-use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ConfigController;
 use App\Http\Controllers\Api\PublicVehicleController;
@@ -103,13 +102,6 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
     Route::post('/admin/reports/{id}/restore', [ReportController::class, 'restore']);
     Route::delete('/admin/reports/{id}/force', [ReportController::class, 'forceDelete']);
 
-    // Review management (read and delete only for super admin)
-    Route::get('/admin/reviews', [ReviewController::class, 'index']);
-    Route::delete('/admin/reviews/{id}', [ReviewController::class, 'destroy']);
-
-    // Get user details (reviews)
-    Route::get('/admin/users/{userId}/reviews', [ReviewController::class, 'getUserReviews']);
-
     // Contact messages (view, mark as read, delete)
     Route::get('/admin/contact-messages', [ContactController::class, 'index']);
     Route::patch('/admin/contact-messages/{contactMessage}/read', [ContactController::class, 'markAsRead']);
@@ -121,9 +113,6 @@ Route::middleware(['auth:sanctum', 'role:agency_admin,super_admin'])->group(func
     // Agency statistics and financial data
     Route::get('/agency/stats', [AgencyController::class, 'getStats']);
     Route::get('/agency/financial-stats', [AgencyController::class, 'getFinancialStats']);
-
-    // Agency reviews (read-only)
-    Route::get('/agency/reviews', [ReviewController::class, 'index']);
 
     // Agency vehicle reports (read-only)
     Route::get('/agency/reports', [ReportController::class, 'getAgencyReports']);
@@ -139,9 +128,6 @@ Route::middleware(['auth:sanctum', 'role:agency_admin,super_admin'])->group(func
 Route::middleware(['auth:sanctum', 'role:client'])->group(function () {
     // Client statistics and reliability score
     Route::get('/client/stats', [ClientController::class, 'getStats']);
-
-    // Submit reviews for agencies
-    Route::post('/reviews', [ReviewController::class, 'store']);
 
     // Client reservations (create, view, update)
     Route::get('/my-reservations', [ReservationController::class, 'clientIndex']);

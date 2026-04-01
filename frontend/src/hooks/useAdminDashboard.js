@@ -4,7 +4,6 @@ import { adminService } from "../services/adminService";
 import { clientService } from "../services/clientService";
 import { contactService } from "../services/contactService";
 import { reportService } from "../services/reportService";
-import { reviewService } from "../services/reviewService";
 import { ROLES } from "../constants/roles";
 import { normalizeArray, normalizeReport } from "../utils/normalizers";
 
@@ -43,7 +42,6 @@ export default function useAdminDashboard({
   const [reportsFilter, setReportsFilter] = useState("all");
 
   const [contactMessages, setContactMessages] = useState([]);
-  const [agencyReviews, setAgencyReviews] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [financialStats, setFinancialStats] = useState(DEFAULT_FINANCIAL_STATS);
 
@@ -60,7 +58,7 @@ export default function useAdminDashboard({
       setAgencies(normalizeArray(agenciesRes));
       setUsers(normalizeArray(usersRes));
 
-      await Promise.all([fetchAgencyReviews(), fetchNotifications()]);
+      await fetchNotifications();
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
       showToast?.(
@@ -69,17 +67,6 @@ export default function useAdminDashboard({
       );
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchAgencyReviews = async () => {
-    try {
-      const response = await adminService.getReviews();
-      const reviews = response?.data?.data || response?.data || [];
-      setAgencyReviews(Array.isArray(reviews) ? reviews : []);
-    } catch (error) {
-      console.error("Error fetching reviews:", error);
-      setAgencyReviews([]);
     }
   };
 
@@ -146,16 +133,13 @@ export default function useAdminDashboard({
 
   const fetchUserDetails = async (userId) => {
     try {
-      const [userReviews, reportsAgainst, reportsSubmitted] = await Promise.all(
-        [
-          reviewService.getUserReviews(userId),
-          reportService.getUserReportsAgainst(userId),
-          reportService.getUserReportsSubmitted(userId),
-        ],
-      );
+      const [reportsAgainst, reportsSubmitted] = await Promise.all([
+        reportService.getUserReportsAgainst(userId),
+        reportService.getUserReportsSubmitted(userId),
+      ]);
 
       return {
-        userReviews: normalizeArray(userReviews),
+        userReviews: [],
         reports: normalizeArray(reportsAgainst),
         userReportsSubmitted: normalizeArray(reportsSubmitted),
       };
@@ -274,18 +258,6 @@ export default function useAdminDashboard({
     );
   };
 
-  const handleSubmitReview = async (reviewData) => {
-    const newReview = {
-      id: Date.now(),
-      ...reviewData,
-      user_id: user?.id,
-      user_name: user?.name,
-      created_at: new Date().toISOString(),
-    };
-    setAgencyReviews((prev) => [newReview, ...prev]);
-    showToast?.(t("reviews.submitSuccess"), "success");
-  };
-
   const handleResolveReport = async (report, notes) => {
     await reportService.resolve(report.id, notes);
     await Promise.all([fetchReports(), fetchTrashedReports()]);
@@ -365,7 +337,6 @@ export default function useAdminDashboard({
     reportsFilter,
     setReportsFilter,
     contactMessages,
-    agencyReviews,
     notifications,
     financialStats,
     refreshData,
@@ -379,7 +350,6 @@ export default function useAdminDashboard({
     handleEditUser,
     handleSuspendAgency,
     handleSuspendUser,
-    handleSubmitReview,
     handleResolveReport,
     handleDismissReport,
     handleDeleteReport,

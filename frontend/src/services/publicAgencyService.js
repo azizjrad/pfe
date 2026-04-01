@@ -1,13 +1,5 @@
 import http from "./http";
 
-const normalizeReview = (review) => ({
-  id: review.id,
-  user_name: review.user_name || review.user?.name || "Client",
-  rating: Number(review.rating ?? 0),
-  comment: review.comment || "",
-  created_at: review.created_at,
-});
-
 const normalizeAgencyVehicle = (vehicle, agency) => ({
   id: vehicle.id,
   name: vehicle.name || `${vehicle.brand || ""} ${vehicle.model || ""}`.trim(),
@@ -57,9 +49,6 @@ const normalizeAgency = (agency) => {
       ? agency.vehicles.map((vehicle) =>
           normalizeAgencyVehicle(vehicle, agency),
         )
-      : [],
-    reviews: Array.isArray(agency.reviews)
-      ? agency.reviews.map(normalizeReview)
       : [],
   };
 };
