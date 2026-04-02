@@ -38,7 +38,7 @@ class UpdateVehicleRequest extends FormRequest
             'seats' => 'sometimes|integer|min:2|max:9',
             'transmission' => 'sometimes|in:manual,automatic',
             'fuel_type' => 'sometimes|in:petrol,diesel,electric,hybrid',
-            'status' => 'sometimes|in:available,rented,maintenance',
+            'status' => 'sometimes|in:available,reserved,in_use,returned,maintenance,rented,unavailable',
             'image' => 'nullable|string',
         ];
     }

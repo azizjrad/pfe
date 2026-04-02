@@ -30,7 +30,7 @@ class StoreVehicleRequest extends FormRequest
             'seats' => 'required|integer|min:2|max:9',
             'transmission' => 'required|in:manual,automatic',
             'fuel_type' => 'required|in:petrol,diesel,electric,hybrid',
-            'status' => 'sometimes|in:available,rented,maintenance',
+            'status' => 'sometimes|in:available,reserved,in_use,returned,maintenance,rented,unavailable',
             'image' => 'nullable|string',
         ];
     }

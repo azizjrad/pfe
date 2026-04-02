@@ -14,6 +14,13 @@ class ReservationResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $days = 1;
+        if ($this->start_date && $this->end_date) {
+            $days = max(1, $this->start_date->diffInDays($this->end_date));
+        }
+
+        $dailyRate = $days > 0 ? ((float) $this->base_price / $days) : (float) $this->base_price;
+
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
@@ -22,15 +29,25 @@ class ReservationResource extends JsonResource
             'end_date' => $this->end_date,
             'status' => $this->status,
             'pickup_location' => $this->pickup_location,
-            'return_location' => $this->return_location,
-            'daily_rate' => (float) $this->daily_rate,
-            'number_of_days' => (int) $this->number_of_days,
-            'subtotal' => (float) $this->subtotal ?? 0,
+            'dropoff_location' => $this->dropoff_location,
+            // Keep alias for legacy frontend keys.
+            'return_location' => $this->dropoff_location,
+            'daily_rate' => (float) $dailyRate,
+            'number_of_days' => (int) $days,
+            'subtotal' => (float) $this->base_price,
+            'base_price' => (float) $this->base_price,
             'discount_amount' => (float) $this->discount_amount ?? 0,
+            'additional_charges' => (float) $this->additional_charges ?? 0,
             'total_price' => (float) $this->total_price,
+            'paid_amount' => (float) $this->paid_amount ?? 0,
+            'remaining_amount' => (float) $this->remaining_amount ?? 0,
+            'payment_status' => $this->payment_status,
             'platform_commission' => (float) $this->platform_commission ?? 0,
             'cancellation_reason' => $this->cancellation_reason,
-            'special_requests' => $this->special_requests,
+            'notes' => $this->notes,
+            // Keep alias for legacy frontend keys.
+            'special_requests' => $this->notes,
+            'pricing_details' => $this->pricing_details,
             'user' => new UserResource($this->whenLoaded('user')),
             'vehicle' => new VehicleResource($this->whenLoaded('vehicle')),
             'payments' => PaymentResource::collection($this->whenLoaded('payments')),

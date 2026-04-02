@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ConfigController;
 use App\Http\Controllers\Api\PublicVehicleController;
 use App\Http\Controllers\Api\PublicAgencyController;
+use App\Http\Controllers\Api\VehicleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,23 +24,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Public routes
-Route::post('/contact', [ContactController::class, 'store']);
-Route::get('/pricing-config', [ConfigController::class, 'pricingConfig']);
-
-// Public vehicles and agencies (for browsing without authentication)
-Route::prefix('public')->group(function () {
-    // Vehicles
-    Route::get('/vehicles', [PublicVehicleController::class, 'index']);
-    Route::get('/vehicles/{id}', [PublicVehicleController::class, 'show']);
-    Route::get('/vehicles/agency/{agencyId}', [PublicVehicleController::class, 'byAgency']);
-
-    // Agencies
-    Route::get('/agencies', [PublicAgencyController::class, 'index']);
-    Route::get('/agencies/{id}', [PublicAgencyController::class, 'show']);
-    Route::get('/agencies/slug/{slug}', [PublicAgencyController::class, 'bySlug']);
-});
-
 // Public authentication routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])
@@ -52,6 +36,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', [AuthController::class, 'user']);
     Route::put('/profile', [AuthController::class, 'updateProfile']);
+
+    // Protected contact and configuration endpoints
+    Route::post('/contact', [ContactController::class, 'store']);
+    Route::get('/pricing-config', [ConfigController::class, 'pricingConfig']);
+
+    // Protected browse endpoints (previously public)
+    Route::prefix('public')->group(function () {
+        // Vehicles
+        Route::get('/vehicles', [PublicVehicleController::class, 'index']);
+        Route::get('/vehicles/{id}', [PublicVehicleController::class, 'show']);
+        Route::get('/vehicles/agency/{agencyId}', [PublicVehicleController::class, 'byAgency']);
+
+        // Agencies
+        Route::get('/agencies', [PublicAgencyController::class, 'index']);
+        Route::get('/agencies/{id}', [PublicAgencyController::class, 'show']);
+        Route::get('/agencies/slug/{slug}', [PublicAgencyController::class, 'bySlug']);
+    });
 
     // Reports - All authenticated users can submit reports
     Route::post('/reports', [ReportController::class, 'store']);
@@ -113,6 +114,13 @@ Route::middleware(['auth:sanctum', 'role:agency_admin,super_admin'])->group(func
     // Agency statistics and financial data
     Route::get('/agency/stats', [AgencyController::class, 'getStats']);
     Route::get('/agency/financial-stats', [AgencyController::class, 'getFinancialStats']);
+
+    // Agency vehicle management
+    Route::get('/vehicles', [VehicleController::class, 'index']);
+    Route::get('/vehicles/{id}', [VehicleController::class, 'show']);
+    Route::post('/vehicles', [VehicleController::class, 'store']);
+    Route::put('/vehicles/{id}', [VehicleController::class, 'update']);
+    Route::delete('/vehicles/{id}', [VehicleController::class, 'destroy']);
 
     // Agency vehicle reports (read-only)
     Route::get('/agency/reports', [ReportController::class, 'getAgencyReports']);

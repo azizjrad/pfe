@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { agencyService } from "../../services/agencyService";
+import { vehicleService } from "../../services/vehicleService";
 import { reservationService } from "../../services/reservationService";
 import ReservationDetailsModal from "../modals/ReservationDetailsModal";
 import Toast from "../common/Toast";
@@ -25,7 +26,13 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
   const { t } = useTranslation();
   const COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"];
   const [reservations, setReservations] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingVehicles, setLoadingVehicles] = useState(false);
+  const [isVehicleModalOpen, setIsVehicleModalOpen] = useState(false);
+  const [creatingVehicle, setCreatingVehicle] = useState(false);
+  const [editingVehicleId, setEditingVehicleId] = useState(null);
+  const [deletingVehicleId, setDeletingVehicleId] = useState(null);
   const [detailsModal, setDetailsModal] = useState({
     isOpen: false,
     reservation: null,
@@ -42,6 +49,20 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
     totals: { revenue: 0, commission: 0, payout: 0, netIncome: 0 },
   });
   const [loadingFinancial, setLoadingFinancial] = useState(false);
+  const [vehicleForm, setVehicleForm] = useState({
+    brand: "",
+    model: "",
+    year: new Date().getFullYear(),
+    mileage: 0,
+    daily_price: "",
+    license_plate: "",
+    color: "",
+    seats: 5,
+    transmission: "automatic",
+    fuel_type: "petrol",
+    status: "available",
+    image: "",
+  });
 
   // Fetch reservations on mount
   useEffect(() => {
@@ -52,6 +73,12 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
   useEffect(() => {
     if (activeTab === "financial") {
       fetchFinancialStats();
+    }
+  }, [activeTab]);
+
+  useEffect(() => {
+    if (activeTab === "vehicles") {
+      fetchVehicles();
     }
   }, [activeTab]);
 
@@ -85,6 +112,186 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchVehicles = async () => {
+    setLoadingVehicles(true);
+    try {
+      const response = await vehicleService.getAll();
+      setVehicles(response?.data?.data || []);
+    } catch (error) {
+      setToast({
+        show: true,
+        message: error.response?.data?.message || "Erreur chargement véhicules",
+        type: "error",
+      });
+    } finally {
+      setLoadingVehicles(false);
+    }
+  };
+
+  const resetVehicleForm = () => {
+    setVehicleForm({
+      brand: "",
+      model: "",
+      year: new Date().getFullYear(),
+      mileage: 0,
+      daily_price: "",
+      license_plate: "",
+      color: "",
+      seats: 5,
+      transmission: "automatic",
+      fuel_type: "petrol",
+      status: "available",
+      image: "",
+    });
+    setEditingVehicleId(null);
+  };
+
+  const handleCreateVehicle = async (event) => {
+    event.preventDefault();
+
+    setCreatingVehicle(true);
+    try {
+      const payload = {
+        ...vehicleForm,
+        daily_price: Number(vehicleForm.daily_price),
+        mileage: Number(vehicleForm.mileage),
+        seats: Number(vehicleForm.seats),
+        year: Number(vehicleForm.year),
+      };
+
+      const response = await vehicleService.create(payload);
+      const createdVehicle = response?.data?.data;
+
+      if (createdVehicle) {
+        setVehicles((prev) => [createdVehicle, ...prev]);
+      } else {
+        await fetchVehicles();
+      }
+
+      setToast({
+        show: true,
+        message: "Véhicule ajouté avec succès",
+        type: "success",
+      });
+      setIsVehicleModalOpen(false);
+      resetVehicleForm();
+    } catch (error) {
+      setToast({
+        show: true,
+        message: error.response?.data?.message || "Erreur ajout véhicule",
+        type: "error",
+      });
+    } finally {
+      setCreatingVehicle(false);
+    }
+  };
+
+  const handleOpenEditVehicle = (vehicle) => {
+    setEditingVehicleId(vehicle.id);
+    setVehicleForm({
+      brand: vehicle.brand || "",
+      model: vehicle.model || "",
+      year: vehicle.year || new Date().getFullYear(),
+      mileage: vehicle.mileage || 0,
+      daily_price: vehicle.daily_price ?? vehicle.daily_rate ?? "",
+      license_plate: vehicle.license_plate || vehicle.registration_number || "",
+      color: vehicle.color || "",
+      seats: vehicle.seats ?? vehicle.seating_capacity ?? 5,
+      transmission: vehicle.transmission || "automatic",
+      fuel_type: vehicle.fuel_type || "petrol",
+      status: vehicle.status || "available",
+      image: vehicle.image || vehicle.image_url || "",
+    });
+    setIsVehicleModalOpen(true);
+  };
+
+  const handleDeleteVehicle = async (vehicle) => {
+    const confirmed = window.confirm(
+      `Supprimer ${vehicle.brand || ""} ${vehicle.model || ""} ?`,
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setDeletingVehicleId(vehicle.id);
+    try {
+      await vehicleService.delete(vehicle.id);
+      setVehicles((prev) => prev.filter((item) => item.id !== vehicle.id));
+      setToast({
+        show: true,
+        message: "Véhicule supprimé avec succès",
+        type: "success",
+      });
+    } catch (error) {
+      setToast({
+        show: true,
+        message: error.response?.data?.message || "Erreur suppression véhicule",
+        type: "error",
+      });
+    } finally {
+      setDeletingVehicleId(null);
+    }
+  };
+
+  const handleSubmitVehicle = async (event) => {
+    if (editingVehicleId) {
+      event.preventDefault();
+      setCreatingVehicle(true);
+
+      try {
+        const payload = {
+          ...vehicleForm,
+          daily_price: Number(vehicleForm.daily_price),
+          mileage: Number(vehicleForm.mileage),
+          seats: Number(vehicleForm.seats),
+          year: Number(vehicleForm.year),
+        };
+
+        const response = await vehicleService.update(editingVehicleId, payload);
+        const updatedVehicle = response?.data?.data;
+
+        if (updatedVehicle) {
+          setVehicles((prev) =>
+            prev.map((item) =>
+              item.id === editingVehicleId
+                ? { ...item, ...updatedVehicle }
+                : item,
+            ),
+          );
+        } else {
+          await fetchVehicles();
+        }
+
+        setToast({
+          show: true,
+          message: "Véhicule modifié avec succès",
+          type: "success",
+        });
+        setIsVehicleModalOpen(false);
+        resetVehicleForm();
+      } catch (error) {
+        setToast({
+          show: true,
+          message:
+            error.response?.data?.message || "Erreur modification véhicule",
+          type: "error",
+        });
+      } finally {
+        setCreatingVehicle(false);
+      }
+
+      return;
+    }
+
+    await handleCreateVehicle(event);
+  };
+
+  const handleVehicleFormChange = (event) => {
+    const { name, value } = event.target;
+    setVehicleForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleStatusUpdate = async (id, newStatus) => {
@@ -199,6 +406,46 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
       >
         {config.label}
       </span>
+    );
+  };
+
+  const getVehicleStatusMeta = (status) => {
+    const mapping = {
+      available: {
+        label: "Disponible",
+        className: "bg-green-100 text-green-700",
+      },
+      reserved: {
+        label: "Réservé",
+        className: "bg-amber-100 text-amber-700",
+      },
+      in_use: {
+        label: "En cours d'utilisation",
+        className: "bg-blue-100 text-blue-700",
+      },
+      returned: {
+        label: "Retourné",
+        className: "bg-emerald-100 text-emerald-700",
+      },
+      maintenance: {
+        label: "En maintenance",
+        className: "bg-orange-100 text-orange-700",
+      },
+      rented: {
+        label: "Loué",
+        className: "bg-slate-100 text-slate-700",
+      },
+      unavailable: {
+        label: "Indisponible",
+        className: "bg-gray-100 text-gray-700",
+      },
+    };
+
+    return (
+      mapping[status] || {
+        label: status || "-",
+        className: "bg-gray-100 text-gray-700",
+      }
     );
   };
 
@@ -416,7 +663,13 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
               Gérez votre flotte de véhicules disponibles
             </p>
           </div>
-          <button className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+          <button
+            onClick={() => {
+              resetVehicleForm();
+              setIsVehicleModalOpen(true);
+            }}
+            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2"
+          >
             <svg
               className="w-5 h-5"
               fill="none"
@@ -460,34 +713,267 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                <tr className="hover:bg-gray-50 transition-colors">
-                  <td colSpan="6" className="px-6 py-12 text-center">
-                    <svg
-                      className="w-12 h-12 text-gray-300 mx-auto mb-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                {loadingVehicles ? (
+                  <tr>
+                    <td
+                      colSpan="6"
+                      className="px-6 py-10 text-center text-gray-500"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M8 7h12M8 11h12m-12 4h12M3 7l.75 1.5H3m0 3l.75 1.5H3m0 3l.75 1.5H3"
-                      />
-                    </svg>
-                    <p className="text-gray-500 font-medium">
-                      Vos véhicules apparaîtront ici
-                    </p>
-                    <p className="text-gray-400 text-sm mt-1">
-                      Veuillez vous contacter l'administrateur pour ajouter des
-                      véhicules
-                    </p>
-                  </td>
-                </tr>
+                      Chargement des véhicules...
+                    </td>
+                  </tr>
+                ) : vehicles.length === 0 ? (
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td
+                      colSpan="6"
+                      className="px-6 py-12 text-center text-gray-500"
+                    >
+                      Aucun véhicule pour le moment
+                    </td>
+                  </tr>
+                ) : (
+                  vehicles.map((vehicle) => (
+                    <tr
+                      key={vehicle.id}
+                      className="hover:bg-gray-50 transition-colors"
+                    >
+                      {(() => {
+                        const vehicleStatus = getVehicleStatusMeta(
+                          vehicle.status,
+                        );
+                        return (
+                          <>
+                            <td className="px-6 py-4 font-medium text-gray-900">
+                              {vehicle.model || "-"}
+                            </td>
+                            <td className="px-6 py-4 text-gray-700">
+                              {vehicle.brand || "-"}
+                            </td>
+                            <td className="px-6 py-4 text-gray-700">
+                              {vehicle.license_plate ||
+                                vehicle.registration_number ||
+                                "-"}
+                            </td>
+                            <td className="px-6 py-4 text-center">
+                              <span
+                                className={`px-2 py-1 rounded-full text-xs font-medium ${vehicleStatus.className}`}
+                              >
+                                {vehicleStatus.label}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 text-gray-700">-</td>
+                            <td className="px-6 py-4 text-right text-sm">
+                              <div className="inline-flex items-center gap-2">
+                                <button
+                                  onClick={() => handleOpenEditVehicle(vehicle)}
+                                  className="px-2 py-1 rounded border border-blue-200 text-blue-700 hover:bg-blue-50"
+                                >
+                                  Modifier
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteVehicle(vehicle)}
+                                  disabled={deletingVehicleId === vehicle.id}
+                                  className="px-2 py-1 rounded border border-red-200 text-red-700 hover:bg-red-50 disabled:opacity-50"
+                                >
+                                  {deletingVehicleId === vehicle.id
+                                    ? "Suppression..."
+                                    : "Supprimer"}
+                                </button>
+                              </div>
+                            </td>
+                          </>
+                        );
+                      })()}
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
         </div>
+
+        {isVehicleModalOpen && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl">
+              <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {editingVehicleId
+                    ? "Modifier le véhicule"
+                    : "Ajouter un véhicule"}
+                </h3>
+                <button
+                  onClick={() => {
+                    setIsVehicleModalOpen(false);
+                    resetVehicleForm();
+                  }}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <form
+                onSubmit={handleSubmitVehicle}
+                className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4"
+              >
+                <input
+                  name="brand"
+                  value={vehicleForm.brand}
+                  onChange={handleVehicleFormChange}
+                  placeholder="Marque"
+                  className="border border-gray-300 rounded-lg px-3 py-2"
+                  required
+                />
+                <input
+                  name="model"
+                  value={vehicleForm.model}
+                  onChange={handleVehicleFormChange}
+                  placeholder="Modèle"
+                  className="border border-gray-300 rounded-lg px-3 py-2"
+                  required
+                />
+                <input
+                  name="year"
+                  type="number"
+                  value={vehicleForm.year}
+                  onChange={handleVehicleFormChange}
+                  placeholder="Année"
+                  className="border border-gray-300 rounded-lg px-3 py-2"
+                  required
+                />
+                <input
+                  name="mileage"
+                  type="number"
+                  value={vehicleForm.mileage}
+                  onChange={handleVehicleFormChange}
+                  placeholder="Kilométrage"
+                  className="border border-gray-300 rounded-lg px-3 py-2"
+                  required
+                />
+                <input
+                  name="daily_price"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={vehicleForm.daily_price}
+                  onChange={handleVehicleFormChange}
+                  placeholder="Prix / jour"
+                  className="border border-gray-300 rounded-lg px-3 py-2"
+                  required
+                />
+                <input
+                  name="license_plate"
+                  value={vehicleForm.license_plate}
+                  onChange={handleVehicleFormChange}
+                  placeholder="Immatriculation"
+                  className="border border-gray-300 rounded-lg px-3 py-2"
+                  required
+                />
+                <input
+                  name="color"
+                  value={vehicleForm.color}
+                  onChange={handleVehicleFormChange}
+                  placeholder="Couleur"
+                  className="border border-gray-300 rounded-lg px-3 py-2"
+                  required
+                />
+                <input
+                  name="seats"
+                  type="number"
+                  min="2"
+                  max="9"
+                  value={vehicleForm.seats}
+                  onChange={handleVehicleFormChange}
+                  placeholder="Nombre de places"
+                  className="border border-gray-300 rounded-lg px-3 py-2"
+                  required
+                />
+
+                <select
+                  name="transmission"
+                  value={vehicleForm.transmission}
+                  onChange={handleVehicleFormChange}
+                  className="border border-gray-300 rounded-lg px-3 py-2"
+                  required
+                >
+                  <option value="automatic">Automatique</option>
+                  <option value="manual">Manuelle</option>
+                </select>
+
+                <select
+                  name="fuel_type"
+                  value={vehicleForm.fuel_type}
+                  onChange={handleVehicleFormChange}
+                  className="border border-gray-300 rounded-lg px-3 py-2"
+                  required
+                >
+                  <option value="petrol">Essence</option>
+                  <option value="diesel">Diesel</option>
+                  <option value="electric">Électrique</option>
+                  <option value="hybrid">Hybride</option>
+                </select>
+
+                <select
+                  name="status"
+                  value={vehicleForm.status}
+                  onChange={handleVehicleFormChange}
+                  className="border border-gray-300 rounded-lg px-3 py-2"
+                  required
+                >
+                  <option value="available">Disponible</option>
+                  <option value="reserved">Réservé</option>
+                  <option value="in_use">En cours d'utilisation</option>
+                  <option value="returned">Retourné</option>
+                  <option value="maintenance">Maintenance</option>
+                  <option value="rented">Loué</option>
+                  <option value="unavailable">Indisponible</option>
+                </select>
+
+                <input
+                  name="image"
+                  value={vehicleForm.image}
+                  onChange={handleVehicleFormChange}
+                  placeholder="URL image (optionnel)"
+                  className="border border-gray-300 rounded-lg px-3 py-2 md:col-span-2"
+                />
+
+                <div className="md:col-span-2 flex justify-end gap-3 mt-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsVehicleModalOpen(false);
+                      resetVehicleForm();
+                    }}
+                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={creatingVehicle}
+                    className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50"
+                  >
+                    {creatingVehicle
+                      ? editingVehicleId
+                        ? "Enregistrement..."
+                        : "Ajout..."
+                      : editingVehicleId
+                        ? "Enregistrer"
+                        : "Ajouter"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {toast.show && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast({ show: false, message: "", type: "" })}
+          />
+        )}
       </div>
     );
   }

@@ -70,7 +70,7 @@ class ReservationService
             'agency_payout' => $agencyPayout,
             'paid_amount' => 0,
             'remaining_amount' => $pricingBreakdown['total'],
-            'payment_status' => 'pending',
+            'payment_status' => 'unpaid',
             'status' => 'pending',
             'pricing_details' => $pricingBreakdown,
             'notes' => $data['notes'] ?? null,
@@ -165,6 +165,9 @@ class ReservationService
             'cancelled_at' => now(),
         ]);
 
+        // If no active reservation remains, vehicle can become available again.
+        $this->resetVehicleStatusIfNoActiveReservations($reservation);
+
         // Notify client when cancellation is performed by agency/super admin.
         if (in_array($user->role, ['agency_admin', 'super_admin']) && $reservation->user_id) {
             UserNotification::create([
@@ -200,6 +203,22 @@ class ReservationService
 
         $previousStatus = $reservation->status;
         $reservation->update(['status' => $status]);
+
+        if ($status === 'confirmed') {
+            $this->updateVehicleLifecycleStatus($reservation, 'reserved');
+        }
+
+        if ($status === 'ongoing') {
+            $this->updateVehicleLifecycleStatus($reservation, 'in_use');
+        }
+
+        if ($status === 'completed') {
+            $this->updateVehicleLifecycleStatus($reservation, 'returned');
+        }
+
+        if ($status === 'cancelled') {
+            $this->resetVehicleStatusIfNoActiveReservations($reservation);
+        }
 
         // Notify client for acceptance/refusal decision.
         if ($reservation->user_id && $previousStatus !== $status) {
@@ -249,6 +268,7 @@ class ReservationService
         }
 
         $reservation->update(['status' => 'ongoing']);
+        $this->updateVehicleLifecycleStatus($reservation, 'in_use');
         return $reservation;
     }
 
@@ -273,7 +293,44 @@ class ReservationService
         ]);
 
         $reservation->update(['status' => 'completed']);
+        $this->updateVehicleLifecycleStatus($reservation, 'returned');
         return $reservation;
+    }
+
+    /**
+     * Force vehicle lifecycle status to match reservation workflow.
+     */
+    private function updateVehicleLifecycleStatus(Reservation $reservation, string $status): void
+    {
+        $vehicle = $reservation->vehicle;
+
+        if (!$vehicle) {
+            return;
+        }
+
+        $vehicle->update(['status' => $status]);
+    }
+
+    /**
+     * Set vehicle back to available when no active reservation remains.
+     * Do not override manual maintenance state.
+     */
+    private function resetVehicleStatusIfNoActiveReservations(Reservation $reservation): void
+    {
+        $vehicle = $reservation->vehicle;
+
+        if (!$vehicle) {
+            return;
+        }
+
+        $hasActiveReservations = Reservation::where('vehicle_id', $vehicle->id)
+            ->whereIn('status', ['pending', 'confirmed', 'ongoing'])
+            ->where('id', '!=', $reservation->id)
+            ->exists();
+
+        if (!$hasActiveReservations && $vehicle->status !== 'maintenance') {
+            $vehicle->update(['status' => 'available']);
+        }
     }
 
     /**
@@ -324,7 +381,7 @@ class ReservationService
         array $options = []
     ): array {
         $rentalDays = max(1, $startDate->diffInDays($endDate));
-        $basePrice = $vehicle->price;
+        $basePrice = (float) ($vehicle->daily_price ?? $vehicle->daily_rate ?? $vehicle->price ?? 0);
         $baseTotal = $basePrice * $rentalDays;
 
         $breakdown = [
