@@ -5,7 +5,7 @@ import http from "./http";
  */
 export const reservationService = {
   /** Get all reservations (admin use) */
-  getAll: () => http.get("/reservations"),
+  getAll: () => http.get("/admin/reservations"),
 
   /** Get reservations for the authenticated client */
   getMy: () => http.get("/my-reservations"),

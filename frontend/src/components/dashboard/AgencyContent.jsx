@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { agencyService } from "../../services/agencyService";
 import { vehicleService } from "../../services/vehicleService";
@@ -33,6 +33,10 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
   const [creatingVehicle, setCreatingVehicle] = useState(false);
   const [editingVehicleId, setEditingVehicleId] = useState(null);
   const [deletingVehicleId, setDeletingVehicleId] = useState(null);
+  const [vehicleHistoryModal, setVehicleHistoryModal] = useState({
+    isOpen: false,
+    vehicle: null,
+  });
   const [detailsModal, setDetailsModal] = useState({
     isOpen: false,
     reservation: null,
@@ -42,7 +46,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
     monthly: [],
     vehiclePerformance: [],
     paymentStatus: [
-      { name: "Payé", value: 0, color: "#10B981" },
+      { name: "Pay├®", value: 0, color: "#10B981" },
       { name: "En attente", value: 0, color: "#F59E0B" },
       { name: "Retard", value: 0, color: "#EF4444" },
     ],
@@ -122,7 +126,8 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
     } catch (error) {
       setToast({
         show: true,
-        message: error.response?.data?.message || "Erreur chargement véhicules",
+        message:
+          error.response?.data?.message || "Erreur chargement v├®hicules",
         type: "error",
       });
     } finally {
@@ -172,7 +177,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
 
       setToast({
         show: true,
-        message: "Véhicule ajouté avec succès",
+        message: "V├®hicule ajout├® avec succ├¿s",
         type: "success",
       });
       setIsVehicleModalOpen(false);
@@ -180,7 +185,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
     } catch (error) {
       setToast({
         show: true,
-        message: error.response?.data?.message || "Erreur ajout véhicule",
+        message: error.response?.data?.message || "Erreur ajout v├®hicule",
         type: "error",
       });
     } finally {
@@ -222,13 +227,14 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
       setVehicles((prev) => prev.filter((item) => item.id !== vehicle.id));
       setToast({
         show: true,
-        message: "Véhicule supprimé avec succès",
+        message: "V├®hicule supprim├® avec succ├¿s",
         type: "success",
       });
     } catch (error) {
       setToast({
         show: true,
-        message: error.response?.data?.message || "Erreur suppression véhicule",
+        message:
+          error.response?.data?.message || "Erreur suppression v├®hicule",
         type: "error",
       });
     } finally {
@@ -267,7 +273,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
 
         setToast({
           show: true,
-          message: "Véhicule modifié avec succès",
+          message: "V├®hicule modifi├® avec succ├¿s",
           type: "success",
         });
         setIsVehicleModalOpen(false);
@@ -276,7 +282,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
         setToast({
           show: true,
           message:
-            error.response?.data?.message || "Erreur modification véhicule",
+            error.response?.data?.message || "Erreur modification v├®hicule",
           type: "error",
         });
       } finally {
@@ -416,7 +422,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
         className: "bg-green-100 text-green-700",
       },
       reserved: {
-        label: "Réservé",
+        label: "R├®serv├®",
         className: "bg-amber-100 text-amber-700",
       },
       in_use: {
@@ -424,7 +430,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
         className: "bg-blue-100 text-blue-700",
       },
       returned: {
-        label: "Retourné",
+        label: "Retourn├®",
         className: "bg-emerald-100 text-emerald-700",
       },
       maintenance: {
@@ -432,7 +438,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
         className: "bg-orange-100 text-orange-700",
       },
       rented: {
-        label: "Loué",
+        label: "Lou├®",
         className: "bg-slate-100 text-slate-700",
       },
       unavailable: {
@@ -448,6 +454,15 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
       }
     );
   };
+
+  const getVehicleReservations = (vehicleId) =>
+    reservations
+      .filter((reservation) => reservation.vehicle_id === vehicleId)
+      .sort(
+        (left, right) =>
+          new Date(right.created_at || right.start_date) -
+          new Date(left.created_at || left.start_date),
+      );
 
   if (activeTab === "overview") {
     const activeReservations = reservations.filter((r) =>
@@ -657,10 +672,10 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">
-              Gestion des Véhicules
+              Gestion des V├®hicules
             </h2>
             <p className="text-sm text-gray-500 mt-1">
-              Gérez votre flotte de véhicules disponibles
+              G├®rez votre flotte de v├®hicules disponibles
             </p>
           </div>
           <button
@@ -683,7 +698,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                 d="M12 4v16m8-8H4"
               />
             </svg>
-            Ajouter Véhicule
+            Ajouter V├®hicule
           </button>
         </div>
 
@@ -693,7 +708,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">
-                    Modèle
+                    Mod├¿le
                   </th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">
                     Marque
@@ -705,7 +720,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                     Statut
                   </th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase">
-                    Réservations
+                    R├®servations
                   </th>
                   <th className="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase">
                     Actions
@@ -719,7 +734,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                       colSpan="6"
                       className="px-6 py-10 text-center text-gray-500"
                     >
-                      Chargement des véhicules...
+                      Chargement des v├®hicules...
                     </td>
                   </tr>
                 ) : vehicles.length === 0 ? (
@@ -728,7 +743,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                       colSpan="6"
                       className="px-6 py-12 text-center text-gray-500"
                     >
-                      Aucun véhicule pour le moment
+                      Aucun v├®hicule pour le moment
                     </td>
                   </tr>
                 ) : (
@@ -761,9 +776,22 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                                 {vehicleStatus.label}
                               </span>
                             </td>
-                            <td className="px-6 py-4 text-gray-700">-</td>
+                            <td className="px-6 py-4 text-gray-700">
+                              {getVehicleReservations(vehicle.id).length}
+                            </td>
                             <td className="px-6 py-4 text-right text-sm">
                               <div className="inline-flex items-center gap-2">
+                                <button
+                                  onClick={() =>
+                                    setVehicleHistoryModal({
+                                      isOpen: true,
+                                      vehicle,
+                                    })
+                                  }
+                                  className="px-2 py-1 rounded border border-gray-200 text-gray-700 hover:bg-gray-50"
+                                >
+                                  Historique
+                                </button>
                                 <button
                                   onClick={() => handleOpenEditVehicle(vehicle)}
                                   className="px-2 py-1 rounded border border-blue-200 text-blue-700 hover:bg-blue-50"
@@ -798,8 +826,8 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
               <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-gray-900">
                   {editingVehicleId
-                    ? "Modifier le véhicule"
-                    : "Ajouter un véhicule"}
+                    ? "Modifier le v├®hicule"
+                    : "Ajouter un v├®hicule"}
                 </h3>
                 <button
                   onClick={() => {
@@ -808,7 +836,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                   }}
                   className="text-gray-500 hover:text-gray-700"
                 >
-                  ✕
+                  Ô£ò
                 </button>
               </div>
 
@@ -828,7 +856,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                   name="model"
                   value={vehicleForm.model}
                   onChange={handleVehicleFormChange}
-                  placeholder="Modèle"
+                  placeholder="Mod├¿le"
                   className="border border-gray-300 rounded-lg px-3 py-2"
                   required
                 />
@@ -837,7 +865,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                   type="number"
                   value={vehicleForm.year}
                   onChange={handleVehicleFormChange}
-                  placeholder="Année"
+                  placeholder="Ann├®e"
                   className="border border-gray-300 rounded-lg px-3 py-2"
                   required
                 />
@@ -846,7 +874,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                   type="number"
                   value={vehicleForm.mileage}
                   onChange={handleVehicleFormChange}
-                  placeholder="Kilométrage"
+                  placeholder="Kilom├®trage"
                   className="border border-gray-300 rounded-lg px-3 py-2"
                   required
                 />
@@ -909,7 +937,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                 >
                   <option value="petrol">Essence</option>
                   <option value="diesel">Diesel</option>
-                  <option value="electric">Électrique</option>
+                  <option value="electric">├ëlectrique</option>
                   <option value="hybrid">Hybride</option>
                 </select>
 
@@ -921,11 +949,11 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                   required
                 >
                   <option value="available">Disponible</option>
-                  <option value="reserved">Réservé</option>
+                  <option value="reserved">R├®serv├®</option>
                   <option value="in_use">En cours d'utilisation</option>
-                  <option value="returned">Retourné</option>
+                  <option value="returned">Retourn├®</option>
                   <option value="maintenance">Maintenance</option>
-                  <option value="rented">Loué</option>
+                  <option value="rented">Lou├®</option>
                   <option value="unavailable">Indisponible</option>
                 </select>
 
@@ -967,6 +995,88 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
           </div>
         )}
 
+        {vehicleHistoryModal.isOpen && vehicleHistoryModal.vehicle && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+            <div className="bg-white rounded-2xl w-full max-w-3xl shadow-2xl max-h-[85vh] overflow-hidden flex flex-col">
+              <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Historique des réservations
+                  </h3>
+                  <p className="text-sm text-gray-500">
+                    {vehicleHistoryModal.vehicle.brand || ""}{" "}
+                    {vehicleHistoryModal.vehicle.model || ""}
+                  </p>
+                </div>
+                <button
+                  onClick={() =>
+                    setVehicleHistoryModal({ isOpen: false, vehicle: null })
+                  }
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="p-6 overflow-y-auto space-y-3">
+                {getVehicleReservations(vehicleHistoryModal.vehicle.id)
+                  .length === 0 ? (
+                  <div className="text-center py-10 text-gray-500">
+                    Aucune réservation pour ce véhicule.
+                  </div>
+                ) : (
+                  getVehicleReservations(vehicleHistoryModal.vehicle.id).map(
+                    (reservation) => (
+                      <div
+                        key={reservation.id}
+                        className="border border-gray-200 rounded-xl p-4 bg-gray-50/70"
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <p className="font-semibold text-gray-900">
+                              {reservation.user?.name || "Client"}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {new Date(
+                                reservation.start_date,
+                              ).toLocaleDateString("fr-FR")}{" "}
+                              →{" "}
+                              {new Date(
+                                reservation.end_date,
+                              ).toLocaleDateString("fr-FR")}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-sm text-gray-500">
+                              {reservation.total_price} DT
+                            </div>
+                            <div className="text-xs text-gray-400">
+                              {reservation.payment_status === "paid"
+                                ? "Payée"
+                                : "En attente"}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-3 flex items-center justify-between text-sm">
+                          <span className="text-gray-600">
+                            Statut:{" "}
+                            <span className="font-medium text-gray-900">
+                              {reservation.status}
+                            </span>
+                          </span>
+                          <span className="text-gray-500">
+                            Référence #{reservation.id}
+                          </span>
+                        </div>
+                      </div>
+                    ),
+                  )
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
         {toast.show && (
           <Toast
             message={toast.message}
@@ -983,9 +1093,9 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
       if (status === REPORT_STATUS.PENDING)
         return { label: "En attente", color: "bg-yellow-100 text-yellow-700" };
       if (status === REPORT_STATUS.RESOLVED)
-        return { label: "Résolu", color: "bg-green-100 text-green-700" };
+        return { label: "R├®solu", color: "bg-green-100 text-green-700" };
       if (status === REPORT_STATUS.DISMISSED)
-        return { label: "Rejeté", color: "bg-gray-100 text-gray-700" };
+        return { label: "Rejet├®", color: "bg-gray-100 text-gray-700" };
       return { label: status, color: "bg-gray-100 text-gray-700" };
     };
 
@@ -993,10 +1103,10 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
       <div className="space-y-5">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">
-            Signalements de mes véhicules
+            Signalements de mes v├®hicules
           </h2>
           <p className="text-sm text-gray-500 mt-1">
-            Signalements soumis par des clients concernant vos véhicules
+            Signalements soumis par des clients concernant vos v├®hicules
           </p>
         </div>
 
@@ -1025,13 +1135,13 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
-                    Véhicule
+                    V├®hicule
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
                     Raison
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
-                    Signalé par
+                    Signal├® par
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
                     Date
@@ -1050,7 +1160,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                   return (
                     <tr key={report.id} className="hover:bg-gray-50">
                       <td className="px-4 py-3 font-medium text-gray-900">
-                        {report.targetName || "—"}
+                        {report.targetName || "ÔÇö"}
                       </td>
                       <td
                         className="px-4 py-3 text-gray-700 max-w-xs truncate"
@@ -1074,7 +1184,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                         </span>
                       </td>
                       <td className="px-4 py-3 text-gray-500 text-xs max-w-xs truncate">
-                        {report.adminNotes || "—"}
+                        {report.adminNotes || "ÔÇö"}
                       </td>
                     </tr>
                   );
@@ -1100,8 +1210,8 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
       ...pendingReservations.map((r) => ({
         id: `${RESERVATION_STATUS.PENDING}-${r.id}`,
         type: RESERVATION_STATUS.PENDING,
-        title: "Réservation en attente",
-        description: `${r.user?.name || "Client"} a réservé ${r.vehicle?.name || "un véhicule"} du ${new Date(r.start_date).toLocaleDateString()} au ${new Date(r.end_date).toLocaleDateString()}`,
+        title: "R├®servation en attente",
+        description: `${r.user?.name || "Client"} a r├®serv├® ${r.vehicle?.name || "un v├®hicule"} du ${new Date(r.start_date).toLocaleDateString()} au ${new Date(r.end_date).toLocaleDateString()}`,
         icon: "clock",
         color: "yellow",
         severity: "high",
@@ -1110,8 +1220,8 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
       ...ongoingReservations.map((r) => ({
         id: `${RESERVATION_STATUS.ONGOING}-${r.id}`,
         type: RESERVATION_STATUS.ONGOING,
-        title: "Réservation en cours",
-        description: `${r.vehicle?.name || "Un véhicule"} est actuellement réservé jusqu'au ${new Date(r.end_date).toLocaleDateString()}`,
+        title: "R├®servation en cours",
+        description: `${r.vehicle?.name || "Un v├®hicule"} est actuellement r├®serv├® jusqu'au ${new Date(r.end_date).toLocaleDateString()}`,
         icon: "play",
         color: "blue",
         severity: "medium",
@@ -1197,7 +1307,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
             Alertes et Notifications
           </h2>
           <p className="text-sm text-gray-500 mt-1">
-            Suivez les actions requises et les mises à jour importantes
+            Suivez les actions requises et les mises ├á jour importantes
           </p>
         </div>
 
@@ -1220,7 +1330,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
               Aucune alerte pour le moment
             </p>
             <p className="text-gray-500 text-sm mt-2">
-              Tout est en ordre, continuez vos opérations!
+              Tout est en ordre, continuez vos op├®rations!
             </p>
           </div>
         ) : (
@@ -1274,7 +1384,9 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
       return (
         <div className="flex flex-col items-center justify-center py-20 gap-4">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-          <p className="text-gray-500">Chargement des données financières...</p>
+          <p className="text-gray-500">
+            Chargement des donn├®es financi├¿res...
+          </p>
         </div>
       );
     }
@@ -1283,10 +1395,11 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
       return (
         <div className="text-center py-20 text-gray-500">
           <p className="text-lg font-medium">
-            Aucune donnée financière disponible.
+            Aucune donn├®e financi├¿re disponible.
           </p>
           <p className="text-sm mt-2">
-            Les données apparaîtront dès que des réservations seront confirmées.
+            Les donn├®es appara├«tront d├¿s que des r├®servations seront
+            confirm├®es.
           </p>
         </div>
       );
@@ -1313,7 +1426,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                   d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                 />
               </svg>
-              Période
+              P├®riode
             </button>
             <button className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2">
               <svg
@@ -1390,7 +1503,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                 </svg>
               </div>
               <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
-                Après frais
+                Apr├¿s frais
               </span>
             </div>
             <p className="text-green-100 text-sm font-medium mb-1">
@@ -1399,7 +1512,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
             <p className="text-3xl font-bold">
               {netIncome.toLocaleString()} DT
             </p>
-            <p className="text-green-100 text-xs mt-2">Après commission 15%</p>
+            <p className="text-green-100 text-xs mt-2">Apr├¿s commission 15%</p>
           </div>
 
           <div
@@ -1427,12 +1540,12 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
               </span>
             </div>
             <p className="text-purple-100 text-sm font-medium mb-1">
-              Commission Payée
+              Commission Pay├®e
             </p>
             <p className="text-3xl font-bold">
               {totalCommission.toLocaleString()} DT
             </p>
-            <p className="text-purple-100 text-xs mt-2">À la plateforme</p>
+            <p className="text-purple-100 text-xs mt-2">├Ç la plateforme</p>
           </div>
 
           <div
@@ -1480,7 +1593,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
           >
             <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
               <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-              Performance Financière
+              Performance Financi├¿re
             </h3>
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={monthlyRevenue}>
@@ -1564,7 +1677,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
         >
           <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
             <span className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></span>
-            Performance par Véhicule
+            Performance par V├®hicule
           </h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={vehiclePerformance} layout="vertical">
@@ -1594,7 +1707,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
               <Bar
                 dataKey="bookings"
                 fill="#10B981"
-                name="Réservations"
+                name="R├®servations"
                 radius={[0, 8, 8, 0]}
               />
             </BarChart>
@@ -1607,7 +1720,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
           style={{ animationDelay: "700ms" }}
         >
           <h3 className="text-lg font-bold text-gray-900 mb-4">
-            Détails Mensuels
+            D├®tails Mensuels
           </h3>
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -1704,13 +1817,15 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-xl border border-gray-200">
-            <p className="text-sm text-gray-600 mb-2">Réservations Totales</p>
+            <p className="text-sm text-gray-600 mb-2">R├®servations Totales</p>
             <p className="text-3xl font-bold text-primary-600">
               {reservations.length}
             </p>
           </div>
           <div className="bg-white p-6 rounded-xl border border-gray-200">
-            <p className="text-sm text-gray-600 mb-2">Réservations Terminées</p>
+            <p className="text-sm text-gray-600 mb-2">
+              R├®servations Termin├®es
+            </p>
             <p className="text-3xl font-bold text-green-600">
               {completedReservations.length}
             </p>

@@ -72,6 +72,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
     // Admin dashboard statistics
     Route::get('/admin/stats', [AdminController::class, 'getDashboardStats']);
+    Route::get('/admin/reservations', [ReservationController::class, 'index']);
 
     // Admin agencies list
     Route::get('/admin/agencies', [AdminController::class, 'getAgencies']);

@@ -4,6 +4,7 @@ import { adminService } from "../services/adminService";
 import { clientService } from "../services/clientService";
 import { contactService } from "../services/contactService";
 import { reportService } from "../services/reportService";
+import { reservationService } from "../services/reservationService";
 import { ROLES } from "../constants/roles";
 import { normalizeArray, normalizeReport } from "../utils/normalizers";
 
@@ -33,7 +34,7 @@ export default function useAdminDashboard({
   const [platformStats, setPlatformStats] = useState(DEFAULT_PLATFORM_STATS);
   const [agencies, setAgencies] = useState([]);
   const [users, setUsers] = useState([]);
-  const [allReservations] = useState([]);
+  const [allReservations, setAllReservations] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [reports, setReports] = useState([]);
@@ -48,15 +49,18 @@ export default function useAdminDashboard({
   const fetchDashboardData = async () => {
     setLoading(true);
     try {
-      const [statsRes, agenciesRes, usersRes] = await Promise.all([
-        adminService.getDashboardStats(),
-        adminService.getAgencies(),
-        adminService.getUsers(),
-      ]);
+      const [statsRes, agenciesRes, usersRes, reservationsRes] =
+        await Promise.all([
+          adminService.getDashboardStats(),
+          adminService.getAgencies(),
+          adminService.getUsers(),
+          reservationService.getAll(),
+        ]);
 
       setPlatformStats(statsRes?.data || DEFAULT_PLATFORM_STATS);
       setAgencies(normalizeArray(agenciesRes));
       setUsers(normalizeArray(usersRes));
+      setAllReservations(normalizeArray(reservationsRes));
 
       await fetchNotifications();
     } catch (error) {

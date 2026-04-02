@@ -24,6 +24,23 @@ class ReservationController extends Controller
     }
 
     /**
+     * Get all reservations for the super admin dashboard.
+     */
+    public function index()
+    {
+        $this->authorize('viewAny', Reservation::class);
+
+        $reservations = Reservation::with(['vehicle', 'user', 'payments'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => ReservationResource::collection($reservations),
+        ]);
+    }
+
+    /**
      * Get all reservations for a client
      */
     public function clientIndex()

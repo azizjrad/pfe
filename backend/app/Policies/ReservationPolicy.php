@@ -7,6 +7,11 @@ use App\Models\User;
 
 class ReservationPolicy
 {
+    public function viewAny(User $user): bool
+    {
+        return $user->isSuperAdmin();
+    }
+
     public function view(User $user, Reservation $reservation): bool
     {
         if ($user->isSuperAdmin()) {
