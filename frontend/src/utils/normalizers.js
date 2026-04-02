@@ -14,7 +14,10 @@ export const normalizeReport = (report = {}) => ({
   description: report.description,
   reported_by_name: report.reported_by_name || report.reportedBy,
   created_at: report.created_at || report.reportedAt,
-  status: report.status,
+  status:
+    report.status === "open" || report.status === "investigating"
+      ? "pending"
+      : report.status,
   admin_notes: report.admin_notes || report.adminNotes,
   resolved_at: report.resolved_at || report.resolvedAt,
 });

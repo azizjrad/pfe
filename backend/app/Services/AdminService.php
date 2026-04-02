@@ -216,7 +216,7 @@ class AdminService
     {
         $agencies = Agency::withCount('vehicles')->get();
 
-        $result = $agencies->map(function ($agency) {
+        $result = $agencies->map(function (Agency $agency) {
             // Compute revenue for this agency (sum of completed reservations for agency vehicles)
             $vehicleIds = $agency->vehicles()->pluck('id')->toArray();
             $revenue = 0;
@@ -230,6 +230,11 @@ class AdminService
                 'id' => $agency->id,
                 'name' => $agency->name,
                 'status' => $agency->status,
+                'address' => $agency->address,
+                'city' => $agency->city,
+                'phone' => $agency->phone,
+                'email' => $agency->email,
+                'location' => $agency->city ?? $agency->address,
                 'vehicles' => $agency->vehicles_count ?? 0,
                 'revenue' => round($revenue, 2),
             ];
@@ -249,7 +254,20 @@ class AdminService
             throw new \Exception('Agency not found', 404);
         }
 
-        $allowed = array_intersect_key($data, array_flip(['status','name','location']));
+        if (isset($data['location']) && !isset($data['city'])) {
+            $data['city'] = $data['location'];
+        }
+
+        $allowed = array_intersect_key($data, array_flip([
+            'status',
+            'name',
+            'address',
+            'city',
+            'phone',
+            'email',
+            'opening_time',
+            'closing_time',
+        ]));
 
         if (!empty($allowed)) {
             $agency->update($allowed);

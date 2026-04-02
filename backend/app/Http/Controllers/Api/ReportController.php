@@ -216,5 +216,64 @@ class ReportController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Get reports submitted by a user (super_admin)
+     */
+    public function getUserReportsSubmitted($userId)
+    {
+        $this->authorize('viewAny', Report::class);
+
+        $reports = Report::where('reported_by_user_id', $userId)
+            ->whereNull('deleted_at')
+            ->with('reportedBy')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => ReportResource::collection($reports),
+        ]);
+    }
+
+    /**
+     * Get reports against a user (super_admin)
+     */
+    public function getUserReportsAgainst($userId)
+    {
+        $this->authorize('viewAny', Report::class);
+
+        $reports = Report::where('report_type', 'client')
+            ->where('target_id', $userId)
+            ->whereNull('deleted_at')
+            ->with('reportedBy')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => ReportResource::collection($reports),
+        ]);
+    }
+
+    /**
+     * Get reports against an agency (super_admin)
+     */
+    public function getAgencyReportsAgainst($agencyId)
+    {
+        $this->authorize('viewAny', Report::class);
+
+        $reports = Report::where('report_type', 'agency')
+            ->where('target_id', $agencyId)
+            ->whereNull('deleted_at')
+            ->with('reportedBy')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => ReportResource::collection($reports),
+        ]);
+    }
 }
 

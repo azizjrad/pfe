@@ -5,8 +5,8 @@ import http from "./http";
  */
 export const contactService = {
   /**
-   * Submit a public contact form message (unauthenticated).
-   * Used by the Contact page.
+   * Submit a public contact form message.
+   * Used by the Contact page and does not require authentication.
    */
   submit: async (formData) => {
     const response = await http.post("/contact", formData);

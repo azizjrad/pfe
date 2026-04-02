@@ -31,14 +31,16 @@ Route::post('/login', [AuthController::class, 'login'])
 // Password reset (set password via token sent in invite/reset)
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
+// Public contact form submission
+Route::post('/contact', [ContactController::class, 'store']);
+
 // Protected routes - All authenticated users
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', [AuthController::class, 'user']);
     Route::put('/profile', [AuthController::class, 'updateProfile']);
 
-    // Protected contact and configuration endpoints
-    Route::post('/contact', [ContactController::class, 'store']);
+    // Protected configuration endpoint
     Route::get('/pricing-config', [ConfigController::class, 'pricingConfig']);
 
     // Protected browse endpoints (previously public)
@@ -76,8 +78,11 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
 
     // Agency details
     Route::get('/admin/agencies/{id}', [AdminController::class, 'getAgencyDetails']);
+    Route::get('/admin/agencies/{id}/vehicles', [AdminController::class, 'getAgencyVehicles']);
+    Route::get('/admin/agencies/{id}/reports', [ReportController::class, 'getAgencyReportsAgainst']);
     // Update agency (supports status changes)
     Route::put('/admin/agencies/{id}', [AdminController::class, 'updateAgency']);
+    Route::delete('/admin/agencies/{id}', [AdminController::class, 'deleteAgency']);
     // Create agency
     Route::post('/admin/agencies', [AdminController::class, 'createAgency']);
 
@@ -87,6 +92,8 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
     // User management
     Route::get('/admin/users', [AdminController::class, 'getUsers']);
     Route::get('/admin/users/{id}', [AdminController::class, 'getUserDetails']);
+    Route::get('/admin/users/{id}/reports-submitted', [ReportController::class, 'getUserReportsSubmitted']);
+    Route::get('/admin/users/{id}/reports-against', [ReportController::class, 'getUserReportsAgainst']);
     // Create a user
     Route::post('/admin/users', [AdminController::class, 'createUser']);
     Route::post('/admin/users/{id}/suspend', [AdminController::class, 'suspendUser']);

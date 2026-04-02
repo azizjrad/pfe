@@ -216,6 +216,22 @@ export default function useAdminDashboard({
   };
 
   const handleEditAgency = async (updatedData) => {
+    if (!updatedData.id) {
+      const response = await adminService.createAgency(updatedData);
+      const created = response?.data;
+
+      if (created) {
+        setAgencies((prev) => [created, ...prev]);
+        setPlatformStats((prev) => ({
+          ...prev,
+          totalAgencies: (prev.totalAgencies || 0) + 1,
+        }));
+      }
+
+      showToast?.(t("admin.agencies.editSuccess"), "success");
+      return;
+    }
+
     const response = await adminService.updateAgency(
       updatedData.id,
       updatedData,
@@ -229,6 +245,22 @@ export default function useAdminDashboard({
   };
 
   const handleEditUser = async (updatedData) => {
+    if (!updatedData.id) {
+      const response = await adminService.createUser(updatedData);
+      const created = response?.data;
+
+      if (created) {
+        setUsers((prev) => [created, ...prev]);
+        setPlatformStats((prev) => ({
+          ...prev,
+          totalUsers: (prev.totalUsers || 0) + 1,
+        }));
+      }
+
+      showToast?.(t("admin.users.editSuccess"), "success");
+      return;
+    }
+
     const response = await adminService.updateUser(updatedData.id, updatedData);
     setUsers((prev) =>
       prev.map((u) =>

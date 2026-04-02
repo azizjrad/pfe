@@ -11,7 +11,11 @@ use App\Services\AuthService;
 use App\Services\AgencyService;
 use App\Services\ClientService;
 use App\Models\User;
+use App\Models\Agency;
+use App\Models\Reservation;
+use App\Models\Vehicle;
 use App\Mail\InviteUserMail;
+use App\Http\Resources\VehicleResource;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
@@ -276,7 +280,17 @@ class AdminController extends Controller
      */
     public function updateAgency(Request $request, $id)
     {
-        $data = $request->only(['status', 'name', 'location']);
+        $data = $request->only([
+            'status',
+            'name',
+            'location',
+            'address',
+            'city',
+            'phone',
+            'email',
+            'opening_time',
+            'closing_time',
+        ]);
 
         try {
             $agency = $this->adminService->updateAgency($id, $data);
@@ -335,6 +349,64 @@ class AdminController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => new AgencyResource($agency),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 404);
+        }
+    }
+
+    /**
+     * Get vehicles belonging to an agency (super admin)
+     */
+    public function getAgencyVehicles($id)
+    {
+        try {
+            $agency = Agency::findOrFail($id);
+            $vehicles = Vehicle::with('agency')
+                ->where('agency_id', $agency->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => VehicleResource::collection($vehicles),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 404);
+        }
+    }
+
+    /**
+     * Delete agency (super admin)
+     */
+    public function deleteAgency($id)
+    {
+        try {
+            $agency = Agency::findOrFail($id);
+
+            $vehicleIds = Vehicle::where('agency_id', $agency->id)->pluck('id');
+            $hasActiveReservations = Reservation::whereIn('vehicle_id', $vehicleIds)
+                ->whereIn('status', ['pending', 'confirmed', 'ongoing'])
+                ->exists();
+
+            if ($hasActiveReservations) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Cannot delete agency with active reservations',
+                ], 400);
+            }
+
+            $agency->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Agency deleted successfully',
             ]);
         } catch (\Exception $e) {
             return response()->json([

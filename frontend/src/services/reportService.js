@@ -30,7 +30,8 @@ export const reportService = {
 
   /** Resolve a report (super admin only) */
   resolve: async (id, adminNotes) => {
-    const response = await http.post(`/admin/reports/${id}/resolve`, {
+    const response = await http.patch(`/admin/reports/${id}/status`, {
+      status: "resolved",
       admin_notes: adminNotes,
     });
     return response.data;
@@ -38,7 +39,8 @@ export const reportService = {
 
   /** Dismiss a report (super admin only) */
   dismiss: async (id, adminNotes) => {
-    const response = await http.post(`/admin/reports/${id}/dismiss`, {
+    const response = await http.patch(`/admin/reports/${id}/status`, {
+      status: "dismissed",
       admin_notes: adminNotes,
     });
     return response.data;

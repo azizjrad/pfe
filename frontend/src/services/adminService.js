@@ -37,6 +37,12 @@ export const adminService = {
     return response.data;
   },
 
+  /** Create an agency */
+  createAgency: async (data) => {
+    const response = await http.post("/admin/agencies", data);
+    return response.data;
+  },
+
   /** Delete an agency */
   deleteAgency: async (id) => {
     const response = await http.delete(`/admin/agencies/${id}`);
@@ -55,6 +61,12 @@ export const adminService = {
   /** Update a user */
   updateUser: async (id, data) => {
     const response = await http.put(`/admin/users/${id}`, data);
+    return response.data;
+  },
+
+  /** Create a user */
+  createUser: async (data) => {
+    const response = await http.post("/admin/users", data);
     return response.data;
   },
 
