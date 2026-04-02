@@ -63,10 +63,43 @@ class AgencySeeder extends Seeder
                 'closing_time' => '19:00',
                 'status' => 'active',
             ],
+            [
+                'name' => 'Agence Nabeul',
+                'address' => 'Avenue Habib Thameur',
+                'city' => 'Nabeul',
+                'phone' => '+216 72 112 233',
+                'email' => 'nabeul@location.tn',
+                'opening_time' => '08:00',
+                'closing_time' => '18:30',
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Agence Monastir Aéroport',
+                'address' => 'Aéroport International de Monastir',
+                'city' => 'Monastir',
+                'phone' => '+216 73 112 244',
+                'email' => 'monastir.airport@location.tn',
+                'opening_time' => '06:00',
+                'closing_time' => '22:00',
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Agence Djerba Midoun',
+                'address' => 'Route Touristique Midoun',
+                'city' => 'Djerba',
+                'phone' => '+216 75 112 255',
+                'email' => 'djerba@location.tn',
+                'opening_time' => '08:00',
+                'closing_time' => '20:00',
+                'status' => 'active',
+            ],
         ];
 
         foreach ($agencies as $agency) {
-            Agency::create($agency);
+            Agency::updateOrCreate(
+                ['email' => $agency['email']],
+                $agency
+            );
         }
     }
 }

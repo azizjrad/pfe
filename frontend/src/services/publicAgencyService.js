@@ -28,13 +28,19 @@ const normalizeAgencyVehicle = (vehicle, agency) => ({
 
 const normalizeAgency = (agency) => {
   const features = Array.isArray(agency.features) ? agency.features : [];
+  const computedLocation =
+    agency.location ||
+    [agency.city, agency.address].filter(Boolean).join(" - ") ||
+    agency.city ||
+    agency.address ||
+    "Tunisie";
 
   return {
     id: agency.id,
     name: agency.name,
     description: agency.description || "",
-    location: agency.location || "Tunisie",
-    address: agency.address || agency.location || "Tunisie",
+    location: computedLocation,
+    address: agency.address || computedLocation,
     phone: agency.phone || "N/A",
     email: agency.email || "N/A",
     rating: Number(agency.rating ?? 0),

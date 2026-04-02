@@ -7,11 +7,13 @@ import VehicleCard from "../../components/cards/VehicleCard";
 import { Select, MenuItem, FormControl } from "@mui/material";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
 import publicVehicleService from "../../services/publicVehicleService";
+import publicAgencyService from "../../services/publicAgencyService";
 
 const Home = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [featuredVehicles, setFeaturedVehicles] = useState([]);
+  const [agencyLocations, setAgencyLocations] = useState([]);
 
   // Scroll animations for sections
   const heroContentAnim = useScrollAnimation({ threshold: 0.2 });
@@ -132,8 +134,7 @@ const Home = () => {
   };
 
   const [searchData, setSearchData] = useState({
-    pickupLocation: "Tunis Carthage aéroport",
-    returnLocation: "",
+    pickupLocation: "",
     pickupDate: "",
     pickupTime: "10:00",
     returnDate: "",
@@ -165,6 +166,41 @@ const Home = () => {
 
     navigate(`/vehicles?${searchParams.toString()}`);
   };
+
+  useEffect(() => {
+    const fetchAgencyLocations = async () => {
+      try {
+        const response = await publicAgencyService.getAll(1, 100);
+        const agencies = Array.isArray(response?.data) ? response.data : [];
+
+        const uniqueLocations = Array.from(
+          new Set(
+            agencies
+              .map((agency) => agency.location)
+              .filter(
+                (location) => typeof location === "string" && location.trim(),
+              ),
+          ),
+        );
+
+        setAgencyLocations(uniqueLocations);
+        if (uniqueLocations.length > 0) {
+          setSearchData((prev) => ({
+            ...prev,
+            pickupLocation:
+              prev.pickupLocation &&
+              uniqueLocations.includes(prev.pickupLocation)
+                ? prev.pickupLocation
+                : uniqueLocations[0],
+          }));
+        }
+      } catch (error) {
+        console.error("Failed to fetch agency locations:", error);
+      }
+    };
+
+    fetchAgencyLocations();
+  }, []);
 
   const features = [
     {
@@ -360,27 +396,19 @@ const Home = () => {
                           },
                         }}
                       >
-                        <MenuItem value="Tunis Carthage aéroport">
-                          {t("home.search.airport")}
-                        </MenuItem>
-                        <MenuItem value="Tunis Centre">{t("home.search.center")}</MenuItem>
-                        <MenuItem value="Sfax">{t("home.search.sfax")}</MenuItem>
-                        <MenuItem value="Sousse">{t("home.search.sousse")}</MenuItem>
+                        {agencyLocations.length > 0 ? (
+                          agencyLocations.map((location) => (
+                            <MenuItem key={location} value={location}>
+                              {location}
+                            </MenuItem>
+                          ))
+                        ) : (
+                          <MenuItem value="" disabled>
+                            Chargement des agences...
+                          </MenuItem>
+                        )}
                       </Select>
                     </FormControl>
-                  </div>
-                  <div className="mt-3 flex items-center">
-                    <input
-                      type="checkbox"
-                      id="differentLocation"
-                      className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:outline-none cursor-pointer"
-                    />
-                    <label
-                      htmlFor="differentLocation"
-                      className="ml-2 text-xs sm:text-sm text-gray-600 cursor-pointer hover:text-gray-900 transition-colors"
-                    >
-                      {t("home.search.differentLocation")}
-                    </label>
                   </div>
                 </div>
 
@@ -617,11 +645,21 @@ const Home = () => {
                           },
                         }}
                       >
-                        <MenuItem value="Tous">{t("home.search.categoryAll")}</MenuItem>
-                        <MenuItem value="Économique">{t("home.search.categoryEco")}</MenuItem>
-                        <MenuItem value="SUV">{t("home.search.categorySUV")}</MenuItem>
-                        <MenuItem value="Luxe">{t("home.search.categoryLuxury")}</MenuItem>
-                        <MenuItem value="Sport">{t("home.search.categorySport")}</MenuItem>
+                        <MenuItem value="Tous">
+                          {t("home.search.categoryAll")}
+                        </MenuItem>
+                        <MenuItem value="Économique">
+                          {t("home.search.categoryEco")}
+                        </MenuItem>
+                        <MenuItem value="SUV">
+                          {t("home.search.categorySUV")}
+                        </MenuItem>
+                        <MenuItem value="Luxe">
+                          {t("home.search.categoryLuxury")}
+                        </MenuItem>
+                        <MenuItem value="Sport">
+                          {t("home.search.categorySport")}
+                        </MenuItem>
                       </Select>
                     </FormControl>
                   </div>
@@ -950,7 +988,9 @@ const Home = () => {
                     clipRule="evenodd"
                   />
                 </svg>
-                <span className="font-semibold">{t("home.cta.trust.payment")}</span>
+                <span className="font-semibold">
+                  {t("home.cta.trust.payment")}
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <svg
@@ -964,7 +1004,9 @@ const Home = () => {
                     clipRule="evenodd"
                   />
                 </svg>
-                <span className="font-semibold">{t("home.cta.trust.cancellation")}</span>
+                <span className="font-semibold">
+                  {t("home.cta.trust.cancellation")}
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <svg
@@ -975,7 +1017,9 @@ const Home = () => {
                   <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                   <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                 </svg>
-                <span className="font-semibold">{t("home.cta.trust.support")}</span>
+                <span className="font-semibold">
+                  {t("home.cta.trust.support")}
+                </span>
               </div>
             </div>
           </div>

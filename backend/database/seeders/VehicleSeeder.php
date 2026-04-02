@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Agency;
+use App\Models\Category;
 use App\Models\Vehicle;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +14,14 @@ class VehicleSeeder extends Seeder
      */
     public function run(): void
     {
+        $agencyIds = Agency::query()
+            ->pluck('id', 'email')
+            ->toArray();
+
+        $categoryIds = Category::query()
+            ->pluck('id', 'name')
+            ->toArray();
+
         $vehicles = [
             // Agence Tunis Centre - Économique
             [
@@ -26,8 +36,8 @@ class VehicleSeeder extends Seeder
                 'transmission' => 'manual',
                 'fuel_type' => 'petrol',
                 'status' => 'available',
-                'image' => null,
-                'agency_id' => 1,
+                'images' => null,
+                'agency_email' => 'tunis.centre@location.tn',
             ],
             [
                 'brand' => 'Peugeot',
@@ -41,8 +51,8 @@ class VehicleSeeder extends Seeder
                 'transmission' => 'manual',
                 'fuel_type' => 'diesel',
                 'status' => 'available',
-                'image' => null,
-                'agency_id' => 1,
+                'images' => null,
+                'agency_email' => 'tunis.centre@location.tn',
             ],
 
             // Agence Tunis Centre - Berline
@@ -58,8 +68,8 @@ class VehicleSeeder extends Seeder
                 'transmission' => 'automatic',
                 'fuel_type' => 'hybrid',
                 'status' => 'available',
-                'image' => null,
-                'agency_id' => 1,
+                'images' => null,
+                'agency_email' => 'tunis.centre@location.tn',
             ],
 
             // Agence Tunis Centre - SUV
@@ -75,8 +85,8 @@ class VehicleSeeder extends Seeder
                 'transmission' => 'automatic',
                 'fuel_type' => 'diesel',
                 'status' => 'available',
-                'image' => null,
-                'agency_id' => 1,
+                'images' => null,
+                'agency_email' => 'tunis.centre@location.tn',
             ],
 
             // Agence Aéroport - SUV Premium
@@ -92,8 +102,8 @@ class VehicleSeeder extends Seeder
                 'transmission' => 'automatic',
                 'fuel_type' => 'hybrid',
                 'status' => 'available',
-                'image' => null,
-                'agency_id' => 2,
+                'images' => null,
+                'agency_email' => 'aeroport@location.tn',
             ],
             [
                 'brand' => 'Kia',
@@ -107,8 +117,8 @@ class VehicleSeeder extends Seeder
                 'transmission' => 'automatic',
                 'fuel_type' => 'diesel',
                 'status' => 'rented',
-                'image' => null,
-                'agency_id' => 2,
+                'images' => null,
+                'agency_email' => 'aeroport@location.tn',
             ],
 
             // Agence Aéroport - Luxe
@@ -124,8 +134,8 @@ class VehicleSeeder extends Seeder
                 'transmission' => 'automatic',
                 'fuel_type' => 'diesel',
                 'status' => 'available',
-                'image' => null,
-                'agency_id' => 2,
+                'images' => null,
+                'agency_email' => 'aeroport@location.tn',
             ],
 
             // Agence Sousse - Économique
@@ -141,8 +151,8 @@ class VehicleSeeder extends Seeder
                 'transmission' => 'manual',
                 'fuel_type' => 'petrol',
                 'status' => 'available',
-                'image' => null,
-                'agency_id' => 3,
+                'images' => null,
+                'agency_email' => 'sousse@location.tn',
             ],
 
             // Agence Sousse - Berline
@@ -158,8 +168,8 @@ class VehicleSeeder extends Seeder
                 'transmission' => 'automatic',
                 'fuel_type' => 'diesel',
                 'status' => 'available',
-                'image' => null,
-                'agency_id' => 3,
+                'images' => null,
+                'agency_email' => 'sousse@location.tn',
             ],
 
             // Agence Sfax - SUV
@@ -175,8 +185,8 @@ class VehicleSeeder extends Seeder
                 'transmission' => 'automatic',
                 'fuel_type' => 'petrol',
                 'status' => 'available',
-                'image' => null,
-                'agency_id' => 4,
+                'images' => null,
+                'agency_email' => 'sfax@location.tn',
             ],
 
             // Agence Hammamet - Luxe
@@ -192,8 +202,8 @@ class VehicleSeeder extends Seeder
                 'transmission' => 'automatic',
                 'fuel_type' => 'diesel',
                 'status' => 'maintenance',
-                'image' => null,
-                'agency_id' => 5,
+                'images' => null,
+                'agency_email' => 'hammamet@location.tn',
             ],
 
             // Agence Hammamet - Utilitaire
@@ -209,13 +219,146 @@ class VehicleSeeder extends Seeder
                 'transmission' => 'manual',
                 'fuel_type' => 'diesel',
                 'status' => 'available',
-                'image' => null,
-                'agency_id' => 5,
+                'images' => null,
+                'agency_email' => 'hammamet@location.tn',
+            ],
+
+            // Agence Nabeul
+            [
+                'brand' => 'Seat',
+                'model' => 'Arona',
+                'year' => 2023,
+                'mileage' => 24000,
+                'daily_price' => 135,
+                'license_plate' => 'NAB-123-111',
+                'color' => 'Bleu Foncé',
+                'seats' => 5,
+                'transmission' => 'automatic',
+                'fuel_type' => 'petrol',
+                'status' => 'available',
+                'images' => null,
+                'agency_email' => 'nabeul@location.tn',
+            ],
+            [
+                'brand' => 'Skoda',
+                'model' => 'Octavia',
+                'year' => 2022,
+                'mileage' => 41000,
+                'daily_price' => 125,
+                'license_plate' => 'NAB-123-222',
+                'color' => 'Gris',
+                'seats' => 5,
+                'transmission' => 'automatic',
+                'fuel_type' => 'diesel',
+                'status' => 'available',
+                'images' => null,
+                'agency_email' => 'nabeul@location.tn',
+            ],
+
+            // Agence Monastir Aéroport
+            [
+                'brand' => 'Audi',
+                'model' => 'A4',
+                'year' => 2024,
+                'mileage' => 9000,
+                'daily_price' => 260,
+                'license_plate' => 'MON-555-101',
+                'color' => 'Noir',
+                'seats' => 5,
+                'transmission' => 'automatic',
+                'fuel_type' => 'diesel',
+                'status' => 'available',
+                'images' => null,
+                'agency_email' => 'monastir.airport@location.tn',
+            ],
+            [
+                'brand' => 'Fiat',
+                'model' => 'Tipo',
+                'year' => 2023,
+                'mileage' => 26000,
+                'daily_price' => 95,
+                'license_plate' => 'MON-555-202',
+                'color' => 'Blanc',
+                'seats' => 5,
+                'transmission' => 'manual',
+                'fuel_type' => 'petrol',
+                'status' => 'available',
+                'images' => null,
+                'agency_email' => 'monastir.airport@location.tn',
+            ],
+
+            // Agence Djerba Midoun
+            [
+                'brand' => 'Ford',
+                'model' => 'Kuga',
+                'year' => 2024,
+                'mileage' => 11000,
+                'daily_price' => 190,
+                'license_plate' => 'DJE-777-303',
+                'color' => 'Argent',
+                'seats' => 5,
+                'transmission' => 'automatic',
+                'fuel_type' => 'hybrid',
+                'status' => 'available',
+                'images' => null,
+                'agency_email' => 'djerba@location.tn',
+            ],
+            [
+                'brand' => 'Citroen',
+                'model' => 'C3',
+                'year' => 2022,
+                'mileage' => 38000,
+                'daily_price' => 88,
+                'license_plate' => 'DJE-777-404',
+                'color' => 'Rouge',
+                'seats' => 5,
+                'transmission' => 'manual',
+                'fuel_type' => 'petrol',
+                'status' => 'available',
+                'images' => null,
+                'agency_email' => 'djerba@location.tn',
             ],
         ];
 
+        $categoryByModel = [
+            'Clio' => 'Économique',
+            '208' => 'Économique',
+            'Corolla' => 'Berline',
+            'Tucson' => 'SUV',
+            'RAV4' => 'SUV',
+            'Sportage' => 'SUV',
+            'Classe C' => 'Luxe',
+            'Logan' => 'Économique',
+            'Passat' => 'Berline',
+            'Qashqai' => 'SUV',
+            'Série 3' => 'Luxe',
+            'Kangoo' => 'Utilitaire',
+            'Arona' => 'SUV',
+            'Octavia' => 'Berline',
+            'A4' => 'Luxe',
+            'Tipo' => 'Économique',
+            'Kuga' => 'SUV',
+            'C3' => 'Économique',
+        ];
+
         foreach ($vehicles as $vehicle) {
-            Vehicle::create($vehicle);
+            $agencyEmail = $vehicle['agency_email'];
+            $agencyId = $agencyIds[$agencyEmail] ?? null;
+            $categoryName = $categoryByModel[$vehicle['model']] ?? 'Économique';
+            $categoryId = $categoryIds[$categoryName] ?? null;
+
+            if (!$agencyId || !$categoryId) {
+                continue;
+            }
+
+            unset($vehicle['agency_email']);
+            $vehicle['agency_id'] = $agencyId;
+            $vehicle['category_id'] = $categoryId;
+
+            Vehicle::updateOrCreate(
+                ['license_plate' => $vehicle['license_plate']],
+                $vehicle
+            );
         }
     }
 }

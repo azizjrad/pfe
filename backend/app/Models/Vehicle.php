@@ -20,6 +20,7 @@ class Vehicle extends Model
         'status',
         'images',
         'agency_id',
+        'category_id',
     ];
 
     protected $casts = [

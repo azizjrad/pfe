@@ -15,6 +15,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ReferenceLine,
   ResponsiveContainer,
 } from "recharts";
 import ConfirmationModal from "../modals/ConfirmationModal";
@@ -1504,20 +1505,69 @@ const AdminContent = ({
   }
 
   if (activeTab === "statistics") {
-    const statisticsSubTabs = [
-      { id: "finance", label: "Finances" },
-      { id: "global", label: "Statistiques Globales" },
-    ];
-
     // Financial tab content
     const renderFinancialContent = () => {
       const monthlyRevenue = financialStats.monthly;
       const revenueByAgency = financialStats.byAgency;
 
+      const normalizedMonthlyRevenue = monthlyRevenue.map((month) => ({
+        ...month,
+        revenue: Number(month.revenue ?? 0),
+        commission: Number(month.commission ?? 0),
+        profit: Number(month.profit ?? 0),
+      }));
+
+      const normalizedAgencyRevenue = revenueByAgency
+        .map((agency) => ({
+          ...agency,
+          name: agency.name ?? agency.agency_name ?? "Agence",
+          revenue: Number(agency.revenue ?? 0),
+          commission: Number(agency.commission ?? 0),
+        }))
+        .sort((a, b) => b.revenue - a.revenue);
+
+      const agencyRevenueShare = normalizedAgencyRevenue
+        .filter((agency) => agency.revenue > 0)
+        .slice(0, 6)
+        .map((agency) => ({
+          name: agency.name,
+          value: agency.revenue,
+        }));
+
+      const agencyShareColors = [
+        "#3B82F6",
+        "#10B981",
+        "#F59E0B",
+        "#8B5CF6",
+        "#06B6D4",
+        "#EF4444",
+      ];
+
       const totalRevenue = financialStats.totals.revenue;
       const totalProfit = financialStats.totals.profit;
       const totalCommission = financialStats.totals.commission;
       const avgMonthlyRevenue = financialStats.totals.avgMonthly;
+
+      const formatMonthLabel = (value) => {
+        if (!value) return "-";
+        const date = new Date(`${value}-01T00:00:00`);
+        if (Number.isNaN(date.getTime())) return value;
+        return date.toLocaleDateString("fr-FR", {
+          month: "short",
+          year: "numeric",
+        });
+      };
+
+      const sharedTooltipStyle = {
+        backgroundColor: "rgba(17, 24, 39, 0.96)",
+        border: "1px solid #111827",
+        borderRadius: "10px",
+        color: "#F9FAFB",
+        boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)",
+      };
+
+      const currencyTooltipFormatter = (value) =>
+        `${Number(value ?? 0).toLocaleString("fr-FR")} DT`;
 
       // Calculate growth percentages (comparing last month vs previous month)
       const calculateGrowth = (data, key) => {
@@ -1528,12 +1578,18 @@ const AdminContent = ({
         return ((current - previous) / previous) * 100;
       };
 
-      const revenueGrowth = calculateGrowth(monthlyRevenue, "revenue");
-      const commissionGrowth = calculateGrowth(monthlyRevenue, "commission");
+      const revenueGrowth = calculateGrowth(
+        normalizedMonthlyRevenue,
+        "revenue",
+      );
+      const commissionGrowth = calculateGrowth(
+        normalizedMonthlyRevenue,
+        "commission",
+      );
       const commissionRate =
         totalRevenue > 0 ? (totalCommission / totalRevenue) * 100 : 0;
 
-      if (monthlyRevenue.length === 0) {
+      if (normalizedMonthlyRevenue.length === 0) {
         // If the overall dashboard loading finished and we still have no
         // monthly data, show a friendly empty state instead of an infinite spinner
         if (!loading) {
@@ -1710,7 +1766,7 @@ const AdminContent = ({
               </p>
               <p className="text-2xl font-bold text-gray-900">
                 {(
-                  totalCommission / Math.max(monthlyRevenue.length, 1)
+                  totalCommission / Math.max(normalizedMonthlyRevenue.length, 1)
                 ).toLocaleString()}{" "}
                 DT
               </p>
@@ -1719,18 +1775,23 @@ const AdminContent = ({
           </div>
 
           {/* Charts Section */}
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Revenue Trend Chart */}
             <div
               className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
               style={{ animationDelay: "400ms" }}
             >
-              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-                Évolution du Revenu
-              </h3>
+              <div className="mb-4 flex items-start justify-between gap-3">
+                <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                  <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+                  Évolution du Revenu
+                </h3>
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100">
+                  Moy: {avgMonthlyRevenue.toLocaleString("fr-FR")} DT
+                </span>
+              </div>
               <ResponsiveContainer width="100%" height={300}>
-                <AreaChart data={monthlyRevenue}>
+                <AreaChart data={normalizedMonthlyRevenue}>
                   <defs>
                     <linearGradient
                       id="colorRevenue"
@@ -1762,15 +1823,16 @@ const AdminContent = ({
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                  <XAxis dataKey="month" stroke="#6B7280" />
+                  <XAxis
+                    dataKey="month"
+                    stroke="#6B7280"
+                    tickFormatter={formatMonthLabel}
+                  />
                   <YAxis stroke="#6B7280" />
                   <Tooltip
-                    contentStyle={{
-                      backgroundColor: "rgba(255, 255, 255, 0.95)",
-                      border: "1px solid #E5E7EB",
-                      borderRadius: "12px",
-                      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                    }}
+                    contentStyle={sharedTooltipStyle}
+                    formatter={currencyTooltipFormatter}
+                    labelFormatter={formatMonthLabel}
                   />
                   <Legend />
                   <Area
@@ -1789,7 +1851,59 @@ const AdminContent = ({
                     fill="url(#colorProfit)"
                     name="Profit"
                   />
+                  <ReferenceLine
+                    y={avgMonthlyRevenue}
+                    stroke="#F59E0B"
+                    strokeWidth={2}
+                    strokeDasharray="6 6"
+                    label={{ value: "Moyenne", position: "insideTopRight" }}
+                  />
                 </AreaChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Agency Revenue Share */}
+            <div
+              className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
+              style={{ animationDelay: "500ms" }}
+            >
+              <div className="mb-4 flex items-start justify-between gap-3">
+                <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                  <span className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span>
+                  Part du Revenu par Agence
+                </h3>
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">
+                  Top {agencyRevenueShare.length} agences
+                </span>
+              </div>
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={agencyRevenueShare}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={65}
+                    outerRadius={100}
+                    dataKey="value"
+                    nameKey="name"
+                    paddingAngle={2}
+                    label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
+                  >
+                    {agencyRevenueShare.map((entry, index) => (
+                      <Cell
+                        key={`share-${entry.name}-${index}`}
+                        fill={
+                          agencyShareColors[index % agencyShareColors.length]
+                        }
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={sharedTooltipStyle}
+                    formatter={currencyTooltipFormatter}
+                  />
+                  <Legend verticalAlign="bottom" height={36} />
+                </PieChart>
               </ResponsiveContainer>
             </div>
           </div>
@@ -1799,22 +1913,23 @@ const AdminContent = ({
             className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
             style={{ animationDelay: "600ms" }}
           >
-            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              Performance des Agences (Top 5)
-            </h3>
+            <div className="mb-4 flex items-start justify-between gap-3">
+              <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                Performance des Agences
+              </h3>
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                {normalizedAgencyRevenue.length} agences
+              </span>
+            </div>
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={revenueByAgency}>
+              <BarChart data={normalizedAgencyRevenue}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
                 <XAxis dataKey="name" stroke="#6B7280" />
                 <YAxis stroke="#6B7280" />
                 <Tooltip
-                  contentStyle={{
-                    backgroundColor: "rgba(255, 255, 255, 0.95)",
-                    border: "1px solid #E5E7EB",
-                    borderRadius: "12px",
-                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                  }}
+                  contentStyle={sharedTooltipStyle}
+                  formatter={currencyTooltipFormatter}
                 />
                 <Legend />
                 <Bar
@@ -1860,13 +1975,13 @@ const AdminContent = ({
                   </tr>
                 </thead>
                 <tbody>
-                  {monthlyRevenue.map((month, index) => (
+                  {normalizedMonthlyRevenue.map((month, index) => (
                     <tr
                       key={month.month}
                       className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
                     >
                       <td className="py-3 px-4 font-medium text-gray-900">
-                        {month.month}
+                        {formatMonthLabel(month.month)}
                       </td>
                       <td className="text-right py-3 px-4 text-blue-600 font-semibold">
                         {month.revenue.toLocaleString()} DT
@@ -1921,80 +2036,7 @@ const AdminContent = ({
       );
     };
 
-    // Global statistics content
-    const renderGlobalContent = () => {
-      return (
-        <div className="space-y-6">
-          <h2 className="text-xl font-bold text-gray-900">
-            Statistiques Globales
-          </h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-blue-600 font-medium">
-                  Total Agences
-                </span>
-              </div>
-              <div className="flex justify-between items-center mt-2">
-                <span className="text-3xl font-bold text-blue-900">
-                  {platformStats.totalAgencies}
-                </span>
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-green-600 font-medium">
-                  Total Utilisateurs
-                </span>
-              </div>
-              <div className="flex justify-between items-center mt-2">
-                <span className="text-3xl font-bold text-green-900">
-                  {platformStats.totalUsers}
-                </span>
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-purple-600 font-medium">
-                  Revenu Mensuel
-                </span>
-              </div>
-              <div className="flex justify-between items-center mt-2">
-                <span className="text-3xl font-bold text-purple-900">
-                  {(platformStats?.monthlyRevenue ?? 0).toLocaleString()} DT
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    };
-
-    return (
-      <div className="space-y-6">
-        {/* Sub-tabs Navigation */}
-        <div className="flex gap-2 bg-gray-100 p-1 rounded-xl w-fit">
-          {statisticsSubTabs.map((subTab) => (
-            <button
-              key={subTab.id}
-              onClick={() => setStatisticsSubTab(subTab.id)}
-              className={`px-6 py-2.5 font-semibold rounded-lg transition-all duration-300 ${
-                statisticsSubTab === subTab.id
-                  ? "bg-white text-primary-600 shadow-md"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
-            >
-              {subTab.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Sub-tab Content */}
-        {statisticsSubTab === "finance"
-          ? renderFinancialContent()
-          : renderGlobalContent()}
-      </div>
-    );
+    return <div className="space-y-6">{renderFinancialContent()}</div>;
   }
 
   return null;

@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             SuperAdminSeeder::class,       // 0. Créer le super admin (compte plateforme)
             AgencySeeder::class,           // 1. Créer les agences
+            CategorySeeder::class,         // 2. Créer les catégories de véhicules
             UserSeeder::class,             // 3. Créer les utilisateurs (dépend des agences)
             VehicleSeeder::class,          // 4. Créer les véhicules (dépend des agences et catégories)
             ReservationSeeder::class,      // 5. Créer les réservations (dépend des users et vehicles)
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
             VehicleReturnSeeder::class,    // 7. Créer les retours (dépend des réservations)
             ClientReliabilityScoreSeeder::class, // 8. Créer les scores clients (dépend des users)
             ReportSeeder::class,           // 9. Créer les signalements (dépend des users)
+            RealisticDashboardSeeder::class, // 10. Générer des données réalistes pour dashboard
         ]);
     }
 }

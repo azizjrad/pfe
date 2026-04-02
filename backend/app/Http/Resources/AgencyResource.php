@@ -14,13 +14,24 @@ class AgencyResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $location = $this->location;
+        if (empty($location)) {
+            $parts = array_filter([
+                $this->city,
+                $this->address,
+            ]);
+            $location = !empty($parts) ? implode(' - ', $parts) : null;
+        }
+
         return [
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
             'email' => $this->email,
             'phone' => $this->phone,
-            'location' => $this->location,
+            'location' => $location,
+            'city' => $this->city,
+            'address' => $this->address,
             'status' => $this->status ?? 'active',
             'logo_url' => $this->logo_url,
             'cover_image' => $this->cover_image,
