@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Models\Agency;
 use App\Models\Reservation;
+use App\Models\Vehicle;
 
 
 class AdminService
@@ -16,10 +17,15 @@ class AdminService
     {
         $totalUsers = User::count();
         $totalAgencies = Agency::count();
+        $totalVehicles = Vehicle::count();
         $totalReservations = Reservation::count();
         $completedReservations = Reservation::where('status', 'completed')->count();
         $totalRevenue = Reservation::where('status', 'completed')->sum('total_price');
         $totalPlatformCommission = Reservation::where('status', 'completed')->sum('platform_commission');
+        $monthlyRevenue = Reservation::where('status', 'completed')
+            ->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])
+            ->sum('total_price');
+        $activeReservations = Reservation::whereIn('status', ['pending', 'confirmed', 'ongoing'])->count();
 
         $clientCount = User::where('role', 'client')->count();
         $agencyAdminCount = User::where('role', 'agency_admin')->count();
@@ -29,10 +35,13 @@ class AdminService
             'client_count' => $clientCount,
             'agency_admin_count' => $agencyAdminCount,
             'total_agencies' => $totalAgencies,
+            'total_vehicles' => $totalVehicles,
             'total_reservations' => $totalReservations,
             'completed_reservations' => $completedReservations,
             'pending_reservations' => Reservation::where('status', 'pending')->count(),
             'total_revenue' => round($totalRevenue, 2),
+            'monthly_revenue' => round((float) $monthlyRevenue, 2),
+            'active_reservations' => $activeReservations,
             'total_platform_commission' => round($totalPlatformCommission, 2),
             'avg_order_value' => round($totalRevenue / max($completedReservations, 1), 2),
         ];
@@ -237,6 +246,8 @@ class AdminService
                 'location' => $agency->city ?? $agency->address,
                 'vehicles' => $agency->vehicles_count ?? 0,
                 'revenue' => round($revenue, 2),
+                'created_at' => $agency->created_at?->toIso8601String(),
+                'updated_at' => $agency->updated_at?->toIso8601String(),
             ];
         });
 
@@ -321,17 +332,29 @@ class AdminService
      */
     public function getFinancialStats(): array
     {
+        $platformCommissionRate = 0.05;
+
         // Monthly revenue (YYYY-MM)
         $monthly = Reservation::where('status', 'completed')
             ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, SUM(total_price) as revenue")
             ->groupBy('month')
             ->orderBy('month')
             ->get()
-            ->map(fn($r) => ['month' => $r->month, 'revenue' => round($r->revenue, 2)])
+            ->map(function ($r) use ($platformCommissionRate) {
+                $revenue = round((float) $r->revenue, 2);
+                $commission = round($revenue * $platformCommissionRate, 2);
+
+                return [
+                    'month' => $r->month,
+                    'revenue' => $revenue,
+                    'commission' => $commission,
+                    'profit' => round($revenue - $commission, 2),
+                ];
+            })
             ->toArray();
 
         // Revenue by agency
-        $byAgency = Agency::all()->map(function ($agency) {
+        $byAgency = Agency::all()->map(function ($agency) use ($platformCommissionRate) {
             $vehicleIds = $agency->vehicles()->pluck('id')->toArray();
             $revenue = 0;
             if (!empty($vehicleIds)) {
@@ -339,14 +362,24 @@ class AdminService
                     ->where('status', 'completed')
                     ->sum('total_price');
             }
-            return ['agency_id' => $agency->id, 'agency_name' => $agency->name, 'revenue' => round($revenue, 2)];
+            $revenue = round((float) $revenue, 2);
+            $commission = round($revenue * $platformCommissionRate, 2);
+
+            return [
+                'agency_id' => $agency->id,
+                'agency_name' => $agency->name,
+                'revenue' => $revenue,
+                'commission' => $commission,
+                'profit' => round($revenue - $commission, 2),
+            ];
         })->toArray();
 
         $totals = [];
-        $totals['revenue'] = Reservation::where('status', 'completed')->sum('total_price');
-        $totals['commission'] = Reservation::where('status', 'completed')->sum('platform_commission');
-        $totals['profit'] = $totals['revenue'] - $totals['commission'];
+        $totals['revenue'] = round((float) Reservation::where('status', 'completed')->sum('total_price'), 2);
+        $totals['commission'] = round($totals['revenue'] * $platformCommissionRate, 2);
+        $totals['profit'] = round($totals['revenue'] - $totals['commission'], 2);
         $totals['avgMonthly'] = !empty($monthly) ? round(array_sum(array_column($monthly, 'revenue')) / count($monthly), 2) : 0;
+        $totals['commissionRate'] = $platformCommissionRate;
 
         return [
             'monthly' => $monthly,

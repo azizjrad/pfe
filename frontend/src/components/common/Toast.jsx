@@ -64,8 +64,8 @@ export default function Toast({
         : "from-blue-500 to-blue-600";
 
   return (
-    <div className="fixed top-4 right-4 z-[100] animate-slideInRight">
-      <div className="bg-gradient-to-br from-white/95 to-white/80 backdrop-blur-xl border border-white/60 shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-3 min-w-[320px]">
+    <div className="fixed top-4 left-4 right-4 sm:left-auto sm:right-4 z-[9999] animate-slideInRight pointer-events-none">
+      <div className="bg-gradient-to-br from-white/95 to-white/80 backdrop-blur-xl border border-white/60 shadow-2xl rounded-2xl px-4 sm:px-6 py-3 sm:py-4 flex items-center gap-3 w-full sm:w-auto sm:min-w-[320px] max-w-[560px] ml-auto pointer-events-auto">
         <div
           className={`w-10 h-10 rounded-xl bg-gradient-to-br ${iconBg} flex items-center justify-center flex-shrink-0 shadow-lg`}
         >

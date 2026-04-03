@@ -215,7 +215,7 @@ export default function DetailsModal({
                       value: item.vehicles || 0,
                     },
                     {
-                      label: t("dashboard.stats.monthlyRevenue"),
+                      label: t("dashboard.stats.monthlyRevenue.title"),
                       value: `${(item.revenue ?? 0).toLocaleString()} DT`,
                       accent: true,
                     },

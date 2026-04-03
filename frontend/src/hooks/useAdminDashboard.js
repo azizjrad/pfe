@@ -24,6 +24,25 @@ const DEFAULT_FINANCIAL_STATS = {
   totals: { revenue: 0, commission: 0, profit: 0, avgMonthly: 0 },
 };
 
+const normalizePlatformStats = (stats = {}) => ({
+  totalAgencies: Number(stats.totalAgencies ?? stats.total_agencies ?? 0),
+  totalUsers: Number(stats.totalUsers ?? stats.total_users ?? 0),
+  totalVehicles: Number(stats.totalVehicles ?? stats.total_vehicles ?? 0),
+  totalReservations: Number(
+    stats.totalReservations ?? stats.total_reservations ?? 0,
+  ),
+  monthlyRevenue: Number(
+    stats.monthlyRevenue ??
+      stats.monthly_revenue ??
+      stats.totalRevenue ??
+      stats.total_revenue ??
+      0,
+  ),
+  activeReservations: Number(
+    stats.activeReservations ?? stats.active_reservations ?? 0,
+  ),
+});
+
 export default function useAdminDashboard({
   user,
   activeTab,
@@ -57,7 +76,9 @@ export default function useAdminDashboard({
           reservationService.getAll(),
         ]);
 
-      setPlatformStats(statsRes?.data || DEFAULT_PLATFORM_STATS);
+      setPlatformStats(
+        normalizePlatformStats(statsRes?.data) || DEFAULT_PLATFORM_STATS,
+      );
       setAgencies(normalizeArray(agenciesRes));
       setUsers(normalizeArray(usersRes));
       setAllReservations(normalizeArray(reservationsRes));

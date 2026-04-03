@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Navbar from "../../components/common/Navbar";
 import Footer from "../../components/common/Footer";
+import Toast from "../../components/common/Toast";
 import VehicleCard from "../../components/cards/VehicleCard";
 import { Select, MenuItem, FormControl } from "@mui/material";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
@@ -14,6 +15,19 @@ const Home = () => {
   const navigate = useNavigate();
   const [featuredVehicles, setFeaturedVehicles] = useState([]);
   const [agencyLocations, setAgencyLocations] = useState([]);
+  const [toast, setToast] = useState({
+    isVisible: false,
+    message: "",
+    type: "info",
+  });
+
+  const showToast = (message, type = "info") => {
+    setToast({ isVisible: true, message, type });
+  };
+
+  const hideToast = () => {
+    setToast({ isVisible: false, message: "", type: "info" });
+  };
 
   // Scroll animations for sections
   const heroContentAnim = useScrollAnimation({ threshold: 0.2 });
@@ -146,7 +160,7 @@ const Home = () => {
   const handleSearchSubmit = () => {
     // Validate dates are selected
     if (!searchData.pickupDate || !searchData.returnDate) {
-      alert(t("home.search.validationError"));
+      showToast(t("home.search.validationError"), "error");
       return;
     }
 
@@ -940,7 +954,11 @@ const Home = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <button className="group bg-white text-primary-600 px-10 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 flex items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => navigate("/vehicles")}
+                className="group bg-white text-primary-600 px-10 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 flex items-center justify-center gap-2"
+              >
                 <span>{t("home.cta.offersButton")}</span>
                 <svg
                   className="w-5 h-5 group-hover:translate-x-1 transition-transform"
@@ -956,7 +974,11 @@ const Home = () => {
                   />
                 </svg>
               </button>
-              <button className="group bg-transparent border-2 border-white text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-primary-600 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => navigate("/contact")}
+                className="group bg-transparent border-2 border-white text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-primary-600 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2"
+              >
                 <svg
                   className="w-5 h-5"
                   fill="none"
@@ -1066,6 +1088,13 @@ const Home = () => {
       </section>
 
       <Footer />
+
+      <Toast
+        isVisible={toast.isVisible}
+        message={toast.message}
+        type={toast.type}
+        onClose={hideToast}
+      />
     </div>
   );
 };

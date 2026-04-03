@@ -157,15 +157,17 @@ const ReportModal = ({
       className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn"
       onClick={handleBackdropClick}
     >
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slideUp">
+      <div className="bg-white rounded-xl shadow-2xl w-[min(100vw-1rem,42rem)] sm:w-full max-w-xl lg:max-w-2xl max-h-[88vh] overflow-y-auto overflow-x-hidden animate-slideUp">
         {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-red-600 to-red-700 p-6 rounded-t-xl">
+        <div className="sticky top-0 bg-gradient-to-r from-red-600 to-red-700 p-4 sm:p-5 rounded-t-xl">
           <div className="flex items-start justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-white mb-1">
+              <h2 className="text-lg sm:text-2xl font-bold text-white mb-1">
                 {content.title}
               </h2>
-              <p className="text-red-100 text-sm">{content.subtitle}</p>
+              <p className="text-red-100 text-xs sm:text-sm break-words">
+                {content.subtitle}
+              </p>
             </div>
             <button
               onClick={onClose}
@@ -190,13 +192,16 @@ const ReportModal = ({
         </div>
 
         {/* Content */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="p-4 sm:p-6 space-y-4 sm:space-y-6"
+        >
           {/* Warning Message */}
-          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md">
+          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3 sm:p-4 rounded-md">
             <div className="flex">
               <div className="flex-shrink-0">
                 <svg
-                  className="h-5 w-5 text-yellow-400"
+                  className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -208,7 +213,7 @@ const ReportModal = ({
                 </svg>
               </div>
               <div className="ml-3">
-                <p className="text-sm text-yellow-700">
+                <p className="text-xs sm:text-sm text-yellow-700">
                   Les signalements abusifs peuvent entraîner la suspension de
                   votre compte. Veuillez ne signaler que des problèmes réels et
                   vérifiables.
@@ -219,14 +224,14 @@ const ReportModal = ({
 
           {/* Reason Selection */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
               Raison du signalement <span className="text-red-500">*</span>
             </label>
             <select
               name="reason"
               value={formData.reason}
               onChange={handleChange}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all ${
+              className={`w-full px-4 py-3 text-sm sm:text-base border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all ${
                 errors.reason
                   ? "border-red-300 bg-red-50"
                   : "border-gray-300 bg-white"
@@ -247,16 +252,16 @@ const ReportModal = ({
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
               Description détaillée <span className="text-red-500">*</span>
             </label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
-              rows={6}
+              rows={5}
               placeholder="Décrivez en détail le problème que vous signalez. Plus votre description est précise, mieux nous pourrons traiter votre signalement."
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all resize-none ${
+              className={`w-full px-4 py-3 text-sm sm:text-base leading-relaxed placeholder:text-sm sm:placeholder:text-base placeholder:leading-snug border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all resize-none ${
                 errors.description
                   ? "border-red-300 bg-red-50"
                   : "border-gray-300 bg-white"
@@ -265,11 +270,15 @@ const ReportModal = ({
             />
             <div className="flex items-center justify-between mt-1">
               {errors.description ? (
-                <p className="text-sm text-red-600">{errors.description}</p>
+                <p className="text-xs sm:text-sm text-red-600">
+                  {errors.description}
+                </p>
               ) : (
-                <p className="text-sm text-gray-500">Minimum 20 caractères</p>
+                <p className="text-xs sm:text-sm text-gray-500">
+                  Minimum 20 caractères
+                </p>
               )}
-              <p className="text-sm text-gray-400">
+              <p className="text-xs sm:text-sm text-gray-400">
                 {formData.description.length}/500
               </p>
             </div>
@@ -277,8 +286,8 @@ const ReportModal = ({
 
           {/* Submit Error */}
           {errors.submit && (
-            <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-md">
-              <p className="text-sm text-red-700">{errors.submit}</p>
+            <div className="bg-red-50 border-l-4 border-red-400 p-3 sm:p-4 rounded-md">
+              <p className="text-xs sm:text-sm text-red-700">{errors.submit}</p>
             </div>
           )}
 
@@ -288,14 +297,14 @@ const ReportModal = ({
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-3 sm:px-5 py-2.5 sm:py-3 border border-gray-300 text-gray-700 text-sm sm:text-base font-medium rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Annuler
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white font-medium rounded-lg hover:from-red-700 hover:to-red-800 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="flex-1 px-3 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-600 to-red-700 text-white text-sm sm:text-base font-medium rounded-lg hover:from-red-700 hover:to-red-800 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
                 <>

@@ -21,8 +21,14 @@ const Vehicles = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [vehicles, setVehicles] = useState([]);
 
-  const transMap = { "Tous": "all", "Automatique": "auto", "Manuelle": "manual" };
-  const fuelMap = { "Tous": "all", "Essence": "gas", "Diesel": "diesel", "Hybride": "hybrid", "Électrique": "electric" };
+  const transMap = { Tous: "all", Automatique: "auto", Manuelle: "manual" };
+  const fuelMap = {
+    Tous: "all",
+    Essence: "gas",
+    Diesel: "diesel",
+    Hybride: "hybrid",
+    Électrique: "electric",
+  };
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -58,14 +64,37 @@ const Vehicles = () => {
   const hero = useScrollAnimation({ threshold: 0.2 });
   const vehiclesGrid = useScrollAnimation({ threshold: 0.2 });
 
-  // Fetch vehicles on component mount
+  // Fetch all vehicles once, then paginate/filter locally
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
-        const response = await publicVehicleService.getAll(currentPage, 12);
-        if (response.success && response.data) {
-          setVehicles(response.data);
-        }
+        const perPage = 100;
+        let page = 1;
+        let allVehicles = [];
+        let totalPagesFromApi = 1;
+
+        do {
+          const response = await publicVehicleService.getAll(page, perPage);
+
+          if (response.success && Array.isArray(response.data)) {
+            allVehicles = [...allVehicles, ...response.data];
+            totalPagesFromApi = Number(response.pagination?.total_pages ?? 1);
+            page += 1;
+          } else {
+            break;
+          }
+        } while (page <= totalPagesFromApi);
+
+        setVehicles(allVehicles);
+
+        // Keep current page in valid range after data refresh
+        setCurrentPage((prev) => {
+          const maxPage = Math.max(
+            1,
+            Math.ceil(allVehicles.length / itemsPerPage),
+          );
+          return Math.min(prev, maxPage);
+        });
       } catch (error) {
         console.error("Failed to fetch vehicles:", error);
         setVehicles([]);
@@ -73,7 +102,7 @@ const Vehicles = () => {
     };
 
     fetchVehicles();
-  }, [currentPage]);
+  }, [itemsPerPage]);
 
   const filteredVehicles = useMemo(() => {
     let result = vehicles;
@@ -165,7 +194,10 @@ const Vehicles = () => {
           >
             <div className="text-center mb-12">
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-                {t("vehicles.hero.titlePart1")}<span className="text-primary-500">{t("vehicles.hero.titlePart2")}</span>
+                {t("vehicles.hero.titlePart1")}
+                <span className="text-primary-500">
+                  {t("vehicles.hero.titlePart2")}
+                </span>
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
                 {t("vehicles.hero.subtitle")}
@@ -268,7 +300,9 @@ const Vehicles = () => {
                             />
                           </svg>
                           <div>
-                            <div className="text-primary-100 text-xs">{t("vehicles.search.location")}</div>
+                            <div className="text-primary-100 text-xs">
+                              {t("vehicles.search.location")}
+                            </div>
                             <div className="font-semibold">
                               {searchCriteria.location}
                             </div>
@@ -296,7 +330,8 @@ const Vehicles = () => {
                               {new Date(
                                 searchCriteria.startDate,
                               ).toLocaleDateString("fr-FR")}{" "}
-                              {t("vehicles.search.at")} {searchCriteria.startTime}
+                              {t("vehicles.search.at")}{" "}
+                              {searchCriteria.startTime}
                             </div>
                           </div>
                         </div>
@@ -315,7 +350,9 @@ const Vehicles = () => {
                             />
                           </svg>
                           <div>
-                            <div className="text-primary-100 text-xs">{t("vehicles.search.end")}</div>
+                            <div className="text-primary-100 text-xs">
+                              {t("vehicles.search.end")}
+                            </div>
                             <div className="font-semibold">
                               {new Date(
                                 searchCriteria.endDate,
@@ -326,7 +363,11 @@ const Vehicles = () => {
                         </div>
                       </div>
                       <p className="mt-3 text-primary-100 text-sm">
-                        {filteredVehicles.length === 1 ? t("vehicles.search.resultsCount_one") : t("vehicles.search.resultsCount_other", { count: filteredVehicles.length })}
+                        {filteredVehicles.length === 1
+                          ? t("vehicles.search.resultsCount_one")
+                          : t("vehicles.search.resultsCount_other", {
+                              count: filteredVehicles.length,
+                            })}
                       </p>
                     </div>
                     <button
@@ -372,7 +413,9 @@ const Vehicles = () => {
                     d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
                   />
                 </svg>
-                <span className="font-medium">{t("vehicles.filters.advanced")}</span>
+                <span className="font-medium">
+                  {t("vehicles.filters.advanced")}
+                </span>
                 {showFilters && (
                   <span className="bg-primary-500 text-white text-xs px-2 py-1 rounded-full">
                     {
@@ -417,10 +460,18 @@ const Vehicles = () => {
                     },
                   }}
                 >
-                  <MenuItem value="default">{t("vehicles.filters.sortBy")}</MenuItem>
-                  <MenuItem value="price-asc">{t("vehicles.filters.priceAsc")}</MenuItem>
-                  <MenuItem value="price-desc">{t("vehicles.filters.priceDesc")}</MenuItem>
-                  <MenuItem value="name">{t("vehicles.filters.nameAsc")}</MenuItem>
+                  <MenuItem value="default">
+                    {t("vehicles.filters.sortBy")}
+                  </MenuItem>
+                  <MenuItem value="price-asc">
+                    {t("vehicles.filters.priceAsc")}
+                  </MenuItem>
+                  <MenuItem value="price-desc">
+                    {t("vehicles.filters.priceDesc")}
+                  </MenuItem>
+                  <MenuItem value="name">
+                    {t("vehicles.filters.nameAsc")}
+                  </MenuItem>
                 </Select>
               </FormControl>
 
@@ -446,7 +497,11 @@ const Vehicles = () => {
 
               <div className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-50 rounded-2xl">
                 <span className="font-semibold text-primary-600">
-                  {filteredVehicles.length === 1 ? t("vehicles.filters.count_one") : t("vehicles.filters.count_other", { count: filteredVehicles.length })}
+                  {filteredVehicles.length === 1
+                    ? t("vehicles.filters.count_one")
+                    : t("vehicles.filters.count_other", {
+                        count: filteredVehicles.length,
+                      })}
                 </span>
               </div>
             </div>
@@ -462,7 +517,10 @@ const Vehicles = () => {
                   {/* Price Range */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      {t("vehicles.filters.priceRange", { min: priceRange[0], max: priceRange[1] })}
+                      {t("vehicles.filters.priceRange", {
+                        min: priceRange[0],
+                        max: priceRange[1],
+                      })}
                     </label>
                     <div className="space-y-2">
                       <input
@@ -529,7 +587,9 @@ const Vehicles = () => {
                             className="w-4 h-4 text-primary-600 accent-primary-500"
                           />
                           <span className="group-hover:text-primary-600 transition-colors">
-                            {t(`vehicles.filters.transmissions.${transMap[trans]}`)}
+                            {t(
+                              `vehicles.filters.transmissions.${transMap[trans]}`,
+                            )}
                           </span>
                         </label>
                       ))}

@@ -276,7 +276,7 @@ const Dashboard = () => {
           {
             title: t("dashboard.stats.agencies.title"),
             value: String(platformStats?.totalAgencies ?? "0"),
-            change: t("dashboard.stats.agencies.change"),
+            change: null,
             trend: "neutral",
             icon: "building",
             color: "blue",
@@ -284,7 +284,7 @@ const Dashboard = () => {
           {
             title: t("dashboard.stats.users.title"),
             value: String(platformStats?.totalUsers ?? "0"),
-            change: t("dashboard.stats.users.change"),
+            change: null,
             trend: "up",
             icon: "users",
             color: "green",
@@ -292,7 +292,7 @@ const Dashboard = () => {
           {
             title: t("dashboard.stats.vehicles.title"),
             value: String(platformStats?.totalVehicles ?? "0"),
-            change: t("dashboard.stats.vehicles.change"),
+            change: null,
             trend: "neutral",
             icon: "car",
             color: "purple",
@@ -302,7 +302,7 @@ const Dashboard = () => {
             value: platformStats?.monthlyRevenue
               ? `${platformStats.monthlyRevenue.toLocaleString()} DT`
               : "0 DT",
-            change: t("dashboard.stats.monthlyRevenue.change"),
+            change: null,
             trend: "up",
             icon: "money",
             color: "emerald",
@@ -679,6 +679,7 @@ const Dashboard = () => {
             platformStats={platformStats}
             agencies={agencies}
             users={users}
+            allReservations={allReservations}
             reports={adminDashboard.reports}
             trashedReports={adminDashboard.trashedReports}
             reportsView={adminDashboard.reportsView}
@@ -861,9 +862,11 @@ const Dashboard = () => {
                       <p className="text-3xl font-bold text-gray-900">
                         {card.value}
                       </p>
-                      <p className="text-sm text-gray-500 flex items-center gap-1">
-                        {card.change}
-                      </p>
+                      {card.change ? (
+                        <p className="text-sm text-gray-500 flex items-center gap-1">
+                          {card.change}
+                        </p>
+                      ) : null}
                     </div>
                   </div>
                 </div>

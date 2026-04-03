@@ -20,6 +20,11 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  const requiredFields = ["name", "email", "phone", "subject", "message"];
+
+  const hasMissingRequiredFields = () =>
+    requiredFields.some((field) => !String(formData[field] || "").trim());
+
   // Scroll animations
   const leftColumn = useScrollAnimation({ threshold: 0.2 });
   const rightColumn = useScrollAnimation({ threshold: 0.2 });
@@ -39,6 +44,19 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Mark all required fields as touched on submit to reveal inline errors
+    setTouched(
+      requiredFields.reduce((acc, field) => {
+        acc[field] = true;
+        return acc;
+      }, {}),
+    );
+
+    if (hasMissingRequiredFields()) {
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -230,7 +248,7 @@ const Contact = () => {
                       onBlur={() => handleBlur("name")}
                       className={`w-full px-4 py-5 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-gray-50 text-lg text-black peer focus:outline-none ${
                         touched.name && !formData.name.trim()
-                          ? "border-primary-500"
+                          ? "border-red-500 focus:border-red-500"
                           : "border-gray-300"
                       }`}
                       placeholder=" "
@@ -239,7 +257,7 @@ const Contact = () => {
                       {t("contact.form.nameLabel")}
                     </label>
                     {touched.name && !formData.name.trim() && (
-                      <p className="mt-1 text-sm text-primary-500">
+                      <p className="mt-1 text-sm text-red-500">
                         {t("contact.form.requiredError")}
                       </p>
                     )}
@@ -257,7 +275,7 @@ const Contact = () => {
                         onBlur={() => handleBlur("email")}
                         className={`w-full px-4 py-5 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-gray-50 text-lg text-black peer focus:outline-none ${
                           touched.email && !formData.email.trim()
-                            ? "border-primary-500"
+                            ? "border-red-500 focus:border-red-500"
                             : "border-gray-300"
                         }`}
                         placeholder=" "
@@ -266,7 +284,7 @@ const Contact = () => {
                         {t("contact.form.emailLabel")}
                       </label>
                       {touched.email && !formData.email.trim() && (
-                        <p className="mt-1 text-sm text-primary-500">
+                        <p className="mt-1 text-sm text-red-500">
                           {t("contact.form.requiredError")}
                         </p>
                       )}
@@ -282,7 +300,7 @@ const Contact = () => {
                         onBlur={() => handleBlur("phone")}
                         className={`w-full px-4 py-5 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-gray-50 text-lg text-black peer focus:outline-none ${
                           touched.phone && !formData.phone.trim()
-                            ? "border-primary-500"
+                            ? "border-red-500 focus:border-red-500"
                             : "border-gray-300"
                         }`}
                         placeholder=" "
@@ -291,7 +309,7 @@ const Contact = () => {
                         {t("contact.form.phoneLabel")}
                       </label>
                       {touched.phone && !formData.phone.trim() && (
-                        <p className="mt-1 text-sm text-primary-500">
+                        <p className="mt-1 text-sm text-red-500">
                           {t("contact.form.requiredError")}
                         </p>
                       )}
@@ -309,7 +327,7 @@ const Contact = () => {
                       onBlur={() => handleBlur("subject")}
                       className={`w-full px-4 py-5 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-gray-50 text-lg text-black peer focus:outline-none ${
                         touched.subject && !formData.subject.trim()
-                          ? "border-primary-500"
+                          ? "border-red-500 focus:border-red-500"
                           : "border-gray-300"
                       }`}
                       placeholder=" "
@@ -318,7 +336,7 @@ const Contact = () => {
                       {t("contact.form.subjectLabel")}
                     </label>
                     {touched.subject && !formData.subject.trim() && (
-                      <p className="mt-1 text-sm text-primary-500">
+                      <p className="mt-1 text-sm text-red-500">
                         {t("contact.form.requiredError")}
                       </p>
                     )}
@@ -335,7 +353,7 @@ const Contact = () => {
                       onBlur={() => handleBlur("message")}
                       className={`w-full px-4 py-5 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-gray-50 text-lg text-black peer focus:outline-none resize-none ${
                         touched.message && !formData.message.trim()
-                          ? "border-primary-500"
+                          ? "border-red-500 focus:border-red-500"
                           : "border-gray-300"
                       }`}
                       placeholder=" "
@@ -344,7 +362,7 @@ const Contact = () => {
                       {t("contact.form.messageLabel")}
                     </label>
                     {touched.message && !formData.message.trim() && (
-                      <p className="mt-1 text-sm text-primary-500">
+                      <p className="mt-1 text-sm text-red-500">
                         {t("contact.form.requiredError")}
                       </p>
                     )}

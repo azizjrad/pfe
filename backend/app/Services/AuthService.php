@@ -73,9 +73,17 @@ class AuthService
 
             // Initialize reliability score for clients (starts at 100)
             if (($data['role'] ?? null) === 'client') {
-                ClientReliabilityScore::create([
+                ClientReliabilityScore::updateOrCreate([
                     'user_id' => $user->id,
-                    'score' => 100,
+                ], [
+                    'total_reservations' => 0,
+                    'completed_reservations' => 0,
+                    'cancelled_reservations' => 0,
+                    'late_returns' => 0,
+                    'payment_delays' => 0,
+                    'damage_incidents' => 0,
+                    'reliability_score' => 100,
+                    'risk_level' => 'low',
                     'last_calculated_at' => now(),
                 ]);
             }

@@ -36,16 +36,10 @@ const VehicleDetails = () => {
 
   const handleReportSubmit = async (reportData) => {
     try {
-      showToast(
-        t("vehicles.details.messages.reportSuccess"),
-        "success",
-      );
+      showToast(t("vehicles.details.messages.reportSuccess"), "success");
     } catch (error) {
       console.error("Report submission error:", error);
-      showToast(
-        t("vehicles.details.messages.reportError"),
-        "error",
-      );
+      showToast(t("vehicles.details.messages.reportError"), "error");
     }
   };
 
@@ -99,16 +93,10 @@ const VehicleDetails = () => {
       if (error.response?.data?.message) {
         showToast(error.response.data.message, "error");
       } else if (error.response?.status === 401) {
-        showToast(
-          t("vehicles.details.messages.authRequired"),
-          "error",
-        );
+        showToast(t("vehicles.details.messages.authRequired"), "error");
         navigate(`/login?returnTo=/vehicles/${id}&openModal=reservation`);
       } else {
-        showToast(
-          t("vehicles.details.messages.reservationError"),
-          "error",
-        );
+        showToast(t("vehicles.details.messages.reservationError"), "error");
       }
     }
   };
@@ -160,7 +148,6 @@ const VehicleDetails = () => {
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-500 mx-auto mb-4"></div>
           <p className="text-gray-600">{t("vehicles.details.loading")}</p>
-          <p className="text-sm text-gray-400 mt-2">ID: {id}</p>
         </div>
       </div>
     );
@@ -245,13 +232,17 @@ const VehicleDetails = () => {
                 {/* Quick Stats */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                   <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-3 sm:p-4 border border-gray-200">
-                    <div className="text-gray-600 text-sm mb-1">{t("vehicles.details.stats.year")}</div>
+                    <div className="text-gray-600 text-sm mb-1">
+                      {t("vehicles.details.stats.year")}
+                    </div>
                     <div className="text-lg sm:text-xl font-bold text-gray-900">
                       {vehicle.year}
                     </div>
                   </div>
                   <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-3 sm:p-4 border border-gray-200">
-                    <div className="text-gray-600 text-sm mb-1">{t("vehicles.details.stats.seats")}</div>
+                    <div className="text-gray-600 text-sm mb-1">
+                      {t("vehicles.details.stats.seats")}
+                    </div>
                     <div className="text-lg sm:text-xl font-bold text-gray-900">
                       {vehicle.seats}
                     </div>
@@ -265,7 +256,9 @@ const VehicleDetails = () => {
                     </div>
                   </div>
                   <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-3 sm:p-4 border border-gray-200">
-                    <div className="text-gray-600 text-sm mb-1">{t("vehicles.details.stats.fuel")}</div>
+                    <div className="text-gray-600 text-sm mb-1">
+                      {t("vehicles.details.stats.fuel")}
+                    </div>
                     <div className="text-base sm:text-lg font-bold text-gray-900 break-words">
                       {vehicle.fuel}
                     </div>

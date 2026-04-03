@@ -31,6 +31,7 @@ const AdminContent = ({
   platformStats,
   agencies,
   users,
+  allReservations,
   reports,
   loading,
   trashedReports,
@@ -103,7 +104,107 @@ const AdminContent = ({
     return badges[role] || "bg-gray-100 text-gray-600";
   };
 
+  const parseDate = (value) => {
+    if (!value) return null;
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? null : date;
+  };
+
+  const isSameDay = (first, second) =>
+    first.getFullYear() === second.getFullYear() &&
+    first.getMonth() === second.getMonth() &&
+    first.getDate() === second.getDate();
+
+  const isSameMonth = (first, second) =>
+    first.getFullYear() === second.getFullYear() &&
+    first.getMonth() === second.getMonth();
+
+  const getRelativeLabel = (date) => {
+    if (!date) return t("common.notAvailable") || "N/A";
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const target = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+    );
+    const dayDiff = Math.floor((today - target) / (1000 * 60 * 60 * 24));
+
+    if (dayDiff <= 0) return t("dashboard.today");
+    if (dayDiff === 1) return t("dashboard.yesterday") || "Hier";
+    return `Il y a ${dayDiff} jours`;
+  };
+
+  const getUserCreatedDateLabel = (userItem) => {
+    const createdDate = parseDate(
+      userItem?.registeredAt ||
+        userItem?.created_at ||
+        userItem?.createdAt ||
+        userItem?.join_date,
+    );
+
+    return createdDate ? createdDate.toLocaleDateString("fr-FR") : "-";
+  };
+
   if (activeTab === "overview") {
+    const now = new Date();
+    const latestAgencyCreatedAt =
+      agencies
+        .map((agency) =>
+          parseDate(
+            agency.created_at ||
+              agency.createdAt ||
+              agency.updated_at ||
+              agency.updatedAt,
+          ),
+        )
+        .filter(Boolean)
+        .sort((a, b) => b - a)[0] || null;
+
+    const newUsersToday = users.filter((item) => {
+      const createdAt = parseDate(item.created_at || item.createdAt);
+      return createdAt ? isSameDay(createdAt, now) : false;
+    }).length;
+
+    const newUsersThisMonth = users.filter((item) => {
+      const createdAt = parseDate(item.created_at || item.createdAt);
+      return createdAt ? isSameMonth(createdAt, now) : false;
+    }).length;
+
+    const processedStatuses = new Set([
+      "confirmed",
+      "ongoing",
+      "completed",
+      "cancelled",
+    ]);
+
+    const processedReservationsToday = (allReservations || []).filter(
+      (item) => {
+        const createdAt = parseDate(item.created_at || item.createdAt);
+        const status = String(item.status || "").toLowerCase();
+        return createdAt
+          ? isSameDay(createdAt, now) && processedStatuses.has(status)
+          : false;
+      },
+    ).length;
+
+    const processedReservationsThisMonth = (allReservations || []).filter(
+      (item) => {
+        const createdAt = parseDate(item.created_at || item.createdAt);
+        const status = String(item.status || "").toLowerCase();
+        return createdAt
+          ? isSameMonth(createdAt, now) && processedStatuses.has(status)
+          : false;
+      },
+    ).length;
+
+    const displayedNewUsersCount =
+      newUsersToday > 0 ? newUsersToday : newUsersThisMonth;
+    const displayedReservationsCount =
+      processedReservationsToday > 0
+        ? processedReservationsToday
+        : processedReservationsThisMonth;
+
     return (
       <div className="space-y-6">
         <h2 className="text-xl font-bold text-gray-900">
@@ -146,7 +247,7 @@ const AdminContent = ({
                     {t("dashboard.newAgencyCreated")}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {t("dashboard.timeAgo2Days")}
+                    {getRelativeLabel(latestAgencyCreatedAt)}
                   </p>
                 </div>
               </div>
@@ -154,10 +255,14 @@ const AdminContent = ({
                 <div className="w-2 h-2 mt-1.5 rounded-full bg-blue-500"></div>
                 <div>
                   <p className="text-sm font-medium text-gray-800">
-                    {t("dashboard.newUsers", { count: 15 })}
+                    {t("dashboard.newUsers", { count: displayedNewUsersCount })}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {t("dashboard.today")}
+                    {newUsersToday > 0
+                      ? t("dashboard.today")
+                      : displayedNewUsersCount > 0
+                        ? "Ce mois"
+                        : "Aucune récente"}
                   </p>
                 </div>
               </div>
@@ -165,10 +270,16 @@ const AdminContent = ({
                 <div className="w-2 h-2 mt-1.5 rounded-full bg-yellow-500"></div>
                 <div>
                   <p className="text-sm font-medium text-gray-800">
-                    {t("dashboard.reservationsProcessed", { count: 45 })}
+                    {t("dashboard.reservationsProcessed", {
+                      count: displayedReservationsCount,
+                    })}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {t("dashboard.today")}
+                    {processedReservationsToday > 0
+                      ? t("dashboard.today")
+                      : displayedReservationsCount > 0
+                        ? "Ce mois"
+                        : "Aucune récente"}
                   </p>
                 </div>
               </div>
@@ -457,9 +568,10 @@ const AdminContent = ({
                 </span>
               </div>
               <div className="flex items-center gap-3 text-sm text-gray-500 mb-3">
-                {user.agency && <span>{user.agency}</span>}
                 <span>
-                  {t("dashboard.registeredOn", { date: user.registeredAt })}
+                  {t("dashboard.registeredOn", {
+                    date: getUserCreatedDateLabel(user),
+                  })}
                 </span>
               </div>
               <div className="flex items-center gap-3 pt-3 border-t border-gray-100">
@@ -500,9 +612,6 @@ const AdminContent = ({
                   {t("dashboard.role")}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  {t("dashboard.agency")}
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   {t("dashboard.registeredOnHeader")}
                 </th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
@@ -533,10 +642,7 @@ const AdminContent = ({
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    {user.agency || "-"}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    {user.registeredAt}
+                    {getUserCreatedDateLabel(user)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button
@@ -1509,12 +1615,29 @@ const AdminContent = ({
     const renderFinancialContent = () => {
       const monthlyRevenue = financialStats.monthly;
       const revenueByAgency = financialStats.byAgency;
+      const platformCommissionRate = 0.05;
+
+      const deriveCommission = (revenue, rawCommission) => {
+        const commission = Number(rawCommission ?? 0);
+        if (commission > 0) return commission;
+        return Number(
+          (Number(revenue ?? 0) * platformCommissionRate).toFixed(2),
+        );
+      };
 
       const normalizedMonthlyRevenue = monthlyRevenue.map((month) => ({
         ...month,
         revenue: Number(month.revenue ?? 0),
-        commission: Number(month.commission ?? 0),
-        profit: Number(month.profit ?? 0),
+        commission: deriveCommission(month.revenue, month.commission),
+        profit:
+          Number(month.profit ?? 0) > 0
+            ? Number(month.profit)
+            : Number(
+                (
+                  Number(month.revenue ?? 0) -
+                  deriveCommission(month.revenue, month.commission)
+                ).toFixed(2),
+              ),
       }));
 
       const normalizedAgencyRevenue = revenueByAgency
@@ -1522,7 +1645,7 @@ const AdminContent = ({
           ...agency,
           name: agency.name ?? agency.agency_name ?? "Agence",
           revenue: Number(agency.revenue ?? 0),
-          commission: Number(agency.commission ?? 0),
+          commission: deriveCommission(agency.revenue, agency.commission),
         }))
         .sort((a, b) => b.revenue - a.revenue);
 
@@ -1543,9 +1666,12 @@ const AdminContent = ({
         "#EF4444",
       ];
 
-      const totalRevenue = financialStats.totals.revenue;
-      const totalProfit = financialStats.totals.profit;
-      const totalCommission = financialStats.totals.commission;
+      const totalRevenue = Number(financialStats.totals.revenue ?? 0);
+      const computedTotalCommission = Number(
+        (totalRevenue * platformCommissionRate).toFixed(2),
+      );
+      const totalCommission = computedTotalCommission;
+      const totalProfit = Number((totalRevenue - totalCommission).toFixed(2));
       const avgMonthlyRevenue = financialStats.totals.avgMonthly;
 
       const formatMonthLabel = (value) => {
@@ -1586,8 +1712,7 @@ const AdminContent = ({
         normalizedMonthlyRevenue,
         "commission",
       );
-      const commissionRate =
-        totalRevenue > 0 ? (totalCommission / totalRevenue) * 100 : 0;
+      const commissionRate = platformCommissionRate * 100;
 
       if (normalizedMonthlyRevenue.length === 0) {
         // If the overall dashboard loading finished and we still have no
@@ -1724,14 +1849,14 @@ const AdminContent = ({
                   </svg>
                 </div>
                 <span className="text-xs font-semibold px-2.5 py-1 rounded-full border text-violet-600 bg-violet-50 border-violet-100">
-                  {commissionRate.toFixed(1)}%
+                  {commissionRate.toFixed(0)}%
                 </span>
               </div>
               <p className="text-xs text-gray-400 uppercase tracking-wide font-medium mb-1">
                 Taux de Commission
               </p>
               <p className="text-2xl font-bold text-gray-900">
-                {commissionRate.toFixed(1)}%
+                {commissionRate.toFixed(0)}%
               </p>
               <p className="text-xs text-gray-400 mt-2">Sur le revenu total</p>
             </div>
@@ -1969,13 +2094,10 @@ const AdminContent = ({
                     <th className="text-right py-3 px-4 font-semibold text-gray-900">
                       Commission
                     </th>
-                    <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                      Taux (%)
-                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {normalizedMonthlyRevenue.map((month, index) => (
+                  {normalizedMonthlyRevenue.map((month) => (
                     <tr
                       key={month.month}
                       className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
@@ -1988,17 +2110,6 @@ const AdminContent = ({
                       </td>
                       <td className="text-right py-3 px-4 text-green-600 font-semibold">
                         {month.commission.toLocaleString()} DT
-                      </td>
-                      <td className="text-right py-3 px-4">
-                        <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-700">
-                          {month.revenue > 0
-                            ? (
-                                (month.commission / month.revenue) *
-                                100
-                              ).toFixed(1)
-                            : 0}
-                          %
-                        </span>
                       </td>
                     </tr>
                   ))}

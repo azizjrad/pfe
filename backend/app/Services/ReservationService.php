@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\DB;
 
 class ReservationService
 {
+    private ClientService $clientService;
+
+    public function __construct(ClientService $clientService)
+    {
+        $this->clientService = $clientService;
+    }
+
     /**
      * Book a new reservation
      *
@@ -23,7 +30,8 @@ class ReservationService
     {
         // Check client reliability score
         if ($user->role === 'client') {
-            $score = $user->reliabilityScore ? $user->reliabilityScore->reliability_score : 100;
+            $scoreModel = $this->clientService->recalculateReliabilityScore($user);
+            $score = $scoreModel->reliability_score ?? 100;
             if ($score < 40) {
                 throw new \Exception('Vous ne pouvez plus effectuer de réservations. Score de fiabilité insuffisant.');
             }
@@ -54,7 +62,7 @@ class ReservationService
         $agencyPayout = $pricingBreakdown['total'] - $platformCommission;
 
         // Create reservation
-        return Reservation::create([
+        $reservation = Reservation::create([
             'user_id' => $user->id,
             'vehicle_id' => $vehicle->id,
             'start_date' => $startDate,
@@ -75,6 +83,12 @@ class ReservationService
             'pricing_details' => $pricingBreakdown,
             'notes' => $data['notes'] ?? null,
         ]);
+
+        if ($user->role === 'client') {
+            $this->clientService->recalculateReliabilityScore($user);
+        }
+
+        return $reservation;
     }
 
     /**
@@ -183,6 +197,10 @@ class ReservationService
             ]);
         }
 
+        if ($reservation->user && $reservation->user->role === 'client') {
+            $this->clientService->recalculateReliabilityScore($reservation->user);
+        }
+
         return $reservation;
     }
 
@@ -249,6 +267,10 @@ class ReservationService
                     ],
                 ]);
             }
+        }
+
+        if ($reservation->user && $reservation->user->role === 'client') {
+            $this->clientService->recalculateReliabilityScore($reservation->user);
         }
 
         return $reservation;

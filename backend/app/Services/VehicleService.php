@@ -34,6 +34,9 @@ class VehicleService
     public function getPublicVehicles(int $perPage = 12)
     {
         return Vehicle::where('status', 'available')
+            ->whereHas('agency', function ($query) {
+                $query->where('status', 'active');
+            })
             ->with(['agency'])
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
@@ -45,6 +48,9 @@ class VehicleService
     public function getPublicVehicleById(int $id): Vehicle
     {
         return Vehicle::where('status', 'available')
+            ->whereHas('agency', function ($query) {
+                $query->where('status', 'active');
+            })
             ->with(['agency'])
             ->findOrFail($id);
     }
@@ -56,6 +62,9 @@ class VehicleService
     {
         return Vehicle::where('agency_id', $agencyId)
             ->where('status', 'available')
+            ->whereHas('agency', function ($query) {
+                $query->where('status', 'active');
+            })
             ->with(['agency'])
             ->orderBy('created_at', 'desc')
             ->get();

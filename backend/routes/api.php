@@ -34,6 +34,19 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 // Public contact form submission
 Route::post('/contact', [ContactController::class, 'store']);
 
+// Public browse endpoints
+Route::prefix('public')->group(function () {
+    // Vehicles
+    Route::get('/vehicles', [PublicVehicleController::class, 'index']);
+    Route::get('/vehicles/{id}', [PublicVehicleController::class, 'show']);
+    Route::get('/vehicles/agency/{agencyId}', [PublicVehicleController::class, 'byAgency']);
+
+    // Agencies
+    Route::get('/agencies', [PublicAgencyController::class, 'index']);
+    Route::get('/agencies/{id}', [PublicAgencyController::class, 'show']);
+    Route::get('/agencies/slug/{slug}', [PublicAgencyController::class, 'bySlug']);
+});
+
 // Protected routes - All authenticated users
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -42,19 +55,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Protected configuration endpoint
     Route::get('/pricing-config', [ConfigController::class, 'pricingConfig']);
-
-    // Protected browse endpoints (previously public)
-    Route::prefix('public')->group(function () {
-        // Vehicles
-        Route::get('/vehicles', [PublicVehicleController::class, 'index']);
-        Route::get('/vehicles/{id}', [PublicVehicleController::class, 'show']);
-        Route::get('/vehicles/agency/{agencyId}', [PublicVehicleController::class, 'byAgency']);
-
-        // Agencies
-        Route::get('/agencies', [PublicAgencyController::class, 'index']);
-        Route::get('/agencies/{id}', [PublicAgencyController::class, 'show']);
-        Route::get('/agencies/slug/{slug}', [PublicAgencyController::class, 'bySlug']);
-    });
 
     // Reports - All authenticated users can submit reports
     Route::post('/reports', [ReportController::class, 'store']);

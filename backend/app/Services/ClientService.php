@@ -14,6 +14,8 @@ class ClientService
      */
     public function getStats(User $user): array
     {
+        $score = $this->recalculateReliabilityScore($user);
+
         $completedReservations = $user->reservations()
             ->where('status', 'completed')
             ->count();
@@ -26,7 +28,7 @@ class ClientService
             ->where('status', 'completed')
             ->sum('total_price');
 
-        $reliabilityScore = $user->reliabilityScore?->score ?? 100;
+        $reliabilityScore = (int) ($score->reliability_score ?? 100);
 
         return [
             'user_id' => $user->id,
@@ -116,18 +118,73 @@ class ClientService
      */
     public function updateReliabilityScore(User $user, int $delta): void
     {
-        $score = $user->reliabilityScore;
-        if (!$score) {
-            $score = ClientReliabilityScore::create([
-                'user_id' => $user->id,
-                'score' => 100,
-            ]);
-        }
+        $score = $this->ensureReliabilityScore($user);
+        $current = (int) ($score->reliability_score ?? 100);
 
         $score->update([
-            'score' => max(0, min(100, $score->score + $delta)),
+            'reliability_score' => max(0, min(100, $current + $delta)),
             'last_calculated_at' => now(),
         ]);
+    }
+
+    /**
+     * Ensure client has a reliability score row initialized at 100.
+     */
+    public function ensureReliabilityScore(User $user): ClientReliabilityScore
+    {
+        return ClientReliabilityScore::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'reliability_score' => 100,
+                'risk_level' => 'low',
+                'last_calculated_at' => now(),
+            ]
+        );
+    }
+
+    /**
+     * Recalculate reliability score based on reservation/payment/return behavior.
+     */
+    public function recalculateReliabilityScore(User $user): ClientReliabilityScore
+    {
+        $score = $this->ensureReliabilityScore($user);
+
+        $reservationsQuery = $user->reservations();
+        $totalReservations = (clone $reservationsQuery)->count();
+        $completedReservations = (clone $reservationsQuery)
+            ->where('status', 'completed')
+            ->count();
+        $cancelledReservations = (clone $reservationsQuery)
+            ->where('status', 'cancelled')
+            ->count();
+        $lateReturns = (clone $reservationsQuery)
+            ->where('is_late_return', true)
+            ->count();
+        $paymentDelays = (clone $reservationsQuery)
+            ->where('payment_status', 'overdue')
+            ->count();
+        $damageIncidents = (clone $reservationsQuery)
+            ->whereHas('vehicleReturn', function ($query) {
+                $query->whereIn('vehicle_condition', ['fair', 'damaged']);
+            })
+            ->count();
+        $totalUnpaidAmount = round((float) (clone $reservationsQuery)
+            ->where('remaining_amount', '>', 0)
+            ->sum('remaining_amount'), 2);
+
+        $score->fill([
+            'total_reservations' => $totalReservations,
+            'completed_reservations' => $completedReservations,
+            'cancelled_reservations' => $cancelledReservations,
+            'late_returns' => $lateReturns,
+            'payment_delays' => $paymentDelays,
+            'damage_incidents' => $damageIncidents,
+            'total_unpaid_amount' => $totalUnpaidAmount,
+        ]);
+
+        $score->calculateScore();
+
+        return $score->fresh();
     }
 
     /**
