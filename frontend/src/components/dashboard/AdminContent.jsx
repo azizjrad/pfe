@@ -336,12 +336,24 @@ const AdminContent = ({
           {paginatedAgencies.map((agency) => (
             <div
               key={agency.id}
-              className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm cursor-pointer"
+              className={`rounded-xl border p-4 shadow-sm cursor-pointer transition-colors ${
+                agency.status === "inactive"
+                  ? "bg-gray-100 border-gray-300"
+                  : "bg-white border-gray-200"
+              }`}
               onClick={async () => await onViewAgencyDetails(agency)}
             >
               <div className="flex items-start justify-between mb-3">
                 <div>
-                  <p className="font-semibold text-gray-900">{agency.name}</p>
+                  <p
+                    className={`font-semibold ${
+                      agency.status === "inactive"
+                        ? "text-gray-600"
+                        : "text-gray-900"
+                    }`}
+                  >
+                    {agency.name}
+                  </p>
                   <p className="text-sm text-gray-500">
                     {agency.location || "—"}
                   </p>
@@ -426,11 +438,21 @@ const AdminContent = ({
               {paginatedAgencies.map((agency) => (
                 <tr
                   key={agency.id}
-                  className="hover:bg-gray-50 cursor-pointer"
+                  className={`cursor-pointer transition-colors ${
+                    agency.status === "inactive"
+                      ? "bg-gray-100 hover:bg-gray-200"
+                      : "hover:bg-gray-50"
+                  }`}
                   onClick={async () => await onViewAgencyDetails(agency)}
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="font-medium text-gray-900">
+                    <div
+                      className={`font-medium ${
+                        agency.status === "inactive"
+                          ? "text-gray-600"
+                          : "text-gray-900"
+                      }`}
+                    >
                       {agency.name}
                     </div>
                   </td>
@@ -549,12 +571,22 @@ const AdminContent = ({
           {paginatedUsers.map((user) => (
             <div
               key={user.id}
-              className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm cursor-pointer"
+              className={`rounded-xl border p-4 shadow-sm cursor-pointer transition-colors ${
+                user.is_suspended
+                  ? "bg-gray-100 border-gray-300"
+                  : "bg-white border-gray-200"
+              }`}
               onClick={() => onViewUserDetails && onViewUserDetails(user)}
             >
               <div className="flex items-start justify-between mb-2">
                 <div>
-                  <p className="font-semibold text-gray-900">{user.name}</p>
+                  <p
+                    className={`font-semibold ${
+                      user.is_suspended ? "text-gray-600" : "text-gray-900"
+                    }`}
+                  >
+                    {user.name}
+                  </p>
                   <p className="text-sm text-gray-500">{user.email}</p>
                 </div>
                 <span
@@ -624,10 +656,20 @@ const AdminContent = ({
                 <tr
                   key={user.id}
                   onClick={() => onViewUserDetails && onViewUserDetails(user)}
-                  className="hover:bg-gray-50 cursor-pointer transition-colors"
+                  className={`cursor-pointer transition-colors ${
+                    user.is_suspended
+                      ? "bg-gray-100 hover:bg-gray-200"
+                      : "hover:bg-gray-50"
+                  }`}
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="font-medium text-gray-900">{user.name}</div>
+                    <div
+                      className={`font-medium ${
+                        user.is_suspended ? "text-gray-600" : "text-gray-900"
+                      }`}
+                    >
+                      {user.name}
+                    </div>
                     <div className="text-sm text-gray-500">{user.email}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">

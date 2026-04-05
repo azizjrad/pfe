@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\ClientReliabilityScore;
 use App\Models\UserNotification;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class ClientService
 {
@@ -196,15 +197,13 @@ class ClientService
             throw new \Exception('Email already in use', 400);
         }
 
-        $password = $data['password'] ?? null;
-        if (!$password) {
-            $password = '';
-        }
+        $password = $data['password'] ?? Str::random(40);
 
         $user = User::create([
             'name' => $data['name'] ?? 'Unnamed',
             'email' => $data['email'] ?? null,
-            'password' => $password ? Hash::make($password) : null,
+            // Store a temporary hash when user is invited without explicit password.
+            'password' => Hash::make($password),
             'role' => 'client',
             'agency_id' => $data['agency_id'] ?? null,
             'phone' => $data['phone'] ?? null,

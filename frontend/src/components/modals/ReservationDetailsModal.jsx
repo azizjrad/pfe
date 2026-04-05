@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ROLES } from "../../constants/roles";
 import { RESERVATION_STATUS } from "../../constants/statuses";
+import { openReservationContract } from "../contracts/reservationContract";
 
 export default function ReservationDetailsModal({
   reservation,
@@ -19,6 +20,10 @@ export default function ReservationDetailsModal({
   });
   const [pickupNotes, setPickupNotes] = useState("");
   const [cancelReason, setCancelReason] = useState("");
+
+  const handleDownloadContract = () => {
+    openReservationContract(reservation);
+  };
 
   if (!reservation) return null;
 
@@ -118,7 +123,29 @@ export default function ReservationDetailsModal({
               <h4 className="text-lg font-semibold text-gray-900">
                 Statut et Actions
               </h4>
-              {getStatusBadge(reservation.status)}
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={handleDownloadContract}
+                  className="inline-flex items-center gap-2 rounded-lg border border-primary-200 bg-primary-50 px-3 py-2 text-sm font-semibold text-primary-700 transition hover:bg-primary-100"
+                >
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 16.5V18a2 2 0 002 2h12a2 2 0 002-2v-1.5M12 3v12m0 0l-4-4m4 4l4-4"
+                    />
+                  </svg>
+                  Télécharger contrat
+                </button>
+                {getStatusBadge(reservation.status)}
+              </div>
             </div>
 
             {/* Actions for Agency Admin */}

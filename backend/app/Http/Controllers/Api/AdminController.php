@@ -18,6 +18,8 @@ use App\Mail\InviteUserMail;
 use App\Http\Resources\VehicleResource;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -163,7 +165,8 @@ class AdminController extends Controller
                 $user = User::create([
                     'name' => $data['name'],
                     'email' => $data['email'],
-                    'password' => null,
+                    // DB password is required. Store a temporary hash until invite flow sets the real password.
+                    'password' => Hash::make($data['password'] ?? Str::random(40)),
                     'role' => $data['role'],
                     'agency_id' => $data['agency_id'] ?? null,
                     'phone' => $data['phone'] ?? null,

@@ -51,7 +51,7 @@ class ReservationService
         // Calculate pricing server-side (security)
         $pricingBreakdown = $this->calculatePrice($vehicle, $startDate, $endDate, $options);
 
-        // Calculate platform commission (8%)
+        // Calculate platform commission (5%)
         $commissionRate = config('pfe.commission.platform_rate');
         $minCommission = config('pfe.commission.min_commission');
 

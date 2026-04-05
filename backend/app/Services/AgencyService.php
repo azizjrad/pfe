@@ -154,8 +154,46 @@ class AgencyService
      */
     public function create(array $data): Agency
     {
-        $allowed = array_intersect_key($data, array_flip(['name','address','city','phone','email','opening_time','closing_time','status','location']));
-        return Agency::create($allowed);
+        $name = trim((string) ($data['name'] ?? ''));
+        if ($name === '') {
+            throw new \InvalidArgumentException('Agency name is required.');
+        }
+
+        $email = trim((string) ($data['email'] ?? ''));
+        if ($email === '') {
+            throw new \InvalidArgumentException('Agency email is required.');
+        }
+
+        $city = trim((string) (
+            $data['city']
+            ?? $data['location']
+            ?? $data['address']
+            ?? ''
+        ));
+
+        $address = trim((string) (
+            $data['address']
+            ?? $data['city']
+            ?? $data['location']
+            ?? ''
+        ));
+
+        $status = $data['status'] ?? 'active';
+
+        $payload = [
+            'name' => $name,
+            'address' => $address !== '' ? $address : 'Adresse non renseignée',
+            'city' => $city !== '' ? $city : 'Ville non renseignée',
+            'phone' => trim((string) ($data['phone'] ?? 'Non renseigné')),
+            'email' => $email,
+            'opening_time' => $data['opening_time'] ?? '08:00',
+            'closing_time' => $data['closing_time'] ?? '18:00',
+            'status' => in_array($status, ['active', 'inactive'], true)
+                ? $status
+                : 'active',
+        ];
+
+        return Agency::create($payload);
     }
 
     /**

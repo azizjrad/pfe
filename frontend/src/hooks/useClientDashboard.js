@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { clientService } from "../services/clientService";
 import { ROLES } from "../constants/roles";
+import { getUserFacingErrorMessage } from "../utils/errorMessages";
 
 const DEFAULT_CLIENT_STATS = {
   activeReservations: 0,
@@ -36,7 +37,10 @@ export default function useClientDashboard({ user, showToast }) {
       setClientStats(response?.data?.data || DEFAULT_CLIENT_STATS);
     } catch (error) {
       console.error("Error fetching client stats:", error);
-      showToast?.(t("errors.loadData"), "error");
+      showToast?.(
+        getUserFacingErrorMessage(error, t("errors.loadData")),
+        "error",
+      );
     }
   };
 

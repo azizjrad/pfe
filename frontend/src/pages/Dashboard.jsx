@@ -202,15 +202,13 @@ const Dashboard = () => {
             label: t("dashboard.tabs.active"),
             icon: "clipboard",
           },
-          { id: "reservations", label: t("dashboard.tabs.all"), icon: "list" },
-          { id: "vehicles", label: t("dashboard.tabs.vehicles"), icon: "car" },
-          { id: "reports", label: t("dashboard.tabs.reports"), icon: "flag" },
           {
-            id: "financial",
-            label: t("dashboard.tabs.financial"),
-            icon: "credit-card",
+            id: "reservations",
+            label: t("dashboard.tabs.reservations"),
+            icon: "list",
           },
-          { id: "alerts", label: t("dashboard.tabs.alerts"), icon: "bell" },
+          { id: "vehicles", label: t("dashboard.tabs.vitrine"), icon: "car" },
+          { id: "reports", label: t("dashboard.tabs.reports"), icon: "flag" },
           {
             id: "statistics",
             label: t("dashboard.tabs.statistics"),
@@ -254,12 +252,12 @@ const Dashboard = () => {
       case ROLES.AGENCY_ADMIN:
         return {
           title: t("dashboard.title.agencyAdmin"),
-          subtitle: t("dashboard.title.agencyAdminSubtitle"),
+          subtitle: t("dashboard.subtitle.agencyAdminSubtitle"),
         };
       case ROLES.CLIENT:
         return {
           title: t("dashboard.title.client"),
-          subtitle: t("dashboard.title.clientSubtitle"),
+          subtitle: t("dashboard.subtitle.clientSubtitle"),
         };
       default:
         return { title: t("dashboard.title.default"), subtitle: "" };
@@ -313,7 +311,7 @@ const Dashboard = () => {
           {
             title: t("dashboard.stats.totalVehicles.title"),
             value: String(agencyStats?.totalVehicles ?? "0"),
-            change: `${agencyStats.availableVehicles} ${t("dashboard.stats.totalVehicles.change")}`,
+            change: null,
             trend: "neutral",
             icon: "car",
             color: "blue",
@@ -321,7 +319,7 @@ const Dashboard = () => {
           {
             title: t("dashboard.stats.activeReservations.title"),
             value: String(agencyStats?.activeReservations ?? "0"),
-            change: t("dashboard.stats.activeReservations.change"),
+            change: null,
             trend: "up",
             icon: "clipboard",
             color: "green",
@@ -331,7 +329,7 @@ const Dashboard = () => {
             value: agencyStats?.monthlyRevenue
               ? `${agencyStats.monthlyRevenue.toLocaleString()} DT`
               : "0 DT",
-            change: t("dashboard.stats.agencyRevenue.change"),
+            change: null,
             trend: "up",
             icon: "money",
             color: "emerald",
@@ -339,7 +337,7 @@ const Dashboard = () => {
           {
             title: t("dashboard.stats.alerts.title"),
             value: String(agencyStats?.alertsCount ?? "0"),
-            change: `${agencyStats.maintenanceVehicles} ${t("dashboard.stats.alerts.change")}`,
+            change: null,
             trend: agencyStats.alertsCount > 0 ? "warning" : "neutral",
             icon: "bell",
             color: "yellow",
@@ -350,7 +348,7 @@ const Dashboard = () => {
           {
             title: t("dashboard.stats.activeReservations.title"),
             value: String(clientStats?.activeReservations ?? "0"),
-            change: t("dashboard.stats.activeReservations.change"),
+            change: null,
             trend: "neutral",
             icon: "clipboard",
             color: "blue",
@@ -358,7 +356,7 @@ const Dashboard = () => {
           {
             title: t("dashboard.stats.totalHistory.title"),
             value: String(clientStats?.completedReservations ?? "0"),
-            change: t("dashboard.stats.totalHistory.change"),
+            change: null,
             trend: "neutral",
             icon: "clock",
             color: "green",
@@ -366,7 +364,7 @@ const Dashboard = () => {
           {
             title: t("dashboard.stats.totalSpend.title"),
             value: `${Number(clientStats?.totalSpend ?? 0).toLocaleString()} DT`,
-            change: t("dashboard.stats.totalSpend.change"),
+            change: null,
             trend: "neutral",
             icon: "money",
             color: "purple",
@@ -374,7 +372,7 @@ const Dashboard = () => {
           {
             title: t("dashboard.stats.reliabilityScore.title"),
             value: `${clientStats?.reliabilityScore ?? 0}%`,
-            change: clientStats.riskLabel,
+            change: null,
             trend: "up",
             icon: "star",
             color: "yellow",
@@ -760,6 +758,9 @@ const Dashboard = () => {
           <AgencyContent
             activeTab={activeTab}
             reports={agencyDashboard.reports}
+            reservations={agencyDashboard.reservations}
+            vehicles={agencyDashboard.vehicles}
+            loading={agencyDashboard.loading}
           />
         </ErrorBoundary>
       );
@@ -1061,7 +1062,11 @@ const Dashboard = () => {
             await adminDashboard.refreshData();
           } catch (error) {
             console.error("Error suspending:", error);
-            showToast(t("dashboard.messages.statusChangeError"), "error");
+            showToast(
+              error?.response?.data?.message ||
+                t("dashboard.messages.statusChangeError"),
+              "error",
+            );
           }
           setSuspendModal({ isOpen: false, type: null, item: null });
         }}

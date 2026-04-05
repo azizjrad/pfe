@@ -3,8 +3,11 @@ import { useTranslation } from "react-i18next";
 import { agencyService } from "../services/agencyService";
 import { clientService } from "../services/clientService";
 import { reportService } from "../services/reportService";
+import { reservationService } from "../services/reservationService";
+import { vehicleService } from "../services/vehicleService";
 import { ROLES } from "../constants/roles";
 import { normalizeArray, normalizeReport } from "../utils/normalizers";
+import { getUserFacingErrorMessage } from "../utils/errorMessages";
 
 const DEFAULT_AGENCY_STATS = {
   totalVehicles: 0,
@@ -20,6 +23,8 @@ export default function useAgencyDashboard({ user, showToast }) {
   const [agencyStats, setAgencyStats] = useState(DEFAULT_AGENCY_STATS);
   const [reports, setReports] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const [reservations, setReservations] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchAgencyStats = async () => {
@@ -28,7 +33,10 @@ export default function useAgencyDashboard({ user, showToast }) {
       setAgencyStats(response?.data?.data || DEFAULT_AGENCY_STATS);
     } catch (error) {
       console.error("Error fetching agency stats:", error);
-      showToast?.(t("errors.loadData"), "error");
+      showToast?.(
+        getUserFacingErrorMessage(error, t("errors.loadData")),
+        "error",
+      );
     }
   };
 
@@ -56,7 +64,7 @@ export default function useAgencyDashboard({ user, showToast }) {
     } catch (error) {
       console.error("Error fetching reports:", error);
       showToast?.(
-        error.response?.data?.message || t("errors.loadData"),
+        getUserFacingErrorMessage(error, t("errors.loadData")),
         "error",
       );
     }
@@ -71,11 +79,39 @@ export default function useAgencyDashboard({ user, showToast }) {
     }
   };
 
+  const fetchReservations = async () => {
+    try {
+      const response = await reservationService.getAgency();
+      setReservations(normalizeArray(response));
+    } catch (error) {
+      console.error("Error fetching reservations:", error);
+      showToast?.(
+        getUserFacingErrorMessage(error, t("errors.loadData")),
+        "error",
+      );
+    }
+  };
+
+  const fetchVehicles = async () => {
+    try {
+      const response = await vehicleService.getAll();
+      setVehicles(normalizeArray(response));
+    } catch (error) {
+      console.error("Error fetching vehicles:", error);
+      showToast?.(
+        getUserFacingErrorMessage(error, t("errors.loadData")),
+        "error",
+      );
+    }
+  };
+
   const refreshData = async () => {
     await Promise.all([
       fetchAgencyStats(),
       fetchReports(),
       fetchNotifications(),
+      fetchReservations(),
+      fetchVehicles(),
     ]);
   };
 
@@ -94,6 +130,8 @@ export default function useAgencyDashboard({ user, showToast }) {
     agencyStats,
     reports,
     notifications,
+    reservations,
+    vehicles,
     loading,
     refreshData,
   };

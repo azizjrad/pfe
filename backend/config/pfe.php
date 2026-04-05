@@ -49,7 +49,7 @@ return [
     ],
 
     'commission' => [
-        'platform_rate' => 0.08, // 8% platform commission
+        'platform_rate' => 0.05, // 5% platform commission
         'min_commission' => 5, // Minimum commission in DT
     ],
 

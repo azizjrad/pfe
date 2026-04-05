@@ -56,6 +56,13 @@ export default function EditModal({
       if (formData.role === ROLES.AGENCY_ADMIN && !formData.agency_id) {
         newErrors.agency_id = t("modals.edit.errors.agencyRequired");
       }
+      if (!formData.id && formData.role === ROLES.CLIENT) {
+        if (!formData.password?.trim()) {
+          newErrors.password = t("modals.edit.errors.passwordRequired");
+        } else if (String(formData.password).length < 6) {
+          newErrors.password = t("modals.edit.errors.passwordMinLength");
+        }
+      }
     } else if (type === "agency") {
       if (!formData.name?.trim())
         newErrors.name = t("modals.edit.errors.nameRequired");
@@ -320,6 +327,49 @@ export default function EditModal({
                   </p>
                 )}
               </div>
+
+              {!formData.id && formData.role === ROLES.CLIENT && (
+                <div className="relative">
+                  <input
+                    id="user-password"
+                    type="password"
+                    name="password"
+                    value={formData.password || ""}
+                    onChange={handleChange}
+                    onFocus={() => handleFocus("password")}
+                    onBlur={() => handleBlur("password")}
+                    className={`w-full px-5 py-3 rounded-full bg-gray-50 border-2 ${
+                      errors.password
+                        ? "border-red-500 focus:border-red-500"
+                        : "border-gray-200 focus:border-primary-500"
+                    } focus:outline-none focus:bg-white transition-all hover:border-primary-300`}
+                    placeholder=" "
+                  />
+                  <label
+                    htmlFor="user-password"
+                    className={`absolute left-5 transition-all duration-300 pointer-events-none ${
+                      focusedFields.password || formData.password
+                        ? "text-xs -top-2 left-3 bg-white px-2"
+                        : "text-sm top-3"
+                    } ${
+                      errors.password
+                        ? "text-red-500"
+                        : focusedFields.password
+                          ? "text-primary-500"
+                          : formData.password
+                            ? "text-gray-700"
+                            : "text-gray-500"
+                    }`}
+                  >
+                    {t("auth.register.passwordLabel")}
+                  </label>
+                  {errors.password && (
+                    <p className="text-red-500 text-xs mt-1 ml-5">
+                      {errors.password}
+                    </p>
+                  )}
+                </div>
+              )}
 
               <div className="relative">
                 <select

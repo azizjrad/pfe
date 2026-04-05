@@ -76,7 +76,7 @@ class RealisticDashboardSeeder extends Seeder
             }
 
             $totalPrice = max(0.0, round($basePrice - $discountAmount + $additionalCharges, 2));
-            $commissionRate = 0.15;
+            $commissionRate = 0.05;
             $platformCommission = round($totalPrice * $commissionRate, 2);
             $agencyPayout = round($totalPrice - $platformCommission, 2);
 

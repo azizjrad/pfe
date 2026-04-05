@@ -7,6 +7,7 @@ import { reportService } from "../services/reportService";
 import { reservationService } from "../services/reservationService";
 import { ROLES } from "../constants/roles";
 import { normalizeArray, normalizeReport } from "../utils/normalizers";
+import { getUserFacingErrorMessage } from "../utils/errorMessages";
 
 const DEFAULT_PLATFORM_STATS = {
   totalAgencies: 0,
@@ -87,7 +88,7 @@ export default function useAdminDashboard({
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
       showToast?.(
-        error.response?.data?.message || t("errors.loadData"),
+        getUserFacingErrorMessage(error, t("errors.loadData")),
         "error",
       );
     } finally {
@@ -103,7 +104,7 @@ export default function useAdminDashboard({
     } catch (error) {
       console.error("Error fetching reports:", error);
       showToast?.(
-        error.response?.data?.message || t("errors.loadData"),
+        getUserFacingErrorMessage(error, t("errors.loadData")),
         "error",
       );
     }
@@ -128,7 +129,7 @@ export default function useAdminDashboard({
     } catch (error) {
       console.error("Error fetching contact messages:", error);
       showToast?.(
-        error.response?.data?.message || t("errors.loadData"),
+        getUserFacingErrorMessage(error, t("errors.loadData")),
         "error",
       );
     }
@@ -150,7 +151,7 @@ export default function useAdminDashboard({
     } catch (error) {
       console.error("Error fetching financial stats:", error);
       showToast?.(
-        error.response?.data?.message || t("errors.loadData"),
+        getUserFacingErrorMessage(error, t("errors.loadData")),
         "error",
       );
     }
@@ -253,7 +254,7 @@ export default function useAdminDashboard({
         }));
       }
 
-      showToast?.(t("admin.agencies.editSuccess"), "success");
+      showToast?.(t("admin.agencies.createSuccess"), "success");
       return;
     }
 
@@ -282,7 +283,7 @@ export default function useAdminDashboard({
         }));
       }
 
-      showToast?.(t("admin.users.editSuccess"), "success");
+      showToast?.(t("admin.users.createSuccess"), "success");
       return;
     }
 
@@ -304,12 +305,15 @@ export default function useAdminDashboard({
   };
 
   const handleSuspendUser = async (targetUser) => {
-    await adminService.suspendUser(targetUser.id, !targetUser.is_suspended);
+    const isSuspended =
+      targetUser?.is_suspended === true ||
+      targetUser?.is_suspended === 1 ||
+      targetUser?.is_suspended === "1";
+
+    await adminService.suspendUser(targetUser.id, !isSuspended);
     setUsers((prev) =>
       prev.map((u) =>
-        u.id === targetUser.id
-          ? { ...u, is_suspended: !targetUser.is_suspended }
-          : u,
+        u.id === targetUser.id ? { ...u, is_suspended: !isSuspended } : u,
       ),
     );
   };

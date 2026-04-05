@@ -1,33 +1,26 @@
 ﻿import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { agencyService } from "../../services/agencyService";
 import { vehicleService } from "../../services/vehicleService";
 import { reservationService } from "../../services/reservationService";
 import ReservationDetailsModal from "../modals/ReservationDetailsModal";
+import AgencyStatisticsTab from "./AgencyStatisticsTab";
 import Toast from "../common/Toast";
 import { ROLES } from "../../constants/roles";
 import { REPORT_STATUS, RESERVATION_STATUS } from "../../constants/statuses";
-import {
-  LineChart,
-  Line,
-  BarChart,
-  Bar,
-  PieChart,
-  Pie,
-  Cell,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
-const AgencyContent = ({ activeTab, reports = [] }) => {
+const AgencyContent = ({
+  activeTab,
+  reports = [],
+  reservations: propsReservations = [],
+  vehicles: propsVehicles = [],
+  loading: propsLoading = false,
+}) => {
   const { t } = useTranslation();
   const COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"];
-  const [reservations, setReservations] = useState([]);
-  const [vehicles, setVehicles] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [reservations, setReservations] = useState(propsReservations);
+  const [vehicles, setVehicles] = useState(propsVehicles);
+  const [loading, setLoading] = useState(propsLoading);
   const [loadingVehicles, setLoadingVehicles] = useState(false);
   const [isVehicleModalOpen, setIsVehicleModalOpen] = useState(false);
   const [creatingVehicle, setCreatingVehicle] = useState(false);
@@ -42,120 +35,19 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
     reservation: null,
   });
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
-  const [agencyFinancialStats, setAgencyFinancialStats] = useState({
-    monthly: [],
-    vehiclePerformance: [],
-    paymentStatus: [
-      { name: "Payé", value: 0, color: "#10B981" },
-      { name: "En attente", value: 0, color: "#F59E0B" },
-      { name: "Retard", value: 0, color: "#EF4444" },
-    ],
-    totals: { revenue: 0, commission: 0, payout: 0, netIncome: 0 },
-  });
-  const [loadingFinancial, setLoadingFinancial] = useState(false);
-  const [vehicleForm, setVehicleForm] = useState({
-    brand: "",
-    model: "",
-    year: new Date().getFullYear(),
-    mileage: 0,
-    daily_price: "",
-    license_plate: "",
-    color: "",
-    seats: 5,
-    transmission: "automatic",
-    fuel_type: "petrol",
-    status: "available",
-    image: "",
-  });
+  const [imageDragActive, setImageDragActive] = useState(false);
 
-  // Fetch reservations on mount
+  // Update internal state when props change
   useEffect(() => {
-    fetchReservations();
-  }, []);
-
-  // Fetch financial stats when financial tab opens
-  useEffect(() => {
-    if (activeTab === "financial") {
-      fetchFinancialStats();
-    }
-  }, [activeTab]);
-
-  useEffect(() => {
-    if (activeTab === "vehicles") {
-      fetchVehicles();
-    }
-  }, [activeTab]);
-
-  const fetchFinancialStats = async () => {
-    setLoadingFinancial(true);
-    try {
-      const response = await agencyService.getFinancialStats();
-      setAgencyFinancialStats(response.data.data);
-    } catch (error) {
-      setToast({
-        show: true,
-        message: t("agencyContent.errorLoadingFinancial"),
-        type: "error",
-      });
-    } finally {
-      setLoadingFinancial(false);
-    }
-  };
-
-  const fetchReservations = async () => {
-    setLoading(true);
-    try {
-      const response = await reservationService.getAgency();
-      setReservations(response.data.data);
-    } catch (error) {
-      setToast({
-        show: true,
-        message: t("agencyContent.errorLoadingReservations"),
-        type: "error",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchVehicles = async () => {
-    setLoadingVehicles(true);
-    try {
-      const response = await vehicleService.getAll();
-      setVehicles(response?.data?.data || []);
-    } catch (error) {
-      setToast({
-        show: true,
-        message: error.response?.data?.message || "Erreur chargement véhicules",
-        type: "error",
-      });
-    } finally {
-      setLoadingVehicles(false);
-    }
-  };
-
-  const resetVehicleForm = () => {
-    setVehicleForm({
-      brand: "",
-      model: "",
-      year: new Date().getFullYear(),
-      mileage: 0,
-      daily_price: "",
-      license_plate: "",
-      color: "",
-      seats: 5,
-      transmission: "automatic",
-      fuel_type: "petrol",
-      status: "available",
-      image: "",
-    });
-    setEditingVehicleId(null);
-  };
+    setReservations(propsReservations);
+    setVehicles(propsVehicles);
+    setLoading(propsLoading);
+  }, [propsReservations, propsVehicles, propsLoading]);
 
   const handleCreateVehicle = async (event) => {
     event.preventDefault();
-
     setCreatingVehicle(true);
+
     try {
       const payload = {
         ...vehicleForm,
@@ -163,6 +55,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
         mileage: Number(vehicleForm.mileage),
         seats: Number(vehicleForm.seats),
         year: Number(vehicleForm.year),
+        status: vehicleForm.status || "available",
       };
 
       const response = await vehicleService.create(payload);
@@ -192,6 +85,16 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
     }
   };
 
+  if (activeTab === "statistics") {
+    return (
+      <AgencyStatisticsTab
+        reservations={reservations}
+        vehicles={vehicles}
+        loading={loading}
+      />
+    );
+  }
+
   const handleOpenEditVehicle = (vehicle) => {
     setEditingVehicleId(vehicle.id);
     setVehicleForm({
@@ -211,91 +114,55 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
     setIsVehicleModalOpen(true);
   };
 
-  const handleDeleteVehicle = async (vehicle) => {
-    const confirmed = window.confirm(
-      `Supprimer ${vehicle.brand || ""} ${vehicle.model || ""} ?`,
-    );
-
-    if (!confirmed) {
-      return;
-    }
-
-    setDeletingVehicleId(vehicle.id);
-    try {
-      await vehicleService.delete(vehicle.id);
-      setVehicles((prev) => prev.filter((item) => item.id !== vehicle.id));
-      setToast({
-        show: true,
-        message: "Véhicule supprimé avec succès",
-        type: "success",
-      });
-    } catch (error) {
-      setToast({
-        show: true,
-        message: error.response?.data?.message || "Erreur suppression véhicule",
-        type: "error",
-      });
-    } finally {
-      setDeletingVehicleId(null);
-    }
-  };
-
-  const handleSubmitVehicle = async (event) => {
-    if (editingVehicleId) {
-      event.preventDefault();
-      setCreatingVehicle(true);
-
-      try {
-        const payload = {
-          ...vehicleForm,
-          daily_price: Number(vehicleForm.daily_price),
-          mileage: Number(vehicleForm.mileage),
-          seats: Number(vehicleForm.seats),
-          year: Number(vehicleForm.year),
-        };
-
-        const response = await vehicleService.update(editingVehicleId, payload);
-        const updatedVehicle = response?.data?.data;
-
-        if (updatedVehicle) {
-          setVehicles((prev) =>
-            prev.map((item) =>
-              item.id === editingVehicleId
-                ? { ...item, ...updatedVehicle }
-                : item,
-            ),
-          );
-        } else {
-          await fetchVehicles();
-        }
-
-        setToast({
-          show: true,
-          message: "Véhicule modifié avec succès",
-          type: "success",
-        });
-        setIsVehicleModalOpen(false);
-        resetVehicleForm();
-      } catch (error) {
-        setToast({
-          show: true,
-          message:
-            error.response?.data?.message || "Erreur modification véhicule",
-          type: "error",
-        });
-      } finally {
-        setCreatingVehicle(false);
-      }
-
-      return;
-    }
-
-    await handleCreateVehicle(event);
-  };
-
   const handleVehicleFormChange = (event) => {
     const { name, value } = event.target;
     setVehicleForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleVehicleImageUpload = (event) => {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setToast({
+        show: true,
+        message: "Veuillez sélectionner une image valide",
+        type: "error",
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (readerEvent) => {
+      setVehicleForm((prev) => ({
+        ...prev,
+        image: readerEvent.target?.result || "",
+      }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleVehicleImageDrop = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setImageDragActive(false);
+
+    const file = event.dataTransfer.files?.[0];
+    if (file) {
+      handleVehicleImageUpload({ target: { files: [file] } });
+    }
+  };
+
+  const handleVehicleImageDrag = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (event.type === "dragenter" || event.type === "dragover") {
+      setImageDragActive(true);
+    } else if (event.type === "dragleave") {
+      setImageDragActive(false);
+    }
   };
 
   const handleStatusUpdate = async (id, newStatus) => {
@@ -670,10 +537,10 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">
-              Gestion des Véhicules
+              {t("agencyContent.vitrineTitle")}
             </h2>
             <p className="text-sm text-gray-500 mt-1">
-              Gérez votre flotte de véhicules disponibles
+              {t("agencyContent.vitrineSubtitle")}
             </p>
           </div>
           <button
@@ -696,7 +563,7 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                 d="M12 4v16m8-8H4"
               />
             </svg>
-            Ajouter Véhicule
+            {t("agencyContent.addVehicle")}
           </button>
         </div>
 
@@ -818,180 +685,351 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
           </div>
         </div>
 
-        {isVehicleModalOpen && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl">
-              <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {editingVehicleId
-                    ? "Modifier le véhicule"
-                    : "Ajouter un véhicule"}
-                </h3>
-                <button
-                  onClick={() => {
-                    setIsVehicleModalOpen(false);
-                    resetVehicleForm();
-                  }}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  ✕
-                </button>
-              </div>
-
-              <form
-                onSubmit={handleSubmitVehicle}
-                className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4"
-              >
-                <input
-                  name="brand"
-                  value={vehicleForm.brand}
-                  onChange={handleVehicleFormChange}
-                  placeholder="Marque"
-                  className="border border-gray-300 rounded-lg px-3 py-2"
-                  required
-                />
-                <input
-                  name="model"
-                  value={vehicleForm.model}
-                  onChange={handleVehicleFormChange}
-                  placeholder="Modèle"
-                  className="border border-gray-300 rounded-lg px-3 py-2"
-                  required
-                />
-                <input
-                  name="year"
-                  type="number"
-                  value={vehicleForm.year}
-                  onChange={handleVehicleFormChange}
-                  placeholder="Année"
-                  className="border border-gray-300 rounded-lg px-3 py-2"
-                  required
-                />
-                <input
-                  name="mileage"
-                  type="number"
-                  value={vehicleForm.mileage}
-                  onChange={handleVehicleFormChange}
-                  placeholder="Kilométrage"
-                  className="border border-gray-300 rounded-lg px-3 py-2"
-                  required
-                />
-                <input
-                  name="daily_price"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={vehicleForm.daily_price}
-                  onChange={handleVehicleFormChange}
-                  placeholder="Prix / jour"
-                  className="border border-gray-300 rounded-lg px-3 py-2"
-                  required
-                />
-                <input
-                  name="license_plate"
-                  value={vehicleForm.license_plate}
-                  onChange={handleVehicleFormChange}
-                  placeholder="Immatriculation"
-                  className="border border-gray-300 rounded-lg px-3 py-2"
-                  required
-                />
-                <input
-                  name="color"
-                  value={vehicleForm.color}
-                  onChange={handleVehicleFormChange}
-                  placeholder="Couleur"
-                  className="border border-gray-300 rounded-lg px-3 py-2"
-                  required
-                />
-                <input
-                  name="seats"
-                  type="number"
-                  min="2"
-                  max="9"
-                  value={vehicleForm.seats}
-                  onChange={handleVehicleFormChange}
-                  placeholder="Nombre de places"
-                  className="border border-gray-300 rounded-lg px-3 py-2"
-                  required
-                />
-
-                <select
-                  name="transmission"
-                  value={vehicleForm.transmission}
-                  onChange={handleVehicleFormChange}
-                  className="border border-gray-300 rounded-lg px-3 py-2"
-                  required
-                >
-                  <option value="automatic">Automatique</option>
-                  <option value="manual">Manuelle</option>
-                </select>
-
-                <select
-                  name="fuel_type"
-                  value={vehicleForm.fuel_type}
-                  onChange={handleVehicleFormChange}
-                  className="border border-gray-300 rounded-lg px-3 py-2"
-                  required
-                >
-                  <option value="petrol">Essence</option>
-                  <option value="diesel">Diesel</option>
-                  <option value="electric">Électrique</option>
-                  <option value="hybrid">Hybride</option>
-                </select>
-
-                <select
-                  name="status"
-                  value={vehicleForm.status}
-                  onChange={handleVehicleFormChange}
-                  className="border border-gray-300 rounded-lg px-3 py-2"
-                  required
-                >
-                  <option value="available">Disponible</option>
-                  <option value="reserved">Réservé</option>
-                  <option value="in_use">En cours d'utilisation</option>
-                  <option value="returned">Retourné</option>
-                  <option value="maintenance">Maintenance</option>
-                  <option value="rented">Loué</option>
-                  <option value="unavailable">Indisponible</option>
-                </select>
-
-                <input
-                  name="image"
-                  value={vehicleForm.image}
-                  onChange={handleVehicleFormChange}
-                  placeholder="URL image (optionnel)"
-                  className="border border-gray-300 rounded-lg px-3 py-2 md:col-span-2"
-                />
-
-                <div className="md:col-span-2 flex justify-end gap-3 mt-2">
+        {isVehicleModalOpen &&
+          createPortal(
+            <div className="fixed inset-0 z-[1000] bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+              <div className="w-full h-[100vh] sm:h-auto sm:max-h-[92vh] max-w-4xl overflow-hidden rounded-none sm:rounded-3xl bg-white shadow-2xl border border-white/70">
+                <div className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-gray-100 bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-5 text-white">
+                  <div>
+                    <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold tracking-wide uppercase text-white/90">
+                      {editingVehicleId ? "Modifier" : "Ajouter"}
+                    </div>
+                    <h3 className="mt-3 text-2xl font-bold">
+                      {editingVehicleId
+                        ? "Modifier le véhicule"
+                        : "Ajouter un véhicule"}
+                    </h3>
+                    <p className="mt-1 text-sm text-white/80">
+                      Renseignez les informations du véhicule de façon claire et
+                      rapide.
+                    </p>
+                  </div>
                   <button
-                    type="button"
                     onClick={() => {
                       setIsVehicleModalOpen(false);
                       resetVehicleForm();
                     }}
-                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                    className="rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20"
+                    aria-label="Fermer"
                   >
-                    Annuler
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={creatingVehicle}
-                    className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50"
-                  >
-                    {creatingVehicle
-                      ? editingVehicleId
-                        ? "Enregistrement..."
-                        : "Ajout..."
-                      : editingVehicleId
-                        ? "Enregistrer"
-                        : "Ajouter"}
+                    ✕
                   </button>
                 </div>
-              </form>
-            </div>
-          </div>
-        )}
+
+                <form
+                  onSubmit={handleSubmitVehicle}
+                  className="flex h-[calc(100vh-96px)] sm:h-auto sm:max-h-[calc(92vh-96px)] flex-col overflow-y-auto px-4 sm:px-6 py-5 sm:py-6"
+                >
+                  <div className="grid gap-5 sm:gap-6 pb-6">
+                    <section className="rounded-2xl border border-primary-100 bg-gradient-to-br from-primary-50/80 to-white p-5">
+                      <h4 className="mb-4 text-base font-semibold text-gray-900">
+                        Informations principales
+                      </h4>
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div>
+                          <label className="mb-1 block text-sm font-medium text-gray-700">
+                            Marque <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            name="brand"
+                            value={vehicleForm.brand}
+                            onChange={handleVehicleFormChange}
+                            placeholder="Ex: Toyota"
+                            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-sm font-medium text-gray-700">
+                            Modèle <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            name="model"
+                            value={vehicleForm.model}
+                            onChange={handleVehicleFormChange}
+                            placeholder="Ex: Corolla"
+                            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-sm font-medium text-gray-700">
+                            Année <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            name="year"
+                            type="number"
+                            value={vehicleForm.year}
+                            onChange={handleVehicleFormChange}
+                            placeholder="2026"
+                            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-sm font-medium text-gray-700">
+                            Kilométrage <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            name="mileage"
+                            type="number"
+                            value={vehicleForm.mileage}
+                            onChange={handleVehicleFormChange}
+                            placeholder="0"
+                            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </section>
+
+                    <section className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+                      <h4 className="mb-4 text-base font-semibold text-gray-900">
+                        Caractéristiques et tarification
+                      </h4>
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div>
+                          <label className="mb-1 block text-sm font-medium text-gray-700">
+                            Prix / jour (DT){" "}
+                            <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            name="daily_price"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={vehicleForm.daily_price}
+                            onChange={handleVehicleFormChange}
+                            placeholder="Ex: 120"
+                            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-sm font-medium text-gray-700">
+                            Immatriculation{" "}
+                            <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            name="license_plate"
+                            value={vehicleForm.license_plate}
+                            onChange={handleVehicleFormChange}
+                            placeholder="Ex: 123 TUN 456"
+                            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-sm font-medium text-gray-700">
+                            Couleur <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            name="color"
+                            value={vehicleForm.color}
+                            onChange={handleVehicleFormChange}
+                            placeholder="Ex: Noir"
+                            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-sm font-medium text-gray-700">
+                            Nombre de places{" "}
+                            <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            name="seats"
+                            type="number"
+                            min="2"
+                            max="9"
+                            value={vehicleForm.seats}
+                            onChange={handleVehicleFormChange}
+                            placeholder="5"
+                            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-sm font-medium text-gray-700">
+                            Transmission <span className="text-red-500">*</span>
+                          </label>
+                          <select
+                            name="transmission"
+                            value={vehicleForm.transmission}
+                            onChange={handleVehicleFormChange}
+                            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10"
+                            required
+                          >
+                            <option value="automatic">Automatique</option>
+                            <option value="manual">Manuelle</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-sm font-medium text-gray-700">
+                            Carburant <span className="text-red-500">*</span>
+                          </label>
+                          <select
+                            name="fuel_type"
+                            value={vehicleForm.fuel_type}
+                            onChange={handleVehicleFormChange}
+                            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10"
+                            required
+                          >
+                            <option value="petrol">Essence</option>
+                            <option value="diesel">Diesel</option>
+                            <option value="electric">Électrique</option>
+                            <option value="hybrid">Hybride</option>
+                          </select>
+                        </div>
+                        {editingVehicleId && (
+                          <div className="md:col-span-2">
+                            <label className="mb-1 block text-sm font-medium text-gray-700">
+                              Statut de publication{" "}
+                              <span className="text-red-500">*</span>
+                            </label>
+                            <select
+                              name="status"
+                              value={vehicleForm.status}
+                              onChange={handleVehicleFormChange}
+                              className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10"
+                              required
+                            >
+                              <option value="available">Disponible</option>
+                              <option value="reserved">Réservé</option>
+                              <option value="in_use">
+                                En cours d'utilisation
+                              </option>
+                              <option value="returned">Retourné</option>
+                              <option value="maintenance">Maintenance</option>
+                              <option value="rented">Loué</option>
+                              <option value="unavailable">Indisponible</option>
+                            </select>
+                          </div>
+                        )}
+                      </div>
+                    </section>
+
+                    <section className="rounded-2xl border border-dashed border-primary-200 bg-primary-50/40 p-4 sm:p-5">
+                      <h4 className="mb-4 text-base font-semibold text-gray-900">
+                        Image du véhicule
+                      </h4>
+                      <div className="grid gap-4 lg:grid-cols-[1fr_220px] lg:items-start">
+                        <div
+                          onDragEnter={handleVehicleImageDrag}
+                          onDragOver={handleVehicleImageDrag}
+                          onDragLeave={handleVehicleImageDrag}
+                          onDrop={handleVehicleImageDrop}
+                          className={`rounded-2xl border-2 border-dashed p-4 sm:p-5 transition-all ${
+                            imageDragActive
+                              ? "border-primary-500 bg-primary-100/60"
+                              : "border-primary-200 bg-white/80"
+                          }`}
+                        >
+                          <label className="mb-1 block text-sm font-medium text-gray-700">
+                            Téléverser une image
+                          </label>
+                          <label className="mt-3 flex cursor-pointer flex-col items-center justify-center rounded-2xl border border-gray-200 bg-white px-4 py-6 text-center transition hover:border-primary-300 hover:bg-primary-50">
+                            <svg
+                              className="mb-3 h-10 w-10 text-primary-500"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 0115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                              />
+                            </svg>
+                            <span className="text-sm font-semibold text-gray-800">
+                              Glissez-déposez une image ici ou cliquez pour
+                              choisir
+                            </span>
+                            <span className="mt-1 text-xs text-gray-500">
+                              PNG, JPG, JPEG, WebP ou GIF
+                            </span>
+                            <input
+                              type="file"
+                              accept="image/png,image/jpeg,image/webp,image/gif"
+                              onChange={handleVehicleImageUpload}
+                              className="hidden"
+                            />
+                          </label>
+                          <p className="mt-2 text-sm text-gray-500">
+                            JPG, PNG ou WebP. L’image est stockée directement
+                            dans le formulaire.
+                          </p>
+                        </div>
+
+                        <div className="rounded-2xl border border-white/70 bg-white p-3 shadow-sm">
+                          <div className="mb-2 flex items-center justify-between">
+                            <span className="text-sm font-medium text-gray-700">
+                              Aperçu
+                            </span>
+                            {vehicleForm.image && (
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setVehicleForm((prev) => ({
+                                    ...prev,
+                                    image: "",
+                                  }))
+                                }
+                                className="text-xs font-medium text-red-600 hover:text-red-700"
+                              >
+                                Retirer
+                              </button>
+                            )}
+                          </div>
+                          <div className="flex h-40 items-center justify-center overflow-hidden rounded-xl bg-gray-100">
+                            {vehicleForm.image ? (
+                              <img
+                                src={vehicleForm.image}
+                                alt="Aperçu du véhicule"
+                                className="h-full w-full object-cover"
+                              />
+                            ) : (
+                              <div className="px-4 text-center text-sm text-gray-400">
+                                Aucune image sélectionnée
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+
+                    <div className="mt-6 flex flex-col-reverse gap-3 border-t border-gray-100 pt-4 pb-3 sm:flex-row sm:justify-end sm:pb-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsVehicleModalOpen(false);
+                          resetVehicleForm();
+                        }}
+                        className="inline-flex items-center justify-center rounded-xl border border-gray-200 px-5 py-3 font-medium text-gray-700 transition hover:bg-gray-50"
+                      >
+                        Annuler
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={creatingVehicle}
+                        className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 px-5 py-3 font-semibold text-white shadow-lg transition hover:from-primary-700 hover:to-primary-800 disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {creatingVehicle
+                          ? editingVehicleId
+                            ? "Enregistrement..."
+                            : "Ajout..."
+                          : editingVehicleId
+                            ? "Enregistrer"
+                            : "Ajouter le véhicule"}
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>,
+            document.body,
+          )}
 
         {vehicleHistoryModal.isOpen && vehicleHistoryModal.vehicle && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -1101,10 +1139,10 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
       <div className="space-y-5">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">
-            Signalements de mes véhicules
+            Reclamations de mes véhicules
           </h2>
           <p className="text-sm text-gray-500 mt-1">
-            Signalements soumis par des clients concernant vos véhicules
+            Reclamations soumis par des clients concernant vos véhicules
           </p>
         </div>
 
@@ -1369,256 +1407,173 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
     );
   }
 
-  if (activeTab === "financial") {
-    const monthlyRevenue = agencyFinancialStats.monthly;
-    const vehiclePerformance = agencyFinancialStats.vehiclePerformance;
-    const paymentStatus = agencyFinancialStats.paymentStatus;
-    const totalRevenue = agencyFinancialStats.totals.revenue;
-    const totalCommission = agencyFinancialStats.totals.commission;
-    const totalProfit = agencyFinancialStats.totals.payout;
-    const netIncome = agencyFinancialStats.totals.netIncome;
+  if (activeTab === "statistics") {
+    const completedReservations = reservations.filter(
+      (reservation) => reservation.status === RESERVATION_STATUS.COMPLETED,
+    );
+    const activeReservations = reservations.filter((reservation) =>
+      [
+        RESERVATION_STATUS.PENDING,
+        RESERVATION_STATUS.CONFIRMED,
+        RESERVATION_STATUS.ONGOING,
+      ].includes(reservation.status),
+    );
+    const availableVehicles = vehicles.filter(
+      (vehicle) => vehicle.status === "available",
+    );
+    const maintenanceVehicles = vehicles.filter(
+      (vehicle) => vehicle.status === "maintenance",
+    );
+
+    const deriveMonthlyRevenue = () => {
+      const revenueByMonth = new Map();
+
+      filteredCompletedReservations.forEach((reservation) => {
+        const date = new Date(reservation.end_date || reservation.created_at);
+        const monthLabel = Number.isNaN(date.getTime())
+          ? "Inconnu"
+          : date.toLocaleDateString("fr-FR", {
+              month: "short",
+              year: "numeric",
+            });
+        const amount = Number(reservation.agency_payout || 0);
+
+        revenueByMonth.set(monthLabel, {
+          month: monthLabel,
+          revenue: (revenueByMonth.get(monthLabel)?.revenue || 0) + amount,
+          profit: (revenueByMonth.get(monthLabel)?.profit || 0) + amount,
+          commission:
+            (revenueByMonth.get(monthLabel)?.commission || 0) + amount * 0.05,
+        });
+      });
+
+      return Array.from(revenueByMonth.values()).slice(-6);
+    };
+
+    const deriveVehiclePerformance = () => {
+      const performanceMap = new Map();
+
+      filteredCompletedReservations.forEach((reservation) => {
+        const vehicleId = reservation.vehicle_id || reservation.vehicle?.id;
+        if (!vehicleId) return;
+
+        const vehicleName =
+          reservation.vehicle?.name ||
+          `${reservation.vehicle?.brand || "Véhicule"} ${reservation.vehicle?.model || vehicleId}`.trim();
+        const amount = Number(reservation.agency_payout || 0);
+
+        performanceMap.set(vehicleId, {
+          vehicle: vehicleName,
+          revenue: (performanceMap.get(vehicleId)?.revenue || 0) + amount,
+          bookings: (performanceMap.get(vehicleId)?.bookings || 0) + 1,
+        });
+      });
+
+      return Array.from(performanceMap.values())
+        .sort((left, right) => right.revenue - left.revenue)
+        .slice(0, 6);
+    };
+
+    const monthlyRevenue = deriveMonthlyRevenue();
+    const vehiclePerformance = deriveVehiclePerformance();
+    const paymentStatus = [
+      {
+        name: "En attente",
+        value: filteredReservations.filter(
+          (reservation) => reservation.status === RESERVATION_STATUS.PENDING,
+        ).length,
+        color: "#F59E0B",
+      },
+      {
+        name: "Confirmée",
+        value: filteredReservations.filter(
+          (reservation) => reservation.status === RESERVATION_STATUS.CONFIRMED,
+        ).length,
+        color: "#3B82F6",
+      },
+      {
+        name: "Terminée",
+        value: filteredCompletedReservations.length,
+        color: "#10B981",
+      },
+    ];
+    const totalCommission = filteredCompletedReservations.reduce(
+      (sum, reservation) => sum + Number(reservation.platform_commission || 0),
+      0,
+    );
+    const operationalRevenue = filteredCompletedReservations.reduce(
+      (sum, reservation) => sum + Number(reservation.agency_payout || 0),
+      0,
+    );
 
     if (loadingFinancial) {
       return (
         <div className="flex flex-col items-center justify-center py-20 gap-4">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-          <p className="text-gray-500">Chargement des données financières...</p>
-        </div>
-      );
-    }
-
-    if (monthlyRevenue.length === 0) {
-      return (
-        <div className="text-center py-20 text-gray-500">
-          <p className="text-lg font-medium">
-            Aucune donnée financière disponible.
-          </p>
-          <p className="text-sm mt-2">
-            Les données apparaîtront dès que des réservations seront confirmées.
-          </p>
+          <p className="text-gray-500">Chargement des statistiques...</p>
         </div>
       );
     }
 
     return (
-      <div className="space-y-6 animate-fadeIn">
+      <div className="space-y-8 animate-fadeIn">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-gray-900">
-            Finances de l'Agence
+            Statistiques de l'Agence
           </h2>
-          <div className="flex gap-3">
-            <button className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all shadow-sm flex items-center gap-2">
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-              Période
-            </button>
-            <button className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2">
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
-              Exporter
-            </button>
-          </div>
+          <label className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-3 py-2 shadow-sm">
+            <span className="text-sm font-medium text-gray-600">Période</span>
+            <select
+              value={statisticsPeriod}
+              onChange={(event) => setStatisticsPeriod(event.target.value)}
+              className="bg-transparent text-sm font-semibold text-gray-900 outline-none"
+            >
+              <option value="3m">3 mois</option>
+              <option value="6m">6 mois</option>
+              <option value="12m">12 mois</option>
+              <option value="all">Tout</option>
+            </select>
+          </label>
         </div>
 
-        {/* Key Financial Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div
-            className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
-            style={{ animationDelay: "0ms" }}
-          >
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <div className="rounded-2xl bg-white p-6 shadow-lg border border-gray-200 lg:col-span-2 animate-slideUp">
             <div className="flex items-center justify-between mb-4">
-              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
-                <svg
-                  className="w-8 h-8"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">
+                  Revenus mensuels nets
+                </h3>
+                <p className="text-sm text-gray-500">
+                  Revenus agence après commission plateforme de 5%.
+                </p>
               </div>
-              <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
-                +14.2%
+              <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+                {statisticsPeriod === "all"
+                  ? "Toutes les périodes"
+                  : `${statisticsPeriod === "3m" ? 3 : statisticsPeriod === "6m" ? 6 : 12} derniers mois`}
               </span>
             </div>
-            <p className="text-blue-100 text-sm font-medium mb-1">
-              Revenu Total
-            </p>
-            <p className="text-3xl font-bold">
-              {totalRevenue.toLocaleString()} DT
-            </p>
-            <p className="text-blue-100 text-xs mt-2">6 derniers mois</p>
-          </div>
-
-          <div
-            className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
-            style={{ animationDelay: "100ms" }}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
-                <svg
-                  className="w-8 h-8"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
-                  />
-                </svg>
-              </div>
-              <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
-                Après frais
-              </span>
-            </div>
-            <p className="text-green-100 text-sm font-medium mb-1">
-              Revenu Net
-            </p>
-            <p className="text-3xl font-bold">
-              {netIncome.toLocaleString()} DT
-            </p>
-            <p className="text-green-100 text-xs mt-2">Après commission 15%</p>
-          </div>
-
-          <div
-            className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
-            style={{ animationDelay: "200ms" }}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
-                <svg
-                  className="w-8 h-8"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                  />
-                </svg>
-              </div>
-              <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
-                -15%
-              </span>
-            </div>
-            <p className="text-purple-100 text-sm font-medium mb-1">
-              Commission Payée
-            </p>
-            <p className="text-3xl font-bold">
-              {totalCommission.toLocaleString()} DT
-            </p>
-            <p className="text-purple-100 text-xs mt-2">À la plateforme</p>
-          </div>
-
-          <div
-            className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
-            style={{ animationDelay: "300ms" }}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
-                <svg
-                  className="w-8 h-8"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                  />
-                </svg>
-              </div>
-              <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">
-                Marge
-              </span>
-            </div>
-            <p className="text-orange-100 text-sm font-medium mb-1">
-              Profit Brut
-            </p>
-            <p className="text-3xl font-bold">
-              {totalProfit.toLocaleString()} DT
-            </p>
-            <p className="text-orange-100 text-xs mt-2">
-              {((totalProfit / totalRevenue) * 100).toFixed(1)}% du revenu
-            </p>
-          </div>
-        </div>
-
-        {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Revenue & Profit Trend */}
-          <div
-            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
-            style={{ animationDelay: "400ms" }}
-          >
-            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-              Performance Financière
-            </h3>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={320}>
               <LineChart data={monthlyRevenue}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
                 <XAxis dataKey="month" stroke="#6B7280" />
                 <YAxis stroke="#6B7280" />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "rgba(255, 255, 255, 0.95)",
+                    backgroundColor: "rgba(255, 255, 255, 0.97)",
                     border: "1px solid #E5E7EB",
                     borderRadius: "12px",
-                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.08)",
                   }}
                 />
                 <Legend />
                 <Line
                   type="monotone"
                   dataKey="revenue"
-                  stroke="#3B82F6"
+                  stroke="#2563EB"
                   strokeWidth={3}
-                  name="Revenu"
-                  dot={{ r: 6 }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="profit"
-                  stroke="#10B981"
-                  strokeWidth={3}
-                  name="Profit"
-                  dot={{ r: 6 }}
+                  name="Revenu net agence"
+                  dot={{ r: 5 }}
                 />
                 <Line
                   type="monotone"
@@ -1626,139 +1581,161 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
                   stroke="#8B5CF6"
                   strokeWidth={2}
                   strokeDasharray="5 5"
-                  name="Commission"
+                  name="Commission plateforme"
                 />
               </LineChart>
             </ResponsiveContainer>
           </div>
 
-          {/* Payment Status */}
           <div
-            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
-            style={{ animationDelay: "500ms" }}
+            className="rounded-2xl bg-white p-6 shadow-lg border border-gray-200 animate-slideUp"
+            style={{ animationDelay: "150ms" }}
           >
-            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              Statut des Paiements
+            <h3 className="text-lg font-bold text-gray-900 mb-2">
+              Répartition des réservations
             </h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={paymentStatus}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, value }) => `${name}: ${value}%`}
-                  outerRadius={100}
-                  fill="#8884d8"
-                  dataKey="value"
-                  animationBegin={0}
-                  animationDuration={800}
-                >
-                  {paymentStatus.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+            <p className="text-sm text-gray-500 mb-4">
+              Dossiers actifs, terminés et en attente.
+            </p>
+            <div className="h-[320px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={[
+                      {
+                        name: "Actives",
+                        value: filteredActiveReservations.length,
+                        color: "#3B82F6",
+                      },
+                      {
+                        name: "Terminées",
+                        value: filteredCompletedReservations.length,
+                        color: "#10B981",
+                      },
+                      {
+                        name: "En attente",
+                        value: filteredReservations.filter(
+                          (reservation) =>
+                            reservation.status === RESERVATION_STATUS.PENDING,
+                        ).length,
+                        color: "#F59E0B",
+                      },
+                    ]}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={({ name, value }) => `${name}: ${value}`}
+                    outerRadius={102}
+                    dataKey="value"
+                  >
+                    {[
+                      { name: "Actives", color: "#3B82F6" },
+                      { name: "Terminées", color: "#10B981" },
+                      { name: "En attente", color: "#F59E0B" },
+                    ].map((entry) => (
+                      <Cell key={entry.name} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
 
-        {/* Vehicle Performance */}
-        <div
-          className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
-          style={{ animationDelay: "600ms" }}
-        >
-          <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></span>
-            Performance par Véhicule
-          </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={vehiclePerformance} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-              <XAxis type="number" stroke="#6B7280" />
-              <YAxis
-                dataKey="vehicle"
-                type="category"
-                stroke="#6B7280"
-                width={120}
-              />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "rgba(255, 255, 255, 0.95)",
-                  border: "1px solid #E5E7EB",
-                  borderRadius: "12px",
-                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                }}
-              />
-              <Legend />
-              <Bar
-                dataKey="revenue"
-                fill="#3B82F6"
-                name="Revenu (DT)"
-                radius={[0, 8, 8, 0]}
-              />
-              <Bar
-                dataKey="bookings"
-                fill="#10B981"
-                name="Réservations"
-                radius={[0, 8, 8, 0]}
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+          <div
+            className="rounded-2xl bg-white p-6 shadow-lg border border-gray-200 animate-slideUp"
+            style={{ animationDelay: "250ms" }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-gray-900">
+                Top véhicules par revenu
+              </h3>
+              <span className="text-sm text-gray-500">
+                Réservations terminées
+              </span>
+            </div>
+            <ResponsiveContainer width="100%" height={320}>
+              <BarChart data={vehiclePerformance} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                <XAxis type="number" stroke="#6B7280" />
+                <YAxis
+                  dataKey="vehicle"
+                  type="category"
+                  stroke="#6B7280"
+                  width={140}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "rgba(255, 255, 255, 0.97)",
+                    border: "1px solid #E5E7EB",
+                    borderRadius: "12px",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.08)",
+                  }}
+                />
+                <Legend />
+                <Bar
+                  dataKey="revenue"
+                  fill="#3B82F6"
+                  name="Revenu net"
+                  radius={[0, 8, 8, 0]}
+                />
+                <Bar
+                  dataKey="bookings"
+                  fill="#10B981"
+                  name="Réservations"
+                  radius={[0, 8, 8, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
 
-        {/* Financial Details Table */}
-        <div
-          className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 animate-slideUp"
-          style={{ animationDelay: "700ms" }}
-        >
-          <h3 className="text-lg font-bold text-gray-900 mb-4">
-            Détails Mensuels
-          </h3>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    Mois
-                  </th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Revenu Total
-                  </th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Commission (8%)
-                  </th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Revenu Net
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {monthlyRevenue.map((month) => (
-                  <tr
-                    key={month.month}
-                    className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
-                  >
-                    <td className="py-3 px-4 font-medium text-gray-900">
-                      {month.month}
-                    </td>
-                    <td className="text-right py-3 px-4 text-blue-600 font-semibold">
-                      {month.revenue.toLocaleString()} DT
-                    </td>
-                    <td className="text-right py-3 px-4 text-purple-600">
-                      {month.commission.toLocaleString()} DT
-                    </td>
-                    <td className="text-right py-3 px-4">
-                      <span className="px-3 py-1 rounded-full text-sm font-bold bg-green-100 text-green-700">
-                        {month.profit.toLocaleString()} DT
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div
+            className="rounded-2xl bg-white p-6 shadow-lg border border-gray-200 animate-slideUp"
+            style={{ animationDelay: "350ms" }}
+          >
+            <h3 className="text-lg font-bold text-gray-900 mb-4">
+              Indicateurs utiles
+            </h3>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-xl bg-slate-50 p-4">
+                <p className="text-sm text-gray-500">Flotte totale</p>
+                <p className="mt-2 text-2xl font-bold text-gray-900">
+                  {fleetVehicles}
+                </p>
+              </div>
+              <div className="rounded-xl bg-blue-50 p-4">
+                <p className="text-sm text-blue-700">Véhicules disponibles</p>
+                <p className="mt-2 text-2xl font-bold text-gray-900">
+                  {availableVehicles}
+                </p>
+              </div>
+              <div className="rounded-xl bg-amber-50 p-4">
+                <p className="text-sm text-amber-700">En maintenance</p>
+                <p className="mt-2 text-2xl font-bold text-gray-900">
+                  {maintenanceVehicles}
+                </p>
+              </div>
+              <div className="rounded-xl bg-emerald-50 p-4">
+                <p className="text-sm text-emerald-700">Taux de réalisation</p>
+                <p className="mt-2 text-2xl font-bold text-gray-900">
+                  {filteredReservations.length > 0
+                    ? `${Math.round((filteredCompletedReservations.length / filteredReservations.length) * 100)}%`
+                    : "0%"}
+                </p>
+              </div>
+            </div>
+            <div className="mt-5 rounded-xl border border-gray-200 bg-white p-4">
+              <p className="text-sm text-gray-500">Commission plateforme</p>
+              <p className="mt-2 text-3xl font-bold text-gray-900">
+                {totalCommission.toLocaleString()} DT
+              </p>
+              <p className="mt-1 text-xs text-gray-500">
+                Calculée à 5% sur les réservations de la période sélectionnée.
+              </p>
+            </div>
           </div>
         </div>
 
@@ -1787,49 +1764,6 @@ const AgencyContent = ({ activeTab, reports = [] }) => {
             animation: slideUp 0.6s ease-out both;
           }
         `}</style>
-      </div>
-    );
-  }
-
-  if (activeTab === "statistics") {
-    // Calculate statistics from reservations
-    const completedReservations = reservations.filter(
-      (r) => r.status === "completed",
-    );
-    const totalRevenue = completedReservations.reduce(
-      (sum, r) => sum + parseFloat(r.agency_payout || 0),
-      0,
-    );
-    const avgReservationValue =
-      completedReservations.length > 0
-        ? totalRevenue / completedReservations.length
-        : 0;
-
-    return (
-      <div className="space-y-6">
-        <h2 className="text-xl font-bold text-gray-900">
-          Statistiques de l'Agence
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-xl border border-gray-200">
-            <p className="text-sm text-gray-600 mb-2">Réservations Totales</p>
-            <p className="text-3xl font-bold text-primary-600">
-              {reservations.length}
-            </p>
-          </div>
-          <div className="bg-white p-6 rounded-xl border border-gray-200">
-            <p className="text-sm text-gray-600 mb-2">Réservations Terminées</p>
-            <p className="text-3xl font-bold text-green-600">
-              {completedReservations.length}
-            </p>
-          </div>
-          <div className="bg-white p-6 rounded-xl border border-gray-200">
-            <p className="text-sm text-gray-600 mb-2">Revenu Total</p>
-            <p className="text-3xl font-bold text-primary-600">
-              {totalRevenue.toFixed(2)} DT
-            </p>
-          </div>
-        </div>
       </div>
     );
   }
