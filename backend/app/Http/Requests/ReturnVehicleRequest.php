@@ -22,6 +22,8 @@ class ReturnVehicleRequest extends FormRequest
         return [
             'mileage_on_return' => 'nullable|integer',
             'condition' => 'nullable|in:good,fair,damaged',
+            'additional_charges' => 'nullable|numeric|min:0',
+            'notes' => 'nullable|string|max:500',
         ];
     }
 }

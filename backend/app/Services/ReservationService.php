@@ -69,6 +69,13 @@ class ReservationService
             'end_date' => $endDate,
             'pickup_location' => $data['pickup_location'],
             'dropoff_location' => $data['dropoff_location'] ?? $data['pickup_location'],
+            'client_birth_date' => $data['client_birth_date'] ?? null,
+            'deposit_amount' => $data['deposit_amount'] ?? null,
+            'driver_first_name' => $data['driver_first_name'] ?? null,
+            'driver_last_name' => $data['driver_last_name'] ?? null,
+            'driver_birth_date' => $data['driver_birth_date'] ?? null,
+            'driver_license_number' => $data['driver_license_number'] ?? null,
+            'driver_license_date' => $data['driver_license_date'] ?? null,
             'base_price' => $pricingBreakdown['base_total'],
             'discount_amount' => 0,
             'additional_charges' => $pricingBreakdown['total'] - $pricingBreakdown['base_total'],
@@ -308,10 +315,36 @@ class ReservationService
             throw new \Exception('Seules les réservations en cours peuvent être retournées.');
         }
 
+        $additionalCharges = floatval($returnData['additional_charges'] ?? 0);
+
+        // If there are additional charges, recalculate commission
+        if ($additionalCharges > 0) {
+            $newTotal = $reservation->total_price + $additionalCharges;
+
+            // Recalculate commission on new total
+            $commissionRate = config('pfe.commission.platform_rate');
+            $minCommission = config('pfe.commission.min_commission');
+
+            $newPlatformCommission = max(
+                $newTotal * $commissionRate,
+                $minCommission
+            );
+            $newAgencyPayout = $newTotal - $newPlatformCommission;
+
+            // Update reservation with new financial details
+            $reservation->update([
+                'additional_charges' => $additionalCharges,
+                'total_price' => $newTotal,
+                'platform_commission' => $newPlatformCommission,
+                'agency_payout' => $newAgencyPayout,
+            ]);
+        }
+
         $reservation->vehicleReturn()->create([
             'mileage_on_return' => $returnData['mileage_on_return'] ?? 0,
             'condition' => $returnData['condition'] ?? 'good',
             'returned_at' => now(),
+            'notes' => $returnData['notes'] ?? null,
         ]);
 
         $reservation->update(['status' => 'completed']);

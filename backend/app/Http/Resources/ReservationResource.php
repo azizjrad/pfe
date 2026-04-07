@@ -30,6 +30,13 @@ class ReservationResource extends JsonResource
             'status' => $this->status,
             'pickup_location' => $this->pickup_location,
             'dropoff_location' => $this->dropoff_location,
+            'client_birth_date' => $this->client_birth_date?->toDateString(),
+            'deposit_amount' => (float) ($this->deposit_amount ?? 0),
+            'driver_first_name' => $this->driver_first_name,
+            'driver_last_name' => $this->driver_last_name,
+            'driver_birth_date' => $this->driver_birth_date?->toDateString(),
+            'driver_license_number' => $this->driver_license_number,
+            'driver_license_date' => $this->driver_license_date?->toDateString(),
             // Keep alias for legacy frontend keys.
             'return_location' => $this->dropoff_location,
             'daily_rate' => (float) $dailyRate,

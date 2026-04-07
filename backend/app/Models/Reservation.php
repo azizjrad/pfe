@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Reservation extends Model
 {
@@ -13,6 +14,13 @@ class Reservation extends Model
         'end_date',
         'pickup_location',
         'dropoff_location',
+        'client_birth_date',
+        'deposit_amount',
+        'driver_first_name',
+        'driver_last_name',
+        'driver_birth_date',
+        'driver_license_number',
+        'driver_license_date',
         'base_price',
         'discount_amount',
         'additional_charges',
@@ -35,9 +43,13 @@ class Reservation extends Model
         'start_date' => 'date',
         'end_date' => 'date',
         'actual_return_date' => 'date',
+        'client_birth_date' => 'date',
+        'driver_birth_date' => 'date',
+        'driver_license_date' => 'date',
         'base_price' => 'decimal:2',
         'discount_amount' => 'decimal:2',
         'additional_charges' => 'decimal:2',
+        'deposit_amount' => 'decimal:2',
         'total_price' => 'decimal:2',
         'platform_commission_rate' => 'decimal:4',
         'platform_commission' => 'decimal:2',
@@ -85,7 +97,10 @@ class Reservation extends Model
      */
     public function getDurationAttribute()
     {
-        return $this->start_date->diffInDays($this->end_date) + 1;
+        $startDate = Carbon::parse($this->start_date);
+        $endDate = Carbon::parse($this->end_date);
+
+        return $startDate->diffInDays($endDate) + 1;
     }
 
     /**

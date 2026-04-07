@@ -49,6 +49,13 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
     fullName: "",
     email: "",
     phone: "",
+    client_birth_date: "",
+    deposit_amount: "",
+    driver_first_name: "",
+    driver_last_name: "",
+    driver_birth_date: "",
+    driver_license_number: "",
+    driver_license_date: "",
   });
 
   // Pricing options state
@@ -218,6 +225,13 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
       fullName: "",
       email: "",
       phone: "",
+      client_birth_date: "",
+      deposit_amount: "",
+      driver_first_name: "",
+      driver_last_name: "",
+      driver_birth_date: "",
+      driver_license_number: "",
+      driver_license_date: "",
     });
     setOptions({
       full_insurance: false,
@@ -236,6 +250,13 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
       fullName: "",
       email: "",
       phone: "",
+      client_birth_date: "",
+      deposit_amount: "",
+      driver_first_name: "",
+      driver_last_name: "",
+      driver_birth_date: "",
+      driver_license_number: "",
+      driver_license_date: "",
     });
     setOptions({
       full_insurance: false,
@@ -751,6 +772,121 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                       </p>
                     )}
                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Contract Information */}
+            <div>
+              <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                <svg
+                  className="w-5 h-5 text-primary-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+                Informations du contrat
+              </h4>
+              <div className="grid md:grid-cols-2 gap-3 sm:gap-4">
+                <div className="relative">
+                  <input
+                    type="date"
+                    name="client_birth_date"
+                    value={reservationData.client_birth_date}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base border-gray-300"
+                    placeholder=" "
+                  />
+                  <label className="absolute left-4 top-3 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
+                    Date de naissance du client
+                  </label>
+                </div>
+                <div className="relative">
+                  <input
+                    type="number"
+                    name="deposit_amount"
+                    value={reservationData.deposit_amount}
+                    onChange={handleChange}
+                    min="0"
+                    step="0.01"
+                    className="w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base border-gray-300"
+                    placeholder=" "
+                  />
+                  <label className="absolute left-4 top-3 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
+                    Montant de la caution (DT)
+                  </label>
+                </div>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="driver_first_name"
+                    value={reservationData.driver_first_name}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base border-gray-300"
+                    placeholder=" "
+                  />
+                  <label className="absolute left-4 top-3 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
+                    Prénom du conducteur
+                  </label>
+                </div>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="driver_last_name"
+                    value={reservationData.driver_last_name}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base border-gray-300"
+                    placeholder=" "
+                  />
+                  <label className="absolute left-4 top-3 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
+                    Nom du conducteur
+                  </label>
+                </div>
+                <div className="relative">
+                  <input
+                    type="date"
+                    name="driver_birth_date"
+                    value={reservationData.driver_birth_date}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base border-gray-300"
+                    placeholder=" "
+                  />
+                  <label className="absolute left-4 top-3 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
+                    Date de naissance du conducteur
+                  </label>
+                </div>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="driver_license_number"
+                    value={reservationData.driver_license_number}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base border-gray-300"
+                    placeholder=" "
+                  />
+                  <label className="absolute left-4 top-3 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
+                    Numéro du permis
+                  </label>
+                </div>
+                <div className="relative">
+                  <input
+                    type="date"
+                    name="driver_license_date"
+                    value={reservationData.driver_license_date}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base border-gray-300"
+                    placeholder=" "
+                  />
+                  <label className="absolute left-4 top-3 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
+                    Date d'obtention du permis
+                  </label>
                 </div>
               </div>
             </div>
