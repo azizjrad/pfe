@@ -39,7 +39,6 @@ class AuthService
                 'role' => $data['role'] ?? 'client',
                 'phone' => $data['phone'] ?? null,
                 'address' => $data['address'] ?? null,
-                'driver_license' => $data['driver_license'] ?? null,
             ];
 
             if (($data['role'] ?? null) === 'client') {
@@ -53,7 +52,6 @@ class AuthService
                     'role' => $userPayload['role'],
                     'phone' => $userPayload['phone'] ?? null,
                     'address' => $userPayload['address'] ?? null,
-                    'driver_license' => $userPayload['driver_license'] ?? null,
                 ]);
             }
 

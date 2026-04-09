@@ -32,7 +32,6 @@ class UpdateProfileRequest extends FormRequest
             ],
             'phone' => 'sometimes|required|string|size:8',
             'address' => 'nullable|string|max:500',
-            'driver_license' => 'nullable|string|max:50',
             'current_password' => 'required_with:new_password',
             'new_password' => [
                 'sometimes',

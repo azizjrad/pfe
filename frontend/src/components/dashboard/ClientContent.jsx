@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../contexts/AuthContext";
 import { reservationService } from "../../services/reservationService";
@@ -273,16 +274,19 @@ const ClientContent = ({
         )}
 
         {/* Reservation Details Modal */}
-        {detailsModal.isOpen && detailsModal.reservation && (
-          <ReservationDetailsModal
-            reservation={detailsModal.reservation}
-            onClose={() =>
-              setDetailsModal({ isOpen: false, reservation: null })
-            }
-            userRole="client"
-            onCancel={handleCancelReservation}
-          />
-        )}
+        {detailsModal.isOpen &&
+          detailsModal.reservation &&
+          createPortal(
+            <ReservationDetailsModal
+              reservation={detailsModal.reservation}
+              onClose={() =>
+                setDetailsModal({ isOpen: false, reservation: null })
+              }
+              userRole="client"
+              onCancel={handleCancelReservation}
+            />,
+            document.body,
+          )}
 
         {/* Cancel Confirmation Modal */}
         <ConfirmationModal
@@ -565,16 +569,19 @@ const ClientContent = ({
         )}
 
         {/* Reservation Details Modal */}
-        {detailsModal.isOpen && detailsModal.reservation && (
-          <ReservationDetailsModal
-            reservation={detailsModal.reservation}
-            onClose={() =>
-              setDetailsModal({ isOpen: false, reservation: null })
-            }
-            userRole="client"
-            onCancel={handleCancelReservation}
-          />
-        )}
+        {detailsModal.isOpen &&
+          detailsModal.reservation &&
+          createPortal(
+            <ReservationDetailsModal
+              reservation={detailsModal.reservation}
+              onClose={() =>
+                setDetailsModal({ isOpen: false, reservation: null })
+              }
+              userRole="client"
+              onCancel={handleCancelReservation}
+            />,
+            document.body,
+          )}
       </div>
     );
   }

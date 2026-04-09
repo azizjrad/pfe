@@ -32,7 +32,6 @@ class RegisterRequest extends FormRequest
             'role' => 'required|in:client,agency_admin',
             'phone' => 'required|string|size:8',
             'address' => 'nullable|string|max:500',
-            'driver_license' => 'nullable|string|max:50',
             'agency_name' => 'required_if:role,agency_admin|string|max:255',
             'agency_location' => 'required_if:role,agency_admin|string|max:255',
         ];

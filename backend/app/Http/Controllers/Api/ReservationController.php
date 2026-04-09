@@ -30,7 +30,7 @@ class ReservationController extends Controller
     {
         $this->authorize('viewAny', Reservation::class);
 
-        $reservations = Reservation::with(['vehicle', 'user', 'payments'])
+        $reservations = Reservation::with(['vehicle.agency', 'user', 'payments'])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -45,7 +45,7 @@ class ReservationController extends Controller
      */
     public function clientIndex()
     {
-        $reservations = Reservation::with(['vehicle', 'payments'])
+        $reservations = Reservation::with(['vehicle.agency', 'payments'])
             ->where('user_id', auth()->id())
             ->orderBy('created_at', 'desc')
             ->get();
@@ -64,7 +64,7 @@ class ReservationController extends Controller
         $user = auth()->user();
 
         // Get all vehicles belonging to this agency
-        $reservations = Reservation::with(['vehicle', 'user', 'payments'])
+        $reservations = Reservation::with(['vehicle.agency', 'user', 'payments'])
             ->whereHas('vehicle', function ($query) use ($user) {
                 $query->where('agency_id', $user->agency_id);
             })
@@ -114,7 +114,7 @@ class ReservationController extends Controller
      */
     public function show($id)
     {
-        $reservation = Reservation::with(['vehicle', 'user', 'payments', 'vehicleReturn'])
+        $reservation = Reservation::with(['vehicle.agency', 'user', 'payments', 'vehicleReturn'])
             ->findOrFail($id);
 
         $this->authorize('view', $reservation);

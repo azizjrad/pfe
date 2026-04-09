@@ -13,7 +13,6 @@ const ProfileSettingsModal = ({ isOpen, onClose }) => {
     email: "",
     phone: "",
     address: "",
-    driver_license: "",
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
@@ -107,7 +106,6 @@ const ProfileSettingsModal = ({ isOpen, onClose }) => {
         email: user.email || "",
         phone: user.phone || "",
         address: user.address || "",
-        driver_license: user.driver_license || "",
         currentPassword: "",
         newPassword: "",
         confirmPassword: "",
@@ -190,7 +188,6 @@ const ProfileSettingsModal = ({ isOpen, onClose }) => {
         email: formData.email,
         phone: formData.phone,
         address: formData.address,
-        driver_license: formData.driver_license,
       };
 
       // Only include password fields if changing password
@@ -456,35 +453,8 @@ const ProfileSettingsModal = ({ isOpen, onClose }) => {
                   )}
                 </div>
 
-                {/* Driver License - Only for clients */}
-                {user?.role === "client" && (
-                  <div className="relative">
-                    <input
-                      id="driver_license"
-                      type="text"
-                      className="w-full px-5 py-3 rounded-full bg-gray-50 border-2 border-gray-200 focus:border-primary-500 focus:outline-none focus:bg-white transition-all hover:border-primary-300 peer"
-                      placeholder=" "
-                      value={formData.driver_license}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          driver_license: e.target.value,
-                        })
-                      }
-                    />
-                    <label
-                      htmlFor="driver_license"
-                      className="absolute left-5 top-3 text-gray-500 text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-3 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-3 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-gray-700 pointer-events-none"
-                    >
-                      Permis de conduire
-                    </label>
-                  </div>
-                )}
-
                 {/* Address */}
-                <div
-                  className={`relative ${user?.role === "client" ? "" : "md:col-span-2"}`}
-                >
+                <div className="relative md:col-span-2">
                   <textarea
                     id="address"
                     rows="2"

@@ -208,7 +208,6 @@ class ClientService
             'agency_id' => $data['agency_id'] ?? null,
             'phone' => $data['phone'] ?? null,
             'address' => $data['address'] ?? null,
-            'driver_license' => $data['driver_license'] ?? null,
         ]);
 
         return $user;

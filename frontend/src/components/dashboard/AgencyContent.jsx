@@ -408,19 +408,22 @@ const AgencyContent = ({
         )}
 
         {/* Reservation Details Modal */}
-        {detailsModal.isOpen && detailsModal.reservation && (
-          <ReservationDetailsModal
-            reservation={detailsModal.reservation}
-            onClose={() =>
-              setDetailsModal({ isOpen: false, reservation: null })
-            }
-            userRole={ROLES.AGENCY_ADMIN}
-            onStatusUpdate={handleStatusUpdate}
-            onPickup={handlePickup}
-            onReturn={handleReturn}
-            onCancel={handleCancelReservation}
-          />
-        )}
+        {detailsModal.isOpen &&
+          detailsModal.reservation &&
+          createPortal(
+            <ReservationDetailsModal
+              reservation={detailsModal.reservation}
+              onClose={() =>
+                setDetailsModal({ isOpen: false, reservation: null })
+              }
+              userRole={ROLES.AGENCY_ADMIN}
+              onStatusUpdate={handleStatusUpdate}
+              onPickup={handlePickup}
+              onReturn={handleReturn}
+              onCancel={handleCancelReservation}
+            />,
+            document.body,
+          )}
 
         {/* Toast Notification */}
         {toast.show && (
@@ -505,19 +508,22 @@ const AgencyContent = ({
         )}
 
         {/* Reservation Details Modal */}
-        {detailsModal.isOpen && detailsModal.reservation && (
-          <ReservationDetailsModal
-            reservation={detailsModal.reservation}
-            onClose={() =>
-              setDetailsModal({ isOpen: false, reservation: null })
-            }
-            userRole={ROLES.AGENCY_ADMIN}
-            onStatusUpdate={handleStatusUpdate}
-            onPickup={handlePickup}
-            onReturn={handleReturn}
-            onCancel={handleCancelReservation}
-          />
-        )}
+        {detailsModal.isOpen &&
+          detailsModal.reservation &&
+          createPortal(
+            <ReservationDetailsModal
+              reservation={detailsModal.reservation}
+              onClose={() =>
+                setDetailsModal({ isOpen: false, reservation: null })
+              }
+              userRole={ROLES.AGENCY_ADMIN}
+              onStatusUpdate={handleStatusUpdate}
+              onPickup={handlePickup}
+              onReturn={handleReturn}
+              onCancel={handleCancelReservation}
+            />,
+            document.body,
+          )}
 
         {/* Toast Notification */}
         {toast.show && (

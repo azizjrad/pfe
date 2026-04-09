@@ -78,7 +78,7 @@ export default function ReservationDetailsModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn"
       onClick={onClose}
     >
       <div
@@ -390,19 +390,25 @@ export default function ReservationDetailsModal({
               <div>
                 <p className="text-sm text-gray-600">Marque et Modèle</p>
                 <p className="font-semibold text-gray-900">
-                  {reservation.vehicle_name || "N/A"}
+                  {reservation.vehicle?.name ||
+                    `${reservation.vehicle?.brand || ""} ${reservation.vehicle?.model || ""}`.trim() ||
+                    "N/A"}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Catégorie</p>
+                <p className="text-sm text-gray-600">Type</p>
                 <p className="font-semibold text-gray-900">
-                  {reservation.vehicle_category || "N/A"}
+                  {reservation.vehicle?.type ||
+                    reservation.vehicle?.fuel_type ||
+                    "N/A"}
                 </p>
               </div>
               <div>
                 <p className="text-sm text-gray-600">Immatriculation</p>
                 <p className="font-semibold text-gray-900">
-                  {reservation.vehicle_plate || "N/A"}
+                  {reservation.vehicle?.license_plate ||
+                    reservation.vehicle?.registration_number ||
+                    "N/A"}
                 </p>
               </div>
             </div>
@@ -443,19 +449,19 @@ export default function ReservationDetailsModal({
                   <div>
                     <p className="text-sm text-gray-600">Nom de l'agence</p>
                     <p className="font-semibold text-gray-900">
-                      {reservation.agency_name || "N/A"}
+                      {reservation.vehicle?.agency?.name || "N/A"}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Téléphone</p>
                     <p className="font-semibold text-gray-900">
-                      {reservation.agency_phone || "N/A"}
+                      {reservation.vehicle?.agency?.phone || "N/A"}
                     </p>
                   </div>
                   <div className="col-span-2">
                     <p className="text-sm text-gray-600">Adresse</p>
                     <p className="font-semibold text-gray-900">
-                      {reservation.agency_address || "N/A"}
+                      {reservation.vehicle?.agency?.address || "N/A"}
                     </p>
                   </div>
                 </>
@@ -464,19 +470,19 @@ export default function ReservationDetailsModal({
                   <div>
                     <p className="text-sm text-gray-600">Nom du client</p>
                     <p className="font-semibold text-gray-900">
-                      {reservation.client_name || "N/A"}
+                      {reservation.user?.name || "N/A"}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Email</p>
                     <p className="font-semibold text-gray-900">
-                      {reservation.client_email || "N/A"}
+                      {reservation.user?.email || "N/A"}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Téléphone</p>
                     <p className="font-semibold text-gray-900">
-                      {reservation.client_phone || "N/A"}
+                      {reservation.user?.phone || "N/A"}
                     </p>
                   </div>
                 </>

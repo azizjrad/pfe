@@ -26,7 +26,6 @@ class User extends Authenticatable
         'agency_id',
         'phone',
         'address',
-        'driver_license',
         'is_suspended',
         'suspension_reason',
         'suspended_at',

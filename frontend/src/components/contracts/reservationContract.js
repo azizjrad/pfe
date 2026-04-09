@@ -28,6 +28,7 @@ const getVehicleImage = (reservation) =>
   reservation?.vehicle?.image ||
   reservation?.vehicle?.image_url ||
   reservation?.vehicle?.photo ||
+  reservation?.vehicle?.image_path ||
   "";
 
 export const buildReservationContractHtml = (reservation) => {
@@ -40,12 +41,38 @@ export const buildReservationContractHtml = (reservation) => {
     reservation?.client_name || reservation?.user?.name || "Client";
   const clientPhone =
     reservation?.client_phone || reservation?.user?.phone || "N/A";
-  const agencyName = reservation?.agency_name || "Agence";
-  const agencyPhone = reservation?.agency_phone || "N/A";
-  const agencyAddress = reservation?.agency_address || "N/A";
-  const vehicleName = reservation?.vehicle_name || "Véhicule";
-  const vehicleCategory = reservation?.vehicle_category || "N/A";
-  const vehiclePlate = reservation?.vehicle_plate || "N/A";
+  const agencyName =
+    reservation?.agency_name ||
+    reservation?.vehicle?.agency?.name ||
+    reservation?.agency?.name ||
+    "Agence";
+  const agencyPhone =
+    reservation?.agency_phone ||
+    reservation?.vehicle?.agency?.phone ||
+    reservation?.agency?.phone ||
+    "N/A";
+  const agencyAddress =
+    reservation?.agency_address ||
+    reservation?.vehicle?.agency?.address ||
+    reservation?.agency?.address ||
+    "N/A";
+  // Extract vehicle info from nested vehicle object or fallback to direct fields
+  const vehicleName =
+    reservation?.vehicle?.name ||
+    reservation?.vehicle_name ||
+    `${reservation?.vehicle?.brand || ""} ${reservation?.vehicle?.model || ""}`.trim() ||
+    "Véhicule";
+  const vehicleCategory =
+    reservation?.vehicle?.type ||
+    reservation?.vehicle?.category ||
+    reservation?.vehicle_category ||
+    reservation?.vehicle?.fuel_type ||
+    "N/A";
+  const vehiclePlate =
+    reservation?.vehicle?.license_plate ||
+    reservation?.vehicle?.registration_number ||
+    reservation?.vehicle_plate ||
+    "N/A";
   const price = formatMoney(reservation?.total_price);
   const options = reservation?.options || "N/A";
   const vehicleImage = getVehicleImage(reservation);
