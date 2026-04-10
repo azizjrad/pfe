@@ -48,6 +48,19 @@ class ReservationService
         $endDate = Carbon::parse($data['end_date']);
         $options = $data['options'] ?? [];
 
+        // In this flow, renter is also the driver.
+        // If dedicated driver fields are absent, derive them from renter info.
+        $fullName = trim((string) ($data['full_name'] ?? $user->name ?? ''));
+        $nameParts = preg_split('/\s+/', $fullName) ?: [];
+        $derivedFirstName = $nameParts[0] ?? null;
+        $derivedLastName = count($nameParts) > 1
+            ? implode(' ', array_slice($nameParts, 1))
+            : null;
+
+        $driverFirstName = $data['driver_first_name'] ?? $derivedFirstName;
+        $driverLastName = $data['driver_last_name'] ?? $derivedLastName;
+        $driverBirthDate = $data['driver_birth_date'] ?? ($data['client_birth_date'] ?? null);
+
         // Calculate pricing server-side (security)
         $pricingBreakdown = $this->calculatePrice($vehicle, $startDate, $endDate, $options);
 
@@ -70,10 +83,9 @@ class ReservationService
             'pickup_location' => $data['pickup_location'],
             'dropoff_location' => $data['dropoff_location'] ?? $data['pickup_location'],
             'client_birth_date' => $data['client_birth_date'] ?? null,
-            'deposit_amount' => $data['deposit_amount'] ?? null,
-            'driver_first_name' => $data['driver_first_name'] ?? null,
-            'driver_last_name' => $data['driver_last_name'] ?? null,
-            'driver_birth_date' => $data['driver_birth_date'] ?? null,
+            'driver_first_name' => $driverFirstName,
+            'driver_last_name' => $driverLastName,
+            'driver_birth_date' => $driverBirthDate,
             'driver_license_number' => $data['driver_license_number'] ?? null,
             'driver_license_date' => $data['driver_license_date'] ?? null,
             'base_price' => $pricingBreakdown['base_total'],
@@ -449,20 +461,6 @@ class ReservationService
 
         // Get add-ons config
         $addOns = config('pfe.pricing.add_ons', []);
-
-        // Add optional services from config
-        if (!empty($options['full_insurance']) && isset($addOns['full_insurance'])) {
-            $config = $addOns['full_insurance'];
-            $amount = ($config['type'] === 'percentage')
-                ? $baseTotal * $config['value']
-                : $config['value'];
-
-            $breakdown['options'][] = [
-                'name' => $config['display_name'],
-                'amount' => round($amount, 2),
-            ];
-            $breakdown['total'] += $amount;
-        }
 
         if (!empty($options['airport_delivery']) && isset($addOns['airport_delivery'])) {
             $config = $addOns['airport_delivery'];

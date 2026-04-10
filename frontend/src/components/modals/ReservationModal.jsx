@@ -8,15 +8,22 @@ import { pricingConfigService } from "../../services/pricingConfigService";
  *
  * Pricing Calculation:
  * 1. Base price: vehicle daily rate × rental days
- * 2. Optional services (insurance, delivery, etc.)
+ * 2. Optional services (delivery, etc.)
  * 3. Total: base + options
  *
  * @param {boolean} isOpen - Modal visibility state
  * @param {function} onClose - Callback to close modal
  * @param {object} vehicle - Vehicle object with id, name, category, image, price, agency
  * @param {function} onSubmit - Callback with reservation data including final price
+ * @param {object} currentUser - Authenticated user used for prefilled personal data
  */
-const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
+const ReservationModal = ({
+  isOpen,
+  onClose,
+  vehicle,
+  onSubmit,
+  currentUser,
+}) => {
   // Pricing configuration fetched from backend
   const [pricingConfig, setPricingConfig] = useState(null);
   const [pricingConfigError, setPricingConfigError] = useState("");
@@ -42,25 +49,33 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
     }
   }, [isOpen]);
 
+  const getPrefilledPersonalData = () => ({
+    fullName: currentUser?.name || "",
+    email: currentUser?.email || "",
+    phone: currentUser?.phone || "",
+  });
+
   // Personal information state
   const [reservationData, setReservationData] = useState({
     startDate: "",
     endDate: "",
-    fullName: "",
-    email: "",
-    phone: "",
+    ...getPrefilledPersonalData(),
     client_birth_date: "",
-    deposit_amount: "",
-    driver_first_name: "",
-    driver_last_name: "",
-    driver_birth_date: "",
     driver_license_number: "",
     driver_license_date: "",
   });
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    setReservationData((prev) => ({
+      ...prev,
+      ...getPrefilledPersonalData(),
+    }));
+  }, [isOpen, currentUser]);
+
   // Pricing options state
   const [options, setOptions] = useState({
-    full_insurance: false,
     airport_delivery: false,
     home_delivery: false,
     after_hours_pickup: false,
@@ -68,6 +83,18 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
 
   const [touched, setTouched] = useState({});
   const [focused, setFocused] = useState({});
+  const [errors, setErrors] = useState({});
+
+  const requiredFields = [
+    "startDate",
+    "endDate",
+    "fullName",
+    "email",
+    "phone",
+    "client_birth_date",
+    "driver_license_number",
+    "driver_license_date",
+  ];
 
   // Simple pricing calculation using config-driven values
   const pricing = useMemo(() => {
@@ -90,12 +117,6 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
       return null;
     }
 
-    // Calculate insurance (percentage-based)
-    const insurance =
-      options.full_insurance && addOns.full_insurance.type === "percentage"
-        ? basePrice * addOns.full_insurance.value
-        : 0;
-
     // Calculate fixed add-ons
     const airportDelivery =
       options.airport_delivery && addOns.airport_delivery.type === "fixed"
@@ -112,14 +133,12 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
         ? addOns.after_hours_pickup.value
         : 0;
 
-    const total =
-      basePrice + insurance + airportDelivery + homeDelivery + afterHours;
+    const total = basePrice + airportDelivery + homeDelivery + afterHours;
 
     return {
       days,
       base_price: vehicle.price,
       base_total: basePrice,
-      insurance,
       airport_delivery: airportDelivery,
       home_delivery: homeDelivery,
       after_hours: afterHours,
@@ -133,9 +152,59 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
     pricingConfig,
   ]);
 
+  const validateField = (fieldName, value, allData = reservationData) => {
+    const trimmedValue = typeof value === "string" ? value.trim() : value;
+
+    if (requiredFields.includes(fieldName) && !trimmedValue) {
+      return "Ce champ est obligatoire.";
+    }
+
+    if (fieldName === "email" && trimmedValue) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(trimmedValue)) {
+        return "Veuillez saisir une adresse email valide.";
+      }
+    }
+
+    if (fieldName === "phone" && trimmedValue) {
+      const phoneRegex = /^\d{8}$/;
+      if (!phoneRegex.test(String(trimmedValue))) {
+        return "Le téléphone doit contenir exactement 8 chiffres.";
+      }
+    }
+
+    if (fieldName === "endDate" && trimmedValue && allData.startDate) {
+      if (new Date(trimmedValue) <= new Date(allData.startDate)) {
+        return "La date de fin doit être après la date de début.";
+      }
+    }
+
+    return "";
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setReservationData((prev) => ({ ...prev, [name]: value }));
+
+    setReservationData((prev) => {
+      const nextData = { ...prev, [name]: value };
+
+      if (touched[name]) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: validateField(name, value, nextData),
+        }));
+      }
+
+      // Keep endDate validation in sync when startDate changes.
+      if (name === "startDate" && touched.endDate) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          endDate: validateField("endDate", nextData.endDate, nextData),
+        }));
+      }
+
+      return nextData;
+    });
   };
 
   // Handle option toggles (checkboxes and select)
@@ -150,10 +219,31 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
   const handleBlur = (fieldName) => {
     setFocused((prev) => ({ ...prev, [fieldName]: false }));
     setTouched((prev) => ({ ...prev, [fieldName]: true }));
+    setErrors((prev) => ({
+      ...prev,
+      [fieldName]: validateField(fieldName, reservationData[fieldName]),
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const allTouched = requiredFields.reduce(
+      (acc, field) => ({ ...acc, [field]: true }),
+      {},
+    );
+    setTouched((prev) => ({ ...prev, ...allTouched }));
+
+    const nextErrors = requiredFields.reduce((acc, field) => {
+      acc[field] = validateField(field, reservationData[field]);
+      return acc;
+    }, {});
+    setErrors((prev) => ({ ...prev, ...nextErrors }));
+
+    const hasValidationErrors = Object.values(nextErrors).some(Boolean);
+    if (hasValidationErrors) {
+      return;
+    }
 
     if (!pricingConfig?.add_ons) {
       return;
@@ -171,16 +261,6 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
         days: pricing?.days || 1,
         options: pricing
           ? [
-              ...(pricing.insurance > 0
-                ? [
-                    {
-                      name:
-                        addOnsConfig.full_insurance?.display_name ||
-                        "full_insurance",
-                      amount: pricing.insurance,
-                    },
-                  ]
-                : []),
               ...(pricing.airport_delivery > 0
                 ? [
                     {
@@ -222,60 +302,53 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
     setReservationData({
       startDate: "",
       endDate: "",
-      fullName: "",
-      email: "",
-      phone: "",
+      ...getPrefilledPersonalData(),
       client_birth_date: "",
-      deposit_amount: "",
-      driver_first_name: "",
-      driver_last_name: "",
-      driver_birth_date: "",
       driver_license_number: "",
       driver_license_date: "",
     });
     setOptions({
-      full_insurance: false,
       airport_delivery: false,
       home_delivery: false,
       after_hours_pickup: false,
     });
     setTouched({});
     setFocused({});
+    setErrors({});
   };
 
   const handleClose = () => {
     setReservationData({
       startDate: "",
       endDate: "",
-      fullName: "",
-      email: "",
-      phone: "",
+      ...getPrefilledPersonalData(),
       client_birth_date: "",
-      deposit_amount: "",
-      driver_first_name: "",
-      driver_last_name: "",
-      driver_birth_date: "",
       driver_license_number: "",
       driver_license_date: "",
     });
     setOptions({
-      full_insurance: false,
       airport_delivery: false,
       home_delivery: false,
       after_hours_pickup: false,
     });
     setTouched({});
     setFocused({});
+    setErrors({});
     onClose();
   };
 
   // Calculate if form is valid for submission
+  const hasErrors = Object.values(errors).some(Boolean);
   const isFormValid =
     reservationData.startDate &&
     reservationData.endDate &&
     reservationData.fullName.trim() &&
     reservationData.email.trim() &&
     reservationData.phone.trim() &&
+    reservationData.client_birth_date &&
+    reservationData.driver_license_number.trim() &&
+    reservationData.driver_license_date &&
+    !hasErrors &&
     pricing; // Must have pricing calculated
 
   if (!isOpen || !vehicle) return null;
@@ -349,6 +422,28 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
               </div>
             )}
 
+            {Object.values(errors).some(Boolean) && (
+              <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <svg
+                    className="w-5 h-5 text-red-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <p className="text-sm text-red-700 font-medium">
+                    Veuillez corriger les champs obligatoires avant de confirmer
+                    la réservation.
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Dates Section */}
             <div>
               <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
@@ -379,9 +474,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                     min={new Date().toISOString().split("T")[0]}
                     required
                     className={`w-full px-3.5 sm:px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black focus:text-primary-500 peer focus:outline-none text-sm sm:text-base ${
-                      touched.startDate && !reservationData.startDate
-                        ? "border-red-500"
-                        : "border-gray-300"
+                      errors.startDate ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder=" "
                   />
@@ -392,9 +485,9 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                   >
                     Date de début*
                   </label>
-                  {touched.startDate && !reservationData.startDate && (
+                  {errors.startDate && (
                     <p className="mt-1 text-sm text-red-500">
-                      Veuillez compléter ce champ obligatoire.
+                      {errors.startDate}
                     </p>
                   )}
                 </div>
@@ -420,9 +513,7 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                     }
                     required
                     className={`w-full px-3.5 sm:px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black focus:text-primary-500 peer focus:outline-none text-sm sm:text-base ${
-                      touched.endDate && !reservationData.endDate
-                        ? "border-red-500"
-                        : "border-gray-300"
+                      errors.endDate ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder=" "
                   />
@@ -433,9 +524,9 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                   >
                     Date de fin*
                   </label>
-                  {touched.endDate && !reservationData.endDate && (
+                  {errors.endDate && (
                     <p className="mt-1 text-sm text-red-500">
-                      Veuillez compléter ce champ obligatoire.
+                      {errors.endDate}
                     </p>
                   )}
                 </div>
@@ -445,50 +536,6 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
             {/* Options Section - Only show if dates are selected */}
             {reservationData.startDate && reservationData.endDate && (
               <>
-                {/* Insurance & Protection */}
-                <div>
-                  <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                    <svg
-                      className="w-5 h-5 text-primary-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                      />
-                    </svg>
-                    Assurance & Protection
-                  </h4>
-                  <label className="flex items-center gap-3 p-3 sm:p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors">
-                    <input
-                      type="checkbox"
-                      checked={options.full_insurance}
-                      onChange={(e) =>
-                        handleOptionChange("full_insurance", e.target.checked)
-                      }
-                      className="w-5 h-5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
-                    />
-                    <div className="flex-1">
-                      <div className="font-medium text-gray-900">
-                        {pricingConfig?.add_ons?.full_insurance?.display_name ||
-                          "full_insurance"}
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        {!pricingConfig?.add_ons?.full_insurance
-                          ? "Tarif indisponible"
-                          : pricingConfig?.add_ons?.full_insurance?.type ===
-                              "percentage"
-                            ? `+${(pricingConfig.add_ons.full_insurance.value * 100).toFixed(0)}% du sous-total`
-                            : `+${pricingConfig.add_ons.full_insurance.value} DT`}
-                      </div>
-                    </div>
-                  </label>
-                </div>
-
                 {/* Services */}
                 <div>
                   <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
@@ -611,22 +658,6 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                         </span>
                       </div>
 
-                      {pricing.insurance > 0 && (
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">
-                            {pricingConfig?.add_ons?.full_insurance
-                              ?.display_name || "full_insurance"}{" "}
-                            (+
-                            {(pricingConfig?.add_ons?.full_insurance?.value ||
-                              0) * 100}
-                            %)
-                          </span>
-                          <span className="font-medium text-gray-900">
-                            +{pricing.insurance.toFixed(2)} DT
-                          </span>
-                        </div>
-                      )}
-
                       {pricing.airport_delivery > 0 && (
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-600">
@@ -707,18 +738,16 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                     onBlur={() => handleBlur("fullName")}
                     required
                     className={`w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base ${
-                      touched.fullName && !reservationData.fullName.trim()
-                        ? "border-red-500"
-                        : "border-gray-300"
+                      errors.fullName ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder=" "
                   />
                   <label className="absolute left-4 top-3 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
                     Nom complet*
                   </label>
-                  {touched.fullName && !reservationData.fullName.trim() && (
+                  {errors.fullName && (
                     <p className="mt-1 text-sm text-red-500">
-                      Veuillez compléter ce champ obligatoire.
+                      {errors.fullName}
                     </p>
                   )}
                 </div>
@@ -733,18 +762,16 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                       onBlur={() => handleBlur("email")}
                       required
                       className={`w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base ${
-                        touched.email && !reservationData.email.trim()
-                          ? "border-red-500"
-                          : "border-gray-300"
+                        errors.email ? "border-red-500" : "border-gray-300"
                       }`}
                       placeholder=" "
                     />
                     <label className="absolute left-4 top-3 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
                       Email*
                     </label>
-                    {touched.email && !reservationData.email.trim() && (
+                    {errors.email && (
                       <p className="mt-1 text-sm text-red-500">
-                        Veuillez compléter ce champ obligatoire.
+                        {errors.email}
                       </p>
                     )}
                   </div>
@@ -757,18 +784,16 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                       onBlur={() => handleBlur("phone")}
                       required
                       className={`w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base ${
-                        touched.phone && !reservationData.phone.trim()
-                          ? "border-red-500"
-                          : "border-gray-300"
+                        errors.phone ? "border-red-500" : "border-gray-300"
                       }`}
                       placeholder=" "
                     />
                     <label className="absolute left-4 top-3 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
                       Téléphone*
                     </label>
-                    {touched.phone && !reservationData.phone.trim() && (
+                    {errors.phone && (
                       <p className="mt-1 text-sm text-red-500">
-                        Veuillez compléter ce champ obligatoire.
+                        {errors.phone}
                       </p>
                     )}
                   </div>
@@ -794,6 +819,11 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                 </svg>
                 Informations du contrat
               </h4>
+              <p className="mb-3 text-xs text-gray-500">
+                Le conducteur est le locataire. Les informations conducteur
+                seront reprises automatiquement depuis vos informations
+                personnelles.
+              </p>
               <div className="grid md:grid-cols-2 gap-3 sm:gap-4">
                 <div className="relative">
                   <input
@@ -801,65 +831,30 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                     name="client_birth_date"
                     value={reservationData.client_birth_date}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base border-gray-300"
+                    onBlur={() => handleBlur("client_birth_date")}
+                    required
+                    className={`w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base ${
+                      errors.client_birth_date
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    }`}
                     placeholder=" "
                   />
                   <label className="absolute left-4 top-3 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
-                    Date de naissance du client
+                    Date de naissance du client*
                   </label>
+                  {errors.client_birth_date && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.client_birth_date}
+                    </p>
+                  )}
                 </div>
                 <div className="relative">
-                  <input
-                    type="number"
-                    name="deposit_amount"
-                    value={reservationData.deposit_amount}
-                    onChange={handleChange}
-                    min="0"
-                    step="0.01"
-                    className="w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base border-gray-300"
-                    placeholder=" "
-                  />
-                  <label className="absolute left-4 top-3 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
-                    Montant de la caution (DT)
-                  </label>
-                </div>
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="driver_first_name"
-                    value={reservationData.driver_first_name}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base border-gray-300"
-                    placeholder=" "
-                  />
-                  <label className="absolute left-4 top-3 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
-                    Prénom du conducteur
-                  </label>
-                </div>
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="driver_last_name"
-                    value={reservationData.driver_last_name}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base border-gray-300"
-                    placeholder=" "
-                  />
-                  <label className="absolute left-4 top-3 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
-                    Nom du conducteur
-                  </label>
-                </div>
-                <div className="relative">
-                  <input
-                    type="date"
-                    name="driver_birth_date"
-                    value={reservationData.driver_birth_date}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base border-gray-300"
-                    placeholder=" "
-                  />
-                  <label className="absolute left-4 top-3 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
-                    Date de naissance du conducteur
+                  <div className="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-3 text-sm sm:text-base text-gray-900">
+                    {Number(vehicle?.caution_amount || 0).toFixed(2)} DT
+                  </div>
+                  <label className="absolute left-4 -top-2 bg-white px-2 text-xs text-gray-600 pointer-events-none">
+                    Montant de la caution (DT) défini par l'agence
                   </label>
                 </div>
                 <div className="relative">
@@ -868,12 +863,23 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                     name="driver_license_number"
                     value={reservationData.driver_license_number}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base border-gray-300"
+                    onBlur={() => handleBlur("driver_license_number")}
+                    required
+                    className={`w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base ${
+                      errors.driver_license_number
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    }`}
                     placeholder=" "
                   />
                   <label className="absolute left-4 top-3 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
-                    Numéro du permis
+                    Numéro du permis du locataire*
                   </label>
+                  {errors.driver_license_number && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.driver_license_number}
+                    </p>
+                  )}
                 </div>
                 <div className="relative">
                   <input
@@ -881,12 +887,23 @@ const ReservationModal = ({ isOpen, onClose, vehicle, onSubmit }) => {
                     name="driver_license_date"
                     value={reservationData.driver_license_date}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base border-gray-300"
+                    onBlur={() => handleBlur("driver_license_date")}
+                    required
+                    className={`w-full px-4 py-3 border rounded-lg focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base ${
+                      errors.driver_license_date
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    }`}
                     placeholder=" "
                   />
                   <label className="absolute left-4 top-3 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
-                    Date d'obtention du permis
+                    Date d'obtention du permis du locataire*
                   </label>
+                  {errors.driver_license_date && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.driver_license_date}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

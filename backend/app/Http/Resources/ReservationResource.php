@@ -31,7 +31,7 @@ class ReservationResource extends JsonResource
             'pickup_location' => $this->pickup_location,
             'dropoff_location' => $this->dropoff_location,
             'client_birth_date' => $this->client_birth_date?->toDateString(),
-            'deposit_amount' => (float) ($this->deposit_amount ?? 0),
+            'deposit_amount' => (float) ($this->vehicle?->caution_amount ?? 0),
             'driver_first_name' => $this->driver_first_name,
             'driver_last_name' => $this->driver_last_name,
             'driver_birth_date' => $this->driver_birth_date?->toDateString(),

@@ -28,6 +28,7 @@ class UpdateVehicleRequest extends FormRequest
             'year' => 'sometimes|integer|min:2000|max:' . (date('Y') + 1),
             'mileage' => 'sometimes|integer|min:0',
             'daily_price' => 'sometimes|numeric|min:0',
+            'caution_amount' => 'sometimes|nullable|numeric|min:0',
             'license_plate' => [
                 'sometimes',
                 'string',

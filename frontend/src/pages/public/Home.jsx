@@ -14,7 +14,7 @@ const Home = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [featuredVehicles, setFeaturedVehicles] = useState([]);
-  const [agencyLocations, setAgencyLocations] = useState([]);
+  const [agencies, setAgencies] = useState([]);
   const [toast, setToast] = useState({
     isVisible: false,
     message: "",
@@ -148,12 +148,11 @@ const Home = () => {
   };
 
   const [searchData, setSearchData] = useState({
-    pickupLocation: "",
+    agencyId: "",
     pickupDate: "",
     pickupTime: "10:00",
     returnDate: "",
     returnTime: "10:00",
-    category: "Tous",
   });
 
   // Handle search form submission
@@ -164,56 +163,49 @@ const Home = () => {
       return;
     }
 
+    const selectedAgency = agencies.find(
+      (agency) => String(agency.id) === String(searchData.agencyId),
+    );
+
     // Navigate to vehicles page with search parameters
     const searchParams = new URLSearchParams({
-      location: searchData.pickupLocation,
+      location: selectedAgency?.name || "",
+      agency: selectedAgency?.name || "",
+      agencyId: selectedAgency ? String(selectedAgency.id) : "",
       startDate: searchData.pickupDate,
       endDate: searchData.returnDate,
       startTime: searchData.pickupTime,
       endTime: searchData.returnTime,
     });
 
-    // Add category if not "Tous"
-    if (searchData.category && searchData.category !== "Tous") {
-      searchParams.append("category", searchData.category);
-    }
-
     navigate(`/vehicles?${searchParams.toString()}`);
   };
 
   useEffect(() => {
-    const fetchAgencyLocations = async () => {
+    const fetchAgencies = async () => {
       try {
         const response = await publicAgencyService.getAll(1, 100);
-        const agencies = Array.isArray(response?.data) ? response.data : [];
+        const agenciesList = Array.isArray(response?.data) ? response.data : [];
 
-        const uniqueLocations = Array.from(
-          new Set(
-            agencies
-              .map((agency) => agency.location)
-              .filter(
-                (location) => typeof location === "string" && location.trim(),
-              ),
-          ),
-        );
-
-        setAgencyLocations(uniqueLocations);
-        if (uniqueLocations.length > 0) {
+        setAgencies(agenciesList);
+        if (agenciesList.length > 0) {
           setSearchData((prev) => ({
             ...prev,
-            pickupLocation:
-              prev.pickupLocation &&
-              uniqueLocations.includes(prev.pickupLocation)
-                ? prev.pickupLocation
-                : uniqueLocations[0],
+            agencyId:
+              prev.agencyId &&
+              agenciesList.some(
+                (agency) => String(agency.id) === String(prev.agencyId),
+              )
+                ? prev.agencyId
+                : String(agenciesList[0].id),
           }));
         }
       } catch (error) {
-        console.error("Failed to fetch agency locations:", error);
+        console.error("Failed to fetch agencies:", error);
       }
     };
 
-    fetchAgencyLocations();
+    fetchAgencies();
   }, []);
 
   const features = [
@@ -374,11 +366,11 @@ const Home = () => {
                     </div>
                     <FormControl fullWidth>
                       <Select
-                        value={searchData.pickupLocation}
+                        value={searchData.agencyId}
                         onChange={(e) =>
                           setSearchData({
                             ...searchData,
-                            pickupLocation: e.target.value,
+                            agencyId: e.target.value,
                           })
                         }
                         sx={{
@@ -410,10 +402,10 @@ const Home = () => {
                           },
                         }}
                       >
-                        {agencyLocations.length > 0 ? (
-                          agencyLocations.map((location) => (
-                            <MenuItem key={location} value={location}>
-                              {location}
+                        {agencies.length > 0 ? (
+                          agencies.map((agency) => (
+                            <MenuItem key={agency.id} value={String(agency.id)}>
+                              {agency.name}
                             </MenuItem>
                           ))
                         ) : (
@@ -597,85 +589,6 @@ const Home = () => {
                         </Select>
                       </FormControl>
                     </div>
-                  </div>
-                </div>
-
-                {/* Category selection */}
-                <div className="mb-6">
-                  <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
-                    {t("home.search.vehicleType")}
-                  </label>
-                  <div className="relative group">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
-                      <svg
-                        className="w-5 h-5 text-primary-500 group-focus-within:text-primary-600 transition-colors"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-                        />
-                      </svg>
-                    </div>
-                    <FormControl fullWidth>
-                      <Select
-                        value={searchData.category}
-                        onChange={(e) =>
-                          setSearchData({
-                            ...searchData,
-                            category: e.target.value,
-                          })
-                        }
-                        sx={{
-                          borderRadius: "9999px",
-                          backgroundColor: "#f9fafb",
-                          paddingLeft: "2.5rem",
-                          fontSize: "0.875rem",
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderWidth: "2px",
-                            borderColor: "#e5e7eb",
-                          },
-                          "&:hover": {
-                            backgroundColor: "#eff6ff",
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#60a5fa",
-                            },
-                            boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-                          },
-                          "&.Mui-focused": {
-                            backgroundColor: "white",
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#3b82f6",
-                              borderWidth: "2px",
-                            },
-                          },
-                          "& .MuiSelect-select": {
-                            paddingTop: "0.75rem",
-                            paddingBottom: "0.75rem",
-                          },
-                        }}
-                      >
-                        <MenuItem value="Tous">
-                          {t("home.search.categoryAll")}
-                        </MenuItem>
-                        <MenuItem value="Économique">
-                          {t("home.search.categoryEco")}
-                        </MenuItem>
-                        <MenuItem value="SUV">
-                          {t("home.search.categorySUV")}
-                        </MenuItem>
-                        <MenuItem value="Luxe">
-                          {t("home.search.categoryLuxury")}
-                        </MenuItem>
-                        <MenuItem value="Sport">
-                          {t("home.search.categorySport")}
-                        </MenuItem>
-                      </Select>
-                    </FormControl>
                   </div>
                 </div>
 

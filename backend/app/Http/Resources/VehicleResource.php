@@ -29,6 +29,7 @@ class VehicleResource extends JsonResource
             'seats' => (int) ($this->seats ?? $this->seating_capacity ?? 0),
             'daily_rate' => (float) ($this->daily_rate ?? $this->daily_price ?? 0),
             'daily_price' => (float) ($this->daily_price ?? $this->daily_rate ?? 0),
+            'caution_amount' => (float) ($this->caution_amount ?? 0),
             'status' => $this->status,
             'year' => (int) $this->year,
             'mileage' => $this->mileage ?? 0,

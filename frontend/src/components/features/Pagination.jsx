@@ -56,101 +56,103 @@ const Pagination = ({
   if (totalPages <= 1) return null;
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 pt-8 border-t border-gray-200">
-      {/* Items info */}
-      <div className="text-sm text-gray-600">
-        {t("pagination.showing")}{" "}
-        <span className="font-semibold text-gray-900">{startItem}</span>{" "}
-        {t("pagination.to")}{" "}
-        <span className="font-semibold text-gray-900">{endItem}</span>{" "}
-        {t("pagination.of")}{" "}
-        <span className="font-semibold text-gray-900">{totalItems}</span>{" "}
-        {totalItems > 1 ? t("pagination.results") : t("pagination.result")}
-      </div>
-
-      {/* Pagination controls */}
-      <div className="flex items-center gap-2">
-        {/* Previous button */}
-        <button
-          onClick={() => onPageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 ${
-            currentPage === 1
-              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-              : "bg-white text-gray-700 hover:bg-primary-50 hover:text-primary-600 border border-gray-200 hover:border-primary-300 shadow-sm hover:shadow"
-          }`}
-        >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-          <span className="hidden sm:inline">{t("pagination.previous")}</span>
-        </button>
-
-        {/* Page numbers */}
-        <div className="flex items-center gap-1">
-          {pageNumbers.map((pageNum, index) => {
-            if (pageNum === "...") {
-              return (
-                <span
-                  key={`ellipsis-${index}`}
-                  className="px-3 py-2 text-gray-500"
-                >
-                  ...
-                </span>
-              );
-            }
-
-            return (
-              <button
-                key={pageNum}
-                onClick={() => onPageChange(pageNum)}
-                className={`min-w-[40px] h-10 rounded-xl font-medium transition-all duration-300 ${
-                  currentPage === pageNum
-                    ? "bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-lg scale-110"
-                    : "bg-white text-gray-700 hover:bg-primary-50 hover:text-primary-600 border border-gray-200 hover:border-primary-300 hover:shadow"
-                }`}
-              >
-                {pageNum}
-              </button>
-            );
-          })}
+    <div className="mt-8 border-t border-white/50 pt-6">
+      <div className="flex flex-col gap-4 rounded-2xl border border-white/70 bg-white/55 px-4 py-4 shadow-sm backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between sm:px-5">
+        {/* Items info */}
+        <div className="text-sm text-slate-700">
+          {t("pagination.showing")}{" "}
+          <span className="font-semibold text-slate-900">{startItem}</span>{" "}
+          {t("pagination.to")}{" "}
+          <span className="font-semibold text-slate-900">{endItem}</span>{" "}
+          {t("pagination.of")}{" "}
+          <span className="font-semibold text-slate-900">{totalItems}</span>{" "}
+          {totalItems > 1 ? t("pagination.results") : t("pagination.result")}
         </div>
 
-        {/* Next button */}
-        <button
-          onClick={() => onPageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 ${
-            currentPage === totalPages
-              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-              : "bg-white text-gray-700 hover:bg-primary-50 hover:text-primary-600 border border-gray-200 hover:border-primary-300 shadow-sm hover:shadow"
-          }`}
-        >
-          <span className="hidden sm:inline">{t("pagination.next")}</span>
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        {/* Pagination controls */}
+        <div className="inline-flex items-center gap-1">
+          {/* Previous button */}
+          <button
+            onClick={() => onPageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`h-11 rounded-xl px-4 font-medium transition-all duration-200 flex items-center gap-2 ${
+              currentPage === 1
+                ? "cursor-not-allowed bg-transparent text-slate-400"
+                : "bg-white text-slate-700 shadow-sm hover:bg-slate-50"
+            }`}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </button>
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+            <span className="hidden sm:inline">{t("pagination.previous")}</span>
+          </button>
+
+          {/* Page numbers */}
+          <div className="flex items-center gap-1">
+            {pageNumbers.map((pageNum, index) => {
+              if (pageNum === "...") {
+                return (
+                  <span
+                    key={`ellipsis-${index}`}
+                    className="px-2 text-slate-500"
+                  >
+                    ...
+                  </span>
+                );
+              }
+
+              return (
+                <button
+                  key={pageNum}
+                  onClick={() => onPageChange(pageNum)}
+                  className={`h-11 min-w-[42px] rounded-xl px-3 font-semibold transition-all duration-200 ${
+                    currentPage === pageNum
+                      ? "bg-primary-600 text-white shadow"
+                      : "bg-white text-slate-700 shadow-sm hover:bg-slate-50"
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Next button */}
+          <button
+            onClick={() => onPageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={`h-11 rounded-xl px-4 font-medium transition-all duration-200 flex items-center gap-2 ${
+              currentPage === totalPages
+                ? "cursor-not-allowed bg-transparent text-slate-400"
+                : "bg-white text-slate-700 shadow-sm hover:bg-slate-50"
+            }`}
+          >
+            <span className="hidden sm:inline">{t("pagination.next")}</span>
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   );

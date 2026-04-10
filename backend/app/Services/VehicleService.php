@@ -6,6 +6,8 @@ use App\Models\Vehicle;
 
 class VehicleService
 {
+    private const MIN_DEFAULT_CAUTION = 500.0;
+
     /**
      * Get all vehicles (authorization handled in controller/policy)
      */
@@ -77,6 +79,10 @@ class VehicleService
     {
         $data['agency_id'] = $agencyId;
         $data['status'] = $data['status'] ?? 'available';
+        $data['caution_amount'] = $this->resolveCautionAmount(
+            $data['caution_amount'] ?? null,
+            $data['daily_price'] ?? null
+        );
 
         return Vehicle::create($data)->load('agency');
     }
@@ -88,9 +94,29 @@ class VehicleService
     {
         $vehicle = Vehicle::findOrFail($id);
 
+        $dailyPrice = $data['daily_price'] ?? $vehicle->daily_price;
+        if (array_key_exists('caution_amount', $data)) {
+            $data['caution_amount'] = $this->resolveCautionAmount($data['caution_amount'], $dailyPrice);
+        } elseif ((float) ($vehicle->caution_amount ?? 0) <= 0) {
+            $data['caution_amount'] = $this->resolveCautionAmount(null, $dailyPrice);
+        }
+
         $vehicle->update($data);
 
         return $vehicle->load(['agency']);
+    }
+
+    private function resolveCautionAmount($cautionAmount, $dailyPrice): ?float
+    {
+        if (is_numeric($cautionAmount) && (float) $cautionAmount > 0) {
+            return round((float) $cautionAmount, 2);
+        }
+
+        if (is_numeric($dailyPrice) && (float) $dailyPrice > 0) {
+            return round(max((float) $dailyPrice * 10, self::MIN_DEFAULT_CAUTION), 2);
+        }
+
+        return null;
     }
 
     /**

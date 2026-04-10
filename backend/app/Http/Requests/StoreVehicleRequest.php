@@ -25,6 +25,7 @@ class StoreVehicleRequest extends FormRequest
             'year' => 'required|integer|min:2000|max:' . (date('Y') + 1),
             'mileage' => 'required|integer|min:0',
             'daily_price' => 'required|numeric|min:0',
+            'caution_amount' => 'nullable|numeric|min:0',
             'license_plate' => 'required|string|max:50|unique:vehicles,license_plate',
             'color' => 'required|string|max:50',
             'seats' => 'required|integer|min:2|max:9',

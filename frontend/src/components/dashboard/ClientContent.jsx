@@ -6,7 +6,6 @@ import { reservationService } from "../../services/reservationService";
 import ReservationDetailsModal from "../modals/ReservationDetailsModal";
 import ConfirmationModal from "../modals/ConfirmationModal";
 import Toast from "../common/Toast";
-import VehicleCard from "../cards/VehicleCard";
 import { RESERVATION_STATUS } from "../../constants/statuses";
 
 // Client Content Component
@@ -20,8 +19,6 @@ const ClientContent = ({
   const { t } = useTranslation();
   const { user } = useAuth();
   const [reservations, setReservations] = useState([]);
-  const [savedVehicles, setSavedVehicles] = useState([]);
-  const [refreshSaved, setRefreshSaved] = useState(0);
   const [historySearch, setHistorySearch] = useState("");
   const [historyStatus, setHistoryStatus] = useState("all");
   const [historyPage, setHistoryPage] = useState(1);
@@ -54,15 +51,6 @@ const ClientContent = ({
     fetchReservations();
   }, []);
 
-  useEffect(() => {
-    if (!user || activeTab !== "saved") return;
-
-    const saved = JSON.parse(
-      localStorage.getItem(`savedVehicles_${user.id}`) || "[]",
-    );
-    setSavedVehicles(saved);
-  }, [user, refreshSaved, activeTab]);
-
   const fetchReservations = async () => {
     try {
       const response = await reservationService.getMy();
@@ -89,17 +77,6 @@ const ClientContent = ({
         "error",
       );
     }
-  };
-
-  const handleRemoveSaved = (vehicleId) => {
-    if (!user) return;
-
-    const saved = JSON.parse(
-      localStorage.getItem(`savedVehicles_${user.id}`) || "[]",
-    );
-    const updated = saved.filter((v) => v.id !== vehicleId);
-    localStorage.setItem(`savedVehicles_${user.id}`, JSON.stringify(updated));
-    setRefreshSaved((prev) => prev + 1);
   };
 
   const getStatusColor = (status) => {
@@ -361,66 +338,6 @@ const ClientContent = ({
                     )}
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  if (activeTab === "saved") {
-    return (
-      <div className="space-y-5">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-gray-900">
-            {t("clientContent.savedVehicles")}
-          </h2>
-          <span className="text-sm text-gray-500">
-            {t("clientContent.savedVehiclesCount", {
-              count: savedVehicles.length,
-            })}
-          </span>
-        </div>
-
-        {savedVehicles.length === 0 ? (
-          <div className="bg-white rounded-xl p-12 text-center border border-gray-200">
-            <svg
-              className="w-16 h-16 mx-auto text-gray-300 mb-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
-              />
-            </svg>
-            <p className="text-gray-500 mb-2">
-              {t("clientContent.noSavedVehicles")}
-            </p>
-            <p className="text-sm text-gray-400 mb-6">
-              {t("clientContent.savedVehiclesHint")}
-            </p>
-            <button
-              onClick={() => navigate("/vehicles")}
-              className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-semibold"
-            >
-              {t("clientContent.discoverVehicles")}
-            </button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {savedVehicles.map((vehicle, index) => (
-              <div key={vehicle.id} className="relative">
-                <VehicleCard
-                  vehicle={vehicle}
-                  index={index}
-                  isVisible={true}
-                  onSaveToggle={() => handleRemoveSaved(vehicle.id)}
-                />
               </div>
             ))}
           </div>

@@ -73,6 +73,8 @@ export const buildReservationContractHtml = (reservation) => {
     reservation?.vehicle?.registration_number ||
     reservation?.vehicle_plate ||
     "N/A";
+  const cautionAmount =
+    reservation?.vehicle?.caution_amount ?? reservation?.deposit_amount ?? null;
   const price = formatMoney(reservation?.total_price);
   const options = reservation?.options || "N/A";
   const vehicleImage = getVehicleImage(reservation);
@@ -268,8 +270,8 @@ export const buildReservationContractHtml = (reservation) => {
                 <div class="label-row"><span>Marque/Modèle :</span> ${vehicleName}</div>
                 <div class="label-row"><span>Catégorie :</span> ${vehicleCategory}</div>
                 <div class="label-row"><span>Immatriculation :</span> ${vehiclePlate}</div>
-                <div class="label-row"><span>Montant de la franchise :</span> ${reservation?.deposit_amount ? formatMoney(reservation.deposit_amount) : "N/A"}</div>
-                <div class="label-row"><span>Montant de la caution :</span> ${reservation?.deposit_amount ? formatMoney(reservation.deposit_amount) : "N/A"}</div>
+                <div class="label-row"><span>Montant de la franchise :</span> ${cautionAmount ? formatMoney(cautionAmount) : "N/A"}</div>
+                <div class="label-row"><span>Montant de la caution :</span> ${cautionAmount ? formatMoney(cautionAmount) : "N/A"}</div>
                 ${vehicleImage ? `<img class="vehicle-photo" src="${vehicleImage}" alt="Photo du véhicule" />` : `<div class="placeholder" style="min-height: 92px; margin-top: 8px;">Photo principale du véhicule</div>`}
               </div>
             </div>

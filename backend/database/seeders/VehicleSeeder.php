@@ -354,6 +354,10 @@ class VehicleSeeder extends Seeder
             unset($vehicle['agency_email']);
             $vehicle['agency_id'] = $agencyId;
             $vehicle['category_id'] = $categoryId;
+            // Keep caution coherent for historical seed data created before caution field existed.
+            $vehicle['caution_amount'] = isset($vehicle['caution_amount']) && (float) $vehicle['caution_amount'] > 0
+                ? (float) $vehicle['caution_amount']
+                : round(max(((float) $vehicle['daily_price']) * 10, 500), 2);
 
             Vehicle::updateOrCreate(
                 ['license_plate' => $vehicle['license_plate']],

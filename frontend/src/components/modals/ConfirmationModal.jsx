@@ -1,4 +1,5 @@
 import React from "react";
+import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 
 export default function ConfirmationModal({
@@ -18,9 +19,9 @@ export default function ConfirmationModal({
 
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn"
+      className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn"
       onClick={onClose}
     >
       <div
@@ -112,6 +113,7 @@ export default function ConfirmationModal({
           animation: scaleIn 0.2s ease-out;
         }
       `}</style>
-    </div>
+    </div>,
+    document.body,
   );
 }

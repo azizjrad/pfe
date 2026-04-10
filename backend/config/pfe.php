@@ -25,11 +25,6 @@ return [
         'currency_symbol' => 'DT',
         'default_daily_price' => 150,
         'add_ons' => [
-            'full_insurance' => [
-                'type' => 'percentage',
-                'value' => 0.15, // 15% of base price
-                'display_name' => 'Assurance tous risques',
-            ],
             'airport_delivery' => [
                 'type' => 'fixed',
                 'value' => 10, // Fixed 10 DT

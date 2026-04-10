@@ -12,6 +12,7 @@ class Vehicle extends Model
         'year',
         'mileage',
         'daily_price',
+        'caution_amount',
         'license_plate',
         'color',
         'seats',
@@ -25,6 +26,7 @@ class Vehicle extends Model
 
     protected $casts = [
         'daily_price' => 'decimal:2',
+        'caution_amount' => 'decimal:2',
         'year' => 'integer',
         'mileage' => 'integer',
         'seats' => 'integer',

@@ -52,6 +52,12 @@ const AgencyContent = ({
       const payload = {
         ...vehicleForm,
         daily_price: Number(vehicleForm.daily_price),
+        caution_amount:
+          vehicleForm.caution_amount === "" ||
+          vehicleForm.caution_amount === null ||
+          vehicleForm.caution_amount === undefined
+            ? null
+            : Number(vehicleForm.caution_amount),
         mileage: Number(vehicleForm.mileage),
         seats: Number(vehicleForm.seats),
         year: Number(vehicleForm.year),
@@ -103,6 +109,7 @@ const AgencyContent = ({
       year: vehicle.year || new Date().getFullYear(),
       mileage: vehicle.mileage || 0,
       daily_price: vehicle.daily_price ?? vehicle.daily_rate ?? "",
+      caution_amount: vehicle.caution_amount ?? "",
       license_plate: vehicle.license_plate || vehicle.registration_number || "",
       color: vehicle.color || "",
       seats: vehicle.seats ?? vehicle.seating_capacity ?? 5,
@@ -809,6 +816,21 @@ const AgencyContent = ({
                             placeholder="Ex: 120"
                             className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10"
                             required
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-sm font-medium text-gray-700">
+                            Montant de la caution (DT)
+                          </label>
+                          <input
+                            name="caution_amount"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={vehicleForm.caution_amount ?? ""}
+                            onChange={handleVehicleFormChange}
+                            placeholder="Ex: 1000"
+                            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10"
                           />
                         </div>
                         <div>

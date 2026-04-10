@@ -18,20 +18,13 @@
     "status": {
       "confirmed": "Confirmée",
       "pending": "En attente",
-      "completed": "Terminée",
       "cancelled": "Annulée"
     },
     "viewDetails": "Voir détails",
-    "cancel": "Annuler",
     "contactAgencyToCancel": "Contactez l'agence pour annuler",
     "latestNotifications": "Dernières Notifications",
     "viewAll": "Voir tout",
     "noRecentNotifications": "Aucune notification récente.",
-    "savedVehicles": "Véhicules Sauvegardés",
-    "savedVehiclesCount": "{{count}} véhicule(s)",
-    "noSavedVehicles": "Aucun véhicule sauvegardé",
-    "savedVehiclesHint": "Parcourez nos véhicules et cliquez sur l'icône de sauvegarde pour les retrouver ici",
-    "discoverVehicles": "Découvrir les véhicules",
     "reservationHistory": "Historique des Réservations",
     "searchVehicleOrAgency": "Rechercher véhicule ou agence",
     "allStatuses": "Tous les statuts",
@@ -416,7 +409,6 @@
       "financial": "Finances",
       "alerts": "Alertes",
       "myReservations": "Mes réservations",
-      "savedVehicles": "Véhicules sauvegardés",
       "notifications": "Notifications",
       "history": "Historique",
       "statistics": "Statistiques",
@@ -642,7 +634,7 @@
     "search": {
       "placeholder": "Rechercher un véhicule...",
       "resultsTitle": "Résultats de recherche",
-      "location": "Lieu",
+      "location": "Agence",
       "start": "Début",
       "end": "Fin",
       "at": "à",
@@ -721,8 +713,6 @@
     "card": {
       "reserve": "Réserver maintenant",
       "perDay": "/jour",
-      "addFavorite": "Ajouter aux favoris",
-      "removeFavorite": "Retirer des favoris",
       "unavailable": "Non disponible"
     },
     "noVehicles": "Aucun véhicule disponible",
@@ -1321,7 +1311,7 @@
   "home": {
     "search": {
       "title": "Rechercher un véhicule",
-      "locationLabel": "Lieu de prise en charge et de retour",
+      "locationLabel": "Agence de prise en charge et de retour",
       "airport": "Tunis Carthage aéroport",
       "center": "Tunis Centre",
       "sfax": "Sfax",
@@ -1460,7 +1450,6 @@
         "alerts": "Alertes",
         "statistics": "Statistiques",
         "myReservations": "Mes Réservations",
-        "savedVehicles": "Véhicules Sauvegardés",
         "notifications": "Notifications",
         "history": "Historique"
       },
