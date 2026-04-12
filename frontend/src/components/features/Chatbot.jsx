@@ -11,6 +11,7 @@ const Chatbot = () => {
   const { user } = useAuth();
   const location = useLocation();
   const { t } = useTranslation();
+  const isAuthPage = ["/login", "/register"].includes(location.pathname);
 
   const createBotMessage = (text) => ({
     type: "bot",
@@ -40,6 +41,7 @@ const Chatbot = () => {
   };
 
   const handleCloseChatbot = () => {
+    resetConversation();
     setIsOpen(false);
   };
 
@@ -75,7 +77,7 @@ const Chatbot = () => {
     return () => window.removeEventListener("keydown", onEscape);
   }, [isOpen]);
 
-  if (user && user.role !== ROLES.CLIENT) {
+  if (isAuthPage || (user && user.role !== ROLES.CLIENT)) {
     return null;
   }
 
@@ -204,7 +206,7 @@ const Chatbot = () => {
         <button
           aria-label={t("chatbot.closeButton")}
           onClick={handleCloseChatbot}
-          className="fixed inset-0 z-40 bg-black/30 backdrop-blur-[2px] sm:hidden"
+          className="fixed inset-0 z-[1090] bg-black/30 backdrop-blur-[2px] sm:hidden"
         />
       )}
 
@@ -212,7 +214,7 @@ const Chatbot = () => {
       <button
         onClick={() => setIsOpen(true)}
         aria-label={t("chatbot.openButton")}
-        className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center group ${
+        className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[1100] w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center group ${
           isOpen ? "scale-0" : "scale-100"
         }`}
       >
@@ -235,14 +237,14 @@ const Chatbot = () => {
 
       {/* Chat Window */}
       <div
-        className={`fixed inset-x-0 bottom-0 z-50 w-full h-[100dvh] bg-white shadow-2xl transition-all duration-300 flex flex-col overflow-hidden sm:inset-x-auto sm:bottom-6 sm:right-6 sm:w-[390px] sm:h-[620px] sm:rounded-3xl ${
+        className={`fixed inset-x-0 bottom-0 z-[1100] w-full h-[96dvh] bg-white shadow-2xl transition-all duration-300 flex flex-col overflow-hidden sm:inset-x-auto sm:bottom-6 sm:right-6 sm:w-[360px] sm:h-[560px] sm:rounded-3xl ${
           isOpen
             ? "translate-y-0 opacity-100 pointer-events-auto"
             : "translate-y-8 opacity-0 pointer-events-none sm:translate-y-4"
         }`}
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-primary-600 to-primary-700 text-white px-4 py-4 sm:p-6 flex items-center justify-between">
+        <div className="bg-gradient-to-r from-primary-600 to-primary-700 text-white px-4 py-3 sm:px-5 sm:py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
               <svg
@@ -287,7 +289,7 @@ const Chatbot = () => {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-3 py-4 sm:p-4 space-y-4 bg-gray-50">
+        <div className="flex-1 overflow-y-auto px-3 py-3 sm:px-4 sm:py-3 space-y-3 sm:space-y-4 bg-gray-50">
           {messages.map((message, index) => (
             <div
               key={index}
@@ -329,7 +331,7 @@ const Chatbot = () => {
 
         {/* Quick Questions */}
         {messages.length === 1 && (
-          <div className="px-3 py-3 sm:p-4 bg-white border-t border-gray-200">
+          <div className="px-3 py-3 sm:px-4 sm:py-3 bg-white border-t border-gray-200">
             <p className="text-xs text-gray-600 mb-2 font-semibold">
               {t("chatbot.faqTitle")}
             </p>
@@ -353,7 +355,7 @@ const Chatbot = () => {
         {/* Input */}
         <form
           onSubmit={handleSendMessage}
-          className="px-3 py-3 sm:p-4 bg-white border-t border-gray-200"
+          className="px-3 py-3 sm:px-4 sm:py-3 bg-white border-t border-gray-200"
         >
           <div className="flex gap-2">
             <textarea
