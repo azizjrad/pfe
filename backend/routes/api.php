@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AgencyController;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\ChatbotController;
 use App\Http\Controllers\Api\ConfigController;
 use App\Http\Controllers\Api\PublicVehicleController;
 use App\Http\Controllers\Api\PublicAgencyController;
@@ -33,6 +34,10 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 // Public contact form submission
 Route::post('/contact', [ContactController::class, 'store']);
+
+// Public chatbot endpoint
+Route::post('/chatbot/message', [ChatbotController::class, 'reply'])
+    ->middleware('throttle:20,1');
 
 // Public browse endpoints
 Route::prefix('public')->group(function () {

@@ -1,22 +1,47 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../../contexts/AuthContext";
+import { ROLES } from "../../constants/roles";
+import { chatbotService } from "../../services/chatbotService";
+
+const MAX_HISTORY_MESSAGES = 10;
 
 const Chatbot = () => {
+  const { user } = useAuth();
+  const location = useLocation();
   const { t } = useTranslation();
+
+  const createBotMessage = (text) => ({
+    type: "bot",
+    text,
+    time: new Date().toLocaleTimeString("fr-FR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+  });
+
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    {
-      type: "bot",
-      text: t("chatbot.greeting"),
-      time: new Date().toLocaleTimeString("fr-FR", {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    },
+    createBotMessage(t("chatbot.greeting")),
   ]);
   const [inputMessage, setInputMessage] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
+
+  const resetConversation = () => {
+    setIsTyping(false);
+    setInputMessage("");
+    setMessages([createBotMessage(t("chatbot.greeting"))]);
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
+  };
+
+  const handleCloseChatbot = () => {
+    setIsOpen(false);
+  };
 
   const autoResizeTextarea = () => {
     if (!textareaRef.current) return;
@@ -33,15 +58,26 @@ const Chatbot = () => {
   }, [messages]);
 
   useEffect(() => {
+    if (location.pathname.startsWith("/dashboard")) {
+      setIsOpen(false);
+      resetConversation();
+    }
+  }, [location.pathname, t]);
+
+  useEffect(() => {
     const onEscape = (event) => {
-      if (event.key === "Escape") {
+      if (event.key === "Escape" && isOpen) {
         setIsOpen(false);
       }
     };
 
     window.addEventListener("keydown", onEscape);
     return () => window.removeEventListener("keydown", onEscape);
-  }, []);
+  }, [isOpen]);
+
+  if (user && user.role !== ROLES.CLIENT) {
+    return null;
+  }
 
   const handleSendMessage = (e) => {
     e.preventDefault();
@@ -56,27 +92,54 @@ const Chatbot = () => {
       }),
     };
 
+    const userText = inputMessage.trim();
+    const history = messages
+      .map((message) => ({
+        role: message.type === "user" ? "user" : "assistant",
+        content: message.text,
+      }))
+      .slice(-MAX_HISTORY_MESSAGES);
+
     setMessages([...messages, newMessage]);
     setInputMessage("");
+    setIsTyping(true);
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
     }
 
-    // Simulate bot response
-    setTimeout(() => {
-      const botResponse = getBotResponse(inputMessage);
-      setMessages((prev) => [
-        ...prev,
-        {
-          type: "bot",
-          text: botResponse,
-          time: new Date().toLocaleTimeString("fr-FR", {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        },
-      ]);
-    }, 1000);
+    chatbotService
+      .sendMessage(userText, history)
+      .then((response) => {
+        const botResponse = response?.data?.reply || getBotResponse(userText);
+        setMessages((prev) => [
+          ...prev,
+          {
+            type: "bot",
+            text: botResponse,
+            time: new Date().toLocaleTimeString("fr-FR", {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          },
+        ]);
+      })
+      .catch(() => {
+        const botResponse = getBotResponse(userText);
+        setMessages((prev) => [
+          ...prev,
+          {
+            type: "bot",
+            text: botResponse,
+            time: new Date().toLocaleTimeString("fr-FR", {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          },
+        ]);
+      })
+      .finally(() => {
+        setIsTyping(false);
+      });
   };
 
   const getBotResponse = (userMessage) => {
@@ -140,14 +203,14 @@ const Chatbot = () => {
       {isOpen && (
         <button
           aria-label={t("chatbot.closeButton")}
-          onClick={() => setIsOpen(false)}
+          onClick={handleCloseChatbot}
           className="fixed inset-0 z-40 bg-black/30 backdrop-blur-[2px] sm:hidden"
         />
       )}
 
       {/* Chat Button */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => setIsOpen(true)}
         aria-label={t("chatbot.openButton")}
         className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center group ${
           isOpen ? "scale-0" : "scale-100"
@@ -204,7 +267,7 @@ const Chatbot = () => {
             </div>
           </div>
           <button
-            onClick={() => setIsOpen(false)}
+            onClick={handleCloseChatbot}
             className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors"
           >
             <svg
@@ -252,6 +315,15 @@ const Chatbot = () => {
               </div>
             </div>
           ))}
+          {isTyping && (
+            <div className="flex justify-start">
+              <div className="max-w-[88%] sm:max-w-[80%] rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 bg-white text-gray-800 shadow-sm">
+                <p className="text-sm leading-relaxed break-words">
+                  {t("chatbot.typing")}
+                </p>
+              </div>
+            </div>
+          )}
           <div ref={messagesEndRef} />
         </div>
 
