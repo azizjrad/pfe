@@ -1,0 +1,58 @@
+\babel@toc {french}{}\relax 
+\addvspace {10\p@ }
+\contentsline {xchapter}{Étude de Projet}{3}{chapter.1}%
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Logo de Yes Internet}}{3}{figure.caption.8}%
+\contentsline {figure}{\numberline {1.2}{\ignorespaces Organigramme de Yes Internet}}{4}{figure.caption.9}%
+\contentsline {figure}{\numberline {1.3}{\ignorespaces Modèle de contrat de location de véhicule. \blx@tocontentsinit {0}\cite {modele-contrat-location-vehicule} }}{6}{figure.caption.10}%
+\contentsline {figure}{\numberline {1.4}{\ignorespaces Gestion de locations des voitures par Excel.\blx@tocontentsinit {0}\cite {gestion-de-location-par_excel}}}{7}{figure.caption.11}%
+\contentsline {figure}{\numberline {1.5}{\ignorespaces EDEO: Logiciel interne de gestion des locations.\blx@tocontentsinit {0}\cite {Logiciel_de_gestion_des_locations} }}{8}{figure.caption.12}%
+\contentsline {figure}{\numberline {1.6}{\ignorespaces Plateforme de locations des voitures en Tunisie.\blx@tocontentsinit {0}\cite {tunisiadrive_benefits} }}{8}{figure.caption.13}%
+\contentsline {figure}{\numberline {1.7}{\ignorespaces Aperçu des fonctionnalités de Rent Centric \blx@tocontentsinit {0}\cite {rc}}}{9}{figure.caption.14}%
+\contentsline {figure}{\numberline {1.8}{\ignorespaces Tableau de bord de HQ Rental Software. \blx@tocontentsinit {0}\cite {hq_features}}}{10}{figure.caption.15}%
+\contentsline {figure}{\numberline {1.9}{\ignorespaces Tableau de bord de VEVS Car Rental platform. \blx@tocontentsinit {0}\cite {vevs_features}}}{11}{figure.caption.16}%
+\contentsline {figure}{\numberline {1.10}{\ignorespaces Agile vs approches classiques}}{15}{figure.caption.18}%
+\contentsline {figure}{\numberline {1.11}{\ignorespaces Les caractéristiques du modèle Scrum}}{16}{figure.caption.19}%
+\contentsline {figure}{\numberline {1.12}{\ignorespaces Logo UML}}{17}{figure.caption.21}%
+\addvspace {10\p@ }
+\contentsline {xchapter}{Planification et architecture}{19}{chapter.2}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Diagramme de contexte statique}}{20}{figure.caption.22}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Diagramme de cas d'utilisation global}}{23}{figure.caption.23}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Les rôles Scrum}}{24}{figure.caption.24}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Sprint 1}}{27}{figure.caption.25}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces Sprint 2}}{27}{figure.caption.26}%
+\contentsline {figure}{\numberline {2.6}{\ignorespaces Diagramme de Gantt}}{28}{figure.caption.27}%
+\addvspace {10\p@ }
+\contentsline {xchapter}{Réalisation du premier sprint}{29}{chapter.3}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Sprint 1}}{29}{figure.caption.28}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Prototypage de l'interface d'inscription}}{31}{figure.caption.30}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Prototypage de l'interface "Utilisateur''}}{31}{figure.caption.31}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Diagramme de cas d'utilisation du premier sprint}}{32}{figure.caption.32}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Consulter actualités»}}{34}{figure.caption.34}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Diagramme de séquence système de cas d'utilisation «S'inscrire»}}{35}{figure.caption.36}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Diagramme de séquence système de cas d'utilisation «S'authentifier»}}{37}{figure.caption.38}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Interagir avec Chatbot»}}{39}{figure.caption.40}%
+\contentsline {figure}{\numberline {3.9}{\ignorespaces Raffinement du cas d'utilisation «Gérer profil»}}{39}{figure.caption.41}%
+\contentsline {figure}{\numberline {3.10}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Consulter profil»}}{40}{figure.caption.43}%
+\contentsline {figure}{\numberline {3.11}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Modifier mot de passe»}}{42}{figure.caption.45}%
+\contentsline {figure}{\numberline {3.12}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Modifier informations personnelles»}}{43}{figure.caption.47}%
+\contentsline {figure}{\numberline {3.13}{\ignorespaces Diagramme de séquence système du cas d'utilisation «Consulter voitures»}}{45}{figure.caption.49}%
+\contentsline {figure}{\numberline {3.14}{\ignorespaces Raffinement du cas d'utilisation «Consulter agences»}}{45}{figure.caption.50}%
+\contentsline {figure}{\numberline {3.15}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Ajouter agence»}}{47}{figure.caption.52}%
+\contentsline {figure}{\numberline {3.16}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Bloquer agences»}}{49}{figure.caption.54}%
+\contentsline {figure}{\numberline {3.17}{\ignorespaces Raffinement du cas d'utilisation «Consulter utilisateurs»}}{50}{figure.caption.55}%
+\contentsline {figure}{\numberline {3.18}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Ajouter utilisateur»}}{51}{figure.caption.57}%
+\contentsline {figure}{\numberline {3.19}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Bloquer/Débloquer utilisateur»}}{53}{figure.caption.59}%
+\contentsline {figure}{\numberline {3.20}{\ignorespaces Raffinement du cas d'utilisation «Gérer vitrine»}}{54}{figure.caption.60}%
+\contentsline {figure}{\numberline {3.21}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Consulter vitrine»}}{55}{figure.caption.62}%
+\contentsline {figure}{\numberline {3.22}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Ajouter vitrine»}}{56}{figure.caption.64}%
+\contentsline {figure}{\numberline {3.23}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Modifier infos voiture»}}{58}{figure.caption.66}%
+\contentsline {figure}{\numberline {3.24}{\ignorespaces Diagramme de classe du premier sprint}}{59}{figure.caption.67}%
+\contentsline {figure}{\numberline {3.25}{\ignorespaces Diagramme des classes participantes par acteur Internaute}}{61}{figure.caption.68}%
+\contentsline {figure}{\numberline {3.26}{\ignorespaces Diagramme des classes participantes par acteur Utilisateur}}{62}{figure.caption.69}%
+\contentsline {figure}{\numberline {3.27}{\ignorespaces Diagramme des classes participantes par acteur Client}}{63}{figure.caption.70}%
+\contentsline {figure}{\numberline {3.28}{\ignorespaces Diagramme des classes participantes par acteur Agence}}{64}{figure.caption.71}%
+\contentsline {figure}{\numberline {3.29}{\ignorespaces Diagramme des classes participantes par acteur Administrateur}}{65}{figure.caption.72}%
+\addvspace {10\p@ }
+\contentsline {xchapter}{Titre du chapitre}{67}{chapter.4}%
+\addvspace {10\p@ }
+\contentsline {xchapter}{Titre du chapitre}{69}{chapter.5}%

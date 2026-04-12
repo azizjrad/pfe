@@ -1,0 +1,142 @@
+% My Macros.........
+\def\fileversion{v1.2}
+\def\filedate{2000/10/02}
+\typeout{Style-File: MyMacros \fileversion\space<\filedate>}
+\typeout{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}{Lemma} [chapter]
+\newtheorem{corollary}{Corollary} [chapter]
+\newtheorem{definition}{Definition} [chapter]
+%\newtheorem{Defin}{Definition}
+\newtheorem{Prop}{Proposition}
+%\newtheorem{Theo}{Theorem}
+\newtheorem{Proof}{Proof}
+%\newtheorem{Lemma}{Lemma}
+\newtheorem{Corol}{Corollary}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newenvironment{proof}[1][0]%
+ { \if0#1\textit{Proof }\else\textit{Proof of #1 }\fi\nopagebreak}%
+ {\nopagebreak\qed }
+\RequirePackage{verbatim}
+\newenvironment{code}%
+  {\quote\small\verbatim}%
+  {\endverbatim\endquote}
+\newsavebox{\algobox}
+\newlength{\algolength}
+\newcommand{\myalgorule}[2]%
+  {\rule{#1}{#2}}  %schwarzer Balken!
+\newenvironment{function}[2]%
+{\begin{lrbox}{\algobox}\begin{minipage}[b]{\textwidth-30pt}\begin{tabbing}\
+
+textbf{Function} %
+   \textit{#1}(#2); \\}%
+  {\end{tabbing}\end{minipage}\end{lrbox}%
+  \settoheight{\algolength}{\usebox{\algobox}}
+  \hspace*{15pt}\myalgorule{2pt}{\algolength}\hspace*{13pt}\usebox{\algobox}
+}
+\newenvironment{algorithm}[1]%
+{\begin{lrbox}{\algobox}\begin{minipage}[b]{\textwidth-30pt}\textbf{Algorithm} %
+    \textit{#1} \\}%
+   {\end{minipage}\end{lrbox}%
+   \settoheight{\algolength}{\usebox{\algobox}}
+   \hspace*{15pt}\myalgorule{2pt}{\algolength}\hspace*{13pt}\usebox{\algobox
+}}
+
+\newenvironment{pseudoalgorithm}[1]%
+{\begin{lrbox}{\algobox}\begin{minipage}[b]{\textwidth-30pt}\textbf{Pseudo-Algorithm} %
+     \textit{#1}\begin{enumerate}\addtolength{\itemsep}{-0.7em}%
+     \def\headitem{\item[]}}%
+  {\end{enumerate}\end{minipage}\end{lrbox}%
+  \settoheight{\algolength}{\usebox{\algobox}}
+  \hspace*{15pt}\myalgorule{2pt}{\algolength}\hspace*{13pt}\usebox{\algobox}
+}
+\newtheorem{exmpl}{Example}[chapter]
+\newenvironment{example}[1]%
+  {\begin{exmpl} \upshape\textbf{#1} }%
+  {\nopagebreak\hfill\mbox{}\end{exmpl}}%mouna
+%  {\nopagebreak\hfill\mbox{$\blacksquare$}\end{exmpl}}%mouna
+
+\newenvironment{ideas}[0]
+   {\subparagraph{\textsf{Ideas to be developed:}}\begin{list}{-}{}\sf}{\end{list}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newenvironment{deflist}[2][\bf]%
+{\begin{list}{}%
+ {\settowidth{\labelwidth}{{#1 #2}}%
+ \setlength{\leftmargin}{\labelwidth}%
+ \addtolength{\leftmargin}{\labelsep}%
+ \renewcommand{\makelabel}[1]{#1 ##1\hfill}
+ }}
+{\end{list}}%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%PIlist, new version for using pifonts
+\RequirePackage{pifont}
+\newenvironment{pilist}[1][43]%
+{\begin{list}{\ding{#1}}%
+ {\settowidth{\labelwidth}{\ding{#1}}%
+ \setlength{\leftmargin}{\labelwidth}%
+ \addtolength{\leftmargin}{\labelsep}}}
+{\end{list}}%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%QED
+\def\sq{\hbox{\rlap{$\sqcap$}$\sqcup$}}
+\def\qed{\ifmmode\sq\else{\unskip\nobreak\hfil
+\penalty50\hskip1em\null\nobreak\hfil\sq
+\parfillskip=0pt\finalhyphendemerits=0\endgraf}\fi}
+\def\non{ \nonumber \\ }
+\def\nn{\sim\!\! }
+%%%%%%%%%%%%%%%%%%%%%%
+%figrule! + tabrule!
+\newsavebox{\myfigrule}
+\textwidth 145.0mm
+
+\savebox{\myfigrule}[\textwidth]{\rule{\textwidth}{1pt}}%mouna
+\renewenvironment{figure}[1][]%mouna
+               {\@float{figure}[#1] \usebox{\myfigrule}}%mouna
+               %\vspace*{-.0\textfloatsep} \usebox{\myfigrule} \vspace*{.0\textfloatsep}}
+               %{\usebox{\myfigrule} \vspace*{-.0\textfloatsep}
+               {\usebox{\myfigrule}     %mouna            
+               \end@float}%mouna
+\newenvironment{pagefigure}
+               {\@float{figure}[p]}
+               {\end@float}
+\renewenvironment{table}[1][]
+               {\@float{table}[#1]%
+                \vspace*{0.5\textfloatsep}\vspace*{.0\textfloatsep}}
+               {\vspace*{-.0\textfloatsep}
+               %\vspace*{0.5\textfloatsep}\usebox{\myfigrule}\vspace*{.0\textfloatsep}}
+               %{\usebox{\myfigrule}\vspace*{-.0\textfloatsep}
+                \end@float}
+\newenvironment{pagetable}
+               {\@float{table}[p]}
+               {\end@float}
+\newenvironment{narrow}[3]{%
+ \begin{list}{}{%
+   \setlength{\topsep}{0pt}%
+   \ifthenelse{\isodd{\pageref{#3}}}%
+      {\setlength{\leftmargin}{#1}%
+       \setlength{\rightmargin}{#2}}%
+      {\setlength{\leftmargin}{#2}%
+       \setlength{\rightmargin}{#1}}%
+   \setlength{\listparindent}{\parindent}%
+   \setlength{\itemindent}{\parindent}%
+   \setlength{\parsep}{\parskip}}%
+ \item[]}{\end{list}}
+\renewcommand{\floatpagefraction}{.6}%  voher: .5
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Big right arrows
+\catcode`\@=11
+\def\rightarrowfill{$\m@th \mathord- \mkern-6mu
+  \cleaders\hbox{$\mkern-2mu \mathord- \mkern-2mu$}\hfill
+  \mkern-6mu \mathord\rightarrow$}
+\catcode`\@=12
+%use:    \hbox to 5cm{\rightarrowfill}
+\def\mapup#1{\Big\uparrow
+  \rlap{$\vcenter{\hbox{$\scriptstyle #1$}}$}}
+\def\mapright#1#2{\smash{
+  \mathop{\hbox to #1{\rightarrowfill}}\limits^{#2}}}
+  
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

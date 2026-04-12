@@ -1,0 +1,137 @@
+%
+\documentclass[11pt,titlepage,a4paper]{book}
+
+\usepackage{calc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{graphicx,overpic}
+\usepackage{color}
+\usepackage{rotate} % so I can rotate tables
+\usepackage{epic} % graphical packages
+\usepackage{epsfig}
+\usepackage{multirow}
+\usepackage{caption}
+\captionsetup{format=plain}
+\usepackage{mychapter,mymacros}
+\usepackage{makeidx} % Provides commands for producing indexes.
+\usepackage[french]{babel}
+\usepackage{pdfpages}
+\usepackage{lscape}
+\input{PhS_Header}
+\usepackage{latexsym} %usefull To access the LATEX symbol font
+\usepackage{float}
+\usepackage{algorithm}
+\usepackage{minitoc}
+\dominitoc
+\setcounter{minitocdepth}{2}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{placeins}
+\usepackage[babel=true]{csquotes} % csquotes va utiliser la langue définie dans babel
+\usepackage{setspace}
+\usepackage{algorithmicx} % For algorithmicx extension
+\usepackage{hyperref}
+\usepackage{algpseudocode} % For algorithmic blocks
+\usepackage[table]{xcolor}  % For cell colors (\cellcolor command)
+\usepackage{amssymb}
+\usepackage{fancybox}
+\newtheorem{exmp}{Example}[section]
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tcolorbox}  % À mettre dans le préambule
+\usepackage{xcolor}     % À mettre dans le préambule
+\usepackage{verbatim}   % À mettre dans le préambule
+\setstretch{1.15}%Augmenter l'interligne
+\graphicspath{{figures/}}
+\definecolor{grisclair}{gray}{0.2}
+\definecolor{light-gary}{gray}{0.95}
+\definecolor{lgray}{gray}{0.85}
+\definecolor{gris}{gray}{0.45}
+\usepackage{array}      % pour centrer texte dans les colonnes p{}
+\usepackage{booktabs}   % pour top/mid/bottomrule
+\usepackage{tabularx}   % pour colonnes extensibles
+\usepackage{geometry}   % pour gérer marges
+\geometry{a4paper, margin=2cm}
+\usepackage{longtable}
+%%%%%%%%%%%%%%%%
+\usepackage[backend=biber,style=numeric]{biblatex}
+\addbibresource{Thesis-report.bib}   
+\addbibresource{webographie.bib}     % Webographie
+\oddsidemargin   10.0mm \evensidemargin 10.0mm
+\textheight 220.0mm
+\textwidth 145.0mm
+\newenvironment{remarque}{\textbf{Remark:}}{}
+\usepackage{titlesec}
+%%%%%%%%%%%%%%%%
+\usepackage{adjustbox}
+%%%%%%%%%%%%%% LES ESPACES ENTRES SECTIONS
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0pt}
+%%%%%%%%%%%%%%%%%
+\titlespacing*{\subsection}
+{0pt}
+{0.2ex}
+{0.3ex}
+%%%%%%%%%%%%%%%%%
+\titlespacing*{\subsubsection}
+{0pt}
+{0.2ex}
+{0.3ex}
+%%%%%%%%%%%%%%%%%%%%%%%%
+\titlespacing*{\section}
+{0pt}
+{0.2ex}
+{0.3ex}
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newlength{\longueurequation}
+\newlength{\longueurrestante}
+
+\newcommand{\me}[1]{%
+\longueurrestante=\linegoal%
+\settowidth{\longueurequation}{$#1$}%
+\ifthenelse{\longueurequation>\longueurrestante}{\begin{displaymath} #1 \end{displaymath}}{$#1$}%
+}
+\setlength\belowcaptionskip{0.25cm}
+
+\everymath{\displaystyle}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\includepdf{Chapitres/Page_garde_BC.pdf}%Utilisez le modèle de page de garde fourni dans le fichier word "Page_garde_BC". Ne modifiez que vos informations personnelles et celles de votre stage. Conservez la mise en page d'origine. Enregistrez le document final au format PDF. Si vous êtes en M2 DSSD, supprimez cette ligne.
+
+\thispagestyle{empty}
+\include{Chapitres/Declaration}
+\thispagestyle{empty}
+\include{Chapitres/dedication}
+\thispagestyle{empty}
+\include{Chapitres/Acknowledgements}
+\thispagestyle{empty}
+\include{Chapitres/Abstract}
+%\dominitoc
+\pagestyle{headings}
+\pagenumbering{roman}
+
+
+\tableofcontents 
+\listoftables 
+\thispagestyle{empty}
+\listoffigures
+\thispagestyle{empty}
+
+
+%%%%%%%%%%%%%%%%%%%
+\include{Chapitres/Notations}
+\pagenumbering{arabic}
+
+\include{Chapitres/Introduction}
+\include{Chapitres/Chapitre1}
+\include{Chapitres/Chapitre2}
+\include{Chapitres/Chapitre3}
+\include{Chapitres/Chapitre4}
+\include{Chapitres/Chapitre5}
+\include{Chapitres/Conclusion}
+\include{Chapitres/Webographie}
+\printbibliography[nottype=online, title=Bibliographie] % Pour la bibliographie
+\printbibliography[type=online, title=Webographie] %Pour la webographie
+
+\end{document}

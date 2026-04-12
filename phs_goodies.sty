@@ -1,0 +1,96 @@
+%=============================================================
+%
+%
+% The Latex Goodies used by Philippe Smets
+%
+%
+%=============================================================
+
+%
+% drawing Is_True
+
+\newcommand{\istrue}
+{\raisebox{.2ex}{\ensuremath{|}\hspace{-1.5pt}- }}
+%
+%=============================================================
+
+% getting omega and theta easily
+
+\newcommand{\Xo}{\omega}
+\newcommand{\XO}{\Omega}
+\newcommand{\Xt}{\theta}
+\newcommand{\XT}{\Theta}
+
+\newcommand{\Xse}{\subseteq}
+\newcommand{\Xes}{\emptyset}
+%=============================================================
+%
+% MATH
+\newcommand{\Real}{\mathbb R}
+\newcommand{\RPlus}{\Real^{+}}
+\newcommand{\norm}[1]{\left\Vert#1\right\Vert}
+\newcommand{\abs}[1]{\left\vert#1\right\vert}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\seq}[1]{\left<#1\right>}
+\newcommand{\To}{\longrightarrow}
+
+\newcommand{\Xproof}{\noindent\textbf{Proof. }}
+\newcommand{\Xendproof}{\hfill{$\Box$}\vspace{\baselineskip}}
+
+%=============================================================
+%
+% how to get ballooning extension is superscript
+
+\newcommand{\balext}{\raisebox{-.5ex}{\rotatebox{90}
+{\tiny $\multimap$}}}
+%
+%=============================================================
+%
+% a crazy command to build a cap cup vee wedge in a circle
+% the circle with cap, cup vee wedge for combination symbols
+% a TBM package of personalized  symbols
+%
+%
+% building small o with symbol for texts and index.
+%
+\newlength{\circleheight}%
+\newcommand{\owithx}[2]
+%  replace x by \cap \cup \vee \wedge \curlyvee \curlywedge
+{\settoheight{\circleheight}{\ensuremath{\scriptstyle\bigcirc}}%
+\raisebox{.2\circleheight}%
+{\makebox[0pt][l]{\hspace{#2pt}\ensuremath{\scriptscriptstyle#1}}%
+\ensuremath{\scriptstyle\bigcirc}}}
+%
+% building big o with symbol for equations.
+%
+\newcommand{\Owithx}[2]
+%  put x as \cap \cup \vee \wedge \curlyvee \curlywedge
+{\settoheight{\circleheight}{\ensuremath{\textstyle\bigcirc}}%
+\raisebox{.2\circleheight}%
+{\makebox[0pt][l]{\hspace{#2pt}\ensuremath{\scriptstyle#1}}%
+\ensuremath{\textstyle\bigcirc}}}
+%
+% list of indicidual calls, the real command you put in your text
+%
+\newcommand{\ocap}{\owithx{\cap}{1.6}}
+\newcommand{\ocup}{\owithx{\cup}{1.6}}
+\newcommand{\ovee}{\owithx{\vee}{1.6}}
+\newcommand{\owedge}{\owithx{\wedge}{1.6}}
+\newcommand{\ocurlyvee}{\owithx{\curlyvee}{1.5}}
+\newcommand{\ocurlywedge}{\owithx{\curlywedge}{1.5}}
+
+\newcommand{\Ocap}{\Owithx{\cap}{2.3}}
+\newcommand{\Ocup}{\Owithx{\cup}{2.3}}
+\newcommand{\Ovee}{\Owithx{\vee}{2.3}}
+\newcommand{\Owedge}{\Owithx{\wedge}{2.3}}
+\newcommand{\Ocurlyvee}{\Owithx{\curlyvee}{1.9}}
+\newcommand{\Ocurlywedge}{\Owithx{\curlywedge}{1.9}}
+%
+% end of commands for o/O with cap cup vee wedge
+%
+%=============================================================
+
+\newcommand{\Xpperp}{\perp\!\!\!\perp}
+
+
+

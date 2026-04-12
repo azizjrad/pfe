@@ -1,0 +1,85 @@
+\usepackage{PhS_Goodies}% a bunch of newcommands
+% packages pour les flotantes
+%=============================================================
+%
+% the packgaes that comes with Latex
+%
+\usepackage{latexsym}	   % get crazy symbols like Box, Diamond...
+\usepackage{ifthen}
+\usepackage{makeidx,amsmath, amssymb,  euscript, eufrak}
+ 
+	% beware eufrak MUST be after amssymb
+\usepackage{epsfig}   % to feed in figures in .eps mode
+\usepackage{array}    % to print nice matrices.
+%\usepackage{rotating} % so I can rotate tables
+\usepackage{graphics} % graphical packages
+%\usepackage{epic}
+\usepackage{calc} % in order to calculate values in \newcommand
+%
+%=============================================================
+
+
+%=============================================================
+%
+\vfuzz2pt % Don't report over-full v-boxes if over-edge is small
+\hfuzz2pt % Don't report over-full h-boxes if over-edge is small
+%
+%=============================================================
+
+% numbering paragraphs
+\newcounter{parnum}[section] % indexing paragraphs
+\newcommand{\Xnewpar}{\vspace{\baselineskip}\stepcounter{parnum}
+				\noindent\textbf{\theparnum.}}
+%=============================================================
+%
+
+\makeindex
+%
+%=============================================================
+
+
+%
+
+%=============================================================
+%
+% the packgaes that were created by author for author himself
+%
+
+\usepackage{PhSAbbreviations}
+%\usepackage{PhSEquations}
+
+%\usepackage{PhSDefinitions}
+%\usepackage{PhSTheorems}
+%
+%=============================================================
+
+
+
+%=============================================================
+%
+% setting all the counters
+% newtheorem implies italic
+%
+
+\newtheorem{axiom}{Axiom}[section]
+%\newtheorem{definition}{Definition}[section]
+%\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+
+
+%
+% newcounter keep normal characters
+%
+
+\newcounter{examplenum}[section]% indexing examples intra section
+
+\newcommand{\Xexample}[1]{\stepcounter{examplenum}
+\noindent \textbf{Example \thesection .\theexamplenum . #1}}
+%
+%=============================================================
+
+
+
+\usepackage{mychapter}
+\usepackage{ragged2e}
