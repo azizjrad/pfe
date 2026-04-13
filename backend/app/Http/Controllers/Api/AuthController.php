@@ -21,6 +21,47 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
+    private function cookieSecureFlag(): bool
+    {
+        $secure = config('session.secure');
+
+        if ($secure === null) {
+            return app()->environment('production');
+        }
+
+        return (bool) $secure;
+    }
+
+    private function withAuthCookie($response, string $token, int $minutes)
+    {
+        return $response->cookie(
+            'auth_token',
+            $token,
+            $minutes,
+            config('session.path', '/'),
+            config('session.domain'),
+            $this->cookieSecureFlag(),
+            true,
+            false,
+            (string) (config('session.same_site') ?? 'lax')
+        );
+    }
+
+    private function clearAuthCookie($response)
+    {
+        return $response->cookie(
+            'auth_token',
+            '',
+            -1,
+            config('session.path', '/'),
+            config('session.domain'),
+            $this->cookieSecureFlag(),
+            true,
+            false,
+            (string) (config('session.same_site') ?? 'lax')
+        );
+    }
+
     /**
      * Reset password using token (used by invite links)
      */
@@ -58,7 +99,7 @@ class AuthController extends Controller
             $user = $this->authService->register($validated);
             $token = $user->createToken('auth_token')->plainTextToken;
 
-            return response()->json([
+            return $this->withAuthCookie(response()->json([
                 'message' => 'Registration successful',
                 'user' => [
                     'id' => $user->id,
@@ -70,22 +111,11 @@ class AuthController extends Controller
                     'driver_license' => $user->driver_license,
                     'agency_id' => $user->agency_id,
                 ],
-            ], 201)->cookie(
-                'auth_token',
-                $token,
-                60 * 24 * 30,
-                '/',
-                null,
-                false,
-                true,
-                false,
-                'lax'
-            );
+            ], 201), $token, 60 * 24 * 30);
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Registration failed',
-                'error' => $e->getMessage(),
-            ], 422);
+            return $this->apiErrorResponse($e, 'Registration failed', 422, [
+                'action' => 'register',
+            ]);
         }
     }
 
@@ -107,7 +137,7 @@ class AuthController extends Controller
             $token = $result['token'];
             $cookieExpiration = $result['cookie_expiration'];
 
-            return response()->json([
+            return $this->withAuthCookie(response()->json([
                 'message' => 'Login successful',
                 'user' => [
                     'id' => $user->id,
@@ -125,17 +155,7 @@ class AuthController extends Controller
                     ] : null,
                     'client_score' => $user->reliabilityScore?->score ?? null,
                 ],
-            ])->cookie(
-                'auth_token',
-                $token,
-                $cookieExpiration,
-                '/',
-                null,
-                false,
-                true,
-                false,
-                'lax'
-            );
+            ]), $token, $cookieExpiration);
         } catch (\Exception $e) {
             throw ValidationException::withMessages([
                 'email' => [$e->getMessage()],
@@ -150,19 +170,9 @@ class AuthController extends Controller
     {
         $this->authService->logout($request->user());
 
-        return response()->json([
+        return $this->clearAuthCookie(response()->json([
             'message' => 'Logout successful',
-        ])->cookie(
-            'auth_token',
-            '',
-            -1,
-            '/',
-            null,
-            false,
-            true,
-            false,
-            'lax'
-        );
+        ]));
     }
 
     /**
@@ -225,10 +235,10 @@ class AuthController extends Controller
                 ],
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage(),
-                'errors' => ['current_password' => [$e->getMessage()]],
-            ], 422);
+            return $this->apiErrorResponse($e, 'Profile update failed', 422, [
+                'action' => 'update_profile',
+                'user_id' => $request->user()?->id,
+            ]);
         }
     }
 }

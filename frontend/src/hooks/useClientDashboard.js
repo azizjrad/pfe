@@ -12,6 +12,24 @@ const DEFAULT_CLIENT_STATS = {
   riskLabel: "Excellent",
 };
 
+const mapClientStats = (payload) => {
+  const data = payload || {};
+
+  return {
+    activeReservations: Number(
+      data.activeReservations ?? data.active_reservations ?? 0,
+    ),
+    completedReservations: Number(
+      data.completedReservations ?? data.completed_reservations ?? 0,
+    ),
+    totalSpend: Number(data.totalSpend ?? data.total_spent ?? 0),
+    reliabilityScore: Number(
+      data.reliabilityScore ?? data.reliability_score ?? 100,
+    ),
+    riskLabel: data.riskLabel ?? data.risk_level ?? "Excellent",
+  };
+};
+
 export default function useClientDashboard({ user, showToast }) {
   const { t } = useTranslation();
   const [clientStats, setClientStats] = useState(DEFAULT_CLIENT_STATS);
@@ -34,7 +52,7 @@ export default function useClientDashboard({ user, showToast }) {
   const fetchClientStats = async () => {
     try {
       const response = await clientService.getStats();
-      setClientStats(response?.data?.data || DEFAULT_CLIENT_STATS);
+      setClientStats(mapClientStats(response?.data?.data));
     } catch (error) {
       console.error("Error fetching client stats:", error);
       showToast?.(

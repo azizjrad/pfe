@@ -366,7 +366,7 @@ const Dashboard = () => {
           },
           {
             title: t("dashboard.stats.reliabilityScore.title"),
-            value: `${clientStats?.reliabilityScore ?? 0}%`,
+            value: `${clientStats?.reliabilityScore ?? 100}`,
             change: null,
             trend: "up",
             icon: "star",

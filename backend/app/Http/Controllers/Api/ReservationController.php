@@ -101,11 +101,9 @@ class ReservationController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-                'error' => config('app.debug') ? $e->getMessage() : null,
-            ], 422);
+            return $this->apiErrorResponse($e, 'Impossible de créer la réservation.', 422, [
+                'action' => 'reservation.store',
+            ]);
         }
     }
 
@@ -152,11 +150,10 @@ class ReservationController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-                'error' => config('app.debug') ? $e->getMessage() : null,
-            ], 422);
+            return $this->apiErrorResponse($e, 'Impossible de modifier la réservation.', 422, [
+                'action' => 'reservation.update',
+                'reservation_id' => $reservation->id,
+            ]);
         }
     }
 
@@ -188,11 +185,10 @@ class ReservationController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-                'error' => config('app.debug') ? $e->getMessage() : null,
-            ], 422);
+            return $this->apiErrorResponse($e, 'Impossible d\'annuler la réservation.', 422, [
+                'action' => 'reservation.cancel',
+                'reservation_id' => $reservation->id,
+            ]);
         }
     }
 
@@ -252,11 +248,10 @@ class ReservationController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-                'error' => config('app.debug') ? $e->getMessage() : null,
-            ], 422);
+            return $this->apiErrorResponse($e, 'Impossible de démarrer la réservation.', 422, [
+                'action' => 'reservation.pickup',
+                'reservation_id' => $reservation->id,
+            ]);
         }
     }
 
@@ -287,11 +282,10 @@ class ReservationController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-                'error' => config('app.debug') ? $e->getMessage() : null,
-            ], 422);
+            return $this->apiErrorResponse($e, 'Impossible de finaliser le retour du véhicule.', 422, [
+                'action' => 'reservation.return',
+                'reservation_id' => $reservation->id,
+            ]);
         }
     }
 }

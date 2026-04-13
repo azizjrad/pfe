@@ -26,14 +26,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Public authentication routes
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'register'])
+    ->middleware('throttle:5,1');
 Route::post('/login', [AuthController::class, 'login'])
     ->middleware('throttle:5,1');  // Rate limit: 5 attempts per minute (brute force protection)
 // Password reset (set password via token sent in invite/reset)
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 // Public contact form submission
-Route::post('/contact', [ContactController::class, 'store']);
+Route::post('/contact', [ContactController::class, 'store'])
+    ->middleware('throttle:5,1');
 
 // Public chatbot endpoint
 Route::post('/chatbot/message', [ChatbotController::class, 'reply'])

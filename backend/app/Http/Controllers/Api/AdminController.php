@@ -54,10 +54,9 @@ class AdminController extends Controller
                 'data' => $stats,
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
+            return $this->apiErrorResponse($e, 'Impossible de récupérer les statistiques du tableau de bord.', 500, [
+                'action' => 'admin.dashboard_stats',
+            ]);
         }
     }
 
@@ -74,10 +73,9 @@ class AdminController extends Controller
                 'data' => UserResource::collection($users),
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
+            return $this->apiErrorResponse($e, 'Impossible de récupérer les utilisateurs.', 500, [
+                'action' => 'admin.users.index',
+            ]);
         }
     }
 
@@ -94,10 +92,9 @@ class AdminController extends Controller
                 'data' => $agencies,
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
+            return $this->apiErrorResponse($e, 'Impossible de récupérer les agences.', 500, [
+                'action' => 'admin.agencies.index',
+            ]);
         }
     }
 
@@ -114,10 +111,9 @@ class AdminController extends Controller
                 'data' => $stats,
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
+            return $this->apiErrorResponse($e, 'Impossible de récupérer les statistiques financières.', 500, [
+                'action' => 'admin.financial_stats',
+            ]);
         }
     }
 
@@ -134,10 +130,12 @@ class AdminController extends Controller
                 'data' => new UserResource($user),
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], in_array($e->getCode(), [404]) ? 404 : 500);
+            return $this->apiErrorResponse(
+                $e,
+                'Impossible de récupérer les détails utilisateur.',
+                in_array($e->getCode(), [404]) ? 404 : 500,
+                ['action' => 'admin.users.show', 'target_user_id' => $id]
+            );
         }
     }
 
@@ -187,10 +185,9 @@ class AdminController extends Controller
                 'data' => new UserResource($user),
             ], 201);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 400);
+            return $this->apiErrorResponse($e, 'Impossible de créer l\'utilisateur.', 400, [
+                'action' => 'admin.users.create',
+            ]);
         }
     }
 
@@ -209,10 +206,10 @@ class AdminController extends Controller
                 'message' => 'User suspended successfully',
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 400);
+            return $this->apiErrorResponse($e, 'Impossible de suspendre cet utilisateur.', 400, [
+                'action' => 'admin.users.suspend',
+                'target_user_id' => $id,
+            ]);
         }
     }
 
@@ -229,10 +226,10 @@ class AdminController extends Controller
                 'message' => 'User unsuspended successfully',
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 404);
+            return $this->apiErrorResponse($e, 'Impossible de réactiver cet utilisateur.', 404, [
+                'action' => 'admin.users.unsuspend',
+                'target_user_id' => $id,
+            ]);
         }
     }
 
@@ -249,10 +246,12 @@ class AdminController extends Controller
                 'message' => 'User deleted successfully',
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], in_array($e->getCode(), [400, 404]) ? $e->getCode() : 500);
+            return $this->apiErrorResponse(
+                $e,
+                'Impossible de supprimer cet utilisateur.',
+                in_array($e->getCode(), [400, 404]) ? $e->getCode() : 500,
+                ['action' => 'admin.users.delete', 'target_user_id' => $id]
+            );
         }
     }
 
@@ -271,10 +270,12 @@ class AdminController extends Controller
                 'data' => new UserResource($user),
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], in_array($e->getCode(), [400,404]) ? $e->getCode() : 400);
+            return $this->apiErrorResponse(
+                $e,
+                'Impossible de mettre à jour cet utilisateur.',
+                in_array($e->getCode(), [400,404]) ? $e->getCode() : 400,
+                ['action' => 'admin.users.update', 'target_user_id' => $id]
+            );
         }
     }
 
@@ -303,10 +304,12 @@ class AdminController extends Controller
                 'data' => new AgencyResource($agency),
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], in_array($e->getCode(), [400,404]) ? $e->getCode() : 400);
+            return $this->apiErrorResponse(
+                $e,
+                'Impossible de mettre à jour cette agence.',
+                in_array($e->getCode(), [400,404]) ? $e->getCode() : 400,
+                ['action' => 'admin.agencies.update', 'agency_id' => $id]
+            );
         }
     }
 
@@ -334,10 +337,9 @@ class AdminController extends Controller
                 'data' => new AgencyResource($agency),
             ], 201);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 400);
+            return $this->apiErrorResponse($e, 'Impossible de créer l\'agence.', 400, [
+                'action' => 'admin.agencies.create',
+            ]);
         }
     }
 
@@ -354,10 +356,10 @@ class AdminController extends Controller
                 'data' => new AgencyResource($agency),
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 404);
+            return $this->apiErrorResponse($e, 'Impossible de récupérer les détails de l\'agence.', 404, [
+                'action' => 'admin.agencies.show',
+                'agency_id' => $id,
+            ]);
         }
     }
 
@@ -378,10 +380,10 @@ class AdminController extends Controller
                 'data' => VehicleResource::collection($vehicles),
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 404);
+            return $this->apiErrorResponse($e, 'Impossible de récupérer les véhicules de l\'agence.', 404, [
+                'action' => 'admin.agencies.vehicles',
+                'agency_id' => $id,
+            ]);
         }
     }
 
@@ -412,10 +414,10 @@ class AdminController extends Controller
                 'message' => 'Agency deleted successfully',
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 404);
+            return $this->apiErrorResponse($e, 'Impossible de supprimer cette agence.', 404, [
+                'action' => 'admin.agencies.delete',
+                'agency_id' => $id,
+            ]);
         }
     }
 }

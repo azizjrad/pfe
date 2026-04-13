@@ -12,6 +12,7 @@ const Chatbot = () => {
   const location = useLocation();
   const { t } = useTranslation();
   const isAuthPage = ["/login", "/register"].includes(location.pathname);
+  const isDashboardPage = location.pathname.startsWith("/dashboard");
 
   const createBotMessage = (text) => ({
     type: "bot",
@@ -77,7 +78,7 @@ const Chatbot = () => {
     return () => window.removeEventListener("keydown", onEscape);
   }, [isOpen]);
 
-  if (isAuthPage || (user && user.role !== ROLES.CLIENT)) {
+  if (isAuthPage || isDashboardPage || (user && user.role !== ROLES.CLIENT)) {
     return null;
   }
 
