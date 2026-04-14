@@ -1,32 +1,32 @@
 [0] Config.pm:328> INFO - This is Biber 2.21
 [0] Config.pm:331> INFO - Logfile is 'Thesis-report.blg'
-[189] biber-MSWIN64:342> INFO - === 
-[250] Biber.pm:421> INFO - Reading 'Thesis-report.bcf'
-[426] Biber.pm:1002> INFO - Found 22 citekeys in bib section 0
-[447] Biber.pm:4487> INFO - Processing section 0
-[463] Biber.pm:4678> INFO - Looking for bibtex file 'Thesis-report.bib' for section 0
-[558] bibtex.pm:1713> INFO - LaTeX decoding ...
-[591] bibtex.pm:1519> INFO - Found BibTeX data source 'Thesis-report.bib'
-[619] Biber.pm:4678> INFO - Looking for bibtex file 'webographie.bib' for section 0
-[713] bibtex.pm:1713> INFO - LaTeX decoding ...
-[746] bibtex.pm:1519> INFO - Found BibTeX data source 'webographie.bib'
-[900] UCollate.pm:68> INFO - Overriding locale 'fr-FR' defaults 'variable = shifted' with 'variable = non-ignorable'
-[900] UCollate.pm:68> INFO - Overriding locale 'fr-FR' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[900] Biber.pm:4307> INFO - Sorting list 'nty/global//global/global/global' of type 'entry' with template 'nty' and locale 'fr-FR'
-[900] Biber.pm:4313> INFO - No sort tailoring available for locale 'fr-FR'
-[928] bbl.pm:676> INFO - Writing 'Thesis-report.bbl' with encoding 'UTF-8'
-[942] bbl.pm:779> INFO - Output to Thesis-report.bbl
-[942] Biber.pm:132> WARN - online entry 'yesinternet' (webographie.bib): Invalid format '6 mars 2026' of date field 'urldate' - ignoring
-[943] Biber.pm:132> WARN - legacy year field 's.d.' in entry 'scribd_contrat_standard' is not an integer - this will probably not sort properly.
-[943] Biber.pm:132> WARN - legacy year field 's.d.' in entry 'youtube_excel_gestion' is not an integer - this will probably not sort properly.
-[943] Biber.pm:132> WARN - online entry 'hq_features' (webographie.bib): Invalid format '2026-04-0' of date field 'urldate' - ignoring
-[943] Biber.pm:132> WARN - legacy year field 's.d.' in entry 'drivotunisie' is not an integer - this will probably not sort properly.
-[943] Biber.pm:132> WARN - online entry 'journaldunet' (webographie.bib): Invalid format '3 avril 2026' of date field 'urldate' - ignoring
-[943] Biber.pm:132> WARN - online entry 'atlassian' (webographie.bib): Invalid format '3 avril 2026' of date field 'urldate' - ignoring
-[943] Biber.pm:132> WARN - online entry 'scrum' (webographie.bib): Invalid format '3 avril 2026' of date field 'urldate' - ignoring
-[943] Biber.pm:132> WARN - online entry 'uml' (webographie.bib): Invalid format '9 avril 2026' of date field 'urldate' - ignoring
-[943] Biber.pm:132> WARN - online entry 'ittrip' (webographie.bib): Invalid format '8 avril 2026' of date field 'urldate' - ignoring
-[943] Biber.pm:132> WARN - online entry 'ISO' (webographie.bib): Invalid format '10 avril 2026' of date field 'urldate' - ignoring
-[943] Biber.pm:132> WARN - online entry 'Lucidchart' (webographie.bib): Invalid format '4 avril 2026' of date field 'urldate' - ignoring
-[943] Biber.pm:132> WARN - online entry 'stackoverflow' (webographie.bib): Invalid format '12 avril 2026' of date field 'urldate' - ignoring
-[943] Biber.pm:134> INFO - WARNINGS: 13
+[180] biber-MSWIN64:342> INFO - === 
+[253] Biber.pm:421> INFO - Reading 'Thesis-report.bcf'
+[450] Biber.pm:1002> INFO - Found 22 citekeys in bib section 0
+[467] Biber.pm:4487> INFO - Processing section 0
+[491] Biber.pm:4678> INFO - Looking for bibtex file 'Thesis-report.bib' for section 0
+[636] bibtex.pm:1713> INFO - LaTeX decoding ...
+[650] bibtex.pm:1519> INFO - Found BibTeX data source 'Thesis-report.bib'
+[662] Biber.pm:4678> INFO - Looking for bibtex file 'webographie.bib' for section 0
+[772] bibtex.pm:1713> INFO - LaTeX decoding ...
+[823] bibtex.pm:1519> INFO - Found BibTeX data source 'webographie.bib'
+[1098] UCollate.pm:68> INFO - Overriding locale 'fr-FR' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1098] UCollate.pm:68> INFO - Overriding locale 'fr-FR' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1099] Biber.pm:4307> INFO - Sorting list 'nty/global//global/global/global' of type 'entry' with template 'nty' and locale 'fr-FR'
+[1099] Biber.pm:4313> INFO - No sort tailoring available for locale 'fr-FR'
+[1146] bbl.pm:676> INFO - Writing 'Thesis-report.bbl' with encoding 'UTF-8'
+[1182] bbl.pm:779> INFO - Output to Thesis-report.bbl
+[1182] Biber.pm:132> WARN - online entry 'yesinternet' (webographie.bib): Invalid format '6 mars 2026' of date field 'urldate' - ignoring
+[1182] Biber.pm:132> WARN - legacy year field 's.d.' in entry 'scribd_contrat_standard' is not an integer - this will probably not sort properly.
+[1182] Biber.pm:132> WARN - legacy year field 's.d.' in entry 'youtube_excel_gestion' is not an integer - this will probably not sort properly.
+[1183] Biber.pm:132> WARN - online entry 'hq_features' (webographie.bib): Invalid format '2026-04-0' of date field 'urldate' - ignoring
+[1183] Biber.pm:132> WARN - legacy year field 's.d.' in entry 'drivotunisie' is not an integer - this will probably not sort properly.
+[1183] Biber.pm:132> WARN - online entry 'journaldunet' (webographie.bib): Invalid format '3 avril 2026' of date field 'urldate' - ignoring
+[1183] Biber.pm:132> WARN - online entry 'atlassian' (webographie.bib): Invalid format '3 avril 2026' of date field 'urldate' - ignoring
+[1183] Biber.pm:132> WARN - online entry 'scrum' (webographie.bib): Invalid format '3 avril 2026' of date field 'urldate' - ignoring
+[1183] Biber.pm:132> WARN - online entry 'uml' (webographie.bib): Invalid format '9 avril 2026' of date field 'urldate' - ignoring
+[1183] Biber.pm:132> WARN - online entry 'ittrip' (webographie.bib): Invalid format '8 avril 2026' of date field 'urldate' - ignoring
+[1183] Biber.pm:132> WARN - online entry 'ISO' (webographie.bib): Invalid format '10 avril 2026' of date field 'urldate' - ignoring
+[1183] Biber.pm:132> WARN - online entry 'Lucidchart' (webographie.bib): Invalid format '4 avril 2026' of date field 'urldate' - ignoring
+[1183] Biber.pm:132> WARN - online entry 'stackoverflow' (webographie.bib): Invalid format '12 avril 2026' of date field 'urldate' - ignoring
+[1183] Biber.pm:134> INFO - WARNINGS: 13

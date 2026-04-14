@@ -1,49 +1,103 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Titre du chapitre}
+\chapter{Réalisation du deuxième sprint}
 \label{Chapitre_4}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
-\label{Introduction}
+\label{Introduction_Chapitre_4}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-N'oubliez pas d'introduire tous vos chapitres.
-
-
-
-
+Suite à la finalisation du premier sprint, cette section présente la mise en œuvre du deuxième, en respectant la méthodologie adoptée : décomposition des activités, examen critique, développement et vérification des fonctionnalités programmées.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Section 1}
-\label{section4.2}
+\section{Planification du sprint 2}
+\label{sec:planification_sprint2}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ldots
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Sous-section 1}
-\label{section4.2.1}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ldots
-
-
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Chapitres/Figures/Planification_sprint_2.png}
+    \caption{Sprint 2}
+    \label{fig:planning_sprint2}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Sous-section 2}
-\label{section4.2.2}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ldots
+\newpage
+\section{Backlog produit du deuxième sprint}
+\label{sec:backlog_sprint2}
 
+\begin{table}[H]
+\centering
+\caption{Backlog produit du deuxième sprint}
+\label{tab:backlog-sprint2}
+\renewcommand{\arraystretch}{1.4}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|c|l|c|p{4cm}|p{5cm}|}
+\hline
+\textbf{Acteur} & \textbf{US} & \textbf{Thème} & \textbf{ID tâche} & \textbf{User Story} & \textbf{Tâche} \\
+\hline
 
+\multirow{6}{*}{Client}
+& US10 & Réservations & 10.1 
+& Effectuer une réservation afin de louer un véhicule
+& Rédiger les spécifications et diagrammes du cas « Réserver ». \\
+\cline{6-6}
+& & & & & Implémenter la réservation. \\
+\cline{6-6}
+& & & & & Tester et valider. \\
+\cline{2-6}
 
+& US11 & Réservations & 11.1 
+& Consulter les réservations en cours afin de suivre leur état
+& Implémenter la consultation des réservations. \\
+\cline{6-6}
+& & & & & Tester. \\
+\cline{2-6}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Section 2}
-\label{Section4.3}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ldots
+& US09 & Score client & 9.1 
+& Voir mon score afin de connaître mon indice de fiabilité
+& Implémenter l'affichage du score. \\
+\cline{6-6}
+& & & & & Tester. \\
+\hline
 
+\multirow{6}{*}{Agence}
+& US13 & Réservations & 13.1 
+& Traiter les réservations et réclamations afin de gérer les demandes clients
+& Implémenter le traitement des réservations. \\
+\cline{6-6}
+& & & & & Implémenter la gestion des réclamations. \\
+\cline{6-6}
+& & & & & Tester. \\
+\cline{2-6}
 
+& US14 & Statistiques & 14.1 
+& Consulter les statistiques afin d'analyser les performances
+& Implémenter l'affichage des statistiques. \\
+\cline{6-6}
+& & & & & Tester. \\
+\hline
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Conclusion}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-N'oubliez pas de conclure vos chapitres et de faire le lien avec le chapitre suivant.
+\multirow{6}{*}{Administrateur}
+& US17 & Messages & 17.1 
+& Gérer les messages afin de consulter et répondre aux utilisateurs
+& Implémenter la gestion des messages. \\
+\cline{6-6}
+& & & & & Tester. \\
+\cline{2-6}
+
+& US18 & Statistiques globales & 18.1 
+& Consulter les statistiques globales afin d'analyser les performances du système
+& Implémenter l'affichage des statistiques globales. \\
+\cline{6-6}
+& & & & & Tester. \\
+\hline
+
+\multirow{3}{*}{Utilisateur}
+& US04 & Support & 4.1 
+& Contacter l'administrateur afin d'obtenir plus d’informations
+& Implémenter le formulaire de contact. \\
+\cline{6-6}
+& & & & & Tester l'envoi. \\
+\hline
+
+\end{tabular}%
+}
+\end{table}

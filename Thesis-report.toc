@@ -73,13 +73,10 @@
 \contentsline {subsection}{\numberline {3.14.3}Diagramme des classes participantes par acteur "Agence''}{64}{subsection.3.14.3}%
 \contentsline {subsection}{\numberline {3.14.4}Diagramme des classes participantes par acteur "Administrateur''}{65}{subsection.3.14.4}%
 \contentsline {section}{\numberline {3.15}Conclusion}{65}{section.3.15}%
-\contentsline {chapter}{\numberline {4}Titre du chapitre}{67}{chapter.4}%
+\contentsline {chapter}{\numberline {4}Réalisation du deuxième sprint}{67}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Introduction}{67}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Section 1}{67}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Sous-section 1}{67}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}Sous-section 2}{67}{subsection.4.2.2}%
-\contentsline {section}{\numberline {4.3}Section 2}{67}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Conclusion}{67}{section.4.4}%
+\contentsline {section}{\numberline {4.2}Planification du sprint 2}{67}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Backlog produit du deuxième sprint}{68}{section.4.3}%
 \contentsline {chapter}{\numberline {5}Titre du chapitre}{69}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Introduction}{69}{section.5.1}%
 \contentsline {section}{\numberline {5.2}Section 1}{69}{section.5.2}%
@@ -87,4 +84,4 @@
 \contentsline {subsection}{\numberline {5.2.2}Sous-section 2}{69}{subsection.5.2.2}%
 \contentsline {section}{\numberline {5.3}Section 2}{69}{section.5.3}%
 \contentsline {section}{\numberline {5.4}Conclusion}{69}{section.5.4}%
-\contentsline {chapter}{Conclusion}{71}{chapter*.73}%
+\contentsline {chapter}{Conclusion}{71}{chapter*.75}%

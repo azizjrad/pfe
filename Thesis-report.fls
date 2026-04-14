@@ -1384,6 +1384,13 @@ OUTPUT Chapitres\Chapitre4.aux
 INPUT .\Chapitres\Chapitre4.tex
 INPUT .\Chapitres\Chapitre4.tex
 INPUT Chapitres\Chapitre4.tex
+INPUT .\Chapitres\Figures\Planification_sprint_2.png
+INPUT .\Chapitres\Figures\Planification_sprint_2.png
+INPUT .\Chapitres\Figures\Planification_sprint_2.png
+INPUT .\Chapitres\Figures\Planification_sprint_2.png
+INPUT .\Chapitres\Figures\Planification_sprint_2.png
+INPUT .\Chapitres\Figures\Planification_sprint_2.png
+INPUT .\Chapitres\Figures\Planification_sprint_2.png
 INPUT .\Chapitres\Chapitre5.tex
 INPUT .\Chapitres\Chapitre5.tex
 OUTPUT Chapitres\Chapitre5.aux
