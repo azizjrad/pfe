@@ -5,13 +5,13 @@ import http from "./http";
  */
 export const reservationService = {
   /** Get all reservations (admin use) */
-  getAll: () => http.get("/admin/reservations"),
+  getAll: (params = {}) => http.get("/admin/reservations", { params }),
 
   /** Get reservations for the authenticated client */
-  getMy: () => http.get("/my-reservations"),
+  getMy: (params = {}) => http.get("/my-reservations", { params }),
 
   /** Get reservations for the authenticated agency */
-  getAgency: () => http.get("/agency/reservations"),
+  getAgency: (params = {}) => http.get("/agency/reservations", { params }),
 
   /** Get a single reservation by ID */
   getById: (id) => http.get(`/reservations/${id}`),

@@ -5,7 +5,7 @@ import http from "./http";
  */
 export const vehicleService = {
   /** Get all vehicles */
-  getAll: () => http.get("/vehicles"),
+  getAll: (params = {}) => http.get("/vehicles", { params }),
 
   /** Get a single vehicle by ID */
   getById: (id) => http.get(`/vehicles/${id}`),

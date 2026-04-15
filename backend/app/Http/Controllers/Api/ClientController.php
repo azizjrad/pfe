@@ -28,10 +28,10 @@ class ClientController extends Controller
                 'data' => $stats,
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
+            return $this->apiErrorResponse($e, 'Impossible de recuperer les statistiques client.', 500, [
+                'action' => 'client.stats',
+                'user_id' => $request->user()?->id,
+            ]);
         }
     }
 
@@ -41,17 +41,19 @@ class ClientController extends Controller
     public function getNotifications(Request $request)
     {
         try {
-            $notifications = $this->clientService->getNotifications($request->user());
+            $perPage = $this->resolvePerPage($request, 20, 100);
+            $notifications = $this->clientService->getNotifications($request->user(), $perPage);
 
             return response()->json([
                 'success' => true,
-                'data'    => $notifications,
+                'data'    => $notifications->items(),
+                'pagination' => $this->paginationMeta($notifications),
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
+            return $this->apiErrorResponse($e, 'Impossible de recuperer les notifications.', 500, [
+                'action' => 'client.notifications.index',
+                'user_id' => $request->user()?->id,
+            ]);
         }
     }
 
@@ -73,10 +75,11 @@ class ClientController extends Controller
                 ],
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
+            return $this->apiErrorResponse($e, 'Impossible de marquer la notification comme lue.', 500, [
+                'action' => 'client.notifications.mark_read',
+                'user_id' => $request->user()?->id,
+                'notification_id' => $id,
+            ]);
         }
     }
 
@@ -96,10 +99,10 @@ class ClientController extends Controller
                 ],
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
+            return $this->apiErrorResponse($e, 'Impossible de marquer toutes les notifications comme lues.', 500, [
+                'action' => 'client.notifications.mark_all_read',
+                'user_id' => $request->user()?->id,
+            ]);
         }
     }
 }

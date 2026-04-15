@@ -41,10 +41,10 @@ class AgencyController extends Controller
                 'data' => $stats,
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 400);
+            return $this->apiErrorResponse($e, 'Impossible de recuperer les statistiques de l\'agence.', 400, [
+                'action' => 'agency.stats',
+                'agency_id' => $user->agency_id,
+            ]);
         }
     }
 
@@ -73,10 +73,10 @@ class AgencyController extends Controller
                 'data' => $stats,
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 400);
+            return $this->apiErrorResponse($e, 'Impossible de recuperer les statistiques financieres de l\'agence.', 400, [
+                'action' => 'agency.financial_stats',
+                'agency_id' => $user->agency_id,
+            ]);
         }
     }
 }

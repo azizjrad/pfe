@@ -14,8 +14,8 @@ export const contactService = {
   },
 
   /** Get all contact messages (super admin only) */
-  getAll: async () => {
-    const response = await http.get("/admin/contact-messages");
+  getAll: async (params = {}) => {
+    const response = await http.get("/admin/contact-messages", { params });
     return response.data;
   },
 

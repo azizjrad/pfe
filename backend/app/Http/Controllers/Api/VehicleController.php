@@ -27,19 +27,18 @@ class VehicleController extends Controller
         $this->authorize('viewAny', Vehicle::class);
 
         $user = $request->user();
+        $perPage = $this->resolvePerPage($request, 25, 100);
 
         // Determine which vehicles to fetch based on role
         $agencyId = $user->isAgencyAdmin() ? $user->agency_id : null;
-        $vehicles = $this->vehicleService->getAll($agencyId);
-
-        // Filter for clients - only available vehicles
-        if ($user->isClient()) {
-            $vehicles = $vehicles->filter(fn($v) => $v->status === 'available')->values();
-        }
+        $status = $user->isClient() ? 'available' : null;
+        $vehicles = $this->vehicleService->getAll($agencyId, $perPage, $status)
+            ->appends($request->query());
 
         return response()->json([
             'success' => true,
-            'data' => VehicleResource::collection($vehicles),
+            'data' => VehicleResource::collection($vehicles->items()),
+            'pagination' => $this->paginationMeta($vehicles),
         ]);
     }
 
@@ -57,10 +56,10 @@ class VehicleController extends Controller
                 'data' => new VehicleResource($vehicle),
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 404);
+            return $this->apiErrorResponse($e, 'Vehicule introuvable.', 404, [
+                'action' => 'vehicles.show',
+                'vehicle_id' => $id,
+            ]);
         }
     }
 
@@ -83,10 +82,10 @@ class VehicleController extends Controller
                 'data' => new VehicleResource($vehicle),
             ], 201);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 422);
+            return $this->apiErrorResponse($e, 'Impossible de creer le vehicule.', 422, [
+                'action' => 'vehicles.store',
+                'agency_id' => $user->agency_id,
+            ]);
         }
     }
 
@@ -109,10 +108,12 @@ class VehicleController extends Controller
                 'data' => new VehicleResource($vehicle),
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], in_array($e->getCode(), [403, 404]) ? $e->getCode() : 422);
+            $status = in_array((int) $e->getCode(), [403, 404], true) ? (int) $e->getCode() : 422;
+
+            return $this->apiErrorResponse($e, 'Impossible de mettre a jour le vehicule.', $status, [
+                'action' => 'vehicles.update',
+                'vehicle_id' => $id,
+            ]);
         }
     }
 
@@ -132,10 +133,12 @@ class VehicleController extends Controller
                 'message' => 'Vehicle deleted successfully',
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], in_array($e->getCode(), [403, 404, 400]) ? $e->getCode() : 422);
+            $status = in_array((int) $e->getCode(), [403, 404, 400], true) ? (int) $e->getCode() : 422;
+
+            return $this->apiErrorResponse($e, 'Impossible de supprimer le vehicule.', $status, [
+                'action' => 'vehicles.destroy',
+                'vehicle_id' => $id,
+            ]);
         }
     }
 }

@@ -11,14 +11,14 @@ export const adminService = {
   },
 
   /** Get all agencies with their statistics */
-  getAgencies: async () => {
+  getAgencies: async (params = {}) => {
     // Try admin endpoint first; if missing, fall back to public agencies
     try {
-      const response = await http.get("/admin/agencies");
+      const response = await http.get("/admin/agencies", { params });
       return response.data;
     } catch (err) {
       if (err.response?.status === 404) {
-        const resp = await http.get("/public/agencies");
+        const resp = await http.get("/public/agencies", { params });
         return resp.data;
       }
       throw err;
@@ -26,8 +26,8 @@ export const adminService = {
   },
 
   /** Get all users */
-  getUsers: async () => {
-    const response = await http.get("/admin/users");
+  getUsers: async (params = {}) => {
+    const response = await http.get("/admin/users", { params });
     return response.data;
   },
 
@@ -114,8 +114,10 @@ export const adminService = {
   },
 
   /** Get all vehicles for a specific agency */
-  getAgencyVehicles: async (agencyId) => {
-    const response = await http.get(`/admin/agencies/${agencyId}/vehicles`);
+  getAgencyVehicles: async (agencyId, params = {}) => {
+    const response = await http.get(`/admin/agencies/${agencyId}/vehicles`, {
+      params,
+    });
     return response.data;
   },
 };

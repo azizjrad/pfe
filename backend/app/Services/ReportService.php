@@ -10,7 +10,7 @@ class ReportService
     /**
      * Get all reports (active)
      */
-    public function getAll(array $filters = [])
+    public function getAll(array $filters = [], int $perPage = 25)
     {
         $query = Report::whereNull('deleted_at');
 
@@ -24,31 +24,31 @@ class ReportService
 
         return $query->with('reportedBy')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate($perPage);
     }
 
     /**
      * Get reports for a specific agency
      */
-    public function getAgencyReports(int $agencyId)
+    public function getAgencyReports(int $agencyId, int $perPage = 25)
     {
         return Report::whereNull('deleted_at')
             ->where('report_type', 'agency')
             ->where('target_id', $agencyId)
             ->with('reportedBy')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate($perPage);
     }
 
     /**
      * Get soft-deleted (trashed) reports
      */
-    public function getTrashed()
+    public function getTrashed(int $perPage = 25)
     {
         return Report::whereNotNull('deleted_at')
             ->with('reportedBy')
             ->orderBy('deleted_at', 'desc')
-            ->get();
+            ->paginate($perPage);
     }
 
     /**

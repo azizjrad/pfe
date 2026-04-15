@@ -50,7 +50,7 @@ class AdminService
     /**
      * Get all users with optional filtering
      */
-    public function getUsers(array $filters = [])
+    public function getUsers(array $filters = [], int $perPage = 25)
     {
         $query = User::with('agency', 'reliabilityScore');
 
@@ -67,7 +67,7 @@ class AdminService
             });
         }
 
-        return $query->orderBy('created_at', 'desc')->get();
+        return $query->orderBy('created_at', 'desc')->paginate($perPage);
     }
 
     /**
@@ -187,25 +187,17 @@ class AdminService
         }
 
         $vehicleCount = $agency->vehicles()->count();
-        $totalReservations = $agency->vehicles()
-            ->with('reservations')
-            ->get()
-            ->flatMap->reservations
-            ->count();
+        $totalReservations = Reservation::whereHas('vehicle', function ($query) use ($agencyId) {
+            $query->where('agency_id', $agencyId);
+        })->count();
 
-        $completedReservations = $agency->vehicles()
-            ->with('reservations')
-            ->get()
-            ->flatMap->reservations
-            ->where('status', 'completed')
-            ->count();
+        $completedReservations = Reservation::whereHas('vehicle', function ($query) use ($agencyId) {
+            $query->where('agency_id', $agencyId);
+        })->where('status', 'completed')->count();
 
-        $totalRevenue = $agency->vehicles()
-            ->with('reservations')
-            ->get()
-            ->flatMap->reservations
-            ->where('status', 'completed')
-            ->sum('total_price');
+        $totalRevenue = Reservation::whereHas('vehicle', function ($query) use ($agencyId) {
+            $query->where('agency_id', $agencyId);
+        })->where('status', 'completed')->sum('total_price');
 
         return [
             'agency' => $agency,
@@ -221,11 +213,13 @@ class AdminService
     /**
      * Get list of agencies with basic stats for admin listing
      */
-    public function getAgencies()
+    public function getAgencies(int $perPage = 25)
     {
-        $agencies = Agency::withCount('vehicles')->get();
+        $agencies = Agency::withCount('vehicles')
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
 
-        $result = $agencies->map(function (Agency $agency) {
+        $result = $agencies->getCollection()->map(function (Agency $agency) {
             // Compute revenue for this agency (sum of completed reservations for agency vehicles)
             $vehicleIds = $agency->vehicles()->pluck('id')->toArray();
             $revenue = 0;
@@ -251,7 +245,7 @@ class AdminService
             ];
         });
 
-        return $result;
+        return $agencies->setCollection($result);
     }
 
     /**
@@ -354,14 +348,10 @@ class AdminService
             ->toArray();
 
         // Revenue by agency
-        $byAgency = Agency::all()->map(function ($agency) use ($platformCommissionRate) {
-            $vehicleIds = $agency->vehicles()->pluck('id')->toArray();
-            $revenue = 0;
-            if (!empty($vehicleIds)) {
-                $revenue = Reservation::whereIn('vehicle_id', $vehicleIds)
-                    ->where('status', 'completed')
-                    ->sum('total_price');
-            }
+        $byAgency = Agency::query()->select('id', 'name')->orderBy('id')->cursor()->map(function ($agency) use ($platformCommissionRate) {
+            $revenue = Reservation::whereHas('vehicle', function ($query) use ($agency) {
+                $query->where('agency_id', $agency->id);
+            })->where('status', 'completed')->sum('total_price');
             $revenue = round((float) $revenue, 2);
             $commission = round($revenue * $platformCommissionRate, 2);
 

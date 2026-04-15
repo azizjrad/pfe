@@ -11,7 +11,7 @@ class VehicleService
     /**
      * Get all vehicles (authorization handled in controller/policy)
      */
-    public function getAll(?int $agencyId = null)
+    public function getAll(?int $agencyId = null, int $perPage = 25, ?string $status = null)
     {
         $query = Vehicle::with(['agency']);
 
@@ -19,7 +19,11 @@ class VehicleService
             $query->where('agency_id', $agencyId);
         }
 
-        return $query->orderBy('created_at', 'desc')->get();
+        if ($status !== null) {
+            $query->where('status', $status);
+        }
+
+        return $query->orderBy('created_at', 'desc')->paginate($perPage);
     }
 
     /**
@@ -60,7 +64,7 @@ class VehicleService
     /**
      * Get public vehicles for an agency.
      */
-    public function getPublicVehiclesByAgency(int $agencyId)
+    public function getPublicVehiclesByAgency(int $agencyId, int $perPage = 12)
     {
         return Vehicle::where('agency_id', $agencyId)
             ->where('status', 'available')
@@ -69,7 +73,7 @@ class VehicleService
             })
             ->with(['agency'])
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate($perPage);
     }
 
     /**
@@ -141,7 +145,7 @@ class VehicleService
     /**
      * Get available vehicles for given dates
      */
-    public function getAvailableVehicles(\DateTimeInterface $startDate, \DateTimeInterface $endDate, array $filters = [])
+    public function getAvailableVehicles(\DateTimeInterface $startDate, \DateTimeInterface $endDate, array $filters = [], int $perPage = 20)
     {
         $query = Vehicle::where('status', 'available')
             ->doesntHave('reservations', 'and', function ($q) use ($startDate, $endDate) {
@@ -160,6 +164,6 @@ class VehicleService
             $query->where('agency_id', $filters['agency_id']);
         }
 
-        return $query->with('agency')->get();
+        return $query->with('agency')->paginate($perPage);
     }
 }

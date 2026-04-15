@@ -24,25 +24,19 @@ class PublicAgencyController extends Controller
     public function index(Request $request)
     {
         try {
-            $perPage = (int) $request->query('per_page', 12);
-            $agencies = $this->agencyService->getPublicAgencies($perPage);
+            $perPage = $this->resolvePerPage($request, 12, 100);
+            $agencies = $this->agencyService->getPublicAgencies($perPage)
+                ->appends($request->query());
 
             return response()->json([
                 'success' => true,
-                'data' => AgencyResource::collection($agencies),
-                'pagination' => [
-                    'current_page' => $agencies->currentPage(),
-                    'per_page' => $agencies->perPage(),
-                    'total' => $agencies->total(),
-                    'total_pages' => $agencies->lastPage(),
-                ]
+                'data' => AgencyResource::collection($agencies->items()),
+                'pagination' => $this->paginationMeta($agencies),
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to fetch agencies',
-                'error' => config('app.debug') ? $e->getMessage() : null,
-            ], 500);
+            return $this->apiErrorResponse($e, 'Impossible de recuperer les agences publiques.', 500, [
+                'action' => 'public_agencies.index',
+            ]);
         }
     }
 
@@ -67,11 +61,10 @@ class PublicAgencyController extends Controller
                 'message' => 'Agency not found',
             ], 404);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to fetch agency details',
-                'error' => config('app.debug') ? $e->getMessage() : null,
-            ], 500);
+            return $this->apiErrorResponse($e, 'Impossible de recuperer les details de l\'agence.', 500, [
+                'action' => 'public_agencies.show',
+                'agency_id' => (int) $id,
+            ]);
         }
     }
 
@@ -96,11 +89,10 @@ class PublicAgencyController extends Controller
                 'message' => 'Agency not found',
             ], 404);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to fetch agency details',
-                'error' => config('app.debug') ? $e->getMessage() : null,
-            ], 500);
+            return $this->apiErrorResponse($e, 'Impossible de recuperer les details de l\'agence.', 500, [
+                'action' => 'public_agencies.by_slug',
+                'slug' => $slug,
+            ]);
         }
     }
 }

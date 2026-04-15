@@ -8,7 +8,8 @@ export const clientService = {
   getStats: () => http.get("/client/stats"),
 
   /** Get notifications for the authenticated user */
-  getNotifications: () => http.get("/user/notifications"),
+  getNotifications: (params = {}) =>
+    http.get("/user/notifications", { params }),
 
   /** Mark one notification as read */
   markNotificationRead: (id) => http.patch(`/user/notifications/${id}/read`),

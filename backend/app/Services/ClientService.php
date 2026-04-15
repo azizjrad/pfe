@@ -46,14 +46,15 @@ class ClientService
     /**
      * Get persistent user notifications
      */
-    public function getNotifications(User $user): array
+    public function getNotifications(User $user, int $perPage = 20)
     {
-        return UserNotification::query()
+        $notifications = UserNotification::query()
             ->where('user_id', $user->id)
             ->latest()
-            ->limit(100)
-            ->get()
-            ->map(function (UserNotification $notification) {
+            ->paginate($perPage);
+
+        $notifications->setCollection(
+            $notifications->getCollection()->map(function (UserNotification $notification) {
                 return [
                     'id' => $notification->id,
                     'type' => $notification->type,
@@ -65,7 +66,9 @@ class ClientService
                     'created_at' => $notification->created_at?->toISOString(),
                 ];
             })
-            ->toArray();
+        );
+
+        return $notifications;
     }
 
     /**

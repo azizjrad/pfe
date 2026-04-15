@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Agency;
+use App\Models\Reservation;
 use Carbon\Carbon;
 
 class AgencyService
@@ -10,7 +11,7 @@ class AgencyService
     /**
      * Get all agencies with optional filtering
      */
-    public function getAll(array $filters = [])
+    public function getAll(array $filters = [], int $perPage = 25)
     {
         $query = Agency::with('vehicles', 'users');
 
@@ -27,7 +28,7 @@ class AgencyService
             });
         }
 
-        return $query->orderBy('created_at', 'desc')->get();
+        return $query->orderBy('created_at', 'desc')->paginate($perPage);
     }
 
     /**
@@ -84,17 +85,15 @@ class AgencyService
         $agency = Agency::findOrFail($agencyId);
 
         $vehicles = $agency->vehicles()->count();
-        $activeReservations = $agency->vehicles()
-            ->with('reservations')
-            ->get()
-            ->flatMap->reservations
+        $activeReservations = Reservation::whereHas('vehicle', function ($query) use ($agencyId) {
+            $query->where('agency_id', $agencyId);
+        })
             ->where('status', 'ongoing')
             ->count();
 
-        $totalRevenue = $agency->vehicles()
-            ->with('reservations')
-            ->get()
-            ->flatMap->reservations
+        $totalRevenue = Reservation::whereHas('vehicle', function ($query) use ($agencyId) {
+            $query->where('agency_id', $agencyId);
+        })
             ->where('status', 'completed')
             ->sum('total_price');
 
@@ -121,14 +120,11 @@ class AgencyService
             $month = now()->subMonths($i);
             $monthKey = $month->format('Y-m');
 
-            $revenue = $agency->vehicles()
-                ->with('reservations')
-                ->get()
-                ->flatMap->reservations
+            $revenue = Reservation::whereHas('vehicle', function ($query) use ($agencyId) {
+                $query->where('agency_id', $agencyId);
+            })
                 ->where('status', 'completed')
-                ->filter(function ($res) use ($month) {
-                    return $res->created_at->format('Y-m') === $month->format('Y-m');
-                })
+                ->whereBetween('created_at', [$month->copy()->startOfMonth(), $month->copy()->endOfMonth()])
                 ->sum('total_price');
 
             $breakdown[$monthKey] = [

@@ -25,7 +25,7 @@ class ContactService
     /**
      * Get all contact messages (admin only)
      */
-    public function getAll(array $filters = [])
+    public function getAll(array $filters = [], int $perPage = 25)
     {
         $query = ContactMessage::query();
 
@@ -42,7 +42,7 @@ class ContactService
             });
         }
 
-        return $query->orderByRaw('is_read ASC, created_at DESC')->get();
+        return $query->orderByRaw('is_read ASC, created_at DESC')->paginate($perPage);
     }
 
     /**

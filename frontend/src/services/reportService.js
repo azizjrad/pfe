@@ -11,20 +11,20 @@ export const reportService = {
   },
 
   /** Get all active reports (super admin only) */
-  getAll: async () => {
-    const response = await http.get("/admin/reports");
+  getAll: async (params = {}) => {
+    const response = await http.get("/admin/reports", { params });
     return response.data;
   },
 
   /** Get vehicle reports for the authenticated agency (agency admin only) */
-  getAgencyReports: async () => {
-    const response = await http.get("/agency/reports");
+  getAgencyReports: async (params = {}) => {
+    const response = await http.get("/agency/reports", { params });
     return response.data;
   },
 
   /** Get trashed reports (super admin only) */
-  getTrashed: async () => {
-    const response = await http.get("/admin/reports/trashed");
+  getTrashed: async (params = {}) => {
+    const response = await http.get("/admin/reports/trashed", { params });
     return response.data;
   },
 
@@ -71,20 +71,29 @@ export const reportService = {
   },
 
   /** Get reports submitted BY a user (super admin only) */
-  getUserReportsSubmitted: async (userId) => {
-    const response = await http.get(`/admin/users/${userId}/reports-submitted`);
+  getUserReportsSubmitted: async (userId, params = {}) => {
+    const response = await http.get(
+      `/admin/users/${userId}/reports-submitted`,
+      {
+        params,
+      },
+    );
     return response.data;
   },
 
   /** Get reports AGAINST a user (super admin only) */
-  getUserReportsAgainst: async (userId) => {
-    const response = await http.get(`/admin/users/${userId}/reports-against`);
+  getUserReportsAgainst: async (userId, params = {}) => {
+    const response = await http.get(`/admin/users/${userId}/reports-against`, {
+      params,
+    });
     return response.data;
   },
 
   /** Get reports AGAINST an agency (super admin only) */
-  getAgencyReportsAgainst: async (agencyId) => {
-    const response = await http.get(`/admin/agencies/${agencyId}/reports`);
+  getAgencyReportsAgainst: async (agencyId, params = {}) => {
+    const response = await http.get(`/admin/agencies/${agencyId}/reports`, {
+      params,
+    });
     return response.data;
   },
 };

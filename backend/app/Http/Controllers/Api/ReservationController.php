@@ -26,42 +26,51 @@ class ReservationController extends Controller
     /**
      * Get all reservations for the super admin dashboard.
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('viewAny', Reservation::class);
 
+        $perPage = $this->resolvePerPage($request, 25, 100);
+
         $reservations = Reservation::with(['vehicle.agency', 'user', 'payments'])
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate($perPage)
+            ->appends($request->query());
 
         return response()->json([
             'success' => true,
-            'data' => ReservationResource::collection($reservations),
+            'data' => ReservationResource::collection($reservations->items()),
+            'pagination' => $this->paginationMeta($reservations),
         ]);
     }
 
     /**
      * Get all reservations for a client
      */
-    public function clientIndex()
+    public function clientIndex(Request $request)
     {
+        $perPage = $this->resolvePerPage($request, 20, 100);
+
         $reservations = Reservation::with(['vehicle.agency', 'payments'])
             ->where('user_id', auth()->id())
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate($perPage)
+            ->appends($request->query());
 
         return response()->json([
             'success' => true,
-            'data' => ReservationResource::collection($reservations),
+            'data' => ReservationResource::collection($reservations->items()),
+            'pagination' => $this->paginationMeta($reservations),
         ]);
     }
 
     /**
      * Get all reservations for an agency
      */
-    public function agencyIndex()
+    public function agencyIndex(Request $request)
     {
         $user = auth()->user();
+        $perPage = $this->resolvePerPage($request, 20, 100);
 
         // Get all vehicles belonging to this agency
         $reservations = Reservation::with(['vehicle.agency', 'user', 'payments'])
@@ -69,11 +78,13 @@ class ReservationController extends Controller
                 $query->where('agency_id', $user->agency_id);
             })
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate($perPage)
+            ->appends($request->query());
 
         return response()->json([
             'success' => true,
-            'data' => ReservationResource::collection($reservations),
+            'data' => ReservationResource::collection($reservations->items()),
+            'pagination' => $this->paginationMeta($reservations),
         ]);
     }
 

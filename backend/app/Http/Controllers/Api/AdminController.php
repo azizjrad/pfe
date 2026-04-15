@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Auth\Passwords\PasswordBroker;
 
 class AdminController extends Controller
 {
@@ -63,14 +64,16 @@ class AdminController extends Controller
     /**
      * Get all users with their details
      */
-    public function getUsers()
+    public function getUsers(Request $request)
     {
         try {
-            $users = $this->adminService->getUsers();
+            $perPage = $this->resolvePerPage($request, 25, 100);
+            $users = $this->adminService->getUsers([], $perPage);
 
             return response()->json([
                 'success' => true,
-                'data' => UserResource::collection($users),
+                'data' => UserResource::collection($users->items()),
+                'pagination' => $this->paginationMeta($users),
             ]);
         } catch (\Exception $e) {
             return $this->apiErrorResponse($e, 'Impossible de récupérer les utilisateurs.', 500, [
@@ -82,14 +85,16 @@ class AdminController extends Controller
     /**
      * Get agencies list
      */
-    public function getAgencies()
+    public function getAgencies(Request $request)
     {
         try {
-            $agencies = $this->adminService->getAgencies();
+            $perPage = $this->resolvePerPage($request, 25, 100);
+            $agencies = $this->adminService->getAgencies($perPage);
 
             return response()->json([
                 'success' => true,
-                'data' => $agencies,
+                'data' => $agencies->items(),
+                'pagination' => $this->paginationMeta($agencies),
             ]);
         } catch (\Exception $e) {
             return $this->apiErrorResponse($e, 'Impossible de récupérer les agences.', 500, [
@@ -173,7 +178,9 @@ class AdminController extends Controller
             }
 
             // Generate a password reset token and send invite email
-            $token = Password::broker()->createToken($user);
+            /** @var PasswordBroker $passwordBroker */
+            $passwordBroker = Password::broker();
+            $token = $passwordBroker->createToken($user);
 
             $frontend = config('app.frontend_url', env('FRONTEND_URL', config('app.url')));
             $link = rtrim($frontend, '/') . '/set-password?token=' . urlencode($token) . '&email=' . urlencode($user->email);
@@ -366,18 +373,22 @@ class AdminController extends Controller
     /**
      * Get vehicles belonging to an agency (super admin)
      */
-    public function getAgencyVehicles($id)
+    public function getAgencyVehicles(Request $request, $id)
     {
         try {
             $agency = Agency::findOrFail($id);
+            $perPage = $this->resolvePerPage($request, 20, 100);
+
             $vehicles = Vehicle::with('agency')
                 ->where('agency_id', $agency->id)
                 ->orderBy('created_at', 'desc')
-                ->get();
+                ->paginate($perPage)
+                ->appends($request->query());
 
             return response()->json([
                 'success' => true,
-                'data' => VehicleResource::collection($vehicles),
+                'data' => VehicleResource::collection($vehicles->items()),
+                'pagination' => $this->paginationMeta($vehicles),
             ]);
         } catch (\Exception $e) {
             return $this->apiErrorResponse($e, 'Impossible de récupérer les véhicules de l\'agence.', 404, [

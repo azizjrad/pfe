@@ -24,25 +24,19 @@ class PublicVehicleController extends Controller
     public function index(Request $request)
     {
         try {
-            $perPage = (int) $request->query('per_page', 12);
-            $vehicles = $this->vehicleService->getPublicVehicles($perPage);
+            $perPage = $this->resolvePerPage($request, 12, 100);
+            $vehicles = $this->vehicleService->getPublicVehicles($perPage)
+                ->appends($request->query());
 
             return response()->json([
                 'success' => true,
-                'data' => VehicleResource::collection($vehicles),
-                'pagination' => [
-                    'current_page' => $vehicles->currentPage(),
-                    'per_page' => $vehicles->perPage(),
-                    'total' => $vehicles->total(),
-                    'total_pages' => $vehicles->lastPage(),
-                ]
+                'data' => VehicleResource::collection($vehicles->items()),
+                'pagination' => $this->paginationMeta($vehicles),
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to fetch vehicles',
-                'error' => config('app.debug') ? $e->getMessage() : null,
-            ], 500);
+            return $this->apiErrorResponse($e, 'Impossible de recuperer les vehicules publics.', 500, [
+                'action' => 'public_vehicles.index',
+            ]);
         }
     }
 
@@ -67,11 +61,10 @@ class PublicVehicleController extends Controller
                 'message' => 'Vehicle not found',
             ], 404);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to fetch vehicle details',
-                'error' => config('app.debug') ? $e->getMessage() : null,
-            ], 500);
+            return $this->apiErrorResponse($e, 'Impossible de recuperer les details du vehicule.', 500, [
+                'action' => 'public_vehicles.show',
+                'vehicle_id' => (int) $id,
+            ]);
         }
     }
 
@@ -81,21 +74,23 @@ class PublicVehicleController extends Controller
      * @param int $agencyId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function byAgency($agencyId)
+    public function byAgency(Request $request, $agencyId)
     {
         try {
-            $vehicles = $this->vehicleService->getPublicVehiclesByAgency((int) $agencyId);
+            $perPage = $this->resolvePerPage($request, 12, 100);
+            $vehicles = $this->vehicleService->getPublicVehiclesByAgency((int) $agencyId, $perPage)
+                ->appends($request->query());
 
             return response()->json([
                 'success' => true,
-                'data' => VehicleResource::collection($vehicles),
+                'data' => VehicleResource::collection($vehicles->items()),
+                'pagination' => $this->paginationMeta($vehicles),
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to fetch vehicles for agency',
-                'error' => config('app.debug') ? $e->getMessage() : null,
-            ], 500);
+            return $this->apiErrorResponse($e, 'Impossible de recuperer les vehicules de l\'agence.', 500, [
+                'action' => 'public_vehicles.by_agency',
+                'agency_id' => (int) $agencyId,
+            ]);
         }
     }
 }
