@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Domain\Enums\ReservationPaymentStatus;
+use App\Domain\Enums\ReservationStatus;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
@@ -106,7 +108,7 @@ class Reservation extends Model
      */
     public function isFullyPaid()
     {
-        return $this->payment_status === 'paid';
+        return $this->payment_status === ReservationPaymentStatus::PAID->value;
     }
 
     /**
@@ -114,7 +116,7 @@ class Reservation extends Model
      */
     public function isOverdue()
     {
-        return $this->payment_status === 'overdue';
+        return $this->payment_status === ReservationPaymentStatus::OVERDUE->value;
     }
 
     /**
@@ -122,6 +124,9 @@ class Reservation extends Model
      */
     public function isActive()
     {
-        return in_array($this->status, ['confirmed', 'ongoing']);
+        return in_array($this->status, [
+            ReservationStatus::CONFIRMED->value,
+            ReservationStatus::ONGOING->value,
+        ], true);
     }
 }

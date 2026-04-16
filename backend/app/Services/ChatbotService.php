@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Domain\Enums\VehicleStatus;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Http;
 
@@ -133,14 +134,14 @@ class ChatbotService
         if ($brand !== null) {
             $availableVehicles = Vehicle::query()
                 ->whereRaw('LOWER(brand) = ?', [$brand])
-                ->where('status', 'available')
+                ->where('status', VehicleStatus::AVAILABLE->value)
                 ->orderBy('daily_price')
                 ->limit(5)
                 ->get(['brand', 'model', 'year', 'daily_price']);
 
             $availableCount = Vehicle::query()
                 ->whereRaw('LOWER(brand) = ?', [$brand])
-                ->where('status', 'available')
+                ->where('status', VehicleStatus::AVAILABLE->value)
                 ->count();
 
             if ($availableCount === 0) {
@@ -160,7 +161,7 @@ class ChatbotService
         }
 
         $availableBrands = Vehicle::query()
-            ->where('status', 'available')
+            ->where('status', VehicleStatus::AVAILABLE->value)
             ->selectRaw('LOWER(brand) as brand, COUNT(*) as count')
             ->groupByRaw('LOWER(brand)')
             ->orderBy('brand')

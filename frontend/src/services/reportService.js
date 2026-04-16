@@ -1,4 +1,5 @@
 import http from "./http";
+import { normalizeApiResponse } from "./apiResponse";
 
 /**
  * Report service — handles report-related API calls.
@@ -7,25 +8,25 @@ export const reportService = {
   /** Create a new report (all authenticated users) */
   create: async (data) => {
     const response = await http.post("/reports", data);
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Get all active reports (super admin only) */
   getAll: async (params = {}) => {
     const response = await http.get("/admin/reports", { params });
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Get vehicle reports for the authenticated agency (agency admin only) */
   getAgencyReports: async (params = {}) => {
     const response = await http.get("/agency/reports", { params });
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Get trashed reports (super admin only) */
   getTrashed: async (params = {}) => {
     const response = await http.get("/admin/reports/trashed", { params });
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Resolve a report (super admin only) */
@@ -34,7 +35,7 @@ export const reportService = {
       status: "resolved",
       admin_notes: adminNotes,
     });
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Dismiss a report (super admin only) */
@@ -43,31 +44,31 @@ export const reportService = {
       status: "dismissed",
       admin_notes: adminNotes,
     });
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Move report to trash (soft delete) (super admin only) */
   moveToTrash: async (id) => {
     const response = await http.delete(`/admin/reports/${id}`);
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Restore a trashed report (super admin only) */
   restore: async (id) => {
     const response = await http.post(`/admin/reports/${id}/restore`);
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Permanently delete a report (super admin only) */
   forceDelete: async (id) => {
     const response = await http.delete(`/admin/reports/${id}/force`);
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Clean old trashed reports (30+ days) (super admin only) */
   cleanOldTrash: async () => {
     const response = await http.post("/admin/reports/clean-trash");
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Get reports submitted BY a user (super admin only) */
@@ -78,7 +79,7 @@ export const reportService = {
         params,
       },
     );
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Get reports AGAINST a user (super admin only) */
@@ -86,7 +87,7 @@ export const reportService = {
     const response = await http.get(`/admin/users/${userId}/reports-against`, {
       params,
     });
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Get reports AGAINST an agency (super admin only) */
@@ -94,6 +95,6 @@ export const reportService = {
     const response = await http.get(`/admin/agencies/${agencyId}/reports`, {
       params,
     });
-    return response.data;
+    return normalizeApiResponse(response);
   },
 };

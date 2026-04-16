@@ -26,20 +26,12 @@ class ReportController extends Controller
     {
         $this->authorize('viewAny', Report::class);
 
-        try {
-            $perPage = $this->resolvePerPage($request, 25, 100);
-            $reports = $this->reportService->getAll([], $perPage);
+        $perPage = $this->resolvePerPage($request, 25, 100);
+        $reports = $this->reportService->getAll([], $perPage);
 
-            return response()->json([
-                'success' => true,
-                'data' => ReportResource::collection($reports->items()),
-                'pagination' => $this->paginationMeta($reports),
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de récupérer les signalements.', 500, [
-                'action' => 'reports.index',
-            ]);
-        }
+        return $this->apiSuccessResponse(null, ReportResource::collection($reports->items()), 200, [
+            'pagination' => $this->paginationMeta($reports),
+        ]);
     }
 
     /**
@@ -47,29 +39,18 @@ class ReportController extends Controller
      */
     public function getAgencyReports(Request $request)
     {
-        try {
-            $user = $request->user();
-            $perPage = $this->resolvePerPage($request, 25, 100);
+        $user = $request->user();
+        $perPage = $this->resolvePerPage($request, 25, 100);
 
-            if (!$user->agency_id) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'No agency associated with this account',
-                ], 404);
-            }
-
-            $reports = $this->reportService->getAgencyReports($user->agency_id, $perPage);
-
-            return response()->json([
-                'success' => true,
-                'data' => ReportResource::collection($reports->items()),
-                'pagination' => $this->paginationMeta($reports),
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de récupérer les signalements de l\'agence.', 500, [
-                'action' => 'reports.agency',
-            ]);
+        if (!$user->agency_id) {
+            return $this->apiErrorMessageResponse('No agency associated with this account', 404);
         }
+
+        $reports = $this->reportService->getAgencyReports($user->agency_id, $perPage);
+
+        return $this->apiSuccessResponse(null, ReportResource::collection($reports->items()), 200, [
+            'pagination' => $this->paginationMeta($reports),
+        ]);
     }
 
     /**
@@ -79,20 +60,12 @@ class ReportController extends Controller
     {
         $this->authorize('viewAny', Report::class);
 
-        try {
-            $perPage = $this->resolvePerPage($request, 25, 100);
-            $reports = $this->reportService->getTrashed($perPage);
+        $perPage = $this->resolvePerPage($request, 25, 100);
+        $reports = $this->reportService->getTrashed($perPage);
 
-            return response()->json([
-                'success' => true,
-                'data' => ReportResource::collection($reports->items()),
-                'pagination' => $this->paginationMeta($reports),
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de récupérer la corbeille des signalements.', 500, [
-                'action' => 'reports.trashed',
-            ]);
-        }
+        return $this->apiSuccessResponse(null, ReportResource::collection($reports->items()), 200, [
+            'pagination' => $this->paginationMeta($reports),
+        ]);
     }
 
     /**
@@ -104,20 +77,9 @@ class ReportController extends Controller
 
         $validated = $request->validated();
 
-        try {
-            $report = $this->reportService->create($validated, auth()->id());
+        $report = $this->reportService->create($validated, auth()->id());
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Report created successfully',
-                'data' => new ReportResource($report),
-            ], 201);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de creer le signalement.', 500, [
-                'action' => 'reports.store',
-                'user_id' => auth()->id(),
-            ]);
-        }
+        return $this->apiSuccessResponse('Report created successfully', new ReportResource($report), 201);
     }
 
     /**
@@ -130,20 +92,9 @@ class ReportController extends Controller
 
         $validated = $request->validated();
 
-        try {
-            $report = $this->reportService->updateStatus($id, $validated['status'], $validated['admin_notes'] ?? null);
+        $report = $this->reportService->updateStatus($id, $validated['status'], $validated['admin_notes'] ?? null);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Report status updated successfully',
-                'data' => new ReportResource($report),
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de mettre a jour le statut du signalement.', 500, [
-                'action' => 'reports.update_status',
-                'report_id' => $id,
-            ]);
-        }
+        return $this->apiSuccessResponse('Report status updated successfully', new ReportResource($report));
     }
 
     /**
@@ -154,19 +105,9 @@ class ReportController extends Controller
         $report = Report::findOrFail($id);
         $this->authorize('delete', $report);
 
-        try {
-            $this->reportService->destroy($id);
+        $this->reportService->destroy($id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Report moved to trash',
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de supprimer le signalement.', 500, [
-                'action' => 'reports.destroy',
-                'report_id' => $id,
-            ]);
-        }
+        return $this->apiSuccessResponse('Report moved to trash');
     }
 
     /**
@@ -177,20 +118,9 @@ class ReportController extends Controller
         $report = Report::onlyTrashed()->findOrFail($id);
         $this->authorize('restore', $report);
 
-        try {
-            $report = $this->reportService->restore($id);
+        $report = $this->reportService->restore($id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Report restored successfully',
-                'data' => new ReportResource($report),
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de restaurer le signalement.', 500, [
-                'action' => 'reports.restore',
-                'report_id' => $id,
-            ]);
-        }
+        return $this->apiSuccessResponse('Report restored successfully', new ReportResource($report));
     }
 
     /**
@@ -201,19 +131,9 @@ class ReportController extends Controller
         $report = Report::onlyTrashed()->findOrFail($id);
         $this->authorize('forceDelete', $report);
 
-        try {
-            $this->reportService->permanentDelete($id);
+        $this->reportService->permanentDelete($id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Report permanently deleted',
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de supprimer definitivement le signalement.', 500, [
-                'action' => 'reports.force_delete',
-                'report_id' => $id,
-            ]);
-        }
+        return $this->apiSuccessResponse('Report permanently deleted');
     }
 
     /**
@@ -232,9 +152,7 @@ class ReportController extends Controller
             ->paginate($perPage)
             ->appends($request->query());
 
-        return response()->json([
-            'success' => true,
-            'data' => ReportResource::collection($reports->items()),
+        return $this->apiSuccessResponse(null, ReportResource::collection($reports->items()), 200, [
             'pagination' => $this->paginationMeta($reports),
         ]);
     }
@@ -256,9 +174,7 @@ class ReportController extends Controller
             ->paginate($perPage)
             ->appends($request->query());
 
-        return response()->json([
-            'success' => true,
-            'data' => ReportResource::collection($reports->items()),
+        return $this->apiSuccessResponse(null, ReportResource::collection($reports->items()), 200, [
             'pagination' => $this->paginationMeta($reports),
         ]);
     }
@@ -280,9 +196,7 @@ class ReportController extends Controller
             ->paginate($perPage)
             ->appends($request->query());
 
-        return response()->json([
-            'success' => true,
-            'data' => ReportResource::collection($reports->items()),
+        return $this->apiSuccessResponse(null, ReportResource::collection($reports->items()), 200, [
             'pagination' => $this->paginationMeta($reports),
         ]);
     }

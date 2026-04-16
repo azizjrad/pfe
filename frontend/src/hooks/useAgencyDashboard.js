@@ -30,7 +30,7 @@ export default function useAgencyDashboard({ user, showToast }) {
   const fetchAgencyStats = async () => {
     try {
       const response = await agencyService.getStats();
-      setAgencyStats(response?.data?.data || DEFAULT_AGENCY_STATS);
+      setAgencyStats(response?.data || DEFAULT_AGENCY_STATS);
     } catch (error) {
       console.error("Error fetching agency stats:", error);
       showToast?.(
@@ -73,7 +73,7 @@ export default function useAgencyDashboard({ user, showToast }) {
   const fetchNotifications = async () => {
     try {
       const response = await clientService.getNotifications();
-      setNotifications(response?.data?.data || []);
+      setNotifications(response?.data || []);
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }

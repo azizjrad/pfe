@@ -2,10 +2,15 @@
 
 namespace App\Services;
 
+use App\Domain\Enums\ReservationStatus;
+use App\Exceptions\Domain\BusinessRuleViolationException;
+use App\Exceptions\Domain\ConflictException;
+use App\Exceptions\Domain\NotFoundException;
 use App\Models\User;
 use App\Models\Agency;
 use App\Models\Reservation;
 use App\Models\Vehicle;
+use Illuminate\Support\Facades\DB;
 
 
 class AdminService
@@ -19,13 +24,13 @@ class AdminService
         $totalAgencies = Agency::count();
         $totalVehicles = Vehicle::count();
         $totalReservations = Reservation::count();
-        $completedReservations = Reservation::where('status', 'completed')->count();
-        $totalRevenue = Reservation::where('status', 'completed')->sum('total_price');
-        $totalPlatformCommission = Reservation::where('status', 'completed')->sum('platform_commission');
-        $monthlyRevenue = Reservation::where('status', 'completed')
+        $completedReservations = Reservation::where('status', ReservationStatus::COMPLETED->value)->count();
+        $totalRevenue = Reservation::where('status', ReservationStatus::COMPLETED->value)->sum('total_price');
+        $totalPlatformCommission = Reservation::where('status', ReservationStatus::COMPLETED->value)->sum('platform_commission');
+        $monthlyRevenue = Reservation::where('status', ReservationStatus::COMPLETED->value)
             ->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])
             ->sum('total_price');
-        $activeReservations = Reservation::whereIn('status', ['pending', 'confirmed', 'ongoing'])->count();
+        $activeReservations = Reservation::whereIn('status', ReservationStatus::activeValues())->count();
 
         $clientCount = User::where('role', 'client')->count();
         $agencyAdminCount = User::where('role', 'agency_admin')->count();
@@ -38,7 +43,7 @@ class AdminService
             'total_vehicles' => $totalVehicles,
             'total_reservations' => $totalReservations,
             'completed_reservations' => $completedReservations,
-            'pending_reservations' => Reservation::where('status', 'pending')->count(),
+            'pending_reservations' => Reservation::where('status', ReservationStatus::PENDING->value)->count(),
             'total_revenue' => round($totalRevenue, 2),
             'monthly_revenue' => round((float) $monthlyRevenue, 2),
             'active_reservations' => $activeReservations,
@@ -78,16 +83,16 @@ class AdminService
         $user = User::with('agency', 'reliabilityScore')->find($userId);
 
         if (!$user) {
-            throw new \Exception('User not found', 404);
+            throw new NotFoundException('User not found', 'USER_NOT_FOUND');
         }
 
         $reservationCount = $user->reservations()->count();
         $completedReservations = $user->reservations()
-            ->where('status', 'completed')
+            ->where('status', ReservationStatus::COMPLETED->value)
             ->count();
 
         $totalSpent = $user->reservations()
-            ->where('status', 'completed')
+            ->where('status', ReservationStatus::COMPLETED->value)
             ->sum('total_price');
 
         return [
@@ -110,7 +115,7 @@ class AdminService
         $user = User::find($userId);
 
         if (!$user) {
-            throw new \Exception('User not found', 404);
+            throw new NotFoundException('User not found', 'USER_NOT_FOUND');
         }
 
         $user->update([
@@ -133,7 +138,7 @@ class AdminService
         $user = User::find($userId);
 
         if (!$user) {
-            throw new \Exception('User not found', 404);
+            throw new NotFoundException('User not found', 'USER_NOT_FOUND');
         }
 
         $user->update([
@@ -153,19 +158,19 @@ class AdminService
         $user = User::find($userId);
 
         if (!$user) {
-            throw new \Exception('User not found', 404);
+            throw new NotFoundException('User not found', 'USER_NOT_FOUND');
         }
 
         if ($currentUserId !== null && $user->id === $currentUserId) {
-            throw new \Exception('You cannot delete your own account', 400);
+            throw new BusinessRuleViolationException('You cannot delete your own account', 400, 'SELF_DELETE_FORBIDDEN');
         }
 
         $hasActiveReservations = $user->reservations()
-            ->whereIn('status', ['pending', 'confirmed', 'ongoing'])
+            ->whereIn('status', ReservationStatus::activeValues())
             ->exists();
 
         if ($hasActiveReservations) {
-            throw new \Exception('Cannot delete user with active reservations', 400);
+            throw new ConflictException('Cannot delete user with active reservations', 'USER_HAS_ACTIVE_RESERVATIONS');
         }
 
         // Revoke tokens
@@ -183,7 +188,7 @@ class AdminService
         $agency = Agency::find($agencyId);
 
         if (!$agency) {
-            throw new \Exception('Agency not found', 404);
+            throw new NotFoundException('Agency not found', 'AGENCY_NOT_FOUND');
         }
 
         $vehicleCount = $agency->vehicles()->count();
@@ -193,11 +198,11 @@ class AdminService
 
         $completedReservations = Reservation::whereHas('vehicle', function ($query) use ($agencyId) {
             $query->where('agency_id', $agencyId);
-        })->where('status', 'completed')->count();
+        })->where('status', ReservationStatus::COMPLETED->value)->count();
 
         $totalRevenue = Reservation::whereHas('vehicle', function ($query) use ($agencyId) {
             $query->where('agency_id', $agencyId);
-        })->where('status', 'completed')->sum('total_price');
+        })->where('status', ReservationStatus::COMPLETED->value)->sum('total_price');
 
         return [
             'agency' => $agency,
@@ -219,15 +224,12 @@ class AdminService
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
-        $result = $agencies->getCollection()->map(function (Agency $agency) {
-            // Compute revenue for this agency (sum of completed reservations for agency vehicles)
-            $vehicleIds = $agency->vehicles()->pluck('id')->toArray();
-            $revenue = 0;
-            if (!empty($vehicleIds)) {
-                $revenue = Reservation::whereIn('vehicle_id', $vehicleIds)
-                    ->where('status', 'completed')
-                    ->sum('total_price');
-            }
+        $revenueByAgency = $this->getCompletedRevenueByAgency(
+            $agencies->getCollection()->pluck('id')->all()
+        );
+
+        $result = $agencies->getCollection()->map(function (Agency $agency) use ($revenueByAgency) {
+            $revenue = $revenueByAgency[$agency->id] ?? 0;
 
             return [
                 'id' => $agency->id,
@@ -256,7 +258,7 @@ class AdminService
         $agency = Agency::find($agencyId);
 
         if (!$agency) {
-            throw new \Exception('Agency not found', 404);
+            throw new NotFoundException('Agency not found', 'AGENCY_NOT_FOUND');
         }
 
         if (isset($data['location']) && !isset($data['city'])) {
@@ -294,7 +296,7 @@ class AdminService
         $user = User::find($userId);
 
         if (!$user) {
-            throw new \Exception('User not found', 404);
+            throw new NotFoundException('User not found', 'USER_NOT_FOUND');
         }
 
         // Handle suspension toggle
@@ -329,7 +331,7 @@ class AdminService
         $platformCommissionRate = 0.05;
 
         // Monthly revenue (YYYY-MM)
-        $monthly = Reservation::where('status', 'completed')
+        $monthly = Reservation::where('status', ReservationStatus::COMPLETED->value)
             ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, SUM(total_price) as revenue")
             ->groupBy('month')
             ->orderBy('month')
@@ -347,12 +349,14 @@ class AdminService
             })
             ->toArray();
 
+        $agencies = Agency::query()->select('id', 'name')->orderBy('id')->get();
+        $revenueByAgency = $this->getCompletedRevenueByAgency(
+            $agencies->pluck('id')->all()
+        );
+
         // Revenue by agency
-        $byAgency = Agency::query()->select('id', 'name')->orderBy('id')->cursor()->map(function ($agency) use ($platformCommissionRate) {
-            $revenue = Reservation::whereHas('vehicle', function ($query) use ($agency) {
-                $query->where('agency_id', $agency->id);
-            })->where('status', 'completed')->sum('total_price');
-            $revenue = round((float) $revenue, 2);
+        $byAgency = $agencies->map(function ($agency) use ($revenueByAgency, $platformCommissionRate) {
+            $revenue = round((float) ($revenueByAgency[$agency->id] ?? 0), 2);
             $commission = round($revenue * $platformCommissionRate, 2);
 
             return [
@@ -365,7 +369,7 @@ class AdminService
         })->toArray();
 
         $totals = [];
-        $totals['revenue'] = round((float) Reservation::where('status', 'completed')->sum('total_price'), 2);
+        $totals['revenue'] = round((float) Reservation::where('status', ReservationStatus::COMPLETED->value)->sum('total_price'), 2);
         $totals['commission'] = round($totals['revenue'] * $platformCommissionRate, 2);
         $totals['profit'] = round($totals['revenue'] - $totals['commission'], 2);
         $totals['avgMonthly'] = !empty($monthly) ? round(array_sum(array_column($monthly, 'revenue')) / count($monthly), 2) : 0;
@@ -376,5 +380,30 @@ class AdminService
             'byAgency' => $byAgency,
             'totals' => $totals,
         ];
+    }
+
+    /**
+     * Get completed reservation revenue grouped by agency in a single query.
+     *
+     * @param array<int> $agencyIds
+     * @return array<int, float>
+     */
+    private function getCompletedRevenueByAgency(array $agencyIds): array
+    {
+        if (empty($agencyIds)) {
+            return [];
+        }
+
+        return Reservation::query()
+            ->join('vehicles', 'reservations.vehicle_id', '=', 'vehicles.id')
+            ->where('reservations.status', ReservationStatus::COMPLETED->value)
+            ->whereIn('vehicles.agency_id', $agencyIds)
+            ->groupBy('vehicles.agency_id')
+            ->select('vehicles.agency_id', DB::raw('SUM(reservations.total_price) as revenue'))
+            ->get()
+            ->mapWithKeys(fn ($row) => [
+                (int) $row->agency_id => round((float) $row->revenue, 2),
+            ])
+            ->all();
     }
 }

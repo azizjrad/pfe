@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Domain\Enums\AgencyStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -32,7 +33,7 @@ class AgencyResource extends JsonResource
             'location' => $location,
             'city' => $this->city,
             'address' => $this->address,
-            'status' => $this->status ?? 'active',
+            'status' => $this->status ?? AgencyStatus::ACTIVE->value,
             'logo_url' => $this->logo_url,
             'cover_image' => $this->cover_image,
             'rating' => $this->rating ?? 0,

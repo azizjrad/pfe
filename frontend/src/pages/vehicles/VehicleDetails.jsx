@@ -79,10 +79,9 @@ const VehicleDetails = () => {
       // Call the backend API
       const response = await reservationService.create(submissionPayload);
 
-      if (response.data.success) {
+      if (response.success) {
         showToast(
-          response.data.message ||
-            t("vehicles.details.messages.reservationSuccess"),
+          response.message || t("vehicles.details.messages.reservationSuccess"),
           "success",
         );
         setIsReservationOpen(false);

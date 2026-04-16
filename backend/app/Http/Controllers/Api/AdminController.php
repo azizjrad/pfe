@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Domain\Enums\ReservationStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateAgencyRequest;
+use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\SuspendUserRequest;
+use App\Http\Requests\UpdateAgencyRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\AgencyResource;
 use App\Services\AdminService;
-use App\Services\AuthService;
 use App\Services\AgencyService;
 use App\Services\ClientService;
 use App\Models\User;
@@ -26,18 +30,15 @@ use Illuminate\Auth\Passwords\PasswordBroker;
 class AdminController extends Controller
 {
     private AdminService $adminService;
-    private AuthService $authService;
     private AgencyService $agencyService;
     private ClientService $clientService;
 
     public function __construct(
         AdminService $adminService,
-        AuthService $authService,
         AgencyService $agencyService,
         ClientService $clientService
     ) {
         $this->adminService = $adminService;
-        $this->authService = $authService;
         $this->agencyService = $agencyService;
         $this->clientService = $clientService;
     }
@@ -47,18 +48,9 @@ class AdminController extends Controller
      */
     public function getDashboardStats()
     {
-        try {
-            $stats = $this->adminService->getDashboardStats();
+        $stats = $this->adminService->getDashboardStats();
 
-            return response()->json([
-                'success' => true,
-                'data' => $stats,
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de récupérer les statistiques du tableau de bord.', 500, [
-                'action' => 'admin.dashboard_stats',
-            ]);
-        }
+        return $this->apiSuccessResponse(null, $stats);
     }
 
     /**
@@ -66,20 +58,12 @@ class AdminController extends Controller
      */
     public function getUsers(Request $request)
     {
-        try {
-            $perPage = $this->resolvePerPage($request, 25, 100);
-            $users = $this->adminService->getUsers([], $perPage);
+        $perPage = $this->resolvePerPage($request, 25, 100);
+        $users = $this->adminService->getUsers([], $perPage);
 
-            return response()->json([
-                'success' => true,
-                'data' => UserResource::collection($users->items()),
-                'pagination' => $this->paginationMeta($users),
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de récupérer les utilisateurs.', 500, [
-                'action' => 'admin.users.index',
-            ]);
-        }
+        return $this->apiSuccessResponse(null, UserResource::collection($users->items()), 200, [
+            'pagination' => $this->paginationMeta($users),
+        ]);
     }
 
     /**
@@ -87,20 +71,12 @@ class AdminController extends Controller
      */
     public function getAgencies(Request $request)
     {
-        try {
-            $perPage = $this->resolvePerPage($request, 25, 100);
-            $agencies = $this->adminService->getAgencies($perPage);
+        $perPage = $this->resolvePerPage($request, 25, 100);
+        $agencies = $this->adminService->getAgencies($perPage);
 
-            return response()->json([
-                'success' => true,
-                'data' => $agencies->items(),
-                'pagination' => $this->paginationMeta($agencies),
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de récupérer les agences.', 500, [
-                'action' => 'admin.agencies.index',
-            ]);
-        }
+        return $this->apiSuccessResponse(null, $agencies->items(), 200, [
+            'pagination' => $this->paginationMeta($agencies),
+        ]);
     }
 
     /**
@@ -108,18 +84,9 @@ class AdminController extends Controller
      */
     public function getFinancialStats()
     {
-        try {
-            $stats = $this->adminService->getFinancialStats();
+        $stats = $this->adminService->getFinancialStats();
 
-            return response()->json([
-                'success' => true,
-                'data' => $stats,
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de récupérer les statistiques financières.', 500, [
-                'action' => 'admin.financial_stats',
-            ]);
-        }
+        return $this->apiSuccessResponse(null, $stats);
     }
 
     /**
@@ -127,75 +94,46 @@ class AdminController extends Controller
      */
     public function getUserDetails($id)
     {
-        try {
-            $user = $this->adminService->getUserDetails($id);
+        $user = $this->adminService->getUserDetails($id);
 
-            return response()->json([
-                'success' => true,
-                'data' => new UserResource($user),
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse(
-                $e,
-                'Impossible de récupérer les détails utilisateur.',
-                in_array($e->getCode(), [404]) ? 404 : 500,
-                ['action' => 'admin.users.show', 'target_user_id' => $id]
-            );
-        }
+        return $this->apiSuccessResponse(null, new UserResource($user));
     }
 
     /**
      * Create a new user (super admin)
      */
-    public function createUser(Request $request)
+    public function createUser(CreateUserRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'nullable|string|min:6',
-            'role' => 'required|in:client,agency_admin,super_admin',
-            'agency_id' => 'nullable|integer|exists:agencies,id',
-            'phone' => 'nullable|string',
-            'address' => 'nullable|string',
-        ]);
+        $data = $request->validated();
 
-        try {
-            // Create user without immediate password; send invite link to set password
-            if ($data['role'] === 'client') {
-                $user = $this->clientService->create($data);
-            } else {
-                // agency_admin or super_admin
-                $user = User::create([
-                    'name' => $data['name'],
-                    'email' => $data['email'],
-                    // DB password is required. Store a temporary hash until invite flow sets the real password.
-                    'password' => Hash::make($data['password'] ?? Str::random(40)),
-                    'role' => $data['role'],
-                    'agency_id' => $data['agency_id'] ?? null,
-                    'phone' => $data['phone'] ?? null,
-                    'address' => $data['address'] ?? null,
-                ]);
-            }
-
-            // Generate a password reset token and send invite email
-            /** @var PasswordBroker $passwordBroker */
-            $passwordBroker = Password::broker();
-            $token = $passwordBroker->createToken($user);
-
-            $frontend = config('app.frontend_url', env('FRONTEND_URL', config('app.url')));
-            $link = rtrim($frontend, '/') . '/set-password?token=' . urlencode($token) . '&email=' . urlencode($user->email);
-
-            Mail::to($user->email)->queue(new InviteUserMail($link, $user->name ?? null, $user->role ?? null));
-
-            return response()->json([
-                'success' => true,
-                'data' => new UserResource($user),
-            ], 201);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de créer l\'utilisateur.', 400, [
-                'action' => 'admin.users.create',
+        // Create user without immediate password; send invite link to set password
+        if ($data['role'] === 'client') {
+            $user = $this->clientService->create($data);
+        } else {
+            // agency_admin or super_admin
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                // DB password is required. Store a temporary hash until invite flow sets the real password.
+                'password' => Hash::make($data['password'] ?? Str::random(40)),
+                'role' => $data['role'],
+                'agency_id' => $data['agency_id'] ?? null,
+                'phone' => $data['phone'] ?? null,
+                'address' => $data['address'] ?? null,
             ]);
         }
+
+        // Generate a password reset token and send invite email
+        /** @var PasswordBroker $passwordBroker */
+        $passwordBroker = Password::broker();
+        $token = $passwordBroker->createToken($user);
+
+        $frontend = config('app.frontend_url', env('FRONTEND_URL', config('app.url')));
+        $link = rtrim($frontend, '/') . '/set-password?token=' . urlencode($token) . '&email=' . urlencode($user->email);
+
+        Mail::to($user->email)->queue(new InviteUserMail($link, $user->name ?? null, $user->role ?? null));
+
+        return $this->apiSuccessResponse(null, new UserResource($user), 201);
     }
 
     /**
@@ -205,19 +143,9 @@ class AdminController extends Controller
     {
         $validated = $request->validated();
 
-        try {
-            $this->adminService->suspendUser($id, $validated['reason']);
+        $this->adminService->suspendUser($id, $validated['reason']);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'User suspended successfully',
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de suspendre cet utilisateur.', 400, [
-                'action' => 'admin.users.suspend',
-                'target_user_id' => $id,
-            ]);
-        }
+        return $this->apiSuccessResponse('User suspended successfully');
     }
 
     /**
@@ -225,19 +153,9 @@ class AdminController extends Controller
      */
     public function unsuspendUser($id)
     {
-        try {
-            $this->adminService->unsuspendUser($id);
+        $this->adminService->unsuspendUser($id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'User unsuspended successfully',
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de réactiver cet utilisateur.', 404, [
-                'action' => 'admin.users.unsuspend',
-                'target_user_id' => $id,
-            ]);
-        }
+        return $this->apiSuccessResponse('User unsuspended successfully');
     }
 
     /**
@@ -245,109 +163,45 @@ class AdminController extends Controller
      */
     public function deleteUser($id)
     {
-        try {
-            $this->adminService->deleteUser($id, auth()->id());
+        $this->adminService->deleteUser($id, auth()->id());
 
-            return response()->json([
-                'success' => true,
-                'message' => 'User deleted successfully',
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse(
-                $e,
-                'Impossible de supprimer cet utilisateur.',
-                in_array($e->getCode(), [400, 404]) ? $e->getCode() : 500,
-                ['action' => 'admin.users.delete', 'target_user_id' => $id]
-            );
-        }
+        return $this->apiSuccessResponse('User deleted successfully');
     }
 
     /**
      * Update user (suspend toggle or profile fields)
      */
-    public function updateUser(Request $request, $id)
+    public function updateUser(UpdateUserRequest $request, $id)
     {
-        $data = $request->only(['is_suspended', 'suspension_reason', 'name', 'email', 'phone', 'role']);
+        $data = $request->validated();
 
-        try {
-            $user = $this->adminService->updateUser($id, $data);
+        $user = $this->adminService->updateUser($id, $data);
 
-            return response()->json([
-                'success' => true,
-                'data' => new UserResource($user),
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse(
-                $e,
-                'Impossible de mettre à jour cet utilisateur.',
-                in_array($e->getCode(), [400,404]) ? $e->getCode() : 400,
-                ['action' => 'admin.users.update', 'target_user_id' => $id]
-            );
-        }
+        return $this->apiSuccessResponse(null, new UserResource($user));
     }
 
     /**
      * Update agency (e.g., status)
      */
-    public function updateAgency(Request $request, $id)
+    public function updateAgency(UpdateAgencyRequest $request, $id)
     {
-        $data = $request->only([
-            'status',
-            'name',
-            'location',
-            'address',
-            'city',
-            'phone',
-            'email',
-            'opening_time',
-            'closing_time',
-        ]);
+        $data = $request->validated();
 
-        try {
-            $agency = $this->adminService->updateAgency($id, $data);
+        $agency = $this->adminService->updateAgency($id, $data);
 
-            return response()->json([
-                'success' => true,
-                'data' => new AgencyResource($agency),
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse(
-                $e,
-                'Impossible de mettre à jour cette agence.',
-                in_array($e->getCode(), [400,404]) ? $e->getCode() : 400,
-                ['action' => 'admin.agencies.update', 'agency_id' => $id]
-            );
-        }
+        return $this->apiSuccessResponse(null, new AgencyResource($agency));
     }
 
     /**
      * Create a new agency
      */
-    public function createAgency(Request $request)
+    public function createAgency(CreateAgencyRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'address' => 'nullable|string',
-            'city' => 'nullable|string',
-            'phone' => 'nullable|string',
-            'email' => 'nullable|email',
-            'opening_time' => 'nullable|date_format:H:i',
-            'closing_time' => 'nullable|date_format:H:i',
-            'status' => 'nullable|in:active,inactive',
-        ]);
+        $data = $request->validated();
 
-        try {
-            $agency = $this->agencyService->create($data);
+        $agency = $this->agencyService->create($data);
 
-            return response()->json([
-                'success' => true,
-                'data' => new AgencyResource($agency),
-            ], 201);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de créer l\'agence.', 400, [
-                'action' => 'admin.agencies.create',
-            ]);
-        }
+        return $this->apiSuccessResponse(null, new AgencyResource($agency), 201);
     }
 
     /**
@@ -355,19 +209,9 @@ class AdminController extends Controller
      */
     public function getAgencyDetails($id)
     {
-        try {
-            $agency = $this->adminService->getAgencyDetails($id);
+        $agency = $this->adminService->getAgencyDetails($id);
 
-            return response()->json([
-                'success' => true,
-                'data' => new AgencyResource($agency),
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de récupérer les détails de l\'agence.', 404, [
-                'action' => 'admin.agencies.show',
-                'agency_id' => $id,
-            ]);
-        }
+        return $this->apiSuccessResponse(null, new AgencyResource($agency));
     }
 
     /**
@@ -375,27 +219,18 @@ class AdminController extends Controller
      */
     public function getAgencyVehicles(Request $request, $id)
     {
-        try {
-            $agency = Agency::findOrFail($id);
-            $perPage = $this->resolvePerPage($request, 20, 100);
+        $agency = Agency::findOrFail($id);
+        $perPage = $this->resolvePerPage($request, 20, 100);
 
-            $vehicles = Vehicle::with('agency')
-                ->where('agency_id', $agency->id)
-                ->orderBy('created_at', 'desc')
-                ->paginate($perPage)
-                ->appends($request->query());
+        $vehicles = Vehicle::with('agency')
+            ->where('agency_id', $agency->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage)
+            ->appends($request->query());
 
-            return response()->json([
-                'success' => true,
-                'data' => VehicleResource::collection($vehicles->items()),
-                'pagination' => $this->paginationMeta($vehicles),
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de récupérer les véhicules de l\'agence.', 404, [
-                'action' => 'admin.agencies.vehicles',
-                'agency_id' => $id,
-            ]);
-        }
+        return $this->apiSuccessResponse(null, VehicleResource::collection($vehicles->items()), 200, [
+            'pagination' => $this->paginationMeta($vehicles),
+        ]);
     }
 
     /**
@@ -403,33 +238,20 @@ class AdminController extends Controller
      */
     public function deleteAgency($id)
     {
-        try {
-            $agency = Agency::findOrFail($id);
+        $agency = Agency::findOrFail($id);
 
-            $vehicleIds = Vehicle::where('agency_id', $agency->id)->pluck('id');
-            $hasActiveReservations = Reservation::whereIn('vehicle_id', $vehicleIds)
-                ->whereIn('status', ['pending', 'confirmed', 'ongoing'])
-                ->exists();
+        $vehicleIds = Vehicle::where('agency_id', $agency->id)->pluck('id');
+        $hasActiveReservations = Reservation::whereIn('vehicle_id', $vehicleIds)
+            ->whereIn('status', ReservationStatus::activeValues())
+            ->exists();
 
-            if ($hasActiveReservations) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Cannot delete agency with active reservations',
-                ], 400);
-            }
-
-            $agency->delete();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Agency deleted successfully',
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de supprimer cette agence.', 404, [
-                'action' => 'admin.agencies.delete',
-                'agency_id' => $id,
-            ]);
+        if ($hasActiveReservations) {
+            return $this->apiErrorMessageResponse('Cannot delete agency with active reservations', 400);
         }
+
+        $agency->delete();
+
+        return $this->apiSuccessResponse('Agency deleted successfully');
     }
 }
 

@@ -2,6 +2,10 @@
 
 namespace App\Services;
 
+use App\Domain\Enums\AgencyStatus;
+use App\Domain\Enums\ReservationStatus;
+use App\Domain\Enums\VehicleStatus;
+use App\Exceptions\Domain\BusinessRuleViolationException;
 use App\Models\Agency;
 use App\Models\Reservation;
 use Carbon\Carbon;
@@ -56,7 +60,7 @@ class AgencyService
     {
         return Agency::with([
             'vehicles' => function ($query) {
-                $query->where('status', 'available');
+                $query->where('status', VehicleStatus::AVAILABLE->value);
             },
         ])
             ->findOrFail($id);
@@ -70,7 +74,7 @@ class AgencyService
         return Agency::where('slug', $slug)
             ->with([
                 'vehicles' => function ($query) {
-                    $query->where('status', 'available');
+                    $query->where('status', VehicleStatus::AVAILABLE->value);
                 },
             ])
             ->firstOrFail();
@@ -88,13 +92,13 @@ class AgencyService
         $activeReservations = Reservation::whereHas('vehicle', function ($query) use ($agencyId) {
             $query->where('agency_id', $agencyId);
         })
-            ->where('status', 'ongoing')
+            ->where('status', ReservationStatus::ONGOING->value)
             ->count();
 
         $totalRevenue = Reservation::whereHas('vehicle', function ($query) use ($agencyId) {
             $query->where('agency_id', $agencyId);
         })
-            ->where('status', 'completed')
+            ->where('status', ReservationStatus::COMPLETED->value)
             ->sum('total_price');
 
         return [
@@ -123,7 +127,7 @@ class AgencyService
             $revenue = Reservation::whereHas('vehicle', function ($query) use ($agencyId) {
                 $query->where('agency_id', $agencyId);
             })
-                ->where('status', 'completed')
+                ->where('status', ReservationStatus::COMPLETED->value)
                 ->whereBetween('created_at', [$month->copy()->startOfMonth(), $month->copy()->endOfMonth()])
                 ->sum('total_price');
 
@@ -174,7 +178,7 @@ class AgencyService
             ?? ''
         ));
 
-        $status = $data['status'] ?? 'active';
+        $status = $data['status'] ?? AgencyStatus::ACTIVE->value;
 
         $payload = [
             'name' => $name,
@@ -184,9 +188,9 @@ class AgencyService
             'email' => $email,
             'opening_time' => $data['opening_time'] ?? '08:00',
             'closing_time' => $data['closing_time'] ?? '18:00',
-            'status' => in_array($status, ['active', 'inactive'], true)
+            'status' => in_array($status, AgencyStatus::creatableValues(), true)
                 ? $status
-                : 'active',
+                : AgencyStatus::ACTIVE->value,
         ];
 
         return Agency::create($payload);
@@ -197,8 +201,8 @@ class AgencyService
      */
     public function updateStatus(Agency $agency, string $status): Agency
     {
-        if (!in_array($status, ['active', 'suspended', 'inactive'])) {
-            throw new \Exception("Invalid status: {$status}");
+        if (!in_array($status, AgencyStatus::values(), true)) {
+            throw new BusinessRuleViolationException("Invalid status: {$status}", 422, 'agency.invalid_status');
         }
 
         $agency->update(['status' => $status]);

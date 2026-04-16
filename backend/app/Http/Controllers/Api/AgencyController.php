@@ -24,28 +24,15 @@ class AgencyController extends Controller
         $user = $request->user();
 
         if (!$user->agency_id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No agency associated with this account'
-            ], 400);
+            return $this->apiErrorMessageResponse('No agency associated with this account', 400);
         }
 
         $agency = Agency::findOrFail($user->agency_id);
         $this->authorize('view', $agency);
 
-        try {
-            $stats = $this->agencyService->getStats($user->agency_id);
+        $stats = $this->agencyService->getStats($user->agency_id);
 
-            return response()->json([
-                'success' => true,
-                'data' => $stats,
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de recuperer les statistiques de l\'agence.', 400, [
-                'action' => 'agency.stats',
-                'agency_id' => $user->agency_id,
-            ]);
-        }
+        return $this->apiSuccessResponse(null, $stats);
     }
 
     /**
@@ -56,28 +43,15 @@ class AgencyController extends Controller
         $user = $request->user();
 
         if (!$user->agency_id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No agency associated with this account'
-            ], 400);
+            return $this->apiErrorMessageResponse('No agency associated with this account', 400);
         }
 
         $agency = Agency::findOrFail($user->agency_id);
         $this->authorize('view', $agency);
 
-        try {
-            $stats = $this->agencyService->getFinancialStats($user->agency_id);
+        $stats = $this->agencyService->getFinancialStats($user->agency_id);
 
-            return response()->json([
-                'success' => true,
-                'data' => $stats,
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de recuperer les statistiques financieres de l\'agence.', 400, [
-                'action' => 'agency.financial_stats',
-                'agency_id' => $user->agency_id,
-            ]);
-        }
+        return $this->apiSuccessResponse(null, $stats);
     }
 }
 

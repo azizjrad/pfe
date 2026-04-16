@@ -2,6 +2,10 @@
 
 namespace App\Services;
 
+use App\Domain\Enums\AgencyStatus;
+use App\Domain\Enums\ReservationStatus;
+use App\Domain\Enums\VehicleStatus;
+use App\Exceptions\Domain\ConflictException;
 use App\Models\Vehicle;
 
 class VehicleService
@@ -39,9 +43,9 @@ class VehicleService
      */
     public function getPublicVehicles(int $perPage = 12)
     {
-        return Vehicle::where('status', 'available')
+        return Vehicle::where('status', VehicleStatus::AVAILABLE->value)
             ->whereHas('agency', function ($query) {
-                $query->where('status', 'active');
+                $query->where('status', AgencyStatus::ACTIVE->value);
             })
             ->with(['agency'])
             ->orderBy('created_at', 'desc')
@@ -53,9 +57,9 @@ class VehicleService
      */
     public function getPublicVehicleById(int $id): Vehicle
     {
-        return Vehicle::where('status', 'available')
+        return Vehicle::where('status', VehicleStatus::AVAILABLE->value)
             ->whereHas('agency', function ($query) {
-                $query->where('status', 'active');
+                $query->where('status', AgencyStatus::ACTIVE->value);
             })
             ->with(['agency'])
             ->findOrFail($id);
@@ -67,9 +71,9 @@ class VehicleService
     public function getPublicVehiclesByAgency(int $agencyId, int $perPage = 12)
     {
         return Vehicle::where('agency_id', $agencyId)
-            ->where('status', 'available')
+            ->where('status', VehicleStatus::AVAILABLE->value)
             ->whereHas('agency', function ($query) {
-                $query->where('status', 'active');
+                $query->where('status', AgencyStatus::ACTIVE->value);
             })
             ->with(['agency'])
             ->orderBy('created_at', 'desc')
@@ -82,7 +86,7 @@ class VehicleService
     public function create(array $data, int $agencyId): Vehicle
     {
         $data['agency_id'] = $agencyId;
-        $data['status'] = $data['status'] ?? 'available';
+        $data['status'] = $data['status'] ?? VehicleStatus::AVAILABLE->value;
         $data['caution_amount'] = $this->resolveCautionAmount(
             $data['caution_amount'] ?? null,
             $data['daily_price'] ?? null
@@ -132,11 +136,11 @@ class VehicleService
 
         // Check for active reservations
         $activeCount = $vehicle->reservations()
-            ->whereIn('status', ['pending', 'confirmed', 'ongoing'])
+            ->whereIn('status', ReservationStatus::activeValues())
             ->count();
 
         if ($activeCount > 0) {
-            throw new \Exception('Cannot delete vehicle with active reservations', 400);
+            throw new ConflictException('Cannot delete vehicle with active reservations', 'VEHICLE_HAS_ACTIVE_RESERVATIONS');
         }
 
         $vehicle->delete();
@@ -147,9 +151,9 @@ class VehicleService
      */
     public function getAvailableVehicles(\DateTimeInterface $startDate, \DateTimeInterface $endDate, array $filters = [], int $perPage = 20)
     {
-        $query = Vehicle::where('status', 'available')
+        $query = Vehicle::where('status', VehicleStatus::AVAILABLE->value)
             ->doesntHave('reservations', 'and', function ($q) use ($startDate, $endDate) {
-                $q->where('status', '!=', 'cancelled')
+                $q->where('status', '!=', ReservationStatus::CANCELLED->value)
                   ->where(function ($query) use ($startDate, $endDate) {
                       $query->whereBetween('start_date', [$startDate, $endDate])
                             ->orWhereBetween('end_date', [$startDate, $endDate])

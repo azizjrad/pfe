@@ -20,19 +20,9 @@ class ClientController extends Controller
      */
     public function getStats(Request $request)
     {
-        try {
-            $stats = $this->clientService->getStats($request->user());
+        $stats = $this->clientService->getStats($request->user());
 
-            return response()->json([
-                'success' => true,
-                'data' => $stats,
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de recuperer les statistiques client.', 500, [
-                'action' => 'client.stats',
-                'user_id' => $request->user()?->id,
-            ]);
-        }
+        return $this->apiSuccessResponse(null, $stats);
     }
 
     /**
@@ -40,21 +30,12 @@ class ClientController extends Controller
      */
     public function getNotifications(Request $request)
     {
-        try {
-            $perPage = $this->resolvePerPage($request, 20, 100);
-            $notifications = $this->clientService->getNotifications($request->user(), $perPage);
+        $perPage = $this->resolvePerPage($request, 20, 100);
+        $notifications = $this->clientService->getNotifications($request->user(), $perPage);
 
-            return response()->json([
-                'success' => true,
-                'data'    => $notifications->items(),
-                'pagination' => $this->paginationMeta($notifications),
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de recuperer les notifications.', 500, [
-                'action' => 'client.notifications.index',
-                'user_id' => $request->user()?->id,
-            ]);
-        }
+        return $this->apiSuccessResponse(null, $notifications->items(), 200, [
+            'pagination' => $this->paginationMeta($notifications),
+        ]);
     }
 
     /**
@@ -62,25 +43,13 @@ class ClientController extends Controller
      */
     public function markNotificationAsRead(Request $request, int $id)
     {
-        try {
-            $notification = $this->clientService->markNotificationAsRead($request->user(), $id);
+        $notification = $this->clientService->markNotificationAsRead($request->user(), $id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Notification marquée comme lue.',
-                'data' => [
-                    'id' => $notification->id,
-                    'is_read' => $notification->is_read,
-                    'read_at' => $notification->read_at?->toISOString(),
-                ],
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de marquer la notification comme lue.', 500, [
-                'action' => 'client.notifications.mark_read',
-                'user_id' => $request->user()?->id,
-                'notification_id' => $id,
-            ]);
-        }
+        return $this->apiSuccessResponse('Notification marquée comme lue.', [
+            'id' => $notification->id,
+            'is_read' => $notification->is_read,
+            'read_at' => $notification->read_at?->toISOString(),
+        ]);
     }
 
     /**
@@ -88,22 +57,11 @@ class ClientController extends Controller
      */
     public function markAllNotificationsAsRead(Request $request)
     {
-        try {
-            $updatedCount = $this->clientService->markAllNotificationsAsRead($request->user());
+        $updatedCount = $this->clientService->markAllNotificationsAsRead($request->user());
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Toutes les notifications ont été marquées comme lues.',
-                'data' => [
-                    'updated_count' => $updatedCount,
-                ],
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de marquer toutes les notifications comme lues.', 500, [
-                'action' => 'client.notifications.mark_all_read',
-                'user_id' => $request->user()?->id,
-            ]);
-        }
+        return $this->apiSuccessResponse('Toutes les notifications ont été marquées comme lues.', [
+            'updated_count' => $updatedCount,
+        ]);
     }
 }
 

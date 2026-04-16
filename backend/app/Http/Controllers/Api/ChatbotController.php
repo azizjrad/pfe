@@ -26,26 +26,17 @@ class ChatbotController extends Controller
                 $validated['history'] ?? []
             );
 
-            return response()->json([
-                'success' => true,
-                'data' => [
-                    'reply' => $reply,
-                ],
+            return $this->apiSuccessResponse(null, [
+                'reply' => $reply,
             ]);
         } catch (\RuntimeException $exception) {
-            return response()->json([
-                'success' => false,
-                'message' => $exception->getMessage(),
-            ], 503);
+            return $this->apiErrorMessageResponse($exception->getMessage(), 503);
         } catch (\Throwable $exception) {
             Log::error('Chatbot reply failed', [
                 'error' => $exception->getMessage(),
             ]);
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Le service chatbot est temporairement indisponible.',
-            ], 500);
+            return $this->apiErrorMessageResponse('Le service chatbot est temporairement indisponible.', 500);
         }
     }
 }

@@ -23,21 +23,13 @@ class PublicAgencyController extends Controller
      */
     public function index(Request $request)
     {
-        try {
-            $perPage = $this->resolvePerPage($request, 12, 100);
-            $agencies = $this->agencyService->getPublicAgencies($perPage)
-                ->appends($request->query());
+        $perPage = $this->resolvePerPage($request, 12, 100);
+        $agencies = $this->agencyService->getPublicAgencies($perPage)
+            ->appends($request->query());
 
-            return response()->json([
-                'success' => true,
-                'data' => AgencyResource::collection($agencies->items()),
-                'pagination' => $this->paginationMeta($agencies),
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de recuperer les agences publiques.', 500, [
-                'action' => 'public_agencies.index',
-            ]);
-        }
+        return $this->apiSuccessResponse(null, AgencyResource::collection($agencies->items()), 200, [
+            'pagination' => $this->paginationMeta($agencies),
+        ]);
     }
 
     /**
@@ -48,24 +40,9 @@ class PublicAgencyController extends Controller
      */
     public function show($id)
     {
-        try {
-            $agency = $this->agencyService->getPublicAgencyById((int) $id);
+        $agency = $this->agencyService->getPublicAgencyById((int) $id);
 
-            return response()->json([
-                'success' => true,
-                'data' => new AgencyResource($agency),
-            ]);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Agency not found',
-            ], 404);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de recuperer les details de l\'agence.', 500, [
-                'action' => 'public_agencies.show',
-                'agency_id' => (int) $id,
-            ]);
-        }
+        return $this->apiSuccessResponse(null, new AgencyResource($agency));
     }
 
     /**
@@ -76,23 +53,8 @@ class PublicAgencyController extends Controller
      */
     public function bySlug($slug)
     {
-        try {
-            $agency = $this->agencyService->getPublicAgencyBySlug($slug);
+        $agency = $this->agencyService->getPublicAgencyBySlug($slug);
 
-            return response()->json([
-                'success' => true,
-                'data' => new AgencyResource($agency),
-            ]);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Agency not found',
-            ], 404);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de recuperer les details de l\'agence.', 500, [
-                'action' => 'public_agencies.by_slug',
-                'slug' => $slug,
-            ]);
-        }
+        return $this->apiSuccessResponse(null, new AgencyResource($agency));
     }
 }

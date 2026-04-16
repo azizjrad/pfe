@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Domain\Enums\VehicleStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVehicleRequest;
 use App\Http\Requests\UpdateVehicleRequest;
@@ -31,13 +32,11 @@ class VehicleController extends Controller
 
         // Determine which vehicles to fetch based on role
         $agencyId = $user->isAgencyAdmin() ? $user->agency_id : null;
-        $status = $user->isClient() ? 'available' : null;
+        $status = $user->isClient() ? VehicleStatus::AVAILABLE->value : null;
         $vehicles = $this->vehicleService->getAll($agencyId, $perPage, $status)
             ->appends($request->query());
 
-        return response()->json([
-            'success' => true,
-            'data' => VehicleResource::collection($vehicles->items()),
+        return $this->apiSuccessResponse(null, VehicleResource::collection($vehicles->items()), 200, [
             'pagination' => $this->paginationMeta($vehicles),
         ]);
     }
@@ -47,20 +46,10 @@ class VehicleController extends Controller
      */
     public function show($id)
     {
-        try {
-            $vehicle = $this->vehicleService->getById($id);
-            $this->authorize('view', $vehicle);
+        $vehicle = $this->vehicleService->getById($id);
+        $this->authorize('view', $vehicle);
 
-            return response()->json([
-                'success' => true,
-                'data' => new VehicleResource($vehicle),
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Vehicule introuvable.', 404, [
-                'action' => 'vehicles.show',
-                'vehicle_id' => $id,
-            ]);
-        }
+        return $this->apiSuccessResponse(null, new VehicleResource($vehicle));
     }
 
     /**
@@ -73,20 +62,9 @@ class VehicleController extends Controller
 
         $validated = $request->validated();
 
-        try {
-            $vehicle = $this->vehicleService->create($validated, $user->agency_id);
+        $vehicle = $this->vehicleService->create($validated, $user->agency_id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Vehicle created successfully',
-                'data' => new VehicleResource($vehicle),
-            ], 201);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de creer le vehicule.', 422, [
-                'action' => 'vehicles.store',
-                'agency_id' => $user->agency_id,
-            ]);
-        }
+        return $this->apiSuccessResponse('Vehicle created successfully', new VehicleResource($vehicle), 201);
     }
 
     /**
@@ -99,22 +77,9 @@ class VehicleController extends Controller
 
         $validated = $request->validated();
 
-        try {
-            $vehicle = $this->vehicleService->update($id, $validated);
+        $vehicle = $this->vehicleService->update($id, $validated);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Vehicle updated successfully',
-                'data' => new VehicleResource($vehicle),
-            ]);
-        } catch (\Exception $e) {
-            $status = in_array((int) $e->getCode(), [403, 404], true) ? (int) $e->getCode() : 422;
-
-            return $this->apiErrorResponse($e, 'Impossible de mettre a jour le vehicule.', $status, [
-                'action' => 'vehicles.update',
-                'vehicle_id' => $id,
-            ]);
-        }
+        return $this->apiSuccessResponse('Vehicle updated successfully', new VehicleResource($vehicle));
     }
 
     /**
@@ -125,20 +90,8 @@ class VehicleController extends Controller
         $vehicle = Vehicle::findOrFail($id);
         $this->authorize('delete', $vehicle);
 
-        try {
-            $this->vehicleService->delete($id);
+        $this->vehicleService->delete($id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Vehicle deleted successfully',
-            ]);
-        } catch (\Exception $e) {
-            $status = in_array((int) $e->getCode(), [403, 404, 400], true) ? (int) $e->getCode() : 422;
-
-            return $this->apiErrorResponse($e, 'Impossible de supprimer le vehicule.', $status, [
-                'action' => 'vehicles.destroy',
-                'vehicle_id' => $id,
-            ]);
-        }
+        return $this->apiSuccessResponse('Vehicle deleted successfully');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\Domain\BusinessRuleViolationException;
 use App\Models\User;
 use App\Models\Agency;
 use App\Models\ClientReliabilityScore;
@@ -10,7 +11,6 @@ use App\Services\AgencyService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 
 class AuthService
 {
@@ -100,12 +100,22 @@ class AuthService
 
         if (!$user) {
             Log::warning('Failed login - User not found', ['email' => $email]);
-            throw new \Exception('Invalid email or password.');
+            throw new BusinessRuleViolationException('Invalid email or password.', 401, 'auth.invalid_credentials');
         }
 
         if (!Hash::check($password, $user->password)) {
             Log::warning('Failed login - Invalid password', ['user_id' => $user->id, 'email' => $email]);
-            throw new \Exception('Invalid email or password.');
+            throw new BusinessRuleViolationException('Invalid email or password.', 401, 'auth.invalid_credentials');
+        }
+
+        if ((bool) $user->is_suspended) {
+            Log::warning('Blocked login - Suspended user', [
+                'user_id' => $user->id,
+                'email' => $email,
+                'suspended_at' => $user->suspended_at,
+            ]);
+
+            throw new BusinessRuleViolationException('Your account is suspended. Contact support.', 403, 'auth.account_suspended');
         }
 
         // Limit sessions to 3 devices
@@ -146,7 +156,7 @@ class AuthService
         // Verify current password if changing password
         if (isset($data['new_password'])) {
             if (!isset($data['current_password']) || !Hash::check($data['current_password'], $user->password)) {
-                throw new \Exception('Current password is incorrect.');
+                throw new BusinessRuleViolationException('Current password is incorrect.', 422, 'auth.invalid_current_password');
             }
             $data['password'] = Hash::make($data['new_password']);
             unset($data['new_password'], $data['current_password']);

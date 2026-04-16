@@ -1,4 +1,5 @@
 import http from "./http";
+import { normalizeApiResponse, unwrapApiData } from "./apiResponse";
 
 const normalizeVehicle = (vehicle) => {
   const specifications = [
@@ -68,10 +69,12 @@ const publicVehicleService = {
       const response = await http.get("/public/vehicles", {
         params: { page, per_page: perPage },
       });
-      const vehicles = extractCollection(response.data).map(normalizeVehicle);
+      const vehicles = extractCollection(normalizeApiResponse(response)).map(
+        normalizeVehicle,
+      );
 
       return {
-        ...response.data,
+        ...normalizeApiResponse(response),
         data: vehicles,
       };
     } catch (error) {
@@ -88,9 +91,10 @@ const publicVehicleService = {
   getById: async (id) => {
     try {
       const response = await http.get(`/public/vehicles/${id}`);
+      const payload = normalizeApiResponse(response);
       return {
-        ...response.data,
-        data: response.data?.data ? normalizeVehicle(response.data.data) : null,
+        ...payload,
+        data: payload.data ? normalizeVehicle(unwrapApiData(response)) : null,
       };
     } catch (error) {
       console.error(`Failed to fetch vehicle ${id}:`, error);
@@ -106,10 +110,12 @@ const publicVehicleService = {
   getByAgency: async (agencyId) => {
     try {
       const response = await http.get(`/public/vehicles/agency/${agencyId}`);
-      const vehicles = extractCollection(response.data).map(normalizeVehicle);
+      const vehicles = extractCollection(normalizeApiResponse(response)).map(
+        normalizeVehicle,
+      );
 
       return {
-        ...response.data,
+        ...normalizeApiResponse(response),
         data: vehicles,
       };
     } catch (error) {

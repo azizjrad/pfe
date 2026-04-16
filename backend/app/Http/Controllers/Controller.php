@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\Domain\DomainException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
@@ -16,6 +17,38 @@ abstract class Controller
     use AuthorizesRequests, ValidatesRequests;
 
     /**
+     * Return a standardized API success payload.
+     */
+    protected function apiSuccessResponse(
+        ?string $message = null,
+        mixed $data = null,
+        int $status = 200,
+        array $extra = []
+    ): JsonResponse {
+        $payload = array_merge([
+            'success' => true,
+            'message' => $message,
+            'data' => $data,
+        ], $extra);
+
+        return response()->json($payload, $status);
+    }
+
+    /**
+     * Return a standardized API error payload for known business-rule failures.
+     */
+    protected function apiErrorMessageResponse(
+        string $message,
+        int $status = 400,
+        array $extra = []
+    ): JsonResponse {
+        return response()->json(array_merge([
+            'success' => false,
+            'message' => $message,
+        ], $extra), $status);
+    }
+
+    /**
      * Return a standardized API error payload without leaking internals.
      */
     protected function apiErrorResponse(
@@ -24,6 +57,24 @@ abstract class Controller
         int $status = 500,
         array $context = []
     ): JsonResponse {
+        if ($exception instanceof DomainException) {
+            Log::warning($exception->getMessage(), array_merge($context, [
+                'exception' => get_class($exception),
+                'error_code' => $exception->getErrorCode(),
+            ]));
+
+            $payload = [
+                'success' => false,
+                'message' => $exception->getMessage(),
+            ];
+
+            if ($exception->getErrorCode()) {
+                $payload['error_code'] = $exception->getErrorCode();
+            }
+
+            return response()->json($payload, $exception->getStatus());
+        }
+
         $errorId = (string) Str::uuid();
 
         Log::error($message, array_merge($context, [

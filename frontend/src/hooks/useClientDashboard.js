@@ -52,7 +52,7 @@ export default function useClientDashboard({ user, showToast }) {
   const fetchClientStats = async () => {
     try {
       const response = await clientService.getStats();
-      setClientStats(mapClientStats(response?.data?.data));
+      setClientStats(mapClientStats(response?.data));
     } catch (error) {
       console.error("Error fetching client stats:", error);
       showToast?.(
@@ -65,7 +65,7 @@ export default function useClientDashboard({ user, showToast }) {
   const fetchNotifications = async () => {
     try {
       const response = await clientService.getNotifications();
-      setNotifications(response?.data?.data || []);
+      setNotifications(response?.data || []);
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }

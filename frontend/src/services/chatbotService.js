@@ -1,4 +1,5 @@
 import http from "./http";
+import { normalizeApiResponse } from "./apiResponse";
 
 export const chatbotService = {
   async sendMessage(message, history = []) {
@@ -6,6 +7,6 @@ export const chatbotService = {
       message,
       history,
     });
-    return response.data;
+    return normalizeApiResponse(response);
   },
 };

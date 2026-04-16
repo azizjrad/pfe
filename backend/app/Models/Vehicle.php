@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Domain\Enums\ReservationStatus;
+use App\Domain\Enums\VehicleStatus;
 use Illuminate\Database\Eloquent\Model;
 
 class Vehicle extends Model
@@ -55,7 +57,7 @@ class Vehicle extends Model
      */
     public function isAvailable()
     {
-        return $this->status === 'available';
+        return $this->status === VehicleStatus::AVAILABLE->value;
     }
 
     /**
@@ -72,7 +74,10 @@ class Vehicle extends Model
     public function hasOverlappingReservation($startDate, $endDate, $excludeReservationId = null)
     {
         $query = $this->reservations()
-            ->whereIn('status', ['confirmed', 'ongoing'])
+            ->whereIn('status', [
+                ReservationStatus::CONFIRMED->value,
+                ReservationStatus::ONGOING->value,
+            ])
             ->where(function($q) use ($startDate, $endDate) {
                 $q->whereBetween('start_date', [$startDate, $endDate])
                   ->orWhereBetween('end_date', [$startDate, $endDate])

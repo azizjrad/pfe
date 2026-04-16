@@ -1,4 +1,5 @@
 import http from "./http";
+import { unwrapApiData } from "./apiResponse";
 
 /**
  * Pricing Configuration Service
@@ -30,9 +31,10 @@ export const pricingConfigService = {
 
     try {
       const response = await http.get("/pricing-config");
+      const configData = unwrapApiData(response);
 
-      if (response.data.success && response.data.data) {
-        pricingCache = response.data.data;
+      if (configData) {
+        pricingCache = configData;
         return pricingCache;
       }
 

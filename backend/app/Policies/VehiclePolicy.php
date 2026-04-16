@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Domain\Enums\VehicleStatus;
 use App\Models\User;
 use App\Models\Vehicle;
 
@@ -22,7 +23,7 @@ class VehiclePolicy
             return $vehicle->agency_id === $user->agency_id;
         }
 
-        return $user->isClient() && $vehicle->status === 'available';
+        return $user->isClient() && $vehicle->status === VehicleStatus::AVAILABLE->value;
     }
 
     public function create(User $user): bool

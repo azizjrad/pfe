@@ -54,7 +54,7 @@ const ClientContent = ({
   const fetchReservations = async () => {
     try {
       const response = await reservationService.getMy();
-      setReservations(response.data.data || []);
+      setReservations(response.data || []);
     } catch (error) {
       console.error("Error fetching reservations:", error);
       showToast(t("clientContent.errorLoadingReservations"), "error");
@@ -66,8 +66,8 @@ const ClientContent = ({
   const handleCancelReservation = async (id) => {
     try {
       const response = await reservationService.cancel(id);
-      if (response.data.success) {
-        showToast(response.data.message, "success");
+      if (response.success) {
+        showToast(response.message, "success");
         fetchReservations(); // Refresh list
         setCancelModal({ isOpen: false, reservationId: null });
       }

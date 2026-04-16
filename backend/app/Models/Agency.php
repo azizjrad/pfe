@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Domain\Enums\AgencyStatus;
 use Illuminate\Database\Eloquent\Model;
 
 class Agency extends Model
@@ -43,6 +44,6 @@ class Agency extends Model
      */
     public function isActive()
     {
-        return $this->status === 'active';
+        return $this->status === AgencyStatus::ACTIVE->value;
     }
 }

@@ -2,6 +2,11 @@
 
 namespace App\Services;
 
+use App\Domain\Enums\ReservationPaymentStatus;
+use App\Domain\Enums\ReservationStatus;
+use App\Domain\Enums\VehicleStatus;
+use App\Exceptions\Domain\BusinessRuleViolationException;
+use App\Exceptions\Domain\ConflictException;
 use App\Models\Reservation;
 use App\Models\User;
 use App\Models\UserNotification;
@@ -33,7 +38,11 @@ class ReservationService
             $scoreModel = $this->clientService->recalculateReliabilityScore($user);
             $score = $scoreModel->reliability_score ?? 100;
             if ($score < 40) {
-                throw new \Exception('Vous ne pouvez plus effectuer de réservations. Score de fiabilité insuffisant.');
+                throw new BusinessRuleViolationException(
+                    'Vous ne pouvez plus effectuer de réservations. Score de fiabilité insuffisant.',
+                    403,
+                    'BOOKING_BLOCKED_LOW_SCORE'
+                );
             }
         }
 
@@ -41,7 +50,10 @@ class ReservationService
 
         // Check vehicle availability
         if (!$this->checkAvailability($vehicle->id, $data['start_date'], $data['end_date'])) {
-            throw new \Exception('Véhicule indisponible pour les dates sélectionnées. Veuillez choisir d\'autres dates ou un autre véhicule.');
+            throw new ConflictException(
+                'Véhicule indisponible pour les dates sélectionnées. Veuillez choisir d\'autres dates ou un autre véhicule.',
+                'VEHICLE_NOT_AVAILABLE'
+            );
         }
 
         $startDate = Carbon::parse($data['start_date']);
@@ -97,8 +109,8 @@ class ReservationService
             'agency_payout' => $agencyPayout,
             'paid_amount' => 0,
             'remaining_amount' => $pricingBreakdown['total'],
-            'payment_status' => 'unpaid',
-            'status' => 'pending',
+            'payment_status' => ReservationPaymentStatus::UNPAID->value,
+            'status' => ReservationStatus::PENDING->value,
             'pricing_details' => $pricingBreakdown,
             'notes' => $data['notes'] ?? null,
         ]);
@@ -121,8 +133,12 @@ class ReservationService
     public function update(Reservation $reservation, array $data): Reservation
     {
         // Only pending reservations can be edited
-        if ($reservation->status !== 'pending') {
-            throw new \Exception('Seules les réservations en attente peuvent être modifiées. Contactez l\'agence pour toute modification.');
+        if ($reservation->status !== ReservationStatus::PENDING->value) {
+            throw new BusinessRuleViolationException(
+                'Seules les réservations en attente peuvent être modifiées. Contactez l\'agence pour toute modification.',
+                422,
+                'RESERVATION_NOT_EDITABLE'
+            );
         }
 
         // If dates changed, check availability
@@ -131,7 +147,10 @@ class ReservationService
             $endDate = $data['end_date'] ?? $reservation->end_date;
 
             if (!$this->checkAvailability($reservation->vehicle_id, $startDate, $endDate, $reservation->id)) {
-                throw new \Exception('Véhicule indisponible pour les nouvelles dates sélectionnées.');
+                throw new ConflictException(
+                    'Véhicule indisponible pour les nouvelles dates sélectionnées.',
+                    'VEHICLE_NOT_AVAILABLE'
+                );
             }
 
             // Recalculate pricing if dates or options changed
@@ -179,21 +198,33 @@ class ReservationService
     {
         // Authorization: Agency admin can only cancel their own vehicles
         if ($user->role === 'agency_admin' && $reservation->vehicle->agency_id !== $user->agency_id) {
-            throw new \Exception('Non autorisé. Vous ne pouvez annuler que les réservations de vos propres véhicules.');
+            throw new BusinessRuleViolationException(
+                'Non autorisé. Vous ne pouvez annuler que les réservations de vos propres véhicules.',
+                403,
+                'RESERVATION_CANCEL_FORBIDDEN'
+            );
         }
 
         // Check cancellation eligibility
-        if (in_array($reservation->status, ['completed', 'cancelled'])) {
-            throw new \Exception('Cette réservation ne peut pas être annulée.');
+        if (in_array($reservation->status, ReservationStatus::immutableValues(), true)) {
+            throw new BusinessRuleViolationException(
+                'Cette réservation ne peut pas être annulée.',
+                422,
+                'RESERVATION_NOT_CANCELLABLE'
+            );
         }
 
         // Clients can only cancel pending reservations
-        if ($user->role === 'client' && $reservation->status !== 'pending') {
-            throw new \Exception('Réservation déjà confirmée. Veuillez contacter l\'agence pour l\'annuler.');
+        if ($user->role === 'client' && $reservation->status !== ReservationStatus::PENDING->value) {
+            throw new BusinessRuleViolationException(
+                'Réservation déjà confirmée. Veuillez contacter l\'agence pour l\'annuler.',
+                422,
+                'RESERVATION_ALREADY_CONFIRMED'
+            );
         }
 
         $reservation->update([
-            'status' => 'cancelled',
+            'status' => ReservationStatus::CANCELLED->value,
             'cancellation_reason' => $data['cancellation_reason'] ?? null,
             'cancelled_at' => now(),
         ]);
@@ -210,7 +241,7 @@ class ReservationService
                 'message' => "Votre réservation #{$reservation->id} a été refusée par l'agence.",
                 'data' => [
                     'reservation_id' => $reservation->id,
-                    'status' => 'cancelled',
+                    'status' => ReservationStatus::CANCELLED->value,
                     'vehicle_id' => $reservation->vehicle_id,
                 ],
             ]);
@@ -233,33 +264,36 @@ class ReservationService
      */
     public function updateStatus(Reservation $reservation, string $status): Reservation
     {
-        $validStatuses = ['pending', 'confirmed', 'ongoing', 'completed', 'cancelled'];
-        if (!in_array($status, $validStatuses)) {
-            throw new \Exception("Statut invalide: {$status}");
+        if (!in_array($status, ReservationStatus::values(), true)) {
+            throw new BusinessRuleViolationException(
+                "Statut invalide: {$status}",
+                422,
+                'INVALID_RESERVATION_STATUS'
+            );
         }
 
         $previousStatus = $reservation->status;
         $reservation->update(['status' => $status]);
 
-        if ($status === 'confirmed') {
-            $this->updateVehicleLifecycleStatus($reservation, 'reserved');
+        if ($status === ReservationStatus::CONFIRMED->value) {
+            $this->updateVehicleLifecycleStatus($reservation, VehicleStatus::RESERVED->value);
         }
 
-        if ($status === 'ongoing') {
-            $this->updateVehicleLifecycleStatus($reservation, 'in_use');
+        if ($status === ReservationStatus::ONGOING->value) {
+            $this->updateVehicleLifecycleStatus($reservation, VehicleStatus::IN_USE->value);
         }
 
-        if ($status === 'completed') {
-            $this->updateVehicleLifecycleStatus($reservation, 'returned');
+        if ($status === ReservationStatus::COMPLETED->value) {
+            $this->updateVehicleLifecycleStatus($reservation, VehicleStatus::RETURNED->value);
         }
 
-        if ($status === 'cancelled') {
+        if ($status === ReservationStatus::CANCELLED->value) {
             $this->resetVehicleStatusIfNoActiveReservations($reservation);
         }
 
         // Notify client for acceptance/refusal decision.
         if ($reservation->user_id && $previousStatus !== $status) {
-            if ($status === 'confirmed') {
+            if ($status === ReservationStatus::CONFIRMED->value) {
                 UserNotification::create([
                     'user_id' => $reservation->user_id,
                     'type' => 'reservation_accepted',
@@ -273,7 +307,7 @@ class ReservationService
                 ]);
             }
 
-            if ($status === 'cancelled') {
+            if ($status === ReservationStatus::CANCELLED->value) {
                 UserNotification::create([
                     'user_id' => $reservation->user_id,
                     'type' => 'reservation_refused',
@@ -304,12 +338,16 @@ class ReservationService
      */
     public function pickupVehicle(Reservation $reservation): Reservation
     {
-        if ($reservation->status !== 'confirmed') {
-            throw new \Exception('Seules les réservations confirmées peuvent être en cours.');
+        if ($reservation->status !== ReservationStatus::CONFIRMED->value) {
+            throw new BusinessRuleViolationException(
+                'Seules les réservations confirmées peuvent être en cours.',
+                422,
+                'RESERVATION_PICKUP_INVALID_STATE'
+            );
         }
 
-        $reservation->update(['status' => 'ongoing']);
-        $this->updateVehicleLifecycleStatus($reservation, 'in_use');
+        $reservation->update(['status' => ReservationStatus::ONGOING->value]);
+        $this->updateVehicleLifecycleStatus($reservation, VehicleStatus::IN_USE->value);
         return $reservation;
     }
 
@@ -323,8 +361,12 @@ class ReservationService
      */
     public function returnVehicle(Reservation $reservation, array $returnData = []): Reservation
     {
-        if ($reservation->status !== 'ongoing') {
-            throw new \Exception('Seules les réservations en cours peuvent être retournées.');
+        if ($reservation->status !== ReservationStatus::ONGOING->value) {
+            throw new BusinessRuleViolationException(
+                'Seules les réservations en cours peuvent être retournées.',
+                422,
+                'RESERVATION_RETURN_INVALID_STATE'
+            );
         }
 
         $additionalCharges = floatval($returnData['additional_charges'] ?? 0);
@@ -359,8 +401,8 @@ class ReservationService
             'notes' => $returnData['notes'] ?? null,
         ]);
 
-        $reservation->update(['status' => 'completed']);
-        $this->updateVehicleLifecycleStatus($reservation, 'returned');
+        $reservation->update(['status' => ReservationStatus::COMPLETED->value]);
+        $this->updateVehicleLifecycleStatus($reservation, VehicleStatus::RETURNED->value);
         return $reservation;
     }
 
@@ -391,12 +433,12 @@ class ReservationService
         }
 
         $hasActiveReservations = Reservation::where('vehicle_id', $vehicle->id)
-            ->whereIn('status', ['pending', 'confirmed', 'ongoing'])
+            ->whereIn('status', ReservationStatus::activeValues())
             ->where('id', '!=', $reservation->id)
             ->exists();
 
-        if (!$hasActiveReservations && $vehicle->status !== 'maintenance') {
-            $vehicle->update(['status' => 'available']);
+        if (!$hasActiveReservations && $vehicle->status !== VehicleStatus::MAINTENANCE->value) {
+            $vehicle->update(['status' => VehicleStatus::AVAILABLE->value]);
         }
     }
 
@@ -412,7 +454,7 @@ class ReservationService
     public function checkAvailability($vehicleId, $startDate, $endDate, $excludeReservationId = null): bool
     {
         $query = Reservation::where('vehicle_id', $vehicleId)
-            ->where('status', '!=', 'cancelled')
+            ->where('status', '!=', ReservationStatus::CANCELLED->value)
             ->where(function ($query) use ($startDate, $endDate) {
                 $query->whereBetween('start_date', [$startDate, $endDate])
                     ->orWhereBetween('end_date', [$startDate, $endDate])

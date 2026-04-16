@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Domain\Enums\ReservationPaymentStatus;
+use App\Domain\Enums\ReservationStatus;
 use App\Models\User;
 use App\Models\ClientReliabilityScore;
 use App\Models\UserNotification;
@@ -18,15 +20,15 @@ class ClientService
         $score = $this->recalculateReliabilityScore($user);
 
         $completedReservations = $user->reservations()
-            ->where('status', 'completed')
+            ->where('status', ReservationStatus::COMPLETED->value)
             ->count();
 
         $activeReservations = $user->reservations()
-            ->whereIn('status', ['pending', 'confirmed', 'ongoing'])
+            ->whereIn('status', ReservationStatus::activeValues())
             ->count();
 
         $totalSpent = $user->reservations()
-            ->where('status', 'completed')
+            ->where('status', ReservationStatus::COMPLETED->value)
             ->sum('total_price');
 
         $reliabilityScore = (int) ($score->reliability_score ?? 100);
@@ -156,16 +158,16 @@ class ClientService
         $reservationsQuery = $user->reservations();
         $totalReservations = (clone $reservationsQuery)->count();
         $completedReservations = (clone $reservationsQuery)
-            ->where('status', 'completed')
+            ->where('status', ReservationStatus::COMPLETED->value)
             ->count();
         $cancelledReservations = (clone $reservationsQuery)
-            ->where('status', 'cancelled')
+            ->where('status', ReservationStatus::CANCELLED->value)
             ->count();
         $lateReturns = (clone $reservationsQuery)
             ->where('is_late_return', true)
             ->count();
         $paymentDelays = (clone $reservationsQuery)
-            ->where('payment_status', 'overdue')
+            ->where('payment_status', ReservationPaymentStatus::OVERDUE->value)
             ->count();
         $damageIncidents = (clone $reservationsQuery)
             ->whereHas('vehicleReturn', function ($query) {
@@ -196,10 +198,6 @@ class ClientService
      */
     public function create(array $data): User
     {
-        if (isset($data['email']) && User::where('email', $data['email'])->exists()) {
-            throw new \Exception('Email already in use', 400);
-        }
-
         $password = $data['password'] ?? Str::random(40);
 
         $user = User::create([

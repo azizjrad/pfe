@@ -1,4 +1,5 @@
 import http from "./http";
+import { normalizeApiResponse } from "./apiResponse";
 
 /**
  * Admin service — handles super-admin-only API calls.
@@ -7,7 +8,7 @@ export const adminService = {
   /** Get platform-wide statistics for the admin dashboard */
   getDashboardStats: async () => {
     const response = await http.get("/admin/stats");
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Get all agencies with their statistics */
@@ -15,11 +16,11 @@ export const adminService = {
     // Try admin endpoint first; if missing, fall back to public agencies
     try {
       const response = await http.get("/admin/agencies", { params });
-      return response.data;
+      return normalizeApiResponse(response);
     } catch (err) {
       if (err.response?.status === 404) {
         const resp = await http.get("/public/agencies", { params });
-        return resp.data;
+        return normalizeApiResponse(resp);
       }
       throw err;
     }
@@ -28,25 +29,25 @@ export const adminService = {
   /** Get all users */
   getUsers: async (params = {}) => {
     const response = await http.get("/admin/users", { params });
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Update an agency */
   updateAgency: async (id, data) => {
     const response = await http.put(`/admin/agencies/${id}`, data);
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Create an agency */
   createAgency: async (data) => {
     const response = await http.post("/admin/agencies", data);
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Delete an agency */
   deleteAgency: async (id) => {
     const response = await http.delete(`/admin/agencies/${id}`);
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /**
@@ -55,25 +56,25 @@ export const adminService = {
    */
   suspendAgency: async (id, status) => {
     const response = await http.put(`/admin/agencies/${id}`, { status });
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Update a user */
   updateUser: async (id, data) => {
     const response = await http.put(`/admin/users/${id}`, data);
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Create a user */
   createUser: async (data) => {
     const response = await http.post("/admin/users", data);
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Delete a user */
   deleteUser: async (id) => {
     const response = await http.delete(`/admin/users/${id}`);
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /**
@@ -84,7 +85,7 @@ export const adminService = {
     const response = await http.put(`/admin/users/${id}`, {
       is_suspended: suspend,
     });
-    return response.data;
+    return normalizeApiResponse(response);
   },
 
   /** Get financial statistics with monthly breakdown */
@@ -93,12 +94,12 @@ export const adminService = {
     // while others may expose admin-level endpoints. Try admin first, then agency.
     try {
       const response = await http.get("/admin/financial-stats");
-      return response.data;
+      return normalizeApiResponse(response);
     } catch (err) {
       if (err.response?.status === 404) {
         try {
           const resp = await http.get("/agency/financial-stats");
-          return resp.data;
+          return normalizeApiResponse(resp);
         } catch (err2) {
           // Fallback to empty structure when endpoint isn't available
           return {
@@ -118,6 +119,6 @@ export const adminService = {
     const response = await http.get(`/admin/agencies/${agencyId}/vehicles`, {
       params,
     });
-    return response.data;
+    return normalizeApiResponse(response);
   },
 };

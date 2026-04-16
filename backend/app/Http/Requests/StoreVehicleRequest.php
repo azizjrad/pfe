@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Domain\Enums\VehicleStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreVehicleRequest extends FormRequest
 {
@@ -31,7 +33,7 @@ class StoreVehicleRequest extends FormRequest
             'seats' => 'required|integer|min:2|max:9',
             'transmission' => 'required|in:manual,automatic',
             'fuel_type' => 'required|in:petrol,diesel,electric,hybrid',
-            'status' => 'sometimes|in:available,reserved,in_use,returned,maintenance,rented,unavailable',
+            'status' => ['sometimes', Rule::in(VehicleStatus::values())],
             'image' => 'nullable|string',
         ];
     }

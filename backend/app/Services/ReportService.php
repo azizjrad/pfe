@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Domain\Enums\ReportStatus;
+use App\Exceptions\Domain\BusinessRuleViolationException;
 use App\Models\Report;
 use App\Models\UserNotification;
 
@@ -64,7 +66,7 @@ class ReportService
             'target_name' => $data['target_name'] ?? null,
             'reason' => $data['reason'],
             'description' => $data['description'] ?? null,
-            'status' => 'open',
+            'status' => ReportStatus::OPEN->value,
         ]);
     }
 
@@ -76,10 +78,8 @@ class ReportService
         $report = Report::findOrFail($reportId);
         $previousStatus = $report->status;
 
-        $validStatuses = ['open', 'investigating', 'resolved', 'dismissed'];
-
-        if (!in_array($status, $validStatuses)) {
-            throw new \Exception("Invalid status: {$status}");
+        if (!in_array($status, ReportStatus::values(), true)) {
+            throw new BusinessRuleViolationException("Invalid status: {$status}", 422, 'report.invalid_status');
         }
 
         $payload = ['status' => $status];
@@ -88,7 +88,7 @@ class ReportService
             $payload['admin_notes'] = $adminNotes;
         }
 
-        if (in_array($status, ['resolved', 'dismissed'])) {
+        if (in_array($status, ReportStatus::resolutionValues(), true)) {
             $payload['resolved_at'] = now();
         }
 
@@ -98,12 +98,12 @@ class ReportService
         if (
             $report->reported_by_user_id &&
             $previousStatus !== $status &&
-            in_array($status, ['investigating', 'resolved', 'dismissed'])
+            in_array($status, ReportStatus::responseValues(), true)
         ) {
             $statusText = [
-                'investigating' => 'en cours d\'investigation',
-                'resolved' => 'résolu',
-                'dismissed' => 'rejeté',
+                ReportStatus::INVESTIGATING->value => 'en cours d\'investigation',
+                ReportStatus::RESOLVED->value => 'résolu',
+                ReportStatus::DISMISSED->value => 'rejeté',
             ][$status] ?? $status;
 
             UserNotification::create([

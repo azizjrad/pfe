@@ -24,18 +24,9 @@ class ContactController extends Controller
     {
         $validated = $request->validated();
 
-        try {
-            $message = $this->contactService->submit($validated);
+        $message = $this->contactService->submit($validated);
 
-            return response()->json([
-                'message' => 'Message sent successfully.',
-                'data'    => new ContactMessageResource($message),
-            ], 201);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible d\'envoyer le message de contact.', 500, [
-                'action' => 'contact.store',
-            ]);
-        }
+        return $this->apiSuccessResponse('Message sent successfully.', new ContactMessageResource($message), 201);
     }
 
     /**
@@ -43,20 +34,12 @@ class ContactController extends Controller
      */
     public function index(Request $request)
     {
-        try {
-            $perPage = $this->resolvePerPage($request, 25, 100);
-            $messages = $this->contactService->getAll([], $perPage);
+        $perPage = $this->resolvePerPage($request, 25, 100);
+        $messages = $this->contactService->getAll([], $perPage);
 
-            return response()->json([
-                'success' => true,
-                'data' => ContactMessageResource::collection($messages->items()),
-                'pagination' => $this->paginationMeta($messages),
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Impossible de récupérer les messages de contact.', 500, [
-                'action' => 'contact.index',
-            ]);
-        }
+        return $this->apiSuccessResponse(null, ContactMessageResource::collection($messages->items()), 200, [
+            'pagination' => $this->paginationMeta($messages),
+        ]);
     }
 
     /**
@@ -64,19 +47,9 @@ class ContactController extends Controller
      */
     public function markAsRead($id)
     {
-        try {
-            $message = $this->contactService->markAsRead($id);
+        $message = $this->contactService->markAsRead($id);
 
-            return response()->json([
-                'message' => 'Message marked as read.',
-                'data' => new ContactMessageResource($message)
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Message de contact introuvable.', 404, [
-                'action' => 'contact.mark_as_read',
-                'contact_message_id' => $id,
-            ]);
-        }
+        return $this->apiSuccessResponse('Message marked as read.', new ContactMessageResource($message));
     }
 
     /**
@@ -84,15 +57,8 @@ class ContactController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            $this->contactService->delete($id);
+        $this->contactService->delete($id);
 
-            return response()->json(['message' => 'Message deleted.']);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Message de contact introuvable.', 404, [
-                'action' => 'contact.destroy',
-                'contact_message_id' => $id,
-            ]);
-        }
+        return $this->apiSuccessResponse('Message deleted.');
     }
 }

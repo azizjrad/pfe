@@ -65,7 +65,7 @@ const AgencyContent = ({
       };
 
       const response = await vehicleService.create(payload);
-      const createdVehicle = response?.data?.data;
+      const createdVehicle = response?.data;
 
       if (createdVehicle) {
         setVehicles((prev) => [createdVehicle, ...prev]);

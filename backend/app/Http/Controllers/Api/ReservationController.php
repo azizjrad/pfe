@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Domain\Enums\ReservationStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReservationRequest;
 use App\Http\Requests\UpdateReservationRequest;
@@ -37,9 +38,7 @@ class ReservationController extends Controller
             ->paginate($perPage)
             ->appends($request->query());
 
-        return response()->json([
-            'success' => true,
-            'data' => ReservationResource::collection($reservations->items()),
+        return $this->apiSuccessResponse(null, ReservationResource::collection($reservations->items()), 200, [
             'pagination' => $this->paginationMeta($reservations),
         ]);
     }
@@ -57,9 +56,7 @@ class ReservationController extends Controller
             ->paginate($perPage)
             ->appends($request->query());
 
-        return response()->json([
-            'success' => true,
-            'data' => ReservationResource::collection($reservations->items()),
+        return $this->apiSuccessResponse(null, ReservationResource::collection($reservations->items()), 200, [
             'pagination' => $this->paginationMeta($reservations),
         ]);
     }
@@ -81,9 +78,7 @@ class ReservationController extends Controller
             ->paginate($perPage)
             ->appends($request->query());
 
-        return response()->json([
-            'success' => true,
-            'data' => ReservationResource::collection($reservations->items()),
+        return $this->apiSuccessResponse(null, ReservationResource::collection($reservations->items()), 200, [
             'pagination' => $this->paginationMeta($reservations),
         ]);
     }
@@ -103,11 +98,7 @@ class ReservationController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Réservation confirmée! Vous recevrez un email de confirmation ou un appel de l\'agence bientôt.',
-                'data' => new ReservationResource($reservation->load('vehicle')),
-            ], 201);
+            return $this->apiSuccessResponse('Réservation confirmée! Vous recevrez un email de confirmation ou un appel de l\'agence bientôt.', new ReservationResource($reservation->load('vehicle')), 201);
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -128,10 +119,7 @@ class ReservationController extends Controller
 
         $this->authorize('view', $reservation);
 
-        return response()->json([
-            'success' => true,
-            'data' => new ReservationResource($reservation),
-        ]);
+        return $this->apiSuccessResponse(null, new ReservationResource($reservation));
     }
 
     /**
@@ -152,11 +140,7 @@ class ReservationController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Réservation modifiée avec succès.',
-                'data' => new ReservationResource($updated->load('vehicle')),
-            ]);
+            return $this->apiSuccessResponse('Réservation modifiée avec succès.', new ReservationResource($updated->load('vehicle')));
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -187,11 +171,7 @@ class ReservationController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Réservation annulée avec succès.',
-                'data' => new ReservationResource($cancelled),
-            ]);
+            return $this->apiSuccessResponse('Réservation annulée avec succès.', new ReservationResource($cancelled));
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -215,11 +195,8 @@ class ReservationController extends Controller
         $validated = $request->validated();
 
         // Don't allow changing cancelled or completed reservations
-        if (in_array($reservation->status, ['cancelled', 'completed'])) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Impossible de modifier le statut d\'une réservation annulée ou terminée.',
-            ], 422);
+        if (in_array($reservation->status, ReservationStatus::immutableValues(), true)) {
+            return $this->apiErrorMessageResponse('Impossible de modifier le statut d\'une réservation annulée ou terminée.', 422);
         }
 
         $reservation = $this->reservationService->updateStatus(
@@ -227,11 +204,7 @@ class ReservationController extends Controller
             $validated['status']
         );
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Statut de la réservation mis à jour avec succès.',
-            'data' => new ReservationResource($reservation->load(['vehicle', 'user', 'payments'])),
-        ]);
+        return $this->apiSuccessResponse('Statut de la réservation mis à jour avec succès.', new ReservationResource($reservation->load(['vehicle', 'user', 'payments'])));
     }
 
     /**
@@ -250,11 +223,7 @@ class ReservationController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Véhicule marqué comme retiré. La réservation est maintenant en cours.',
-                'data' => new ReservationResource($updated->load(['vehicle', 'user', 'payments'])),
-            ]);
+            return $this->apiSuccessResponse('Véhicule marqué comme retiré. La réservation est maintenant en cours.', new ReservationResource($updated->load(['vehicle', 'user', 'payments'])));
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -284,11 +253,7 @@ class ReservationController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Véhicule retourné et réservation complétée.',
-                'data' => new ReservationResource($updated->load(['vehicle', 'user', 'payments', 'vehicleReturn'])),
-            ]);
+            return $this->apiSuccessResponse('Véhicule retourné et réservation complétée.', new ReservationResource($updated->load(['vehicle', 'user', 'payments', 'vehicleReturn'])));
 
         } catch (\Exception $e) {
             DB::rollBack();

@@ -18,15 +18,12 @@ class ConfigController extends Controller
         $pricingConfig = config('pfe.pricing');
         $commissionConfig = config('pfe.commission');
 
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'currency' => $pricingConfig['currency'],
-                'currency_symbol' => $pricingConfig['currency_symbol'],
-                'default_daily_price' => $pricingConfig['default_daily_price'],
-                'add_ons' => $pricingConfig['add_ons'],
-                'commission' => $commissionConfig,
-            ],
+        return $this->apiSuccessResponse(null, [
+            'currency' => $pricingConfig['currency'],
+            'currency_symbol' => $pricingConfig['currency_symbol'],
+            'default_daily_price' => $pricingConfig['default_daily_price'],
+            'add_ons' => $pricingConfig['add_ons'],
+            'commission' => $commissionConfig,
         ]);
     }
 }

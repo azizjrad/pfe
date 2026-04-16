@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Domain\Enums\ReservationStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateReservationStatusRequest extends FormRequest
 {
@@ -20,7 +22,7 @@ class UpdateReservationStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'required|in:pending,confirmed,ongoing,completed,cancelled',
+            'status' => ['required', Rule::in(ReservationStatus::values())],
         ];
     }
 }

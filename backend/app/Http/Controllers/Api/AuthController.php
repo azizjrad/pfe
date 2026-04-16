@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateProfileRequest;
@@ -65,13 +66,9 @@ class AuthController extends Controller
     /**
      * Reset password using token (used by invite links)
      */
-    public function resetPassword(Request $request)
+    public function resetPassword(ResetPasswordRequest $request)
     {
-        $validated = $request->validate([
-            'email' => 'required|email',
-            'token' => 'required|string',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+        $validated = $request->validated();
 
         $status = Password::broker()->reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
@@ -82,10 +79,10 @@ class AuthController extends Controller
         );
 
         if ($status == Password::PASSWORD_RESET) {
-            return response()->json(['message' => 'Password set successfully'], 200);
+            return $this->apiSuccessResponse('Password set successfully');
         }
 
-        return response()->json(['message' => 'Failed to reset password'], 400);
+        return $this->apiErrorMessageResponse('Failed to reset password', 400);
     }
 
     /**
@@ -95,28 +92,21 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
 
-        try {
-            $user = $this->authService->register($validated);
-            $token = $user->createToken('auth_token')->plainTextToken;
+        $user = $this->authService->register($validated);
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-            return $this->withAuthCookie(response()->json([
-                'message' => 'Registration successful',
-                'user' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'role' => $user->role,
-                    'phone' => $user->phone,
-                    'address' => $user->address,
-                    'driver_license' => $user->driver_license,
-                    'agency_id' => $user->agency_id,
-                ],
-            ], 201), $token, 60 * 24 * 30);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Registration failed', 422, [
-                'action' => 'register',
-            ]);
-        }
+        return $this->withAuthCookie($this->apiSuccessResponse('Registration successful', [
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role,
+                'phone' => $user->phone,
+                'address' => $user->address,
+                'driver_license' => $user->driver_license,
+                'agency_id' => $user->agency_id,
+            ],
+        ], 201), $token, 60 * 24 * 30);
     }
 
     /**
@@ -137,8 +127,7 @@ class AuthController extends Controller
             $token = $result['token'];
             $cookieExpiration = $result['cookie_expiration'];
 
-            return $this->withAuthCookie(response()->json([
-                'message' => 'Login successful',
+            return $this->withAuthCookie($this->apiSuccessResponse('Login successful', [
                 'user' => [
                     'id' => $user->id,
                     'name' => $user->name,
@@ -170,9 +159,7 @@ class AuthController extends Controller
     {
         $this->authService->logout($request->user());
 
-        return $this->clearAuthCookie(response()->json([
-            'message' => 'Logout successful',
-        ]));
+        return $this->clearAuthCookie($this->apiSuccessResponse('Logout successful'));
     }
 
     /**
@@ -183,7 +170,7 @@ class AuthController extends Controller
         $user = $request->user();
         $user->load('agency', 'reliabilityScore');
 
-        return response()->json([
+        return $this->apiSuccessResponse(null, [
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
@@ -211,34 +198,26 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
 
-        try {
-            $user = $this->authService->updateProfile($request->user(), $validated);
-            $user->load('agency', 'reliabilityScore');
+        $user = $this->authService->updateProfile($request->user(), $validated);
+        $user->load('agency', 'reliabilityScore');
 
-            return response()->json([
-                'message' => 'Profile updated successfully',
-                'user' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'role' => $user->role,
-                    'phone' => $user->phone,
-                    'address' => $user->address,
-                    'driver_license' => $user->driver_license,
-                    'agency_id' => $user->agency_id,
-                    'agency' => $user->agency ? [
-                        'id' => $user->agency->id,
-                        'name' => $user->agency->name,
-                        'location' => $user->agency->location,
-                    ] : null,
-                    'client_score' => $user->reliabilityScore?->score ?? null,
-                ],
-            ]);
-        } catch (\Exception $e) {
-            return $this->apiErrorResponse($e, 'Profile update failed', 422, [
-                'action' => 'update_profile',
-                'user_id' => $request->user()?->id,
-            ]);
-        }
+        return $this->apiSuccessResponse('Profile updated successfully', [
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role,
+                'phone' => $user->phone,
+                'address' => $user->address,
+                'driver_license' => $user->driver_license,
+                'agency_id' => $user->agency_id,
+                'agency' => $user->agency ? [
+                    'id' => $user->agency->id,
+                    'name' => $user->agency->name,
+                    'location' => $user->agency->location,
+                ] : null,
+                'client_score' => $user->reliabilityScore?->score ?? null,
+            ],
+        ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Domain\Enums\ReportStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,7 +22,7 @@ class ReportResource extends JsonResource
             'reported_by_user_id' => $this->reported_by_user_id,
             'title' => $this->title,
             'description' => $this->description,
-            'status' => $this->status ?? 'pending',
+            'status' => $this->status ?? ReportStatus::OPEN->value,
             'admin_notes' => $this->admin_notes,
             'reported_by' => new UserResource($this->whenLoaded('reportedBy')),
             'deleted_at' => $this->deleted_at?->toIso8601String(),

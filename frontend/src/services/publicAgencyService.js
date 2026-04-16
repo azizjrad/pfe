@@ -1,4 +1,5 @@
 import http from "./http";
+import { normalizeApiResponse, unwrapApiData } from "./apiResponse";
 
 const normalizeAgencyVehicle = (vehicle, agency) => ({
   id: vehicle.id,
@@ -85,10 +86,12 @@ const publicAgencyService = {
       const response = await http.get("/public/agencies", {
         params: { page, per_page: perPage },
       });
-      const agencies = extractCollection(response.data).map(normalizeAgency);
+      const agencies = extractCollection(normalizeApiResponse(response)).map(
+        normalizeAgency,
+      );
 
       return {
-        ...response.data,
+        ...normalizeApiResponse(response),
         data: agencies,
       };
     } catch (error) {
@@ -105,9 +108,10 @@ const publicAgencyService = {
   getById: async (id) => {
     try {
       const response = await http.get(`/public/agencies/${id}`);
+      const payload = normalizeApiResponse(response);
       return {
-        ...response.data,
-        data: response.data?.data ? normalizeAgency(response.data.data) : null,
+        ...payload,
+        data: payload.data ? normalizeAgency(unwrapApiData(response)) : null,
       };
     } catch (error) {
       console.error(`Failed to fetch agency ${id}:`, error);
@@ -123,9 +127,10 @@ const publicAgencyService = {
   getBySlug: async (slug) => {
     try {
       const response = await http.get(`/public/agencies/slug/${slug}`);
+      const payload = normalizeApiResponse(response);
       return {
-        ...response.data,
-        data: response.data?.data ? normalizeAgency(response.data.data) : null,
+        ...payload,
+        data: payload.data ? normalizeAgency(unwrapApiData(response)) : null,
       };
     } catch (error) {
       console.error(`Failed to fetch agency with slug ${slug}:`, error);

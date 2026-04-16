@@ -138,7 +138,7 @@ export default function useAdminDashboard({
   const fetchNotifications = async () => {
     try {
       const response = await clientService.getNotifications();
-      setNotifications(response?.data?.data || []);
+      setNotifications(response?.data || []);
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Domain\Enums\ReportStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateReportStatusRequest extends FormRequest
 {
@@ -20,8 +22,18 @@ class UpdateReportStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'required|in:open,investigating,resolved,dismissed',
-            'admin_notes' => 'required_if:status,resolved,dismissed|string',
+            'status' => ['required', Rule::in(ReportStatus::values())],
+            'admin_notes' => [
+                Rule::requiredIf(function (): bool {
+                    return in_array(
+                        (string) $this->input('status'),
+                        ReportStatus::resolutionValues(),
+                        true
+                    );
+                }),
+                'nullable',
+                'string',
+            ],
         ];
     }
 }
