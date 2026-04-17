@@ -652,7 +652,6 @@ Enchaînement principal &
 }
 \end{table}
 
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{Chapitres/Figures/Diag_seq_ajouter_agence.png}
@@ -667,7 +666,7 @@ Dans la suite, nous présentons une description textuelle accompagnée d'un diag
 de séquence du cas d'utilisation \textbf{«Bloquer/Débloquer agence»} de l'acteur 
 \textbf{Administrateur}.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Description textuelle du cas d'utilisation « Bloquer/Débloquer agence »}
 \label{tab:use-case-bloquer-agence}
@@ -858,7 +857,6 @@ raffinement accompagné d'une description textuelle et un diagramme de séquence
 \label{sec:consulter_vitrine}
 La section suivante propose une description textuelle et une diagramme de séquence, auxquels s'ajoute l'analyse du cas d'utilisation \textbf{"Consulter vitrine''} de l'acteur \textit{Agence}.
 
-
 \begin{table}[htbp]
 \centering
 \caption{Description textuelle du cas d'utilisation « Consulter vitrine »}
@@ -906,7 +904,7 @@ Dans la suite, nous présentons unee description textuelle accompagnée d'une di
 de séquence du cas d'utilisation \textbf{"Ajouter voiture''} de l'acteur 
 \textit{Agence}.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Description textuelle du cas d'utilisation « Ajouter voiture »}
 \label{tab:ajouter_voiture}
@@ -1103,8 +1101,40 @@ Ce diagramme repose généralement sur trois catégories principales de classes 
     \caption{Diagramme des classes participantes par acteur Administrateur}
     \label{fig:classes_participantes_admin_s1}
 \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Test unitaire}
+\subsection{Test unitaire du cas d’utilisation « S’authentifier »}
+
+Cette section se concentre sur la récupération du code pour le cas « S’authentifier ».
+
+\subsection*{— Code source de la méthode d’authentification :}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Chapitres/Figures/test1_code.png}
+    \caption{Test unitaire du cas d’utilisation « S’authentifier »}
+\end{figure}
+
+
+\subsection{Test unitaire du cas d’utilisation « Bloquer ou Débloquer une agence »}
+
+Cette section se concentre sur la récupération du code pour le cas Bloquer ou
+Débloquer une agence.
+
+\subsection*{- Code source de la méthode de blocage ou déblocage d'une agence :}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Chapitres/Figures/test2_code.png}
+    \caption{Test unitaire du cas d’utilisation « Bloquer ou Débloquer un agence »}
+\end{figure}
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Dans le cadre de ce chapitre, nous avons mené le Sprint 1 selon une séquence logique couvrant l'analyse des cas d'utilisation et la conception. La phase suivante concerne la mise en œuvre du Sprint 2, qui est dédié à la gestion des réservations, des réclamations et du tableau de bord.
+Dans le cadre de ce chapitre, nous avons mené le Sprint 1 selon une séquence logique couvrant l'analyse des cas d'utilisation, la conception et les tests. La phase suivante concerne la mise en œuvre du Sprint 2, qui est dédié à la gestion des réservations, des réclamations et du tableau de bord.

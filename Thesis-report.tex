@@ -99,6 +99,8 @@
 \begin{document}
 \includepdf{Chapitres/Page_garde_BC.pdf}%Utilisez le modèle de page de garde fourni dans le fichier word "Page_garde_BC". Ne modifiez que vos informations personnelles et celles de votre stage. Conservez la mise en page d'origine. Enregistrez le document final au format PDF. Si vous êtes en M2 DSSD, supprimez cette ligne.
 
+\pagenumbering{arabic}
+
 \thispagestyle{empty}
 \include{Chapitres/Declaration}
 \thispagestyle{empty}
@@ -109,7 +111,6 @@
 \include{Chapitres/Abstract}
 %\dominitoc
 \pagestyle{headings}
-\pagenumbering{roman}
 
 
 \tableofcontents 
@@ -120,8 +121,7 @@
 
 
 %%%%%%%%%%%%%%%%%%%
-\include{Chapitres/Notations}
-\pagenumbering{arabic}
+% \include{Chapitres/Notations}
 
 \include{Chapitres/Introduction}
 \include{Chapitres/Chapitre1}
