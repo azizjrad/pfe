@@ -1,20 +1,7 @@
 %chapterhead %%Änderungen von macros aus dem File "rep11.sty".
-\font\thebig=cmss17 scaled 3500
-
-\def\@makechapterhead#1{ \vspace*{2pt} { \parindent 0pt
-  \begin{flushright}\thebig\thechapter\vspace*{-8pt}\\
-     \fontfamily{cmss}\fontseries{bx}\Huge #1
-  \end{flushright}
-\nobreak \vskip 10pt }  }
-
-\def\@makeschapterhead#1{ \vspace*{20pt} { \parindent 0pt
- \begin{flushright}\fontfamily{cmss}\fontseries{bx}\Huge #1
- \end{flushright}
- \nobreak \vskip 20pt } }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Changing defaults from book.cls!
-\def\chaptername{}
 \typeout{Redefining defaults from book.cls in MyMacros.sty!}
 \typeout{}
 \def\myheadstyle{\itshape\small}
