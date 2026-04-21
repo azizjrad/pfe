@@ -5,7 +5,7 @@ use App\Http\Controllers\Api\ReservationController;
 use Illuminate\Support\Facades\Route;
 
 // Protected routes - Client only
-Route::middleware(['auth:sanctum', 'not_suspended', 'role:client'])->group(function () {
+Route::middleware(['auth:sanctum', 'not_suspended', 'password_changed', 'role:client'])->group(function () {
     Route::get('/client/stats', [ClientController::class, 'getStats']);
 
     Route::get('/my-reservations', [ReservationController::class, 'clientIndex']);

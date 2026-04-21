@@ -11,6 +11,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->environment('production') && !filter_var((string) env('ALLOW_PRODUCTION_SEEDERS', 'false'), FILTER_VALIDATE_BOOLEAN)) {
+            $this->command?->warn('Production environment detected. DatabaseSeeder is skipped by default.');
+            $this->command?->warn('Use admin:bootstrap for initial admin provisioning.');
+            return;
+        }
+
         // Seeders dans l'ordre des dépendances de clés étrangères
         $this->call([
             SuperAdminSeeder::class,       // 0. Créer le super admin (compte plateforme)

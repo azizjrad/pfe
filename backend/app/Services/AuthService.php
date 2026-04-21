@@ -159,6 +159,7 @@ class AuthService
                 throw new BusinessRuleViolationException('Current password is incorrect.', 422, 'auth.invalid_current_password');
             }
             $data['password'] = Hash::make($data['new_password']);
+            $data['must_change_password'] = false;
             unset($data['new_password'], $data['current_password']);
         }
 

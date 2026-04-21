@@ -15,6 +15,9 @@ import ErrorBoundary from "./components/common/ErrorBoundary";
 // Lazy-load pages for route-based code splitting
 const Home = React.lazy(() => import("./pages/public/Home"));
 const Login = React.lazy(() => import("./pages/auth/Login"));
+const ForcePasswordChange = React.lazy(
+  () => import("./pages/auth/ForcePasswordChange"),
+);
 const Register = React.lazy(() => import("./pages/auth/Register"));
 const ForgotPassword = React.lazy(() => import("./pages/auth/ForgotPassword"));
 const ResetPassword = React.lazy(() => import("./pages/auth/ResetPassword"));
@@ -206,6 +209,17 @@ function App() {
                   <ProtectedRoute>
                     <React.Suspense fallback={<PageLoader />}>
                       <Dashboard />
+                    </React.Suspense>
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/force-change-password"
+                element={
+                  <ProtectedRoute>
+                    <React.Suspense fallback={<PageLoader />}>
+                      <ForcePasswordChange />
                     </React.Suspense>
                   </ProtectedRoute>
                 }

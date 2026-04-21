@@ -24,10 +24,18 @@ export const AuthProvider = ({ children }) => {
           setUser(cachedUser);
           setLoading(false);
 
+          if (cachedUser?.must_change_password) {
+            navigate("/force-change-password", { replace: true });
+          }
+
           // Phase 2: Validate session with server to detect suspensions/invalidations
           try {
             const freshUserData = await authService.getUser();
             setUser(freshUserData);
+
+            if (freshUserData?.must_change_password) {
+              navigate("/force-change-password", { replace: true });
+            }
           } catch (error) {
             // Cookie expired, invalid, or server rejected the session
             console.warn(
@@ -92,6 +100,10 @@ export const AuthProvider = ({ children }) => {
         // Update user data if any changes detected
         if (JSON.stringify(freshData) !== JSON.stringify(user)) {
           setUser(freshData);
+        }
+
+        if (freshData?.must_change_password) {
+          navigate("/force-change-password", { replace: true });
         }
       } catch (err) {
         console.error("Session validation error:", err);

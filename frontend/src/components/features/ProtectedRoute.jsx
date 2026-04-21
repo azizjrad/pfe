@@ -36,6 +36,11 @@ const ProtectedRoute = ({
     return <Navigate to={redirectTo} state={{ from: location }} replace />;
   }
 
+  // Force a password update before granting access to protected areas
+  if (user?.must_change_password && location.pathname !== "/force-change-password") {
+    return <Navigate to="/force-change-password" replace />;
+  }
+
   // Check role-based authorization if roles are specified
   if (allowedRoles) {
     const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];

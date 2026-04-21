@@ -31,6 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,
             'not_suspended' => \App\Http\Middleware\EnsureUserNotSuspended::class,
+            'password_changed' => \App\Http\Middleware\EnsurePasswordChanged::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\ReservationController;
 use Illuminate\Support\Facades\Route;
 
 // Protected routes - Super Admin only
-Route::middleware(['auth:sanctum', 'not_suspended', 'role:super_admin'])->group(function () {
+Route::middleware(['auth:sanctum', 'not_suspended', 'password_changed', 'role:super_admin'])->group(function () {
     Route::get('/admin/stats', [AdminController::class, 'getDashboardStats']);
     Route::get('/admin/reservations', [ReservationController::class, 'index']);
 

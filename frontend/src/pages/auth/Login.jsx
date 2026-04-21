@@ -82,6 +82,11 @@ const Login = () => {
         remember_me: formData.rememberMe, // Controls session duration (2h vs 30d)
       });
 
+      if (response?.user?.must_change_password) {
+        navigate("/force-change-password", { replace: true });
+        return;
+      }
+
       // Redirect to returnTo URL or dashboard
       const destination = returnTo || "/dashboard";
       navigate(destination);

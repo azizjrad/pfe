@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\VehicleController;
 use Illuminate\Support\Facades\Route;
 
 // Protected routes - Agency Admin & Super Admin
-Route::middleware(['auth:sanctum', 'not_suspended', 'role:agency_admin,super_admin'])->group(function () {
+Route::middleware(['auth:sanctum', 'not_suspended', 'password_changed', 'role:agency_admin,super_admin'])->group(function () {
     Route::get('/agency/stats', [AgencyController::class, 'getStats']);
     Route::get('/agency/financial-stats', [AgencyController::class, 'getFinancialStats']);
 

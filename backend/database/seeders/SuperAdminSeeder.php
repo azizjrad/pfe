@@ -13,6 +13,11 @@ class SuperAdminSeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->environment('production') && !filter_var((string) env('ALLOW_PRODUCTION_SEEDERS', 'false'), FILTER_VALIDATE_BOOLEAN)) {
+            $this->command?->warn('SuperAdminSeeder is blocked in production. Use admin:bootstrap instead.');
+            return;
+        }
+
         // Supprimer l'admin existant si présent (pour éviter les doublons)
         User::where('email', 'admin@elitedrive.com')->delete();
 
@@ -22,6 +27,7 @@ class SuperAdminSeeder extends Seeder
             'email' => 'admin@elitedrive.com',
             'password' => Hash::make('Admin2024!'),
             'role' => 'super_admin',
+            'must_change_password' => false,
             'phone' => '70000000',
             'address' => 'Tunis, Tunisie',
             'driver_license' => null,

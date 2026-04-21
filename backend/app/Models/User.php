@@ -26,6 +26,7 @@ class User extends Authenticatable
         'agency_id',
         'phone',
         'address',
+        'must_change_password',
         'is_suspended',
         'suspension_reason',
         'suspended_at',
@@ -51,6 +52,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'must_change_password' => 'boolean',
             'is_suspended' => 'boolean',
             'suspended_at' => 'datetime',
         ];
