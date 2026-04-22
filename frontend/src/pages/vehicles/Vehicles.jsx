@@ -181,6 +181,10 @@ const Vehicles = () => {
     setCurrentPage(1);
   };
 
+  const activeFilterCount = [selectedTransmission, selectedFuel].filter(
+    (f) => f !== "Tous",
+  ).length;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-50">
       <Navbar />
@@ -395,120 +399,142 @@ const Vehicles = () => {
             )}
 
             {/* Filter Toggle & Sort */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 mb-6 max-w-5xl mx-auto">
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-white border-2 border-gray-200 rounded-2xl hover:border-primary-500 transition-all"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-                  />
-                </svg>
-                <span className="font-medium">
-                  {t("vehicles.filters.advanced")}
-                </span>
-                {showFilters && (
-                  <span className="bg-primary-500 text-white text-xs px-2 py-1 rounded-full">
-                    {
-                      [selectedTransmission, selectedFuel].filter(
-                        (f) => f !== "Tous",
-                      ).length
-                    }
-                  </span>
-                )}
-              </button>
+            <div className="mb-6 max-w-6xl mx-auto rounded-3xl border border-primary-100 bg-white/90 backdrop-blur-xl shadow-[0_15px_35px_rgba(15,23,42,0.08)] p-4 sm:p-5">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 items-center">
+                <div className="lg:col-span-3">
+                  <button
+                    onClick={() => setShowFilters(!showFilters)}
+                    className="w-full flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-slate-800 to-slate-700 text-white rounded-2xl hover:from-slate-900 hover:to-slate-800 transition-all"
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                      />
+                    </svg>
+                    <span className="font-semibold">
+                      {t("vehicles.filters.advanced")}
+                    </span>
+                    {activeFilterCount > 0 && (
+                      <span className="bg-white text-slate-800 text-xs px-2 py-0.5 rounded-full font-bold">
+                        {activeFilterCount}
+                      </span>
+                    )}
+                  </button>
+                </div>
 
-              <FormControl fullWidth>
-                <Select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  displayEmpty
-                  sx={{
-                    borderRadius: "1rem",
-                    backgroundColor: "white",
-                    fontWeight: 500,
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      borderWidth: "2px",
-                      borderColor: "#e5e7eb",
-                    },
-                    "&:hover .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#3b82f6",
-                    },
-                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#3b82f6",
-                    },
-                    "& .MuiSelect-select": {
-                      padding: "12px 24px",
-                    },
-                  }}
-                  MenuProps={{
-                    PaperProps: {
-                      sx: {
-                        mt: 1,
-                        borderRadius: 2,
-                        boxShadow: "0 10px 25px rgba(0,0,0,0.12)",
-                      },
-                    },
-                  }}
-                >
-                  <MenuItem value="default">
-                    {t("vehicles.filters.sortBy")}
-                  </MenuItem>
-                  <MenuItem value="price-asc">
-                    {t("vehicles.filters.priceAsc")}
-                  </MenuItem>
-                  <MenuItem value="price-desc">
-                    {t("vehicles.filters.priceDesc")}
-                  </MenuItem>
-                  <MenuItem value="name">
-                    {t("vehicles.filters.nameAsc")}
-                  </MenuItem>
-                </Select>
-              </FormControl>
+                <div className="lg:col-span-4">
+                  <FormControl fullWidth>
+                    <Select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      displayEmpty
+                      sx={{
+                        borderRadius: "1rem",
+                        backgroundColor: "white",
+                        fontWeight: 600,
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderWidth: "2px",
+                          borderColor: "#cbd5e1",
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#0f172a",
+                        },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#0f172a",
+                        },
+                        "& .MuiSelect-select": {
+                          padding: "12px 18px",
+                        },
+                      }}
+                      MenuProps={{
+                        PaperProps: {
+                          sx: {
+                            mt: 1,
+                            borderRadius: 2,
+                            boxShadow: "0 12px 30px rgba(15,23,42,0.18)",
+                          },
+                        },
+                      }}
+                    >
+                      <MenuItem value="default">
+                        {t("vehicles.filters.sortBy")}
+                      </MenuItem>
+                      <MenuItem value="price-asc">
+                        {t("vehicles.filters.priceAsc")}
+                      </MenuItem>
+                      <MenuItem value="price-desc">
+                        {t("vehicles.filters.priceDesc")}
+                      </MenuItem>
+                      <MenuItem value="name">
+                        {t("vehicles.filters.nameAsc")}
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
 
-              <button
-                onClick={resetFilters}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 rounded-2xl hover:bg-gray-200 transition-all font-medium"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                  />
-                </svg>
-                {t("vehicles.filters.reset")}
-              </button>
+                <div className="lg:col-span-3">
+                  <button
+                    onClick={resetFilters}
+                    className="w-full flex items-center justify-center gap-2 px-5 py-3 bg-gray-100 rounded-2xl hover:bg-gray-200 transition-all font-semibold text-gray-700"
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                    {t("vehicles.filters.reset")}
+                  </button>
+                </div>
 
-              <div className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-50 rounded-2xl">
-                <span className="font-semibold text-primary-600">
-                  {filteredVehicles.length === 1
-                    ? t("vehicles.filters.count_one")
-                    : t("vehicles.filters.count_other", {
-                        count: filteredVehicles.length,
-                      })}
-                </span>
+                <div className="lg:col-span-2">
+                  <div className="w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-primary-50 to-sky-50 rounded-2xl border border-primary-100">
+                    <span className="font-bold text-primary-700">
+                      {filteredVehicles.length === 1
+                        ? t("vehicles.filters.count_one")
+                        : t("vehicles.filters.count_other", {
+                            count: filteredVehicles.length,
+                          })}
+                    </span>
+                  </div>
+                </div>
               </div>
+
+              {activeFilterCount > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {selectedTransmission !== "Tous" && (
+                    <span className="inline-flex items-center gap-2 rounded-full border border-primary-200 bg-primary-50 text-primary-700 px-3 py-1 text-xs font-semibold">
+                      {t("vehicles.filters.transmission")}:{" "}
+                      {selectedTransmission}
+                    </span>
+                  )}
+                  {selectedFuel !== "Tous" && (
+                    <span className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-sky-50 text-sky-700 px-3 py-1 text-xs font-semibold">
+                      {t("vehicles.filters.fuel")}: {selectedFuel}
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Advanced Filters Panel */}
             {showFilters && (
-              <div className="bg-white border-2 border-gray-200 rounded-2xl p-4 sm:p-6 mb-8 animate-slideDown">
+              <div className="bg-white border border-gray-200 rounded-3xl p-4 sm:p-6 mb-8 animate-slideDown shadow-[0_10px_25px_rgba(15,23,42,0.08)]">
                 <h3 className="font-bold text-lg mb-6 text-gray-900">
                   {t("vehicles.filters.advanced")}
                 </h3>
@@ -636,11 +662,11 @@ const Vehicles = () => {
       </section>
 
       {/* Vehicles Grid */}
-      <section className="pb-20 bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400">
+      <section className="pb-20 bg-gradient-to-br from-slate-200 via-slate-100 to-sky-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div
             ref={vehiclesGrid.ref}
-            className={`flex flex-wrap justify-center gap-5 sm:gap-8 transition-all duration-700 ${vehiclesGrid.isVisible ? "animate-fadeIn" : "opacity-100"}`}
+            className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-7 transition-all duration-700 ${vehiclesGrid.isVisible ? "animate-fadeIn" : "opacity-100"}`}
           >
             {paginatedVehicles.map((vehicle, index) => (
               <VehicleCard
@@ -648,6 +674,7 @@ const Vehicles = () => {
                 vehicle={vehicle}
                 index={index}
                 isVisible={vehiclesGrid.isVisible}
+                className="h-full"
               />
             ))}
           </div>

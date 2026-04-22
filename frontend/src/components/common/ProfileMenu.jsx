@@ -54,15 +54,6 @@ const ProfileMenu = () => {
     return roleLabels[user?.role] || t("roles.user");
   };
 
-  const getInitials = () => {
-    if (!user?.name) return "U";
-    const names = user.name.split(" ");
-    if (names.length >= 2) {
-      return (names[0][0] + names[1][0]).toUpperCase();
-    }
-    return user.name.substring(0, 2).toUpperCase();
-  };
-
   if (!user) return null;
 
   return (

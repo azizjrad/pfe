@@ -21,14 +21,37 @@ const Agencies = () => {
   const hero = useScrollAnimation({ threshold: 0.2 });
   const grid = useScrollAnimation({ threshold: 0.2 });
 
-  // Fetch agencies on component mount
+  // Fetch all agencies once, then paginate/filter locally
   useEffect(() => {
     const fetchAgencies = async () => {
       try {
-        const response = await publicAgencyService.getAll(currentPage, 12);
-        if (response.success && response.data) {
-          setAgencies(response.data);
-        }
+        const perPage = 100;
+        let page = 1;
+        let allAgencies = [];
+        let totalPagesFromApi = 1;
+
+        do {
+          const response = await publicAgencyService.getAll(page, perPage);
+
+          if (response.success && Array.isArray(response.data)) {
+            allAgencies = [...allAgencies, ...response.data];
+            totalPagesFromApi = Number(response.pagination?.total_pages ?? 1);
+            page += 1;
+          } else {
+            break;
+          }
+        } while (page <= totalPagesFromApi);
+
+        setAgencies(allAgencies);
+
+        // Keep current page valid if data count changes
+        setCurrentPage((prev) => {
+          const maxPage = Math.max(
+            1,
+            Math.ceil(allAgencies.length / itemsPerPage),
+          );
+          return Math.min(prev, maxPage);
+        });
       } catch (error) {
         console.error("Failed to fetch agencies:", error);
         setAgencies([]);
@@ -36,7 +59,7 @@ const Agencies = () => {
     };
 
     fetchAgencies();
-  }, [currentPage]);
+  }, [itemsPerPage]);
 
   // Filter agencies based on search query
   const filteredAgencies = useMemo(() => {
@@ -162,9 +185,10 @@ const Agencies = () => {
 
       {/* Agencies Grid */}
       <section
-        className={`py-10 sm:py-12 md:py-16 ${grid.isVisible ? "animate-fadeInUp" : "opacity-0"}`}
+        className={`py-10 sm:py-12 md:py-16 relative ${grid.isVisible ? "animate-fadeInUp" : "opacity-0"}`}
         ref={grid.ref}
       >
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(14,165,233,0.08),transparent_45%),radial-gradient(circle_at_80%_0%,rgba(59,130,246,0.08),transparent_40%)]" />
         <div className="container mx-auto px-4">
           {filteredAgencies.length === 0 ? (
             <div className="text-center py-14 sm:py-16 md:py-20">
@@ -188,7 +212,10 @@ const Agencies = () => {
                 {t("agencies.empty.subtitle")}
               </p>
               <button
-                onClick={() => setSearchQuery("")}
+                onClick={() => {
+                  setSearchQuery("");
+                  setCurrentPage(1);
+                }}
                 className="px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors font-semibold"
               >
                 {t("agencies.empty.button")}
@@ -198,7 +225,16 @@ const Agencies = () => {
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
                 {paginatedAgencies.map((agency, index) => (
-                  <AgencyCard key={agency.id} agency={agency} index={index} />
+                  <div
+                    key={agency.id}
+                    className={index === 0 ? "md:col-span-2 lg:col-span-2" : ""}
+                  >
+                    <AgencyCard
+                      agency={agency}
+                      index={index}
+                      featured={index === 0}
+                    />
+                  </div>
                 ))}
               </div>
 
@@ -223,7 +259,7 @@ const Agencies = () => {
 };
 
 // Agency Card Component
-const AgencyCard = ({ agency, index }) => {
+const AgencyCard = ({ agency, index, featured = false }) => {
   const { t } = useTranslation();
   const card = useScrollAnimation({ threshold: 0.2 });
 
@@ -232,21 +268,34 @@ const AgencyCard = ({ agency, index }) => {
       to={`/agency/${agency.id}`}
       aria-label={`${t("agencies.card.viewBtn")} ${agency.name}`}
       ref={card.ref}
-      className={`group block bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 ${
+      className={`group block bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-[0_12px_30px_rgba(15,23,42,0.08)] hover:shadow-[0_18px_40px_rgba(15,23,42,0.14)] transition-all duration-500 ${
         card.isVisible
           ? "animate-fadeInUp opacity-100"
           : "opacity-0 translate-y-8"
-      }`}
+      } ${featured ? "lg:grid lg:grid-cols-2 lg:min-h-[400px]" : ""}`}
       style={{ animationDelay: `${index * 0.1}s` }}
     >
       {/* Image */}
-      <div className="relative h-52 sm:h-56 overflow-hidden">
+      <div
+        className={`relative h-52 sm:h-56 overflow-hidden ${featured ? "lg:h-full" : ""}`}
+      >
         <img
           src={agency.image}
           alt={agency.name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+
+        {featured && (
+          <div className="absolute top-0 left-0">
+            <div
+              className="bg-gradient-to-r from-primary-700 to-primary-500 text-white text-xs font-bold uppercase tracking-[0.1em] px-4 py-2"
+              style={{ clipPath: "polygon(0 0, 100% 0, 92% 100%, 0 100%)" }}
+            >
+              Agence phare
+            </div>
+          </div>
+        )}
 
         {/* Rating Badge */}
         <div className="absolute top-3 sm:top-4 right-3 sm:right-4 bg-white/95 backdrop-blur-sm rounded-xl px-2.5 sm:px-3 py-1.5 sm:py-2 flex items-center gap-1.5 sm:gap-2 shadow-lg">
@@ -291,7 +340,7 @@ const AgencyCard = ({ agency, index }) => {
       </div>
 
       {/* Content */}
-      <div className="p-4 sm:p-6">
+      <div className={`p-4 sm:p-6 ${featured ? "lg:p-8" : ""}`}>
         <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
           {agency.name}
         </h3>
@@ -365,7 +414,7 @@ const AgencyCard = ({ agency, index }) => {
           {agency.features.slice(0, 3).map((feature, idx) => (
             <span
               key={idx}
-              className="px-3 py-1 bg-primary-50 text-primary-700 text-xs font-medium rounded-full"
+              className="px-3 py-1 bg-gradient-to-r from-primary-50 to-sky-50 text-primary-700 text-xs font-semibold rounded-full border border-primary-100"
             >
               {feature}
             </span>
@@ -378,8 +427,23 @@ const AgencyCard = ({ agency, index }) => {
         </div>
 
         {/* CTA Button */}
-        <div className="block w-full text-center px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-xl transition-all duration-300 font-semibold shadow-lg group-hover:from-primary-700 group-hover:to-primary-800 group-hover:shadow-xl group-hover:scale-[1.02]">
-          {t("agencies.card.viewBtn")}
+        <div className="block w-full text-center px-6 py-3 bg-gradient-to-r from-primary-700 via-primary-600 to-sky-600 text-white rounded-2xl transition-all duration-300 font-semibold shadow-lg group-hover:shadow-xl group-hover:scale-[1.01]">
+          <span className="inline-flex items-center gap-2">
+            {t("agencies.card.viewBtn")}
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </span>
         </div>
       </div>
     </Link>

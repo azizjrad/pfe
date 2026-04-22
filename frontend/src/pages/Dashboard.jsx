@@ -843,54 +843,117 @@ const Dashboard = () => {
           </div>
 
           {/* Statistics Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {statsCards.map((card, index) => {
-              const colorClasses = getColorClasses(card.color);
-              return (
-                <div
-                  key={index}
-                  className={`relative bg-white rounded-2xl border ${colorClasses.border} shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group`}
-                >
-                  {/* Gradient Background Accent */}
-                  <div
-                    className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${colorClasses.bg} opacity-10 rounded-full -mr-16 -mt-16 group-hover:scale-110 transition-transform duration-300`}
-                  ></div>
+          {statsCards.length > 0 && (
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-5">
+              {(() => {
+                const featuredCard = statsCards[0];
+                const otherCards = statsCards.slice(1);
+                const featuredColor = getColorClasses(featuredCard.color);
 
-                  <div className="relative p-6">
-                    {/* Icon and Title */}
-                    <div className="flex items-start justify-between mb-4">
-                      <div className={`p-3 ${colorClasses.light} rounded-xl`}>
-                        <svg
-                          className={`w-6 h-6 ${colorClasses.text}`}
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          {getStatIcon(card.icon)}
-                        </svg>
-                      </div>
-                      {getTrendIcon(card.trend)}
-                    </div>
+                return (
+                  <>
+                    <div className="xl:col-span-5 relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white shadow-2xl border border-slate-700/60">
+                      <div className="absolute -top-16 -right-16 w-52 h-52 rounded-full bg-white/10 blur-2xl" />
+                      <div className="absolute -bottom-24 -left-16 w-56 h-56 rounded-full bg-primary-400/20 blur-3xl" />
 
-                    {/* Stats */}
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium text-gray-600">
-                        {card.title}
-                      </p>
-                      <p className="text-3xl font-bold text-gray-900">
-                        {card.value}
-                      </p>
-                      {card.change ? (
-                        <p className="text-sm text-gray-500 flex items-center gap-1">
-                          {card.change}
+                      <div className="relative p-6 md:p-8">
+                        <div className="flex items-start justify-between gap-4 mb-10">
+                          <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold tracking-[0.08em] uppercase">
+                            Indicateur cle
+                          </div>
+                          {featuredCard.change ? (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-400/20 border border-emerald-200/30 px-3 py-1 text-xs font-semibold text-emerald-100">
+                              {featuredCard.change}
+                            </span>
+                          ) : null}
+                        </div>
+
+                        <p className="text-sm uppercase tracking-[0.12em] text-slate-300 mb-2">
+                          {featuredCard.title}
                         </p>
-                      ) : null}
+                        <p className="text-4xl md:text-5xl font-black leading-none mb-8">
+                          {featuredCard.value}
+                        </p>
+
+                        <div className="flex items-center justify-between">
+                          <div
+                            className={`inline-flex p-4 rounded-2xl ${featuredColor.light} bg-opacity-90`}
+                          >
+                            <svg
+                              className={`w-8 h-8 ${featuredColor.text}`}
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              {getStatIcon(featuredCard.icon)}
+                            </svg>
+                          </div>
+                          <div className="flex items-center gap-2 text-slate-300 text-sm">
+                            {getTrendIcon(featuredCard.trend)}
+                            Priorite du jour
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+
+                    <div className="xl:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-fr">
+                      {otherCards.map((card, index) => {
+                        const colorClasses = getColorClasses(card.color);
+                        const wideCard = otherCards.length === 3 && index === 2;
+
+                        return (
+                          <div
+                            key={`${card.title}-${index}`}
+                            className={`relative overflow-hidden rounded-2xl border ${colorClasses.border} bg-white/95 shadow-md hover:shadow-xl transition-all duration-300 ${wideCard ? "md:col-span-2" : ""}`}
+                          >
+                            <div
+                              className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${colorClasses.bg}`}
+                            />
+                            <div className="p-5 md:p-6 h-full flex flex-col justify-between">
+                              <div className="flex items-start justify-between gap-3 mb-5">
+                                <div
+                                  className={`p-2.5 ${colorClasses.light} rounded-xl`}
+                                >
+                                  <svg
+                                    className={`w-5 h-5 ${colorClasses.text}`}
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    {getStatIcon(card.icon)}
+                                  </svg>
+                                </div>
+                                {getTrendIcon(card.trend)}
+                              </div>
+
+                              <div className="space-y-1">
+                                <p className="text-xs uppercase tracking-[0.08em] text-gray-500">
+                                  {card.title}
+                                </p>
+                                <p className="text-2xl md:text-3xl font-black text-gray-900">
+                                  {card.value}
+                                </p>
+                              </div>
+
+                              {card.change ? (
+                                <p className="mt-4 text-sm text-gray-500">
+                                  {card.change}
+                                </p>
+                              ) : (
+                                <p className="mt-4 text-xs text-gray-400">
+                                  Mise a jour en temps reel
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                );
+              })()}
+            </div>
+          )}
 
           {/* Enhanced Tabs with Glassmorphism */}
           <div className="bg-gradient-to-br from-white/90 to-white/50 backdrop-blur-2xl rounded-3xl border border-white/60 shadow-2xl overflow-hidden">

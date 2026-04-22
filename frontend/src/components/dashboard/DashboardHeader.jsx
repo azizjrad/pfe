@@ -4,7 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useTranslation } from "react-i18next";
 import ProfileSettingsModal from "../modals/ProfileSettingsModal";
 
-const DashboardHeader = ({ title, subtitle }) => {
+const DashboardHeader = ({ title, subtitle, children }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -43,14 +43,7 @@ const DashboardHeader = ({ title, subtitle }) => {
     return roleLabels[user?.role] || t("roles.user");
   };
 
-  const getInitials = () => {
-    if (!user?.name) return "U";
-    const names = user.name.split(" ");
-    if (names.length >= 2) {
-      return (names[0][0] + names[1][0]).toUpperCase();
-    }
-    return user.name.substring(0, 2).toUpperCase();
-  };
+  const showControlRoomLabel = user?.role === "super_admin";
 
   const handleLogout = async () => {
     try {
@@ -71,6 +64,7 @@ const DashboardHeader = ({ title, subtitle }) => {
         className={`sticky top-0 z-40 px-4 md:px-6 py-2 transition-all duration-700 ${showNavbar ? "translate-y-0" : "-translate-y-full"}`}
       >
         <div className="relative transition-all duration-700 bg-white/70 backdrop-blur-[20px] supports-[backdrop-filter]:bg-white/70 border border-gray-200/50 shadow-2xl shadow-primary-500/10 rounded-2xl md:rounded-3xl">
+          <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-primary-400/50 to-transparent" />
           {/* Multi-layer gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-primary-500/5 via-primary-300/3 to-primary-500/5 opacity-100 rounded-2xl md:rounded-3xl"></div>
 
@@ -84,9 +78,11 @@ const DashboardHeader = ({ title, subtitle }) => {
             <div className="flex items-center justify-between transition-all duration-700 py-4">
               {/* Left: Title Section with Icon */}
               <div className="flex items-center gap-4 flex-1">
-                <div className="hidden sm:flex w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl items-center justify-center shadow-lg">
+                <div className="hidden sm:flex relative w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl items-center justify-center shadow-lg">
+                  <div className="absolute inset-0 rounded-2xl ring-1 ring-white/30" />
+                  <div className="absolute -inset-1 rounded-2xl border border-primary-300/40" />
                   <svg
-                    className="w-6 h-6 text-white"
+                    className="w-6 h-6 text-white relative z-10"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -100,7 +96,12 @@ const DashboardHeader = ({ title, subtitle }) => {
                   </svg>
                 </div>
                 <div>
-                  <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
+                  {showControlRoomLabel && (
+                    <p className="hidden sm:block text-[10px] font-semibold uppercase tracking-[0.16em] text-primary-700/80 mb-0.5">
+                      Control Room
+                    </p>
+                  )}
+                  <h1 className="text-xl sm:text-[2.05rem] font-black leading-tight bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
                     {title}
                   </h1>
                   {subtitle && (
@@ -113,6 +114,8 @@ const DashboardHeader = ({ title, subtitle }) => {
 
               {/* Right: User Actions */}
               <div className="flex items-center gap-2 sm:gap-3">
+                {children}
+
                 {/* User Info Card */}
                 <div className="hidden lg:flex items-center px-4 py-2.5 bg-gray-100/60 backdrop-blur-[20px] border border-gray-300/30 rounded-2xl shadow-lg transition-all duration-500">
                   <div className="text-left">
@@ -126,7 +129,7 @@ const DashboardHeader = ({ title, subtitle }) => {
                 {/* Profile Settings Button */}
                 <button
                   onClick={() => setShowProfileModal(true)}
-                  className="group relative px-3 sm:px-4 py-2.5 font-semibold rounded-2xl transition-all duration-500 overflow-hidden bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-lg hover:shadow-xl hover:shadow-primary-500/25 hover:scale-105"
+                  className="group relative px-3 sm:px-4 py-2.5 font-semibold rounded-2xl transition-all duration-500 overflow-hidden bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-lg hover:shadow-xl hover:shadow-primary-500/25 hover:scale-[1.04]"
                   title={t("nav.profileSettings")}
                 >
                   <span className="relative z-10 flex items-center gap-2">
@@ -159,7 +162,7 @@ const DashboardHeader = ({ title, subtitle }) => {
                 {/* Logout Button */}
                 <button
                   onClick={handleLogout}
-                  className="group relative px-3 sm:px-4 py-2.5 font-semibold rounded-2xl transition-all duration-500 overflow-hidden bg-gradient-to-r from-red-600 to-red-700 text-white shadow-lg hover:shadow-xl hover:shadow-red-500/25 hover:scale-105"
+                  className="group relative px-3 sm:px-4 py-2.5 font-semibold rounded-2xl transition-all duration-500 overflow-hidden bg-gradient-to-r from-red-600 to-red-700 text-white shadow-lg hover:shadow-xl hover:shadow-red-500/25 hover:scale-[1.04]"
                   title={t("nav.logout")}
                 >
                   <span className="relative z-10 flex items-center gap-2">

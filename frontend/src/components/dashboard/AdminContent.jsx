@@ -1793,152 +1793,168 @@ const AdminContent = ({
           </div>
 
           {/* Key Financial Metrics */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-            {/* Revenu Total */}
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-5">
             <div
-              className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 animate-slideUp"
+              className="xl:col-span-5 relative overflow-hidden rounded-3xl border border-slate-700/70 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white shadow-2xl animate-slideUp"
               style={{ animationDelay: "0ms" }}
             >
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center">
-                  <svg
-                    className="w-5 h-5 text-primary-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+              <div className="absolute -top-20 -right-20 w-56 h-56 rounded-full bg-emerald-300/20 blur-3xl" />
+              <div className="absolute -bottom-24 -left-12 w-56 h-56 rounded-full bg-blue-300/20 blur-3xl" />
+
+              <div className="relative p-6 md:p-8">
+                <div className="flex items-start justify-between mb-10 gap-3">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs uppercase tracking-[0.08em] font-semibold">
+                    Finance centrale
+                  </span>
+                  <span
+                    className={`text-xs font-semibold px-3 py-1 rounded-full border ${revenueGrowth >= 0 ? "text-emerald-100 bg-emerald-400/20 border-emerald-200/30" : "text-rose-100 bg-rose-400/20 border-rose-200/30"}`}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
+                    {revenueGrowth >= 0 ? "+" : ""}
+                    {revenueGrowth.toFixed(1)}%
+                  </span>
                 </div>
-                <span
-                  className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${revenueGrowth >= 0 ? "text-green-600 bg-green-50 border-green-100" : "text-red-500 bg-red-50 border-red-100"}`}
-                >
-                  {revenueGrowth >= 0 ? "+" : ""}
-                  {revenueGrowth.toFixed(1)}%
-                </span>
+
+                <p className="text-sm uppercase tracking-[0.12em] text-slate-300 mb-2">
+                  Revenu Total
+                </p>
+                <p className="text-4xl md:text-5xl font-black leading-none">
+                  {totalRevenue.toLocaleString()} DT
+                </p>
+                <p className="text-sm text-slate-300 mt-3">Derniers 6 mois</p>
+
+                <div className="mt-8 flex items-center justify-between">
+                  <div className="w-12 h-12 bg-white/15 rounded-2xl flex items-center justify-center border border-white/20">
+                    <svg
+                      className="w-6 h-6 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-xs text-slate-300 tracking-wide uppercase">
+                    Vue executive
+                  </p>
+                </div>
               </div>
-              <p className="text-xs text-gray-400 uppercase tracking-wide font-medium mb-1">
-                Revenu Total
-              </p>
-              <p className="text-2xl font-bold text-gray-900">
-                {totalRevenue.toLocaleString()} DT
-              </p>
-              <p className="text-xs text-gray-400 mt-2">Derniers 6 mois</p>
             </div>
 
-            {/* Commission Gagnée */}
-            <div
-              className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 animate-slideUp"
-              style={{ animationDelay: "100ms" }}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center">
-                  <svg
-                    className="w-5 h-5 text-emerald-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+            <div className="xl:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-fr">
+              <div
+                className="bg-white rounded-2xl p-5 border border-emerald-100 shadow-sm hover:shadow-md transition-all duration-200 animate-slideUp"
+                style={{ animationDelay: "100ms" }}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center">
+                    <svg
+                      className="w-5 h-5 text-emerald-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                      />
+                    </svg>
+                  </div>
+                  <span
+                    className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${commissionGrowth >= 0 ? "text-green-600 bg-green-50 border-green-100" : "text-red-500 bg-red-50 border-red-100"}`}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                    />
-                  </svg>
+                    {commissionGrowth >= 0 ? "+" : ""}
+                    {commissionGrowth.toFixed(1)}%
+                  </span>
                 </div>
-                <span
-                  className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${commissionGrowth >= 0 ? "text-green-600 bg-green-50 border-green-100" : "text-red-500 bg-red-50 border-red-100"}`}
-                >
-                  {commissionGrowth >= 0 ? "+" : ""}
-                  {commissionGrowth.toFixed(1)}%
-                </span>
+                <p className="text-xs text-gray-400 uppercase tracking-wide font-medium mb-1">
+                  Commission Gagnee
+                </p>
+                <p className="text-3xl font-black text-gray-900">
+                  {totalCommission.toLocaleString()} DT
+                </p>
+                <p className="text-xs text-gray-400 mt-2">Revenu plateforme</p>
               </div>
-              <p className="text-xs text-gray-400 uppercase tracking-wide font-medium mb-1">
-                Commission Gagnée
-              </p>
-              <p className="text-2xl font-bold text-gray-900">
-                {totalCommission.toLocaleString()} DT
-              </p>
-              <p className="text-xs text-gray-400 mt-2">
-                Votre revenu plateforme
-              </p>
-            </div>
 
-            {/* Taux de Commission */}
-            <div
-              className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 animate-slideUp"
-              style={{ animationDelay: "200ms" }}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-10 h-10 bg-violet-50 rounded-xl flex items-center justify-center">
-                  <svg
-                    className="w-5 h-5 text-violet-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                    />
-                  </svg>
+              <div
+                className="bg-white rounded-2xl p-5 border border-violet-100 shadow-sm hover:shadow-md transition-all duration-200 animate-slideUp"
+                style={{ animationDelay: "200ms" }}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-10 h-10 bg-violet-50 rounded-xl flex items-center justify-center">
+                    <svg
+                      className="w-5 h-5 text-violet-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full border text-violet-600 bg-violet-50 border-violet-100">
+                    {commissionRate.toFixed(0)}%
+                  </span>
                 </div>
-                <span className="text-xs font-semibold px-2.5 py-1 rounded-full border text-violet-600 bg-violet-50 border-violet-100">
+                <p className="text-xs text-gray-400 uppercase tracking-wide font-medium mb-1">
+                  Taux de Commission
+                </p>
+                <p className="text-3xl font-black text-gray-900">
                   {commissionRate.toFixed(0)}%
-                </span>
+                </p>
+                <p className="text-xs text-gray-400 mt-2">
+                  Sur le revenu total
+                </p>
               </div>
-              <p className="text-xs text-gray-400 uppercase tracking-wide font-medium mb-1">
-                Taux de Commission
-              </p>
-              <p className="text-2xl font-bold text-gray-900">
-                {commissionRate.toFixed(0)}%
-              </p>
-              <p className="text-xs text-gray-400 mt-2">Sur le revenu total</p>
-            </div>
 
-            {/* Commission Moy./Mois */}
-            <div
-              className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 animate-slideUp"
-              style={{ animationDelay: "300ms" }}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center">
-                  <svg
-                    className="w-5 h-5 text-amber-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                    />
-                  </svg>
+              <div
+                className="md:col-span-2 bg-white rounded-2xl p-5 border border-amber-100 shadow-sm hover:shadow-md transition-all duration-200 animate-slideUp"
+                style={{ animationDelay: "300ms" }}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center">
+                    <svg
+                      className="w-5 h-5 text-amber-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                      />
+                    </svg>
+                  </div>
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full border text-amber-600 bg-amber-50 border-amber-100">
+                    Moy.
+                  </span>
                 </div>
-                <span className="text-xs font-semibold px-2.5 py-1 rounded-full border text-amber-600 bg-amber-50 border-amber-100">
-                  Moy.
-                </span>
+                <p className="text-xs text-gray-400 uppercase tracking-wide font-medium mb-1">
+                  Commission Moy./Mois
+                </p>
+                <p className="text-3xl font-black text-gray-900">
+                  {(
+                    totalCommission /
+                    Math.max(normalizedMonthlyRevenue.length, 1)
+                  ).toLocaleString()}{" "}
+                  DT
+                </p>
+                <p className="text-xs text-gray-400 mt-2">
+                  Sur 6 derniers mois
+                </p>
               </div>
-              <p className="text-xs text-gray-400 uppercase tracking-wide font-medium mb-1">
-                Commission Moy./Mois
-              </p>
-              <p className="text-2xl font-bold text-gray-900">
-                {(
-                  totalCommission / Math.max(normalizedMonthlyRevenue.length, 1)
-                ).toLocaleString()}{" "}
-                DT
-              </p>
-              <p className="text-xs text-gray-400 mt-2">Sur 6 derniers mois</p>
             </div>
           </div>
 
