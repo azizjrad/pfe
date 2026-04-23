@@ -1,152 +1,673 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%==========================================================
+%  CHAPITRE 4 — Réalisation du deuxième sprint
+%==========================================================
 \chapter{Réalisation du deuxième sprint}
 \label{Chapitre_4}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------
 \section{Introduction}
-\label{Introduction_Chapitre_4}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Suite à la finalisation du premier sprint, cette section présente la mise en œuvre du deuxième, en respectant la méthodologie adoptée : décomposition des activités, examen critique, développement et vérification des fonctionnalités programmées.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{Chapitre4_Introduction}
+
+En se basant sur la planification établie dans le chapitre précédent, ce chapitre est
+consacré à la réalisation du Sprint~2. Nous aborderons successivement la description
+fonctionnelle, la conception, ainsi que les diagrammes de séquence et de classe
+associés aux fonctionnalités développées au cours de ce sprint. Ces fonctionnalités
+concernent principalement la gestion des réservations, le suivi du score client, le
+traitement des réclamations, la consultation des statistiques et la gestion des messages.
+
+%----------------------------------------------------------
 \section{Planification du sprint 2}
 \label{sec:planification_sprint2}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/Planification_sprint_2.png}
+    \includegraphics[width=0.85\linewidth]{Chapitres/figures/Planification_sprint_2.png}
     \caption{Sprint 2}
     \label{fig:planning_sprint2}
 \end{figure}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
+%----------------------------------------------------------
 \section{Backlog produit du deuxième sprint}
 \label{sec:backlog_sprint2}
+
+Le Sprint Backlog est constitué d'une série de tâches définies par l'équipe et devant
+être complétées avant la clôture du sprint~\cite{atlassian}.
 
 \begin{table}[H]
 \centering
 \caption{Backlog produit du deuxième sprint}
 \label{tab:backlog-sprint2}
-\renewcommand{\arraystretch}{1.4}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|c|l|c|p{4cm}|p{5cm}|}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|p{1.8cm}|p{1.2cm}|p{2.2cm}|p{1cm}|p{3.5cm}|p{3.5cm}|}
 \hline
-\textbf{Acteur} & \textbf{US} & \textbf{Thème} & \textbf{ID tâche} & \textbf{User Story} & \textbf{Tâche} \\
+\textbf{Acteur} & \textbf{US} & \textbf{Thème} & \textbf{ID tâche} & \textbf{User Story (Je veux\ldots)} & \textbf{Tâche} \\
 \hline
-
-\multirow{6}{*}{Client}
-& US10 & Réservations & 10.1 
-& Effectuer une réservation afin de louer un véhicule
-& Rédiger les spécifications et diagrammes du cas « Réserver ». \\
-\cline{6-6}
-& & & & & Implémenter la réservation. \\
-\cline{6-6}
-& & & & & Tester et valider. \\
+\multirow{9}{*}{Client}
+  & US10 & Réservations & 10.1
+  & Effectuer une réservation afin de louer un véhicule auprès d'une agence
+  & Rédiger les spécifications et diagrammes du cas «~Réserver~». \newline
+    Implémenter la réservation. \newline
+    Tester et valider. \\
 \cline{2-6}
-
-& US11 & Réservations & 11.1 
-& Consulter les réservations en cours afin de suivre leur état
-& Implémenter la consultation des réservations. \\
-\cline{6-6}
-& & & & & Tester. \\
+  & US11 & Réservations & 11.1
+  & Consulter mes réservations en cours afin de suivre leur état
+  & Implémenter la consultation des réservations. \newline
+    Tester. \\
 \cline{2-6}
-
-& US09 & Score client & 9.1 
-& Voir mon score afin de connaître mon indice de fiabilité
-& Implémenter l'affichage du score. \\
-\cline{6-6}
-& & & & & Tester. \\
+  & US09 & Score client & 9.1
+  & Voir mon score afin de connaître mon indice de fiabilité
+  & Implémenter l'affichage du score client. \newline
+    Tester. \\
 \hline
-
 \multirow{6}{*}{Agence}
-& US13 & Réservations & 13.1 
-& Traiter les réservations et réclamations afin de gérer les demandes clients
-& Implémenter le traitement des réservations. \\
-\cline{6-6}
-& & & & & Implémenter la gestion des réclamations. \\
-\cline{6-6}
-& & & & & Tester. \\
+  & US13 & Réservations & 13.1
+  & Traiter les réservations et réclamations afin de gérer les demandes clients
+  & Implémenter le traitement des réservations. \newline
+    Implémenter la gestion des réclamations. \newline
+    Tester. \\
 \cline{2-6}
-
-& US14 & Statistiques & 14.1 
-& Consulter les statistiques afin d'analyser les performances
-& Implémenter l'affichage des statistiques. \\
-\cline{6-6}
-& & & & & Tester. \\
+  & US14 & Statistiques & 14.1
+  & Consulter les statistiques afin d'analyser les performances
+  & Implémenter l'affichage des statistiques. \newline
+    Tester. \\
 \hline
-
 \multirow{6}{*}{Administrateur}
-& US17 & Messages & 17.1 
-& Gérer les messages afin de consulter et répondre aux utilisateurs
-& Implémenter la gestion des messages. \\
-\cline{6-6}
-& & & & & Tester. \\
+  & US17 & Messages & 17.1
+  & Gérer les messages afin de consulter et répondre aux utilisateurs
+  & Implémenter la gestion des messages. \newline
+    Tester. \\
 \cline{2-6}
-
-& US18 & Statistiques globales & 18.1 
-& Consulter les statistiques globales afin d'analyser les performances du système
-& Implémenter l'affichage des statistiques globales. \\
-\cline{6-6}
-& & & & & Tester. \\
+  & US18 & Statistiques globales & 18.1
+  & Consulter les statistiques globales afin d'analyser les performances du système
+  & Implémenter l'affichage des statistiques globales. \newline
+    Tester. \\
 \hline
-
-\multirow{3}{*}{Utilisateur}
-& US04 & Support & 4.1 
-& Contacter l'administrateur afin d'obtenir plus d’informations
-& Implémenter le formulaire de contact. \\
-\cline{6-6}
-& & & & & Tester l'envoi. \\
-\hline
-
-\end{tabular}%
-}
-\end{table}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{La spécification fonctionnelle des besoins}
-\label{sec:spec_fonctionnelle_sprint2}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Nous avons choisi d'étudier la spécification fonctionnelle du deuxième sprint en analysant les
-diagrammes de cas d'utilisation détaillés, ainsi que les descriptions textuelles et les
-diagrammes de séquence système associés à chaque fonctionnalité planifiée.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Classification des cas d'utilisation par acteur}
-\label{sec:classification_cas_sprint2}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{table}[H]
-\centering
-\caption{Classification des cas d'utilisation du deuxième sprint par acteur}
-\label{tab:classification-cas-sprint2}
-\renewcommand{\arraystretch}{1.3}
-\begin{tabular}{|l|p{10cm}|}
-\hline
-\textbf{Acteur} & \textbf{Cas d'utilisation} \\
-\hline
-\multirow{3}{*}{Client} & Effectuer une réservation \\
-\cline{2-2}
- & Consulter les réservations en cours \\
-\cline{2-2}
- & Voir mon score \\
-\hline
-\multirow{3}{*}{Agence} & Traiter les réservations \\
-\cline{2-2}
- & Gérer les réclamations \\
-\cline{2-2}
- & Consulter les statistiques \\
-\hline
-\multirow{2}{*}{Administrateur} & Gérer les messages \\
-\cline{2-2}
- & Consulter les statistiques globales \\
-\hline
-Utilisateur & Contacter l'administrateur \\
+Utilisateur & US04 & Support & 4.1
+  & Contacter l'administrateur afin d'obtenir plus d'informations
+  & Implémenter le formulaire de contact. \newline
+    Tester l'envoi. \\
 \hline
 \end{tabular}
 \end{table}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----------------------------------------------------------
+\section{Les prototypes des interfaces}
+\label{sec:prototypes_interfaces_s2}
+
+Prototyper aide à identifier forces, faiblesses et à limiter les risques.
+
+%\begin{figure}[H]
+ %   \centering
+  %  \includegraphics[width=0.85\linewidth]{Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/figures/proto_reservation.png}
+   % \caption{Prototypage de l'interface «~Effectuer réservation~»}
+    %\label{fig:proto_reservation}
+%\end{figure}
+
+%\end{figure}
+%\begin{figure}[H]
+ %   \centering
+  %  \includegraphics[width=0.85\linewidth]{Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/figures/proto_dashboard.png}
+   % \caption{Prototypage du tableau de bord statistiques}
+    %\label{fig:proto_dashboard}
+%\end{figure}
+
+%----------------------------------------------------------
+\section{La spécification fonctionnelle des besoins}
+\label{sec:besoins_s2}
+
+On décide d'étudier la spécification fonctionnelle en analysant les diagrammes de cas
+d'utilisation détaillés du deuxième sprint, ainsi que les descriptions textuelles et les
+diagrammes système associés à chaque fonctionnalité.
+
+%----------------------------------------------------------
+\section{Diagramme de cas d'utilisation du deuxième sprint}
+\label{sec:diag_cas_sprint2}
+
+La figure suivante présente le diagramme des cas d'utilisation du deuxième sprint.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{Chapitres/figures/diag_cas_sprint2.png}
+    \caption{Diagramme de cas d'utilisation du deuxième sprint}
+    \label{fig:Diag_use_case_S2}
+\end{figure}
+
+%----------------------------------------------------------
+\section{Analyse des cas d'utilisation du deuxième sprint}
+\label{sec:sprint2}
+
+À chaque cas d'utilisation, nous allons associer une description textuelle pour détailler
+le scénario ainsi que les éventuelles situations exceptionnelles.
+
+%==========================================================
+\section{Analyse des cas d'utilisation de l'acteur «Client»}
+\label{sec:acteur_client_s2}
+
+%----------------------------------------------------------
+\subsection{Analyse de cas d'utilisation «Effectuer réservation»}
+\label{sec:effectuer_reservation}
+
+Afin de mieux illustrer le déroulement du scénario, nous proposons ci-après une
+description textuelle accompagnée du diagramme de séquence du cas d'utilisation
+«~\textbf{Effectuer réservation}~».
+
+\begin{table}[H]
+\centering
+\caption{Description textuelle du cas d'utilisation « Effectuer réservation »}
+\label{tab:effectuer_reservation}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|p{3.5cm}|p{10cm}|}
+\hline
+\textbf{Élément} & \textbf{Description} \\
+\hline
+Nom & Effectuer réservation \\
+\hline
+Acteur & Client \\
+\hline
+Description brève & Permet au client de réserver un véhicule disponible auprès d'une agence. \\
+\hline
+Précondition & Le client est authentifié. \newline
+               Le système est accessible. \newline
+               Au moins un véhicule est disponible. \\
+\hline
+Postcondition & La réservation est enregistrée et son statut est «~En attente~». \newline
+                Le client reçoit une confirmation de sa demande. \\
+\hline
+Enchaînement principal &
+1. Le client accède à la liste des véhicules disponibles. \newline
+2. Le client sélectionne un véhicule. \newline
+3. Le système affiche les détails du véhicule et le formulaire de réservation. \newline
+4. Le client renseigne les dates de début et de fin de location. \newline
+5. Le système calcule le montant total. \newline
+6. Le client confirme la réservation. \newline
+7. Le système vérifie la disponibilité du véhicule. \newline
+8. Le système enregistre la réservation. \newline
+9. Le système affiche un message de confirmation. \\
+\hline
+\textbf{Scénario alternatif} &
+4.1 Dates invalides ou incohérentes. \newline
+\quad 4.1.1 Le système affiche un message d'erreur. \newline
+\quad 4.1.2 Retour à l'étape~4 du scénario nominal. \newline
+7.1 Le véhicule n'est plus disponible. \newline
+\quad 7.1.1 Le système affiche un message d'indisponibilité. \newline
+\quad 7.1.2 Retour à l'étape~1 du scénario nominal. \newline
+8.1 Erreur lors de l'enregistrement. \newline
+\quad 8.1.1 Le système affiche un message d'échec. \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{Chapitres/figures/Diag_seq_effectuer_reservation.png}
+    \caption{Diagramme de séquence système de cas d'utilisation «Effectuer réservation»}
+    \label{fig:seq_effectuer_reservation}
+\end{figure}
+
+%----------------------------------------------------------
+\subsection{Analyse de cas d'utilisation «Consulter réservations en cours»}
+\label{sec:consulter_reservations}
+
+Afin de mieux illustrer le déroulement du scénario, nous proposons ci-après une
+description textuelle accompagnée du diagramme de séquence du cas d'utilisation
+«~\textbf{Consulter réservations en cours}~».
+
+\begin{table}[H]
+\centering
+\caption{Description textuelle du cas d'utilisation « Consulter réservations en cours »}
+\label{tab:consulter_reservations}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|p{3.5cm}|p{10cm}|}
+\hline
+\textbf{Élément} & \textbf{Description} \\
+\hline
+Nom & Consulter réservations en cours \\
+\hline
+Acteur & Client \\
+\hline
+Description brève & Permet au client de consulter l'état de ses réservations actives. \\
+\hline
+Précondition & Le client est authentifié. \newline
+               Le système est accessible. \\
+\hline
+Postcondition & La liste des réservations en cours est affichée avec leur statut respectif. \\
+\hline
+Enchaînement principal &
+1. Le client accède à la section «~Mes réservations~». \newline
+2. Le système récupère les réservations associées au compte client. \newline
+3. Le système affiche la liste des réservations avec leur statut (En attente, Confirmée, En cours, Terminée). \newline
+4. Le client sélectionne une réservation pour consulter les détails. \newline
+5. Le système affiche les informations détaillées de la réservation. \\
+\hline
+\textbf{Scénario alternatif} &
+2.1 Aucune réservation disponible. \newline
+\quad 2.1.1 Le système affiche le message «~Aucune réservation en cours~». \newline
+3.1 Erreur de chargement des données. \newline
+\quad 3.1.1 Le système affiche un message d'erreur et propose de réessayer. \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{Chapitres/figures/diag_seq_consulter_reservations_en_cours.png}
+    \caption{Diagramme de séquence système de cas d'utilisation «Consulter réservations en cours»}
+    \label{fig:seq_consulter_reservations}
+\end{figure}
+
+%----------------------------------------------------------
+\subsection{Analyse de cas d'utilisation «Voir score client»}
+\label{sec:voir_score}
+
+La section suivante présente le raffinement du cas d'utilisation «~Voir score client~»
+de l'acteur Client.
+
+\begin{table}[H]
+\centering
+\caption{Description textuelle du cas d'utilisation « Voir score client »}
+\label{tab:voir_score}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|p{3.5cm}|p{10cm}|}
+\hline
+\textbf{Élément} & \textbf{Description} \\
+\hline
+Nom & Voir score client \\
+\hline
+Acteur & Client \\
+\hline
+Description brève & Permet au client de consulter son indice de fiabilité calculé automatiquement à partir de son historique de location. \\
+\hline
+Précondition & Le client est authentifié. \newline
+               Le système est accessible. \\
+\hline
+Postcondition & Le score de fiabilité du client est affiché ainsi que les critères ayant contribué à son calcul. \\
+\hline
+Enchaînement principal &
+1. Le client accède à son espace personnel. \newline
+2. Le client clique sur «~Mon score~». \newline
+3. Le système calcule le score à partir de l'historique (retards, annulations, incidents). \newline
+4. Le système affiche le score de fiabilité ainsi que son détail. \\
+\hline
+\textbf{Scénario alternatif} &
+3.1 Historique insuffisant pour calculer un score. \newline
+\quad 3.1.1 Le système affiche le message «~Score non disponible — historique insuffisant~». \newline
+4.1 Erreur de calcul. \newline
+\quad 4.1.1 Le système affiche un message d'erreur. \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{Chapitres/figures/diag_seq_voir_score_client.png}
+    \caption{Diagramme de séquence système de cas d'utilisation «Voir score client»}
+    \label{fig:seq_voir_score}
+\end{figure}
+
+%==========================================================
+\section{Analyse des cas d'utilisation de l'acteur «Agence»}
+\label{sec:acteur_agence_s2}
+
+%----------------------------------------------------------
+\subsection{Analyse de cas d'utilisation «Traiter réservations»}
+\label{sec:traiter_reservations}
+
+Pour mieux analyser le déroulement du scénario, nous proposons ci-après un raffinement
+accompagné d'une description textuelle et d'un diagramme de séquence du cas
+d'utilisation «~\textbf{Traiter réservations}~» de l'acteur Agence.
+
+%\begin{figure}[H]
+ %   \centering
+  %  \includegraphics[width=0.8\linewidth]{Chapitres/figures/raf_traiter_reservations.png}
+   % \caption{Raffinement du cas d'utilisation «Traiter réservations»}
+    %\label{fig:raf_traiter_reservations}
+%\end{figure}
+
+\subsubsection*{Analyse de cas d'utilisation «Valider/Refuser réservation»}
+
+\begin{table}[H]
+\centering
+\caption{Description textuelle du cas d'utilisation « Valider/Refuser réservation »}
+\label{tab:valider_reservation}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|p{3.5cm}|p{10cm}|}
+\hline
+\textbf{Élément} & \textbf{Description} \\
+\hline
+Nom & Valider/Refuser réservation \\
+\hline
+Acteur & Agence \\
+\hline
+Description brève & Permet à l'agence d'accepter ou de refuser une demande de réservation d'un client. \\
+\hline
+Précondition & L'agence est authentifiée. \newline
+               Une ou plusieurs réservations sont en attente de traitement. \\
+\hline
+Postcondition & La réservation est confirmée ou refusée. \newline
+                Le client est notifié de la décision. \\
+\hline
+Enchaînement principal &
+1. L'agence accède à la liste des réservations en attente. \newline
+2. Le système affiche les demandes en attente avec les informations client et véhicule. \newline
+3. L'agence sélectionne une réservation. \newline
+4. L'agence choisit de valider ou de refuser la demande. \newline
+5. Le système demande confirmation. \newline
+6. L'agence confirme. \newline
+7. Le système met à jour le statut de la réservation. \newline
+8. Le système affiche un message de confirmation. \\
+\hline
+\textbf{Scénario alternatif} &
+6.1 Annulation de l'action. \newline
+\quad 6.1.1 Aucune modification n'est effectuée. \newline
+7.1 Erreur lors de la mise à jour. \newline
+\quad 7.1.1 Le système affiche un message d'échec. \\
+\hline
+\end{tabular}
+\end{table}
+
+%\begin{figure}[H]
+    %\centering
+   % \includegraphics[width=\linewidth]{Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/figures/seq_valider_reservation.png}
+    %\caption{Diagramme de séquence système de cas d'utilisation «Valider/Refuser réservation»}
+    %\label{fig:seq_valider_reservation}
+%\end{figure}
+
+\subsubsection*{Analyse de cas d'utilisation «Gérer réclamations»}
+
+\begin{table}[H]
+\centering
+\caption{Description textuelle du cas d'utilisation « Gérer réclamations »}
+\label{tab:gerer_reclamations}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|p{3.5cm}|p{10cm}|}
+\hline
+\textbf{Élément} & \textbf{Description} \\
+\hline
+Nom & Gérer réclamations \\
+\hline
+Acteur & Agence \\
+\hline
+Description brève & Permet à l'agence de consulter et de traiter les réclamations soumises par les clients. \\
+\hline
+Précondition & L'agence est authentifiée. \newline
+               Au moins une réclamation est enregistrée dans le système. \\
+\hline
+Postcondition & La réclamation est traitée et son statut est mis à jour. \\
+\hline
+Enchaînement principal &
+1. L'agence accède à la section «~Réclamations~». \newline
+2. Le système affiche la liste des réclamations avec leur statut. \newline
+3. L'agence sélectionne une réclamation. \newline
+4. Le système affiche les détails de la réclamation. \newline
+5. L'agence saisit une réponse ou une action corrective. \newline
+6. Le système enregistre la réponse et met à jour le statut. \newline
+7. Le système affiche un message de confirmation. \\
+\hline
+\textbf{Scénario alternatif} &
+2.1 Aucune réclamation disponible. \newline
+\quad 2.1.1 Le système affiche le message «~Aucune réclamation en cours~». \newline
+6.1 Erreur lors de l'enregistrement. \newline
+\quad 6.1.1 Le système affiche un message d'échec. \\
+\hline
+\end{tabular}
+\end{table}
+
+
+%\begin{figure}[H]
+    %\centering
+    %\includegraphics[width=\linewidth]{Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/figures/seq_gerer_reclamations.png}
+    %\caption{Diagramme de séquence système de cas d'utilisation «Gérer réclamations»}
+    %\label{fig:seq_gerer_reclamations}
+%\end{figure}
+
+%----------------------------------------------------------
+\subsection{Analyse de cas d'utilisation «Consulter statistiques (Agence)»}
+\label{sec:stats_agence}
+
+Dans la suite, nous présentons une description textuelle accompagnée d'un diagramme
+de séquence du cas d'utilisation «~\textbf{Consulter statistiques}~» de l'acteur Agence.
+
+\begin{table}[H]
+\centering
+\caption{Description textuelle du cas d'utilisation « Consulter statistiques (Agence) »}
+\label{tab:stats_agence}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|p{3.5cm}|p{10cm}|}
+\hline
+\textbf{Élément} & \textbf{Description} \\
+\hline
+Nom & Consulter statistiques \\
+\hline
+Acteur & Agence \\
+\hline
+Description brève & Permet à l'agence de visualiser ses indicateurs de performance à travers un tableau de bord interactif. \\
+\hline
+Précondition & L'agence est authentifiée. \newline
+               Le système est accessible. \\
+\hline
+Postcondition & Les indicateurs de performance sont affichés (nombre de réservations, taux d'occupation, chiffre d'affaires, satisfaction client). \\
+\hline
+Enchaînement principal &
+1. L'agence accède à la section «~Statistiques~». \newline
+2. Le système collecte les données relatives à l'activité de l'agence. \newline
+3. Le système génère et affiche les indicateurs clés (graphiques, tableaux, synthèses). \newline
+4. L'agence consulte et analyse les données. \\
+\hline
+\textbf{Scénario alternatif} &
+2.1 Données insuffisantes pour générer des statistiques. \newline
+\quad 2.1.1 Le système affiche un message informatif. \newline
+3.1 Erreur de chargement. \newline
+\quad 3.1.1 Le système affiche un message d'erreur et propose de réessayer. \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{Chapitres/figures/seq_stats_agence.png}
+    \caption{Diagramme de séquence système de cas d'utilisation «Consulter statistiques (Agence)»}
+    \label{fig:seq_stats_agence}
+\end{figure}
+
+%==========================================================
+\section{Analyse des cas d'utilisation de l'acteur «Administrateur»}
+\label{sec:acteur_admin_s2}
+
+%----------------------------------------------------------
+\subsection{Analyse de cas d'utilisation «Gérer messages»}
+\label{sec:gerer_messages}
+
+Afin de mieux illustrer le déroulement du scénario, nous proposons ci-après une analyse
+du cas d'utilisation «~\textbf{Gérer messages}~» de l'acteur Administrateur.
+
+\begin{table}[H]
+\centering
+\caption{Description textuelle du cas d'utilisation « Gérer messages »}
+\label{tab:gerer_messages}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|p{3.5cm}|p{10cm}|}
+\hline
+\textbf{Élément} & \textbf{Description} \\
+\hline
+Nom & Gérer messages \\
+\hline
+Acteur & Administrateur \\
+\hline
+Description brève & Permet à l'administrateur de consulter les messages reçus des utilisateurs et d'y apporter une réponse. \\
+\hline
+Précondition & L'administrateur est authentifié. \newline
+               Le système est accessible. \\
+\hline
+Postcondition & Le message est traité et une réponse est envoyée à l'utilisateur concerné. \\
+\hline
+Enchaînement principal &
+1. L'administrateur accède à la section «~Messages~». \newline
+2. Le système affiche la liste des messages reçus avec leur statut (Lu/Non lu). \newline
+3. L'administrateur sélectionne un message. \newline
+4. Le système affiche le contenu du message et les informations de l'expéditeur. \newline
+5. L'administrateur rédige une réponse. \newline
+6. Le système enregistre et envoie la réponse. \newline
+7. Le système marque le message comme traité et affiche un message de confirmation. \\
+\hline
+\textbf{Scénario alternatif} &
+2.1 Aucun message disponible. \newline
+\quad 2.1.1 Le système affiche le message «~Aucun message reçu~». \newline
+6.1 Erreur lors de l'envoi de la réponse. \newline
+\quad 6.1.1 Le système affiche un message d'échec. \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{Chapitres/figures/seq_gerer_messages.png}
+    \caption{Diagramme de séquence système de cas d'utilisation «Gérer messages»}
+    \label{fig:seq_gerer_messages}
+\end{figure}
+
+%----------------------------------------------------------
+\subsection{Analyse de cas d'utilisation «Consulter statistiques (Administrateur)»}
+\label{sec:stats_admin}
+
+Dans la suite, nous présentons une description textuelle accompagnée d'un diagramme
+de séquence du cas d'utilisation «~\textbf{Consulter statistiques globales}~» de
+l'acteur Administrateur.
+
+\begin{table}[H]
+\centering
+\caption{Description textuelle du cas d'utilisation « Consulter statistiques (Administrateur) »}
+\label{tab:stats_admin}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|p{3.5cm}|p{10cm}|}
+\hline
+\textbf{Élément} & \textbf{Description} \\
+\hline
+Nom & Consulter statistiques globales \\
+\hline
+Acteur & Administrateur \\
+\hline
+Description brève & Permet à l'administrateur de visualiser les indicateurs de performance globaux de l'ensemble de la plateforme afin de détecter les anomalies et d'améliorer le système. \\
+\hline
+Précondition & L'administrateur est authentifié. \newline
+               Le système est accessible. \\
+\hline
+Postcondition & Les indicateurs globaux sont affichés (nombre total d'agences, de réservations, de clients, score moyen, anomalies détectées). \\
+\hline
+Enchaînement principal &
+1. L'administrateur accède à la section «~Tableau de bord~». \newline
+2. Le système collecte les données globales de toutes les agences. \newline
+3. Le système génère et affiche les indicateurs clés de performance (KPI). \newline
+4. L'administrateur consulte et analyse les données. \newline
+5. L'administrateur peut filtrer les données par période ou par agence. \\
+\hline
+\textbf{Scénario alternatif} &
+2.1 Données insuffisantes. \newline
+\quad 2.1.1 Le système affiche un message informatif. \newline
+3.1 Erreur de chargement. \newline
+\quad 3.1.1 Le système affiche un message d'erreur et propose de réessayer. \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{Chapitres/figures/seq_stats_admin.png}
+    \caption{Diagramme de séquence système de cas d'utilisation «Consulter statistiques (Administrateur)»}
+    \label{fig:seq_stats_admin}
+\end{figure}
+
+%----------------------------------------------------------
+
+\section{Diagramme de classe du deuxième sprint}
+\label{sec:diag_classe_sprint2}
+
+\%begin{figure}[H]
+  %  \centering
+   % \includegraphics[width=\linewidth]{Chapitres/figures/classe_sprint2.png}
+    %\caption{Diagramme de classe du deuxième sprint}
+    %\label{fig:classe_sprint2}
+%\end{figure}
+
+%==========================================================
+\section{Conception des cas d'utilisation}
+\label{sec:conception_s2}
+
+Nous illustrerons dans cette section la conception de ce deuxième sprint à travers
+la réalisation d'un diagramme des classes pour chaque module, ainsi que d'un
+diagramme de séquence détaillé correspondant à chaque cas d'utilisation analysé.
+
+%==========================================================
+\section{Diagramme des classes participantes}
+\label{sec:classes_participantes_s2}
+
+Un diagramme des classes participantes est une représentation UML utilisée dans la
+phase d'analyse pour décrire la réalisation d'un cas d'utilisation spécifique. Il met en
+évidence les différentes classes impliquées dans l'interaction, ainsi que leurs
+responsabilités et leurs relations, afin de structurer le comportement du système selon
+une approche orientée objet~\cite{stackoverflow}.
+
+Ce diagramme repose généralement sur trois catégories principales de classes d'analyse :
+\begin{enumerate}
+    \item \textbf{Les classes frontières (ou classes de dialogue) :} Elles assurent l'interaction
+    entre l'utilisateur et le système. Elles contiennent des attributs correspondant aux
+    données affichées ou saisies (champs de formulaires, résultats, etc.) et des opérations
+    représentant les actions effectuées par l'utilisateur via l'interface homme-machine
+    (IHM)~\cite{stackoverflow}.
+
+    \item \textbf{Les classes de contrôle :} Elles orchestrent le déroulement du cas
+    d'utilisation. Elles implémentent la logique applicative, coordonnent les échanges
+    entre les classes frontières et les classes entités, et encapsulent les règles métier
+    ainsi que les traitements du système~\cite{stackoverflow}.
+
+    \item \textbf{Les classes entités :} Elles représentent les données métier du système.
+    Ces classes contiennent des attributs persistants correspondant aux informations
+    stockées (par exemple dans une base de données) et peuvent inclure des opérations
+    liées à la gestion de ces données~\cite{stackoverflow}.
+\end{enumerate}
+
+%----------------------------------------------------------
+\subsection{Diagramme des classes participantes par acteur «Client»}
+\label{sec:cp_client}
+
+%\begin{figure}[H]
+ %   \centering
+  %  \includegraphics[width=0.8\linewidth]{Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/figures/cp_client_s2.png}
+   % \caption{Diagramme des classes participantes par acteur Client}
+    %\label{fig:cp_client_s2}
+%\end{figure}
+
+%----------------------------------------------------------
+%\subsection{Diagramme des classes participantes par acteur «Agence»}
+%\label{sec:cp_agence_s2}
+
+%\begin{figure}[H]
+ %   \centering
+  %  \includegraphics[width=0.8\linewidth]{Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/figures/cp_agence_s2.png}
+   % \caption{Diagramme des classes participantes par acteur Agence}
+    %\label{fig:cp_agence_s2}
+%\end{figure}
+
+%----------------------------------------------------------
+%\subsection{Diagramme des classes participantes par acteur «Administrateur»}
+%\label{sec:cp_admin_s2}
+
+%\begin{figure}[H]
+ %   \centering
+  %  \includegraphics[width=0.8\linewidth]{Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/Chapitre/figures/cp_admin_s2.png}
+   % \caption{Diagramme des classes participantes par acteur Administrateur}
+    %\label{fig:cp_admin_s2}
+%\end{figure}
+
+%==========================================================
 \section{Conclusion}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Dans ce chapitre, nous nous sommes concentrés sur la deuxième phase du sprint,
-en prenant en considération les étapes clés de la méthodologie Scrum.
+\label{sec:conclusion_sprint2}
+
+Dans le cadre de ce chapitre, nous avons mené le Sprint~2 selon une séquence logique
+couvrant l'analyse des cas d'utilisation et la conception. Les fonctionnalités
+développées — effectuer et suivre des réservations, visualiser le score de fiabilité,
+traiter les réclamations, consulter les statistiques et gérer les messages — constituent
+le cœur métier de la plateforme et assurent une expérience complète pour l'ensemble
+des acteurs du système.
+
+La phase suivante sera consacrée à la présentation des résultats obtenus, des
+technologies utilisées, ainsi qu'au déploiement de la solution.

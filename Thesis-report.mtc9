@@ -1,6 +1,22 @@
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.1}Introduction}{\reset@font\mtcSfont 93}{section.4.1}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.2}Planification du sprint 2}{\reset@font\mtcSfont 93}{section.4.2}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.3}Backlog produit du deuxième sprint}{\reset@font\mtcSfont 94}{section.4.3}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.4}La spécification fonctionnelle des besoins}{\reset@font\mtcSfont 94}{section.4.4}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.5}Classification des cas d'utilisation par acteur}{\reset@font\mtcSfont 95}{section.4.5}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.6}Conclusion}{\reset@font\mtcSfont 95}{section.4.6}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.1}Introduction}{\reset@font\mtcSfont 95}{section.4.1}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.2}Planification du sprint 2}{\reset@font\mtcSfont 95}{section.4.2}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.3}Backlog produit du deuxième sprint}{\reset@font\mtcSfont 96}{section.4.3}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.4}Les prototypes des interfaces}{\reset@font\mtcSfont 98}{section.4.4}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.5}La spécification fonctionnelle des besoins}{\reset@font\mtcSfont 98}{section.4.5}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.6}Diagramme de cas d'utilisation du deuxième sprint}{\reset@font\mtcSfont 98}{section.4.6}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.7}Analyse des cas d'utilisation du deuxième sprint}{\reset@font\mtcSfont 99}{section.4.7}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.8}Analyse des cas d'utilisation de l'acteur «Client»}{\reset@font\mtcSfont 99}{section.4.8}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.8.1}Analyse de cas d'utilisation «Effectuer réservation»}{\reset@font\mtcSSfont 99}{subsection.4.8.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.8.2}Analyse de cas d'utilisation «Consulter réservations en cours»}{\reset@font\mtcSSfont 101}{subsection.4.8.2}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.8.3}Analyse de cas d'utilisation «Voir score client»}{\reset@font\mtcSSfont 103}{subsection.4.8.3}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.9}Analyse des cas d'utilisation de l'acteur «Agence»}{\reset@font\mtcSfont 105}{section.4.9}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.9.1}Analyse de cas d'utilisation «Traiter réservations»}{\reset@font\mtcSSfont 105}{subsection.4.9.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.9.2}Analyse de cas d'utilisation «Consulter statistiques (Agence)»}{\reset@font\mtcSSfont 107}{subsection.4.9.2}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.10}Analyse des cas d'utilisation de l'acteur «Administrateur»}{\reset@font\mtcSfont 109}{section.4.10}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.10.1}Analyse de cas d'utilisation «Gérer messages»}{\reset@font\mtcSSfont 109}{subsection.4.10.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.10.2}Analyse de cas d'utilisation «Consulter statistiques (Administrateur)»}{\reset@font\mtcSSfont 111}{subsection.4.10.2}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.11}Diagramme de classe du deuxième sprint}{\reset@font\mtcSfont 113}{section.4.11}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.12}Conception des cas d'utilisation}{\reset@font\mtcSfont 113}{section.4.12}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.13}Diagramme des classes participantes}{\reset@font\mtcSfont 113}{section.4.13}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.13.1}Diagramme des classes participantes par acteur «Client»}{\reset@font\mtcSSfont 114}{subsection.4.13.1}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.14}Conclusion}{\reset@font\mtcSfont 114}{section.4.14}}
