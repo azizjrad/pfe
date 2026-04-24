@@ -26,16 +26,15 @@
 \contentsline {table}{\numberline {3.16}{\ignorespaces Description textuelle du cas d'utilisation « Modifier informations voiture »}}{84}{table.caption.79}%
 \addvspace {10\p@ }
 \contentsline {xchapter}{Réalisation du deuxième sprint}{95}{chapter.4}%
-\contentsline {table}{\numberline {4.1}{\ignorespaces Backlog produit du deuxième sprint}}{97}{table.caption.93}%
-\contentsline {table}{\numberline {4.2}{\ignorespaces Description textuelle du cas d'utilisation « Effectuer réservation »}}{100}{table.caption.95}%
-\contentsline {table}{\numberline {4.3}{\ignorespaces Description textuelle du cas d'utilisation « Consulter réservations en cours »}}{102}{table.caption.97}%
-\contentsline {table}{\numberline {4.4}{\ignorespaces Description textuelle du cas d'utilisation « Voir score client »}}{104}{table.caption.99}%
-\contentsline {table}{\numberline {4.5}{\ignorespaces Description textuelle du cas d'utilisation « Valider/Refuser réservation »}}{106}{table.caption.102}%
-\contentsline {table}{\numberline {4.6}{\ignorespaces Description textuelle du cas d'utilisation « Gérer réclamations »}}{107}{table.caption.104}%
-\contentsline {table}{\numberline {4.7}{\ignorespaces Description textuelle du cas d'utilisation « Consulter statistiques (Agence) »}}{108}{table.caption.105}%
-\contentsline {table}{\numberline {4.8}{\ignorespaces Description textuelle du cas d'utilisation « Gérer messages »}}{110}{table.caption.107}%
-\contentsline {table}{\numberline {4.9}{\ignorespaces Description textuelle du cas d'utilisation « Consulter statistiques (Administrateur) »}}{112}{table.caption.109}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces Backlog produit du deuxième sprint}}{96}{table.caption.93}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Description textuelle du cas d'utilisation « Voir score client »}}{98}{table.caption.95}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Description textuelle du cas d'utilisation « Effectuer réservation »}}{100}{table.caption.97}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces Description textuelle du cas d'utilisation « Consulter réservations en cours »}}{102}{table.caption.99}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces Description textuelle du cas d'utilisation « Traiter réservations »}}{104}{table.caption.101}%
+\contentsline {table}{\numberline {4.6}{\ignorespaces Description textuelle du cas d'utilisation « Consulter statistiques (Agence) »}}{106}{table.caption.103}%
+\contentsline {table}{\numberline {4.7}{\ignorespaces Description textuelle du cas d'utilisation « Gérer messages »}}{108}{table.caption.105}%
+\contentsline {table}{\numberline {4.8}{\ignorespaces Description textuelle du cas d'utilisation « Consulter statistiques (Administrateur) »}}{110}{table.caption.107}%
 \addvspace {10\p@ }
-\contentsline {xchapter}{Phase de clôture}{115}{chapter.5}%
-\contentsline {table}{\numberline {5.1}{\ignorespaces Technologies utilisées}}{116}{table.caption.111}%
-\contentsline {table}{\numberline {5.2}{\ignorespaces Logiciels utilisés}}{117}{table.caption.112}%
+\contentsline {xchapter}{Phase de clôture}{117}{chapter.5}%
+\contentsline {table}{\numberline {5.1}{\ignorespaces Technologies utilisées}}{118}{table.caption.113}%
+\contentsline {table}{\numberline {5.2}{\ignorespaces Logiciels utilisés}}{119}{table.caption.114}%

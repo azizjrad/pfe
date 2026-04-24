@@ -57,12 +57,17 @@
 \addvspace {10\p@ }
 \contentsline {xchapter}{Réalisation du deuxième sprint}{95}{chapter.4}%
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Sprint 2}}{95}{figure.caption.92}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Diagramme de cas d'utilisation du deuxième sprint}}{99}{figure.caption.94}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Effectuer réservation»}}{101}{figure.caption.96}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Consulter réservations en cours»}}{103}{figure.caption.98}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Voir score client»}}{105}{figure.caption.100}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Consulter statistiques (Agence)»}}{109}{figure.caption.106}%
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Gérer messages»}}{111}{figure.caption.108}%
-\contentsline {figure}{\numberline {4.8}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Consulter statistiques (Administrateur)»}}{113}{figure.caption.110}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Diagramme de cas d'utilisation du deuxième sprint}}{97}{figure.caption.94}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Voir score client»}}{99}{figure.caption.96}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Effectuer réservation»}}{101}{figure.caption.98}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Consulter réservations en cours»}}{103}{figure.caption.100}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Diagramme de séquence système de cas d'utilisation « Traiter réservations»}}{105}{figure.caption.102}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Consulter statistiques (Agence)»}}{107}{figure.caption.104}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Gérer messages»}}{109}{figure.caption.106}%
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Consulter statistiques (Administrateur)»}}{111}{figure.caption.108}%
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Diagramme des classes participantes par acteur Utilisateur}}{112}{figure.caption.109}%
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Diagramme des classes participantes par acteur Client}}{113}{figure.caption.110}%
+\contentsline {figure}{\numberline {4.12}{\ignorespaces Diagramme des classes participantes par acteur Agence}}{114}{figure.caption.111}%
+\contentsline {figure}{\numberline {4.13}{\ignorespaces Diagramme des classes participantes par acteur Administrateur}}{115}{figure.caption.112}%
 \addvspace {10\p@ }
-\contentsline {xchapter}{Phase de clôture}{115}{chapter.5}%
+\contentsline {xchapter}{Phase de clôture}{117}{chapter.5}%

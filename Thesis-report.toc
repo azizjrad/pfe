@@ -84,32 +84,37 @@
 \contentsline {section}{\numberline {4.1}Introduction}{95}{section.4.1}%
 \contentsline {section}{\numberline {4.2}Planification du sprint 2}{95}{section.4.2}%
 \contentsline {section}{\numberline {4.3}Backlog produit du deuxième sprint}{96}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Les prototypes des interfaces}{98}{section.4.4}%
-\contentsline {section}{\numberline {4.5}La spécification fonctionnelle des besoins}{98}{section.4.5}%
-\contentsline {section}{\numberline {4.6}Diagramme de cas d'utilisation du deuxième sprint}{98}{section.4.6}%
-\contentsline {section}{\numberline {4.7}Analyse des cas d'utilisation du deuxième sprint}{99}{section.4.7}%
-\contentsline {section}{\numberline {4.8}Analyse des cas d'utilisation de l'acteur «Client»}{99}{section.4.8}%
-\contentsline {subsection}{\numberline {4.8.1}Analyse de cas d'utilisation «Effectuer réservation»}{99}{subsection.4.8.1}%
-\contentsline {subsection}{\numberline {4.8.2}Analyse de cas d'utilisation «Consulter réservations en cours»}{101}{subsection.4.8.2}%
-\contentsline {subsection}{\numberline {4.8.3}Analyse de cas d'utilisation «Voir score client»}{103}{subsection.4.8.3}%
-\contentsline {section}{\numberline {4.9}Analyse des cas d'utilisation de l'acteur «Agence»}{105}{section.4.9}%
-\contentsline {subsection}{\numberline {4.9.1}Analyse de cas d'utilisation «Traiter réservations»}{105}{subsection.4.9.1}%
-\contentsline {subsection}{\numberline {4.9.2}Analyse de cas d'utilisation «Consulter statistiques (Agence)»}{107}{subsection.4.9.2}%
-\contentsline {section}{\numberline {4.10}Analyse des cas d'utilisation de l'acteur «Administrateur»}{109}{section.4.10}%
-\contentsline {subsection}{\numberline {4.10.1}Analyse de cas d'utilisation «Gérer messages»}{109}{subsection.4.10.1}%
-\contentsline {subsection}{\numberline {4.10.2}Analyse de cas d'utilisation «Consulter statistiques (Administrateur)»}{111}{subsection.4.10.2}%
-\contentsline {section}{\numberline {4.11}Diagramme de classe du deuxième sprint}{113}{section.4.11}%
-\contentsline {section}{\numberline {4.12}Conception des cas d'utilisation}{113}{section.4.12}%
-\contentsline {section}{\numberline {4.13}Diagramme des classes participantes}{113}{section.4.13}%
-\contentsline {subsection}{\numberline {4.13.1}Diagramme des classes participantes par acteur «Client»}{114}{subsection.4.13.1}%
-\contentsline {section}{\numberline {4.14}Conclusion}{114}{section.4.14}%
-\contentsline {chapter}{\numberline {5}Phase de clôture}{115}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Introduction}{115}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Environnement technique et outils adoptés}{115}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Technologies de développement}{115}{section.5.3}%
-\contentsline {section}{\numberline {5.4}Logiciels utilisés}{116}{section.5.4}%
-\contentsline {section}{\numberline {5.5}Mise en production et organisation du déploiement}{117}{section.5.5}%
-\contentsline {section}{\numberline {5.6}Choix technologiques}{118}{section.5.6}%
-\contentsline {subsection}{\numberline {5.6.1}Architecture retenue dans notre projet}{118}{subsection.5.6.1}%
-\contentsline {section}{\numberline {5.7}Conclusion}{118}{section.5.7}%
-\contentsline {chapter}{Conclusion}{119}{chapter*.113}%
+\contentsline {section}{\numberline {4.4}Les prototypes des interfaces}{97}{section.4.4}%
+\contentsline {section}{\numberline {4.5}La spécification fonctionnelle des besoins}{97}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Diagramme de cas d'utilisation du deuxième sprint}{97}{section.4.6}%
+\contentsline {section}{\numberline {4.7}Analyse des cas d'utilisation du deuxième sprint}{97}{section.4.7}%
+\contentsline {section}{\numberline {4.8}Analyse des cas d'utilisation de l'acteur «Utilisateur»}{98}{section.4.8}%
+\contentsline {subsection}{\numberline {4.8.1}Analyse de cas d'utilisation «Voir score client»}{98}{subsection.4.8.1}%
+\contentsline {section}{\numberline {4.9}Analyse des cas d'utilisation de l'acteur «Client»}{99}{section.4.9}%
+\contentsline {subsection}{\numberline {4.9.1}Analyse de cas d'utilisation «Effectuer réservation»}{99}{subsection.4.9.1}%
+\contentsline {subsection}{\numberline {4.9.2}Analyse de cas d'utilisation «Consulter réservations en cours»}{101}{subsection.4.9.2}%
+\contentsline {section}{\numberline {4.10}Analyse des cas d'utilisation de l'acteur «Agence»}{103}{section.4.10}%
+\contentsline {subsection}{\numberline {4.10.1}Analyse de cas d'utilisation «Traiter réservations»}{103}{subsection.4.10.1}%
+\contentsline {subsection}{\numberline {4.10.2}Analyse de cas d'utilisation «Consulter statistiques (Agence)»}{105}{subsection.4.10.2}%
+\contentsline {section}{\numberline {4.11}Analyse des cas d'utilisation de l'acteur «Administrateur»}{107}{section.4.11}%
+\contentsline {subsection}{\numberline {4.11.1}Analyse de cas d'utilisation «Gérer messages»}{107}{subsection.4.11.1}%
+\contentsline {subsection}{\numberline {4.11.2}Analyse de cas d'utilisation «Consulter statistiques (Administrateur)»}{109}{subsection.4.11.2}%
+\contentsline {section}{\numberline {4.12}Diagramme de classe du deuxième sprint}{111}{section.4.12}%
+\contentsline {section}{\numberline {4.13}Conception des cas d'utilisation}{111}{section.4.13}%
+\contentsline {section}{\numberline {4.14}Diagramme des classes participantes}{112}{section.4.14}%
+\contentsline {subsection}{\numberline {4.14.1}Diagramme des classes participantes par acteur "Utilisateur"}{112}{subsection.4.14.1}%
+\contentsline {subsection}{\numberline {4.14.2}Diagramme des classes participantes par acteur "Client''}{113}{subsection.4.14.2}%
+\contentsline {subsection}{\numberline {4.14.3}Diagramme des classes participantes par acteur "Agence''}{114}{subsection.4.14.3}%
+\contentsline {subsection}{\numberline {4.14.4}Diagramme des classes participantes par acteur "Administrateur''}{115}{subsection.4.14.4}%
+\contentsline {subsection}{\numberline {4.14.5}Diagramme des classes participantes par acteur «Client»}{115}{subsection.4.14.5}%
+\contentsline {section}{\numberline {4.15}Conclusion}{115}{section.4.15}%
+\contentsline {chapter}{\numberline {5}Phase de clôture}{117}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Introduction}{117}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Environnement technique et outils adoptés}{117}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Technologies de développement}{117}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Logiciels utilisés}{118}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Mise en production et organisation du déploiement}{119}{section.5.5}%
+\contentsline {section}{\numberline {5.6}Choix technologiques}{120}{section.5.6}%
+\contentsline {subsection}{\numberline {5.6.1}Architecture retenue dans notre projet}{120}{subsection.5.6.1}%
+\contentsline {section}{\numberline {5.7}Conclusion}{120}{section.5.7}%
+\contentsline {chapter}{Conclusion}{121}{chapter*.115}%

@@ -38,14 +38,17 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Agile}
+      \field{urlday}{24}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
       \field{year}{2026}
+      \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://www.atlassian.com/fr/agile
       \endverb
       \verb{url}
       \verb https://www.atlassian.com/fr/agile
       \endverb
-      \warn{\item online entry 'atlassian' (webographie.bib): Invalid format '3 avril 2026' of date field 'urldate' - ignoring}
     \endentry
     \entry{Logiciel_de_gestion_des_locations}{online}{}{}
       \name{author}{1}{}{%
@@ -201,14 +204,17 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{System life cycle}
+      \field{urlday}{10}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
       \field{year}{2015}
+      \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://www.iso.org/standard/63711.html?utm_source=copilot.com
       \endverb
       \verb{url}
       \verb https://www.iso.org/standard/63711.html?utm_source=copilot.com
       \endverb
-      \warn{\item online entry 'ISO' (webographie.bib): Invalid format '10 avril 2026' of date field 'urldate' - ignoring}
     \endentry
     \entry{ittrip}{online}{}{}
       \name{author}{1}{}{%
@@ -229,14 +235,17 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Ittrip}
+      \field{urlday}{24}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
       \field{year}{2018}
+      \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://fr.ittrip.xyz/ms-office/excel/excel-filter-calc-powerquery
       \endverb
       \verb{url}
       \verb https://fr.ittrip.xyz/ms-office/excel/excel-filter-calc-powerquery
       \endverb
-      \warn{\item online entry 'ittrip' (webographie.bib): Invalid format '8 avril 2026' of date field 'urldate' - ignoring}
     \endentry
     \entry{journaldunet}{online}{}{}
       \name{author}{1}{}{%
@@ -257,14 +266,17 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Dependance aux outils ucaas et saas}
+      \field{urlday}{24}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
       \field{year}{2014}
+      \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://www.journaldunet.com/cloud/1533559-quand-la-dependance-aux-outils-ucaas-et-saas-met-les-entreprises-a-l-epreuve/
       \endverb
       \verb{url}
       \verb https://www.journaldunet.com/cloud/1533559-quand-la-dependance-aux-outils-ucaas-et-saas-met-les-entreprises-a-l-epreuve/
       \endverb
-      \warn{\item online entry 'journaldunet' (webographie.bib): Invalid format '3 avril 2026' of date field 'urldate' - ignoring}
     \endentry
     \entry{modele-contrat-location-vehicule}{online}{}{}
       \name{author}{1}{}{%
@@ -316,14 +328,17 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Diagramme de cas d'utilisation UML}
+      \field{urlday}{24}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
       \field{year}{2016}
+      \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://www.lucidchart.com/pages/fr/diagramme-de-cas-dutilisation-uml
       \endverb
       \verb{url}
       \verb https://www.lucidchart.com/pages/fr/diagramme-de-cas-dutilisation-uml
       \endverb
-      \warn{\item online entry 'Lucidchart' (webographie.bib): Invalid format '4 avril 2026' of date field 'urldate' - ignoring}
     \endentry
     \entry{letemps_news}{online}{}{}
       \name{author}{1}{}{%
@@ -377,14 +392,17 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Uml}
+      \field{urlday}{9}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
       \field{year}{2010}
+      \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://www.omg.org/UML/
       \endverb
       \verb{url}
       \verb https://www.omg.org/UML/
       \endverb
-      \warn{\item online entry 'uml' (webographie.bib): Invalid format '9 avril 2026' of date field 'urldate' - ignoring}
     \endentry
     \entry{stackoverflow}{online}{}{}
       \name{author}{1}{}{%
@@ -407,14 +425,17 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{UML Class Diagram}
+      \field{urlday}{24}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
       \field{year}{2000}
+      \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://stackoverflow.com/questions/683825/in-uml-class-diagrams-what-are-boundary-classes-control-classes-and-entity-cl?utm_source=chatgpt.com
       \endverb
       \verb{url}
       \verb https://stackoverflow.com/questions/683825/in-uml-class-diagrams-what-are-boundary-classes-control-classes-and-entity-cl?utm_source=chatgpt.com
       \endverb
-      \warn{\item online entry 'stackoverflow' (webographie.bib): Invalid format '12 avril 2026' of date field 'urldate' - ignoring}
     \endentry
     \entry{yesinternet}{online}{}{}
       \name{author}{1}{}{%
@@ -435,14 +456,17 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Yesinternt}
+      \field{urlday}{6}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
       \field{year}{2026}
+      \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://yes-internet.com/
       \endverb
       \verb{url}
       \verb https://yes-internet.com/
       \endverb
-      \warn{\item online entry 'yesinternet' (webographie.bib): Invalid format '6 mars 2026' of date field 'urldate' - ignoring}
     \endentry
     \entry{scribd_contrat_standard}{online}{}{}
       \name{author}{1}{}{%
@@ -466,7 +490,6 @@
       \field{urlday}{1}
       \field{urlmonth}{4}
       \field{urlyear}{2026}
-      \field{year}{s.d.}
       \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://fr.scribd.com/document/972747770/Contrat-de-location-de-voiture-standard
@@ -494,14 +517,17 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Scrum}
+      \field{urlday}{25}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
       \field{year}{2016}
+      \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://scrumguides.org/docs/scrumguide/v2016/2016-Scrum-Guide-French.pdf
       \endverb
       \verb{url}
       \verb https://scrumguides.org/docs/scrumguide/v2016/2016-Scrum-Guide-French.pdf
       \endverb
-      \warn{\item online entry 'scrum' (webographie.bib): Invalid format '3 avril 2026' of date field 'urldate' - ignoring}
     \endentry
     \entry{hq_features}{online}{}{}
       \name{author}{1}{}{%
@@ -525,14 +551,17 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Car Rental Software - Features}
+      \field{urlday}{6}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
       \field{year}{2026}
+      \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://www.hqrentalsoftware.com/features
       \endverb
       \verb{url}
       \verb https://www.hqrentalsoftware.com/features
       \endverb
-      \warn{\item online entry 'hq_features' (webographie.bib): Invalid format '2026-04-0' of date field 'urldate' - ignoring}
     \endentry
     \entry{renthub_tarifs}{online}{}{}
       \name{author}{1}{}{%
@@ -651,7 +680,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{VEVS Car Rental Software Features}
-      \field{urlday}{2}
+      \field{urlday}{24}
       \field{urlmonth}{4}
       \field{urlyear}{2026}
       \field{year}{2016}
@@ -685,7 +714,6 @@
       \field{urlday}{1}
       \field{urlmonth}{4}
       \field{urlyear}{2026}
-      \field{year}{s.d.}
       \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://www.youtube.com/watch?v=6IV2tpBoXGkY

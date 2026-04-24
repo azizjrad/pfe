@@ -1,32 +1,20 @@
 [0] Config.pm:328> INFO - This is Biber 2.21
 [0] Config.pm:331> INFO - Logfile is 'Thesis-report.blg'
-[385] biber-MSWIN64:342> INFO - === 
-[555] Biber.pm:421> INFO - Reading 'Thesis-report.bcf'
-[731] Biber.pm:1002> INFO - Found 22 citekeys in bib section 0
-[752] Biber.pm:4487> INFO - Processing section 0
-[799] Biber.pm:4678> INFO - Looking for bibtex file 'Thesis-report.bib' for section 0
-[920] bibtex.pm:1713> INFO - LaTeX decoding ...
-[929] bibtex.pm:1519> INFO - Found BibTeX data source 'Thesis-report.bib'
-[946] Biber.pm:4678> INFO - Looking for bibtex file 'webographie.bib' for section 0
-[1080] bibtex.pm:1713> INFO - LaTeX decoding ...
-[1113] bibtex.pm:1519> INFO - Found BibTeX data source 'webographie.bib'
-[1356] UCollate.pm:68> INFO - Overriding locale 'fr-FR' defaults 'variable = shifted' with 'variable = non-ignorable'
-[1357] UCollate.pm:68> INFO - Overriding locale 'fr-FR' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[1357] Biber.pm:4307> INFO - Sorting list 'nty/global//global/global/global' of type 'entry' with template 'nty' and locale 'fr-FR'
-[1357] Biber.pm:4313> INFO - No sort tailoring available for locale 'fr-FR'
-[1416] bbl.pm:676> INFO - Writing 'Thesis-report.bbl' with encoding 'UTF-8'
-[1430] bbl.pm:779> INFO - Output to Thesis-report.bbl
-[1430] Biber.pm:132> WARN - online entry 'yesinternet' (webographie.bib): Invalid format '6 mars 2026' of date field 'urldate' - ignoring
-[1431] Biber.pm:132> WARN - legacy year field 's.d.' in entry 'scribd_contrat_standard' is not an integer - this will probably not sort properly.
-[1431] Biber.pm:132> WARN - legacy year field 's.d.' in entry 'youtube_excel_gestion' is not an integer - this will probably not sort properly.
-[1431] Biber.pm:132> WARN - online entry 'hq_features' (webographie.bib): Invalid format '2026-04-0' of date field 'urldate' - ignoring
-[1431] Biber.pm:132> WARN - legacy year field 's.d.' in entry 'drivotunisie' is not an integer - this will probably not sort properly.
-[1431] Biber.pm:132> WARN - online entry 'journaldunet' (webographie.bib): Invalid format '3 avril 2026' of date field 'urldate' - ignoring
-[1431] Biber.pm:132> WARN - online entry 'atlassian' (webographie.bib): Invalid format '3 avril 2026' of date field 'urldate' - ignoring
-[1431] Biber.pm:132> WARN - online entry 'scrum' (webographie.bib): Invalid format '3 avril 2026' of date field 'urldate' - ignoring
-[1431] Biber.pm:132> WARN - online entry 'uml' (webographie.bib): Invalid format '9 avril 2026' of date field 'urldate' - ignoring
-[1431] Biber.pm:132> WARN - online entry 'ittrip' (webographie.bib): Invalid format '8 avril 2026' of date field 'urldate' - ignoring
-[1431] Biber.pm:132> WARN - online entry 'ISO' (webographie.bib): Invalid format '10 avril 2026' of date field 'urldate' - ignoring
-[1431] Biber.pm:132> WARN - online entry 'Lucidchart' (webographie.bib): Invalid format '4 avril 2026' of date field 'urldate' - ignoring
-[1431] Biber.pm:132> WARN - online entry 'stackoverflow' (webographie.bib): Invalid format '12 avril 2026' of date field 'urldate' - ignoring
-[1431] Biber.pm:134> INFO - WARNINGS: 13
+[163] biber-MSWIN64:342> INFO - === 
+[229] Biber.pm:421> INFO - Reading 'Thesis-report.bcf'
+[401] Biber.pm:1002> INFO - Found 22 citekeys in bib section 0
+[420] Biber.pm:4487> INFO - Processing section 0
+[435] Biber.pm:4678> INFO - Looking for bibtex file 'Thesis-report.bib' for section 0
+[531] bibtex.pm:1713> INFO - LaTeX decoding ...
+[541] bibtex.pm:1519> INFO - Found BibTeX data source 'Thesis-report.bib'
+[569] Biber.pm:4678> INFO - Looking for bibtex file 'webographie.bib' for section 0
+[667] bibtex.pm:1713> INFO - LaTeX decoding ...
+[698] bibtex.pm:1519> INFO - Found BibTeX data source 'webographie.bib'
+[862] UCollate.pm:68> INFO - Overriding locale 'fr-FR' defaults 'variable = shifted' with 'variable = non-ignorable'
+[862] UCollate.pm:68> INFO - Overriding locale 'fr-FR' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[862] Biber.pm:4307> INFO - Sorting list 'nty/global//global/global/global' of type 'entry' with template 'nty' and locale 'fr-FR'
+[862] Biber.pm:4313> INFO - No sort tailoring available for locale 'fr-FR'
+[894] bbl.pm:676> INFO - Writing 'Thesis-report.bbl' with encoding 'UTF-8'
+[912] bbl.pm:779> INFO - Output to Thesis-report.bbl
+[913] Biber.pm:132> WARN - legacy year field 's.d.' in entry 'drivotunisie' is not an integer - this will probably not sort properly.
+[913] Biber.pm:134> INFO - WARNINGS: 1
