@@ -1,14 +1,15 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.3.28)  24 APR 2026 18:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.4.12)  25 APR 2026 13:14
 entering extended mode
  restricted \write18 enabled.
+ file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/Users/ouech/Downloads/Rapport_pfe/Thesis-report.tex
-(c:/Users/ouech/Downloads/Rapport_pfe/Thesis-report.tex
+**c:/Users/AZIZ/Downloads/Rapport_pfe/Thesis-report.tex
+(c:/Users/AZIZ/Downloads/Rapport_pfe/Thesis-report.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/base\book.cls
+(C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/base\book.cls
 Document Class: book 2025/01/22 v1.4n Standard LaTeX document class
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/base\bk11.clo
+(C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/base\bk11.clo
 File: bk11.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
 )
 \c@part=\count275
@@ -23,11 +24,9 @@ File: bk11.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
 \abovecaptionskip=\skip49
 \belowcaptionskip=\skip50
 \bibindent=\dimen148
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/emptypage\emptypage.sty
-Package: emptypage 2010/05/30 v1.2 Suppress page numbers and headings on empty 
-pages
-) (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/tools\calc.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/emptypage\emptypage.sty
+Package: emptypage 2010/05/30 v1.2 Suppress page numbers and headings on empty pages
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/tools\calc.sty
 Package: calc 2025/03/01 v4.3b Infix arithmetic (KKT,FJ)
 \calc@Acount=\count284
 \calc@Bcount=\count285
@@ -39,48 +38,39 @@ LaTeX Info: Redefining \setlength on input line 86.
 LaTeX Info: Redefining \addtolength on input line 87.
 \calc@Ccount=\count286
 \calc@Cskip=\skip53
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
 Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
 Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
 \KV@toks@=\toks17
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
 Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
 Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.c
-fg
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 106.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
 File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen151
 \Gin@req@width=\dimen152
-) (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
 Package: amsmath 2025/07/09 v2.17z AMS math features
 \@mathmargin=\skip54
-For additional information on amsmath, use the `?' option.
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
-Package: amstext 2024/11/17 v2.01 AMS text
 
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
+For additional information on amsmath, use the `?' option.
+(C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
+Package: amstext 2024/11/17 v2.01 AMS text
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
 \@emptytoks=\toks18
 \ex@=\dimen153
-))
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
+)) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
 \pmbraise@=\dimen154
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
 Package: amsopn 2022/04/08 v2.04 operator names
 )
 \inf@bad=\count287
@@ -130,12 +120,11 @@ LaTeX Info: Redefining \Relbar on input line 970.
 \mathdisplay@stack=\toks22
 LaTeX Info: Redefining \[ on input line 2950.
 LaTeX Info: Redefining \] on input line 2951.
-)
-(overpic.sty
+) (overpic.sty
 Package: overpic 1999/07/04 v0.52  Overwriting eps pictures
 
 Package: overpic v0.52 <1999/07/04> (RN)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/eepic\epic.sty
+(C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/eepic\epic.sty
 Enhancements to Picture Environment. Version 1.2 - Released June 1, 1986
 \@@multicnt=\count299
 \d@lta=\count300
@@ -155,34 +144,28 @@ Enhancements to Picture Environment. Version 1.2 - Released June 1, 1986
 \@datafile=\read2
 )
 overpic: relative positioning in percent
-) (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/graphics\color.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/graphics\color.sty
 Package: color 2025/01/14 v1.3e Standard LaTeX Color (DPC)
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package color Info: Driver file: pdftex.def on input line 149.
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx)
-) (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/dvips\rotate.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx)) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/dvips\rotate.sty
 \@rotdimen=\dimen168
 \@rotbox=\box56
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/graphics\epsfig.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/graphics\epsfig.sty
 Package: epsfig 2024/01/14 v1.7b (e)psfig emulation (SPQR)
 \epsfxsize=\dimen169
 \epsfysize=\dimen170
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/multirow\multirow.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/multirow\multirow.sty
 Package: multirow 2024/11/12 v2.9 Span multiple rows of a table
 \multirow@colwidth=\skip57
 \multirow@cntb=\count307
 \multirow@dima=\skip58
 \bigstrutjot=\dimen171
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption.sty
 Package: caption 2023/08/05 v3.6o Customizing captions (AR)
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption3.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption3.sty
 Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
 \caption@tempdima=\dimen172
 \captionmargin=\dimen173
@@ -196,8 +179,7 @@ Package caption Info: Standard document class detected.
 )
 \c@caption@flags=\count308
 \c@continuedfloat=\count309
-)
-(mychapter.sty
+) (mychapter.sty
 Redefining defaults from book.cls in MyMacros.sty!
 
 ) (mymacros.sty
@@ -210,7 +192,7 @@ Style-File: MyMacros v1.2 <2000/10/02>
 \c@Prop=\count314
 \c@Proof=\count315
 \c@Corol=\count316
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/tools\verbatim.sty
+(C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/tools\verbatim.sty
 Package: verbatim 2024-01-22 v1.5x LaTeX2e package for verbatim enhancements
 \every@verbatim=\toks23
 \verbatim@line=\toks24
@@ -219,48 +201,32 @@ Package: verbatim 2024-01-22 v1.5x LaTeX2e package for verbatim enhancements
 \algobox=\box57
 \algolength=\skip59
 \c@exmpl=\count317
-
-(pifont.sty
+ (pifont.sty
 Package: pifont 1998/01/07 PSNFSS v.7 Pi font support : S Rahtz
 LaTeX Font Info:    Trying to load font information for U+pzd on input line 59.
-
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\upzd.fd
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\upzd.fd
 File: upzd.fd 2001/06/04 font definitions for U/pzd.
 )
 LaTeX Font Info:    Trying to load font information for U+psy on input line 60.
-
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\upsy.fd
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\upsy.fd
 File: upsy.fd 2001/06/04 font definitions for U/psy.
 ))
 \myfigrule=\box58
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/base\makeidx.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/base\makeidx.sty
 Package: makeidx 2021/10/04 v1.0m Standard LaTeX package
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/babel\babel.sty
-Package: babel 2026/03/08 v26.4 The multilingual framework for LuaLaTeX, pdfLaT
-eX and XeLaTeX
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/babel\babel.sty
+Package: babel 2026/03/24 v26.5 The multilingual framework for LuaLaTeX, pdfLaTeX and XeLaTeX
 \babel@savecnt=\count318
-LaTeX Encoding Info:    Redeclaring text command \ij (encoding OT1) on input li
-ne 2078.
-LaTeX Encoding Info:    Redeclaring text command \IJ (encoding OT1) on input li
-ne 2080.
-LaTeX Encoding Info:    Redeclaring text command \ij (encoding T1) on input lin
-e 2082.
-LaTeX Encoding Info:    Redeclaring text command \IJ (encoding T1) on input lin
-e 2083.
-LaTeX Encoding Info:    Ignoring declaration for text command \ij (encoding ?) 
-on input line 2084.
-LaTeX Encoding Info:    Ignoring declaration for text command \IJ (encoding ?) 
-on input line 2086.
-LaTeX Encoding Info:    Ignoring declaration for text command \SS (encoding ?) 
-on input line 2111.
+LaTeX Encoding Info:    Redeclaring text command \ij (encoding OT1) on input line 2078.
+LaTeX Encoding Info:    Redeclaring text command \IJ (encoding OT1) on input line 2080.
+LaTeX Encoding Info:    Redeclaring text command \ij (encoding T1) on input line 2082.
+LaTeX Encoding Info:    Redeclaring text command \IJ (encoding T1) on input line 2083.
+LaTeX Encoding Info:    Ignoring declaration for text command \ij (encoding ?) on input line 2084.
+LaTeX Encoding Info:    Ignoring declaration for text command \IJ (encoding ?) on input line 2086.
+LaTeX Encoding Info:    Ignoring declaration for text command \SS (encoding ?) on input line 2111.
 \U@D=\dimen180
 \l@unhyphenated=\language79
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/babel\txtbabel.def)
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/babel\txtbabel.def)
 \bbl@readstream=\read4
 \bbl@dirlevel=\count319
 Package babel Info: Configuration files are deprecated, as
@@ -270,21 +236,14 @@ Package babel Info: Configuration files are deprecated, as
 *************************************
 * Local config file bblopts.cfg used
 *
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/arabi\bblopts.cfg
-File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of
- babel
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/babel/locale/fr\babel
--french.tex)
+(C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/arabi\bblopts.cfg
+File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of babel
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/babel/locale/fr\babel-french.tex)
 Package babel Info: Importing font and identification data for french
 (babel)             from babel-fr.ini. Reported on input line 4330.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/babel-french\french.l
-df
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/babel-french\french.ldf
 Language: french 2025-08-15 v4.0e French support from the babel system
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/babel-french\french3.
-ldf
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/babel-french\french3.ldf
 Language: french 2025-08-15 v3.7e French support from the babel system
 \FB@stdchar=\count320
 Package babel Info: Making : an active character on input line 273.
@@ -307,9 +266,7 @@ Package babel Info: Making ? an active character on input line 276.
 \leftmarginFB=\dimen187
 \parindentFFN=\dimen188
 \FBfnindent=\dimen189
-)))
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/carlisle\scalefnt.sty)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/fncychap\fncychap.sty
+))) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/carlisle\scalefnt.sty) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/fncychap\fncychap.sty
 Package: fncychap 2007/07/30 v1.34 LaTeX package (Revised chapters)
 \RW=\skip60
 \mylen=\skip61
@@ -318,27 +275,22 @@ Package: fncychap 2007/07/30 v1.34 LaTeX package (Revised chapters)
 \py=\skip64
 \pyy=\skip65
 \pxx=\skip66
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/pdfpages\pdfpages.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/pdfpages\pdfpages.sty
 Package: pdfpages 2025/07/23 v0.6g Insert pages of external PDF documents (AM)
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/base\ifthen.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/base\ifthen.sty
 Package: ifthen 2024/03/16 v1.1e Standard LaTeX ifthen package (DPC)
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/eso-pic\eso-pic.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/eso-pic\eso-pic.sty
 Package: eso-pic 2025/12/10 v3.0d eso-pic (RN)
 \ESO@tempdima=\dimen190
 \ESO@tempdimb=\dimen191
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
 Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
 \etb@tempcnta=\count327
 )
 \AM@pagewidth=\dimen192
 \AM@pageheight=\dimen193
 \AM@fboxrule=\dimen194
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/pdfpages\pppdftex.def
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/pdfpages\pppdftex.def
 File: pppdftex.def 2025/07/23 v0.6g Pdfpages driver for pdfTeX (AM)
 )
 \pdfpages@includegraphics@status=\count328
@@ -349,39 +301,33 @@ File: pppdftex.def 2025/07/23 v0.6g Pdfpages driver for pdfTeX (AM)
 \AM@lof@heading=\toks28
 \c@AM@survey=\count330
 \AM@templatesizebox=\box60
-) (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/graphics\lscape.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/graphics\lscape.sty
 Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
-)
-(PhS_Header.tex (PhS_Goodies.sty
+) (PhS_Header.tex (PhS_Goodies.sty
 \circleheight=\skip67
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/base\latexsym.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/base\latexsym.sty
 Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
 \symlasy=\mathgroup4
 LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
 (Font)                  U/lasy/m/n --> U/lasy/b/n on input line 52.
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amssymb.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amssymb.sty
 Package: amssymb 2013/01/14 v3.01 AMS font symbols
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amsfonts.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amsfonts.sty
 Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 \symAMSa=\mathgroup5
 \symAMSb=\mathgroup6
 LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
-)) (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\euscript.st
-y
+)) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\euscript.sty
 Package: euscript 2009/06/22 v3.00 Euler Script fonts
 LaTeX Font Info:    Overwriting math alphabet `\EuScript' in version `bold'
 (Font)                  U/eus/m/n --> U/eus/b/n on input line 33.
-) (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\eufrak.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\eufrak.sty
 
-Package eufrak Warning: The eufrak package is redundant if the amsfonts package
- is used on input line 35.
+Package eufrak Warning: The eufrak package is redundant if the amsfonts package is used on input line 36.
 
-) (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty
 Package: array 2025/09/25 v2.6n Tabular extension package (FMi)
 \col@sep=\dimen195
 \ar@mcellbox=\box61
@@ -401,8 +347,7 @@ Writing index file Thesis-report.idx
 \c@axiom=\count332
 \c@proposition=\count333
 \c@examplenum=\count334
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/ragged2e\ragged2e.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/ragged2e\ragged2e.sty
 Package: ragged2e 2023/06/22 v3.6 ragged2e Package
 \CenteringLeftskip=\skip70
 \RaggedLeftLeftskip=\skip71
@@ -418,25 +363,20 @@ Package: ragged2e 2023/06/22 v3.6 ragged2e Package
 \RaggedLeftParindent=\skip81
 \RaggedRightParindent=\skip82
 \JustifyingParindent=\skip83
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \c@float@type=\count335
 \float@exts=\toks30
 \float@box=\box63
 \@float@everytoks=\toks31
 \@floatcapt=\box64
-)
-(algorithm.sty
-Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
-nment
+) (algorithm.sty
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating environment
 \@float@every@algorithm=\toks32
 \c@algorithm=\count336
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/minitoc\minitoc.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/minitoc\minitoc.sty
 Package: minitoc 2018/07/12 v62 Package minitoc
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/minitoc\mtcmess.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/minitoc\mtcmess.sty
 Package: mtcmess 2006/03/14
 )
 Package minitoc Info: I0001
@@ -459,8 +399,7 @@ Package minitoc Info: I0002
 
 \openout4 = `Thesis-report.mtc'.
 
-
-(Thesis-report.mtc0)
+ (Thesis-report.mtc0)
 Package minitoc Info: I0012
 (minitoc)             Long extensions (Unix-like) will be used.
 Package minitoc Info: I0031
@@ -478,16 +417,13 @@ Package minitoc Info: I0031
 Package minitoc Info: I0010
 (minitoc)             The english language is selected.
 (minitoc)              on input line 4910.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/minitoc\english.mld
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/minitoc\english.mld
 File: english.mld 2006/01/13
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/minitoc\english.mld
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/minitoc\english.mld
 File: english.mld 2006/01/13
 ))
 Package minitoc Info: I0024
-(minitoc)             PREPARING MINITOCS FROM Thesis-report.toc on input line 2
-8.
+(minitoc)             PREPARING MINITOCS FROM Thesis-report.toc on input line 28.
 Package minitoc Info: I0033
 (minitoc)             Writing Thesis-report.mtc1.
 \openout4 = `Thesis-report.mtc1'.
@@ -532,8 +468,7 @@ Package minitoc Info: I0033
 (minitoc)             Writing Thesis-report.mtc11.
 \openout4 = `Thesis-report.mtc11'.
 
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/enumitem\enumitem.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/enumitem\enumitem.sty
 Package: enumitem 2025/02/06 v3.11 Customized lists
 \labelindent=\skip87
 \enit@outerparindent=\dimen197
@@ -541,11 +476,9 @@ Package: enumitem 2025/02/06 v3.11 Customized lists
 \enit@inbox=\box67
 \enit@count@id=\count341
 \enitdp@description=\count342
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/placeins\placeins.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/placeins\placeins.sty
 Package: placeins 2005/04/18  v 2.2
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/csquotes\csquotes.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/csquotes\csquotes.sty
 Package: csquotes 2024-04-04 v5.2o context-sensitive quotations (JAW)
 \csq@reset=\count343
 \csq@gtype=\count344
@@ -554,24 +487,20 @@ Package: csquotes 2024-04-04 v5.2o context-sensitive quotations (JAW)
 \csq@maxlvl=\count347
 \csq@tshold=\count348
 \csq@ltx@everypar=\toks35
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/csquotes\csquotes.def
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/csquotes\csquotes.def
 File: csquotes.def 2024-04-04 v5.2o csquotes generic definitions (JAW)
 )
 Package csquotes Info: Trying to load configuration file 'csquotes.cfg'...
 Package csquotes Info: ... configuration file loaded successfully.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/csquotes\csquotes.cfg
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/csquotes\csquotes.cfg
 File: csquotes.cfg 
 )
 Package csquotes Info: Option 'babel' depreciated.
 (csquotes)             Using 'autostyle'.
 Package csquotes Info: Enabling multilingual quotes.
-) (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/setspace\setspace.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/setspace\setspace.sty
 Package: setspace 2022/12/04 v6.7b set line spacing
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/algorithmicx\algorithmi
-cx.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/algorithmicx\algorithmicx.sty
 Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
 
 Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
@@ -585,73 +514,53 @@ Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
 \c@ALG@storecount=\count354
 \c@ALG@tmpcounter=\count355
 \ALG@tmplength=\skip90
-) (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.sty
 Package: hyperref 2026-01-29 v7.01p Hypertext links for LaTeX
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
 Package: iftex 2024/12/12 v1.0g TeX engine tests
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
 Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/kvdefinekeys\kvdefine
-keys.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/kvdefinekeys\kvdefinekeys.sty
 Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pdfescape\pdfescape.s
-ty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pdfescape\pdfescape.sty
 Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
 Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pdftexcmds\pdftexcmds
-.sty
-Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
-)
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/infwarerr\infwarerr.s
-ty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pdftexcmds\pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/infwarerr\infwarerr.sty
 Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
 )
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
-))
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/hycolor\hycolor.sty
+)) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/hycolor\hycolor.sty
 Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.sty
 Package: nameref 2026-01-29 v2.58 Cross-referencing by name of section
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/refcount\refcount.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/refcount\refcount.sty
 Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/gettitlestring\gettit
-lestring.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/gettitlestring\gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
 Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
 ))
 \c@section@level=\count356
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\stringenc.s
-ty
-Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
-)
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\stringenc.sty
+Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO)
 )
 \@linkdim=\dimen198
 \Hy@linkcounter=\count357
 \Hy@pagecounter=\count358
- (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.def
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.def
 File: pd1enc.def 2026-01-29 v7.01p Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
-) (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/intcalc\intcalc.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/intcalc\intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
 \Hy@SavedSpaceFactor=\count359
- (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def
 File: puenc.def 2026-01-29 v7.01p Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
 ... no UTF-8 mapping file for font encoding PU
@@ -664,21 +573,16 @@ Package hyperref Info: Backreferencing OFF on input line 4221.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4468.
 \c@Hy@tempcnt=\count360
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
 \Urlmuskip=\muskip18
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 4807.
 \XeTeXLinkMargin=\dimen199
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/bigintcalc\bigintcalc
-.sty
-Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
-)
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/bigintcalc\bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
 ))
 \Fld@menulength=\count361
 \Field@Width=\dimen256
@@ -695,39 +599,30 @@ Package hyperref Info: PDF/A mode OFF on input line 6114.
 \c@Hfootnote=\count364
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hpdftex.def
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hpdftex.def
 File: hpdftex.def 2026-01-29 v7.01p Hyperref driver for pdfTeX
 \Fld@listcount=\count365
 \c@bookmark@seq@number=\count366
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerunfil
-echeck.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerunfilecheck.sty
 Package: rerunfilecheck 2025-06-21 v1.11 Rerun checks for auxiliary files (HO)
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/uniquecounter\uniquec
-ounter.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/uniquecounter\uniquecounter.sty
 Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 )
-Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
-84.
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 284.
 )
 \Hy@SectionHShift=\skip91
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/algorithmicx\algpseudoc
-ode.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/algorithmicx\algpseudocode.sty
 Package: algpseudocode 
 
 Document Style - pseudocode environments for use with the `algorithmicx' style
-) (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
 Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package xcolor Info: Driver file: pdftex.def on input line 274.
 LaTeX Info: Redefining \color on input line 762.
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx)
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx)
 Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1349.
 Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1353.
 Package xcolor Info: Model `RGB' extended on input line 1365.
@@ -737,13 +632,14 @@ Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1369.
 Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1370.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1371.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1372.
-) (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/colortbl\colortbl.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/colortbl\colortbl.sty
 Package: colortbl 2024/10/29 v1.0k Color table columns (DPC)
 \everycr=\toks36
 \minrowclearance=\skip92
 \rownum=\count367
-) (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/fancybox\fancybox.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/fancybox\fancybox.sty
 Package: fancybox 2010/05/15 1.4
+
 Style option: `fancybox' v1.4 <2010/05/15> (tvz)
 \@fancybox=\box68
 \shadowsize=\dimen258
@@ -756,7 +652,7 @@ Style option: `fancybox' v1.4 <2010/05/15> (tvz)
 \Verbatim@Infile=\read5
 )
 \c@exmp=\count368
- (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/booktabs\booktabs.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/booktabs\booktabs.sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \heavyrulewidth=\dimen259
 \lightrulewidth=\dimen260
@@ -775,47 +671,24 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \@thisruleclass=\count371
 \@lastruleclass=\count372
 \@thisrulewidth=\dimen271
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/tcolorbox\tcolorbox.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/tcolorbox\tcolorbox.sty
 Package: tcolorbox 2025/11/28 version 6.9.0 text color boxes
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/pgf/frontendlayer\tikz.
-sty
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgf.sty
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfrcs.st
-y
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil
--common.tex
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/pgf/frontendlayer\tikz.sty (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgf.sty (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfrcs.sty (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil-common.tex
 \pgfutil@everybye=\toks41
 \pgfutil@tempdima=\dimen272
 \pgfutil@tempdimb=\dimen273
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil
--latex.def
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil-latex.def
 \pgfutil@abb=\box70
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfrcs.
-code.tex
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf\pgf.revision.tex)
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfrcs.code.tex (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf\pgf.revision.tex)
 Package: pgfrcs 2025-08-29 v3.1.11a (3.1.11a)
 ))
 Package: pgf 2025-08-29 v3.1.11a (3.1.11a)
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgfcore.
-sty
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/pgf/systemlayer\pgfsys.
-sty
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
-s.code.tex
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgfcore.sty (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/pgf/systemlayer\pgfsys.sty (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsys.code.tex
 Package: pgfsys 2025-08-29 v3.1.11a (3.1.11a)
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys
-.code.tex
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys.code.tex
 \pgfkeys@pathtoks=\toks42
 \pgfkeys@temptoks=\toks43
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys
-libraryfiltered.code.tex
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeyslibraryfiltered.code.tex
 \pgfkeys@tmptoks=\toks44
 ))
 \pgf@x=\dimen274
@@ -838,76 +711,32 @@ libraryfiltered.code.tex
 \t@pgf@tokb=\toks46
 \t@pgf@tokc=\toks47
 \pgf@sys@id@count=\count377
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgf.c
-fg
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgf.cfg
 File: pgf.cfg 2025-08-29 v3.1.11a (3.1.11a)
 )
 Driver file for pgf: pgfsys-pdftex.def
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
-s-pdftex.def
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsys-pdftex.def
 File: pgfsys-pdftex.def 2025-08-29 v3.1.11a (3.1.11a)
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
-s-common-pdf.def
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsys-common-pdf.def
 File: pgfsys-common-pdf.def 2025-08-29 v3.1.11a (3.1.11a)
-)))
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
-ssoftpath.code.tex
+))) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsyssoftpath.code.tex
 File: pgfsyssoftpath.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgfsyssoftpath@smallbuffer@items=\count378
 \pgfsyssoftpath@bigbuffer@items=\count379
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
-sprotocol.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsysprotocol.code.tex
 File: pgfsysprotocol.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-))
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-e.code.tex
+)) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcore.code.tex
 Package: pgfcore 2025-08-29 v3.1.11a (3.1.11a)
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmath.code
-.tex
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathutil.
-code.tex)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathparse
-r.code.tex
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmath.code.tex (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathutil.code.tex) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathparser.code.tex
 \pgfmath@dimen=\dimen284
 \pgfmath@count=\count380
 \pgfmath@box=\box71
 \pgfmath@toks=\toks48
 \pgfmath@stack@operand=\toks49
 \pgfmath@stack@operation=\toks50
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
-ions.code.tex)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
-ions.basic.code.tex)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
-ions.trigonometric.code.tex)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
-ions.random.code.tex)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
-ions.comparison.code.tex)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
-ions.base.code.tex)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
-ions.round.code.tex)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
-ions.misc.code.tex)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
-ions.integerarithmetics.code.tex)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathcalc.
-code.tex)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfloat
-.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.code.tex) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.basic.code.tex) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.trigonometric.code.tex) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.random.code.tex) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.comparison.code.tex) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.base.code.tex) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.round.code.tex) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.misc.code.tex) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.integerarithmetics.code.tex) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathcalc.code.tex) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfloat.code.tex
 \c@pgfmathroundto@lastzeros=\count381
-))
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfint.code.
-tex)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-epoints.code.tex
+)) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfint.code.tex) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepoints.code.tex
 File: pgfcorepoints.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgf@picminx=\dimen285
 \pgf@picmaxx=\dimen286
@@ -923,130 +752,75 @@ File: pgfcorepoints.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgf@yy=\dimen296
 \pgf@zx=\dimen297
 \pgf@zy=\dimen298
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-epathconstruct.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepathconstruct.code.tex
 File: pgfcorepathconstruct.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgf@path@lastx=\dimen299
 \pgf@path@lasty=\dimen300
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-epathusage.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepathusage.code.tex
 File: pgfcorepathusage.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgf@shorten@end@additional=\dimen301
 \pgf@shorten@start@additional=\dimen302
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-escopes.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorescopes.code.tex
 File: pgfcorescopes.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgfpic=\box72
 \pgf@hbox=\box73
 \pgf@layerbox@main=\box74
 \pgf@picture@serial@count=\count382
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-egraphicstate.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoregraphicstate.code.tex
 File: pgfcoregraphicstate.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgflinewidth=\dimen303
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-etransformations.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoretransformations.code.tex
 File: pgfcoretransformations.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgf@pt@x=\dimen304
 \pgf@pt@y=\dimen305
 \pgf@pt@temp=\dimen306
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-equick.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorequick.code.tex
 File: pgfcorequick.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-eobjects.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreobjects.code.tex
 File: pgfcoreobjects.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-epathprocessing.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepathprocessing.code.tex
 File: pgfcorepathprocessing.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-earrows.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorearrows.code.tex
 File: pgfcorearrows.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgfarrowsep=\dimen307
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-eshade.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreshade.code.tex
 File: pgfcoreshade.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgf@max=\dimen308
 \pgf@sys@shading@range@num=\count383
 \pgf@shadingcount=\count384
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-eimage.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreimage.code.tex
 File: pgfcoreimage.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-eexternal.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreexternal.code.tex
 File: pgfcoreexternal.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgfexternal@startupbox=\box75
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-elayers.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorelayers.code.tex
 File: pgfcorelayers.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-etransparency.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoretransparency.code.tex
 File: pgfcoretransparency.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-epatterns.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepatterns.code.tex
 File: pgfcorepatterns.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
-erdf.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorerdf.code.tex
 File: pgfcorerdf.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-)))
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
-shapes.code.tex
+))) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmoduleshapes.code.tex
 File: pgfmoduleshapes.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgfnodeparttextbox=\box76
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
-plot.code.tex
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmoduleplot.code.tex
 File: pgfmoduleplot.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfco
-mp-version-0-65.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfcomp-version-0-65.sty
 Package: pgfcomp-version-0-65 2025-08-29 v3.1.11a (3.1.11a)
 \pgf@nodesepstart=\dimen309
 \pgf@nodesepend=\dimen310
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfco
-mp-version-1-18.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfcomp-version-1-18.sty
 Package: pgfcomp-version-1-18 2025-08-29 v3.1.11a (3.1.11a)
-))
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgffor.st
-y
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfkeys.s
-ty
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys
-.code.tex))
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/pgf/math\pgfmath.sty
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmath.code
-.tex))
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgffor.
-code.tex
+)) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgffor.sty (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfkeys.sty (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys.code.tex)) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/pgf/math\pgfmath.sty (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmath.code.tex)) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgffor.code.tex
 Package: pgffor 2025-08-29 v3.1.11a (3.1.11a)
 \pgffor@iter=\dimen311
 \pgffor@skip=\dimen312
 \pgffor@stack=\toks51
 \pgffor@toks=\toks52
-))
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
-z\tikz.code.tex
+)) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz\tikz.code.tex
 Package: tikz 2025-08-29 v3.1.11a (3.1.11a)
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibr
-aryplothandlers.code.tex
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibraryplothandlers.code.tex
 File: pgflibraryplothandlers.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgf@plot@mark@count=\count385
 \pgfplotmarksize=\dimen313
@@ -1067,25 +841,18 @@ File: pgflibraryplothandlers.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \tikznumberofchildren=\count387
 \tikznumberofcurrentchild=\count388
 \tikz@fig@count=\count389
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
-matrix.code.tex
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodulematrix.code.tex
 File: pgfmodulematrix.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgfmatrixcurrentrow=\count390
 \pgfmatrixcurrentcolumn=\count391
 \pgf@matrix@numberofcolumns=\count392
 )
 \tikz@expandcount=\count393
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
-z/libraries\tikzlibrarytopaths.code.tex
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibrarytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-)))
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/environ\environ.sty
+))) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/environ\environ.sty
 Package: environ 2014/05/04 v0.3 A new way to define environments
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/trimspaces\trimspaces.s
-ty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/trimspaces\trimspaces.sty
 Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 ))
 \tcb@titlebox=\box81
@@ -1101,8 +868,7 @@ Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 \tcb@temp=\box87
 \tcb@temp=\box88
 \tcb@temp=\box89
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/tools\tabularx.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/tools\tabularx.sty
 Package: tabularx 2023/12/11 v2.12a `tabularx' package (DPC)
 \TX@col@width=\dimen323
 \TX@old@table=\dimen324
@@ -1111,11 +877,9 @@ Package: tabularx 2023/12/11 v2.12a `tabularx' package (DPC)
 \TX@delta=\dimen327
 \TX@cols=\count397
 \TX@ftn=\toks53
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
 Package: geometry 2026/03/07 v6.0 Page Geometry
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 )
 \Gm@cnth=\count398
@@ -1130,9 +894,7 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@layouthoffset=\dimen334
 \Gm@layoutvoffset=\dimen335
 \Gm@dimlist=\toks54
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg))
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/tools\longtable.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg)) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/tools\longtable.sty
 Package: longtable 2025-10-13 v4.24 Multi-page Table package (DPC)
 \LTleft=\skip93
 \LTright=\skip94
@@ -1150,15 +912,12 @@ Package: longtable 2025-10-13 v4.24 Multi-page Table package (DPC)
 \c@LT@tables=\count404
 \c@LT@chunks=\count405
 \LT@p@ftn=\toks55
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\biblatex.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\biblatex.sty
 Package: biblatex 2025/07/10 v3.21 programmable bibliographies (PK/MW)
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/logreq\logreq.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/logreq\logreq.sty
 Package: logreq 2010/08/04 v1.0 xml request logger
 \lrq@indent=\count406
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/logreq\logreq.def
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/logreq\logreq.def
 File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
 ))
 \c@tabx@nest=\count407
@@ -1220,8 +979,7 @@ File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
 \c@mincompwidth=\count452
 Package biblatex Info: Trying to load biblatex default data model...
 Package biblatex Info: ... file 'blx-dm.def' found.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\blx-dm.def
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\blx-dm.def
 File: blx-dm.def 2025/07/10 v3.21 biblatex datamodel (PK/MW)
 )
 Package biblatex Info: Trying to load biblatex style data model...
@@ -1312,13 +1070,12 @@ Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
 \localshorteditorwidth=\skip118
 Package biblatex Info: Trying to load compatibility code...
 Package biblatex Info: ... file 'blx-compat.def' found.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\blx-compat.def
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\blx-compat.def
 File: blx-compat.def 2025/07/10 v3.21 biblatex compatibility (PK/MW)
 )
 Package biblatex Info: Trying to load generic definitions...
 Package biblatex Info: ... file 'biblatex.def' found.
- (C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\biblatex.def
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\biblatex.def
 File: biblatex.def 2025/07/10 v3.21 biblatex compatibility (PK/MW)
 \c@textcitecount=\count521
 \c@textcitetotal=\count522
@@ -1336,24 +1093,18 @@ File: biblatex.def 2025/07/10 v3.21 biblatex compatibility (PK/MW)
 )
 Package biblatex Info: Trying to load bibliography style 'numeric'...
 Package biblatex Info: ... file 'numeric.bbx' found.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/bbx\numeric.bb
-x
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/bbx\numeric.bbx
 File: numeric.bbx 2025/07/10 v3.21 biblatex bibliography style (PK/MW)
 Package biblatex Info: Trying to load bibliography style 'standard'...
 Package biblatex Info: ... file 'standard.bbx' found.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/bbx\standard.b
-bx
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/bbx\standard.bbx
 File: standard.bbx 2025/07/10 v3.21 biblatex bibliography style (PK/MW)
 \c@bbx:relatedcount=\count530
 \c@bbx:relatedtotal=\count531
 ))
 Package biblatex Info: Trying to load citation style 'numeric'...
 Package biblatex Info: ... file 'numeric.cbx' found.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/cbx\numeric.cb
-x
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/cbx\numeric.cbx
 File: numeric.cbx 2025/07/10 v3.21 biblatex citation style (PK/MW)
 Package biblatex Info: Redefining '\cite'.
 Package biblatex Info: Redefining '\parencite'.
@@ -1369,18 +1120,14 @@ Package biblatex Info: Redefining '\smartcites'.
 )
 Package biblatex Info: Trying to load configuration file...
 Package biblatex Info: ... file 'biblatex.cfg' found.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\biblatex.cfg
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\biblatex.cfg
 File: biblatex.cfg 
 )
 Package biblatex Info: Input encoding 'utf8' detected.
 Package biblatex Info: Document encoding is UTF8 ....
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/l3kernel\expl3.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/l3kernel\expl3.sty
 Package: expl3 2026-01-19 L3 programming layer (loader) 
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdf
-tex.def
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count532
 ))
@@ -1388,11 +1135,7 @@ Package biblatex Info: ... and expl3
 (biblatex)             2026-01-19 L3 programming layer (loader) 
 (biblatex)             is new enough (at least 2020/04/06),
 (biblatex)             setting 'casechanger=expl3'.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\blx-case-expl3
-.sty
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/l3packages/xparse\xpars
-e.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\blx-case-expl3.sty (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/l3packages/xparse\xparse.sty
 Package: xparse 2025-10-09 L3 Experimental document command parser
 )
 Package: blx-case-expl3 2025/07/10 v3.21 expl3 case changing code for biblatex
@@ -1416,11 +1159,7 @@ Package csquotes Info: ... found 'babel' package.
 (Thesis-report.aux
 Package babel Info: 'french' activates 'french' shorthands.
 (babel)             Reported on input line 12.
- (Chapitres/Declaration.aux) (Chapitres/dedication.aux)
-(Chapitres/Acknowledgements.aux) (Chapitres/Abstract.aux)
-(Chapitres/Introduction.aux) (Chapitres/Chapitre1.aux) (Chapitres/Chapitre2.aux
-) (Chapitres/Chapitre3.aux) (Chapitres/Chapitre4.aux) (Chapitres/Chapitre5.aux)
-(Chapitres/Conclusion.aux) (Chapitres/Webographie.aux))
+ (Chapitres/Declaration.aux) (Chapitres/dedication.aux) (Chapitres/Acknowledgements.aux) (Chapitres/Abstract.aux) (Chapitres/Introduction.aux) (Chapitres/Chapitre1.aux) (Chapitres/Chapitre2.aux) (Chapitres/Chapitre3.aux) (Chapitres/Chapitre4.aux) (Chapitres/Chapitre5.aux) (Chapitres/Conclusion.aux) (Chapitres/Webographie.aux))
 \openout1 = `Thesis-report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 86.
@@ -1441,9 +1180,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 86.
 LaTeX Font Info:    ... okay on input line 86.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 86.
 LaTeX Font Info:    ... okay on input line 86.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
-ii
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count533
 \scratchdimen=\dimen337
@@ -1456,15 +1193,10 @@ ii
 \MPnumerator=\count537
 \makeMPintoPDFobject=\count538
 \everyMPtoPDFconversion=\toks57
-)
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-b
-ase.sty
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
-Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
-85.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.c
-fg
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 Package caption Info: Begin \AtBeginDocument code.
@@ -1472,20 +1204,15 @@ Package caption Info: french babel package is loaded.
 Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
 Package caption Info: longtable package is loaded.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/caption\ltcaption.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/caption\ltcaption.sty
 Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
 )
 Package caption Info: End \AtBeginDocument code.
 LaTeX Info: Redefining \degres on input line 86.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/pdflscape\pdflscape.sty
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/pdflscape\pdflscape.sty
 Package: pdflscape 2022-10-27 v0.13 Display of landscape pages in PDF
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/pdflscape\pdflscape-nom
-etadata.sty
-Package: pdflscape-nometadata 2022-10-28 v0.13 Display of landscape pages in PD
-F (HO)
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/pdflscape\pdflscape-nometadata.sty
+Package: pdflscape-nometadata 2022-10-28 v0.13 Display of landscape pages in PDF (HO)
 Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 ))
 Package minitoc(hints) Info: I0049
@@ -1554,8 +1281,7 @@ Package hyperref Info: Link coloring OFF on input line 86.
 
 Package biblatex Info: Trying to load language 'french'...
 Package biblatex Info: ... file 'french.lbx' found.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/lbx\french.lbx
+(C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/lbx\french.lbx
 File: french.lbx 2025/07/10 v3.21 biblatex localization (PK/MW)
 )
 Package biblatex Info: Input encoding 'utf8' detected.
@@ -1570,46 +1296,38 @@ Package biblatex Info: Reference section=0 on input line 86.
 Package biblatex Info: Reference segment=0 on input line 86.
 
 
-pdfTeX warning: pdflatex (file ./Chapitres/Page_garde_BC.pdf): PDF inclusion: f
-ound PDF version <1.7>, but at most version <1.5> allowed
-<Chapitres/Page_garde_BC.pdf, id=446, 597.432pt x 845.07718pt>
+pdfTeX warning: pdflatex (file ./Chapitres/Page_garde_BC.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<Chapitres/Page_garde_BC.pdf, id=442, 597.432pt x 845.07718pt>
 File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
 <use Chapitres/Page_garde_BC.pdf>
 Package pdftex.def Info: Chapitres/Page_garde_BC.pdf  used on input line 87.
 (pdftex.def)             Requested size: 597.43054pt x 845.07512pt.
 
 
-pdfTeX warning: pdflatex (file ./Chapitres/Page_garde_BC.pdf): PDF inclusion: f
-ound PDF version <1.7>, but at most version <1.5> allowed
+pdfTeX warning: pdflatex (file ./Chapitres/Page_garde_BC.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
 
 
-pdfTeX warning: pdflatex (file ./Chapitres/Page_garde_BC.pdf): PDF inclusion: f
-ound PDF version <1.7>, but at most version <1.5> allowed
-<Chapitres/Page_garde_BC.pdf, id=448, page=1, 597.432pt x 845.07718pt>
+pdfTeX warning: pdflatex (file ./Chapitres/Page_garde_BC.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<Chapitres/Page_garde_BC.pdf, id=444, page=1, 597.432pt x 845.07718pt>
 File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
 <use Chapitres/Page_garde_BC.pdf, page 1>
-Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line
- 87.
+Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 87.
 (pdftex.def)             Requested size: 597.43054pt x 845.07512pt.
 File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
 <use Chapitres/Page_garde_BC.pdf, page 1>
-Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line
- 87.
+Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 87.
 (pdftex.def)             Requested size: 597.45789pt x 845.1138pt.
 File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
 <use Chapitres/Page_garde_BC.pdf, page 1>
-Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line
- 87.
+Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 87.
 (pdftex.def)             Requested size: 597.45789pt x 845.1138pt.
 File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
 <use Chapitres/Page_garde_BC.pdf, page 1>
-Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line
- 87.
+Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 87.
 (pdftex.def)             Requested size: 597.45789pt x 845.1138pt.
 File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
 <use Chapitres/Page_garde_BC.pdf, page 1>
-Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line
- 87.
+Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 87.
 (pdftex.def)             Requested size: 597.45789pt x 845.1138pt.
 [1
 
@@ -1619,21 +1337,18 @@ Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line
 
  (Chapitres/Declaration.tex
 Overfull \hbox (11.25633pt too wide) in paragraph at lines 9--10
-[]\OT1/cmr/bx/n/10.95 D^^Sebogage de code \OT1/cmr/m/n/10.95 : Nous avons uti-l
-is^^Se \OT1/cmr/bx/n/10.95 Claude \OT1/cmr/m/n/10.95 comme as-sis-tant de d^^Se
-veloppement
+[]\OT1/cmr/bx/n/10.95 D^^Sebogage de code \OT1/cmr/m/n/10.95 : Nous avons uti-lis^^Se \OT1/cmr/bx/n/10.95 Claude \OT1/cmr/m/n/10.95 comme as-sis-tant de d^^Seveloppement
  []
 
 )
-pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
-been already used, duplicate ignored
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.92 \include{Chapitres/Declaration}
                                      [1
 
 
-{C:/Users/ouech/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
+{C:/Users/AZIZ/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
 \openout2 = `Chapitres/dedication.aux'.
 
  (Chapitres/dedication.tex [2
@@ -1644,8 +1359,7 @@ l.92 \include{Chapitres/Declaration}
 ]) [3]
 \openout2 = `Chapitres/Acknowledgements.aux'.
 
-
-(Chapitres/Acknowledgements.tex [4
+ (Chapitres/Acknowledgements.tex [4
 
 
 
@@ -1658,26 +1372,21 @@ l.92 \include{Chapitres/Declaration}
 
 
 
-]) [7]
-[8
+]) [7] [8
 
 
 
 ] (Thesis-report.toc
 LaTeX Font Info:    Trying to load font information for U+lasy on input line 8.
-
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/base\ulasy.fd
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/base\ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
 LaTeX Font Info:    Trying to load font information for U+msa on input line 8.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 LaTeX Font Info:    Trying to load font information for U+msb on input line 8.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 Underfull \vbox (badness 1521) has occurred while \output is active []
@@ -1685,8 +1394,7 @@ Underfull \vbox (badness 1521) has occurred while \output is active []
  [9]
 Package babel Info: 'french' activates 'french' shorthands.
 (babel)             Reported on input line 52.
-
-[10]
+ [10]
 Underfull \vbox (badness 2556) has occurred while \output is active []
 
  [11]
@@ -1696,13 +1404,11 @@ Underfull \vbox (badness 2556) has occurred while \output is active []
 \tf@toc=\write9
 \openout9 = `Thesis-report.toc'.
 
-
-[13] [14
+ [13] [14
 
 ] (Thesis-report.lot [15]
 Overfull \hbox (6.8236pt too wide) in paragraph at lines 34--34
- [][] [][]\OT1/cmr/m/n/10.95 Description tex-tuelle du cas d'uti-li-sa-tion [] 
-Consul-ter sta-tis-tiques (Agence) 
+ [][] [][]\OT1/cmr/m/n/10.95 Description tex-tuelle du cas d'uti-li-sa-tion [] Consul-ter sta-tis-tiques (Agence) 
  []
 
 )
@@ -1718,15 +1424,13 @@ Underfull \vbox (badness 4779) has occurred while \output is active []
 Underfull \vbox (badness 2671) has occurred while \output is active []
 
  [18]
-Overfull \hbox (3.66306pt too wide) in paragraph at lines 62--62
- [][] [][]\OT1/cmr/m/n/10.95 Diagramme de s^^Sequence syst^^Reme de cas d'uti-l
-i-sa-tion []Ef-fec-tuer r^^Seservation[][] [][]  
+Overfull \hbox (3.66306pt too wide) in paragraph at lines 61--61
+ [][] [][]\OT1/cmr/m/n/10.95 Diagramme de s^^Sequence syst^^Reme de cas d'uti-li-sa-tion []Ef-fec-tuer r^^Seservation[][] [][]  
  []
 
 
-Overfull \hbox (14.85356pt too wide) in paragraph at lines 63--63
- [][] [][]\OT1/cmr/m/n/10.95 Diagramme de s^^Sequence syst^^Reme de cas d'uti-l
-i-sa-tion []Consul-ter r^^Seservations 
+Overfull \hbox (14.85356pt too wide) in paragraph at lines 62--62
+ [][] [][]\OT1/cmr/m/n/10.95 Diagramme de s^^Sequence syst^^Reme de cas d'uti-li-sa-tion []Consul-ter r^^Seservations 
  []
 
 )
@@ -1742,58 +1446,48 @@ i-sa-tion []Consul-ter r^^Seservations
 ]
 Underfull \vbox (badness 5533) has occurred while \output is active []
 
- [21])
-[22]
+ [21]) [22]
 \openout2 = `Chapitres/Chapitre1.aux'.
 
  (Chapitres/Chapitre1.tex
 Chapitre 1.
-LaTeX Font Info:    Trying to load font information for OT1+phv on input line 2
-.
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1phv.fd
+LaTeX Font Info:    Trying to load font information for OT1+phv on input line 2.
+(C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1phv.fd
 File: ot1phv.fd 2020/03/25 scalable font definitions for OT1/phv.
 )
-LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 2
-.
-
-(C:\Users\ouech\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ptm.fd
+LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 2.
+ (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
-<Chapitres/Figures/Yesinternet.png, id=962, 627.34375pt x 627.34375pt>
+<Chapitres/Figures/Yesinternet.png, id=955, 627.34375pt x 627.34375pt>
 File: Chapitres/Figures/Yesinternet.png Graphic file (type png)
 <use Chapitres/Figures/Yesinternet.png>
-Package pdftex.def Info: Chapitres/Figures/Yesinternet.png  used on input line 
-20.
+Package pdftex.def Info: Chapitres/Figures/Yesinternet.png  used on input line 20.
 (pdftex.def)             Requested size: 82.51172pt x 82.50522pt.
-
-[23
-
+ [23
 
 
 
-{C:/Users/ouech/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc} <./C
-hapitres/Figures/Yesinternet.png>]
-<Chapitres/Figures/organigramme.png, id=974, 830.6533pt x 517.18219pt>
+
+{C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc} <./Chapitres/Figures/Yesinternet.png>]
+<Chapitres/Figures/organigramme.png, id=967, 830.6533pt x 517.18219pt>
 File: Chapitres/Figures/organigramme.png Graphic file (type png)
 <use Chapitres/Figures/organigramme.png>
-Package pdftex.def Info: Chapitres/Figures/organigramme.png  used on input line
- 40.
+Package pdftex.def Info: Chapitres/Figures/organigramme.png  used on input line 40.
 (pdftex.def)             Requested size: 412.56496pt x 256.87799pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [24 <./Chapitres/Figures/organigramme.png>] [25] [26]
-<Chapitres/Figures/contrat_papier.jpg, id=999, 770.88pt x 1027.84pt>
+<Chapitres/Figures/contrat_papier.jpg, id=992, 770.88pt x 1027.84pt>
 File: Chapitres/Figures/contrat_papier.jpg Graphic file (type jpg)
 <use Chapitres/Figures/contrat_papier.jpg>
-Package pdftex.def Info: Chapitres/Figures/contrat_papier.jpg  used on input li
-ne 97.
+Package pdftex.def Info: Chapitres/Figures/contrat_papier.jpg  used on input line 97.
 (pdftex.def)             Requested size: 330.05322pt x 440.06488pt.
-<Chapitres/Figures/gestion_excel.jpg, id=1002, 949.5475pt x 825.0825pt>
+<Chapitres/Figures/gestion_excel.jpg, id=995, 949.5475pt x 825.0825pt>
 File: Chapitres/Figures/gestion_excel.jpg Graphic file (type jpg)
 <use Chapitres/Figures/gestion_excel.jpg>
-Package pdftex.def Info: Chapitres/Figures/gestion_excel.jpg  used on input lin
-e 104.
+Package pdftex.def Info: Chapitres/Figures/gestion_excel.jpg  used on input line 104.
 (pdftex.def)             Requested size: 412.56496pt x 358.47993pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1802,74 +1496,63 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [28 <./Chapitres/Figures/contrat_papier.jpg>]
-<Chapitres/Figures/exmp_sys.png, id=1017, 963.6pt x 541.02126pt>
+<Chapitres/Figures/exmp_sys.png, id=1010, 963.6pt x 541.02126pt>
 File: Chapitres/Figures/exmp_sys.png Graphic file (type png)
 <use Chapitres/Figures/exmp_sys.png>
-Package pdftex.def Info: Chapitres/Figures/exmp_sys.png  used on input line 117
-.
+Package pdftex.def Info: Chapitres/Figures/exmp_sys.png  used on input line 117.
 (pdftex.def)             Requested size: 371.30594pt x 208.47131pt.
-<Chapitres/Figures/tunisiadr.png, id=1020, 1413.02907pt x 722.7pt>
+<Chapitres/Figures/tunisiadr.png, id=1013, 1413.02907pt x 722.7pt>
 File: Chapitres/Figures/tunisiadr.png Graphic file (type png)
 <use Chapitres/Figures/tunisiadr.png>
-Package pdftex.def Info: Chapitres/Figures/tunisiadr.png  used on input line 12
-5.
+Package pdftex.def Info: Chapitres/Figures/tunisiadr.png  used on input line 125.
 (pdftex.def)             Requested size: 371.30594pt x 189.90457pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [29 <./Chapitres/Figures/gestion_excel.jpg>] [30 <./Chapitres/Figures/exmp_sys
-.png> <./Chapitres/Figures/tunisiadr.png>]
-<Chapitres/Figures/car_centric.jpg, id=1035, 1284.8pt x 722.7pt>
+ [29 <./Chapitres/Figures/gestion_excel.jpg>] [30 <./Chapitres/Figures/exmp_sys.png> <./Chapitres/Figures/tunisiadr.png>]
+<Chapitres/Figures/car_centric.jpg, id=1028, 1284.8pt x 722.7pt>
 File: Chapitres/Figures/car_centric.jpg Graphic file (type jpg)
 <use Chapitres/Figures/car_centric.jpg>
-Package pdftex.def Info: Chapitres/Figures/car_centric.jpg  used on input line 
-154.
+Package pdftex.def Info: Chapitres/Figures/car_centric.jpg  used on input line 154.
 (pdftex.def)             Requested size: 350.68272pt x 197.2599pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [31]
 Overfull \hbox (4.17865pt too wide) in paragraph at lines 166--167
-[]\OT1/cmr/bx/n/10.95 D^^Semat^^Serialisation : \OT1/cmr/m/n/10.95 G^^Sen^^Rere
- des contrats de lo-ca-tion per-son-na-li-sables qui peuvent
+[]\OT1/cmr/bx/n/10.95 D^^Semat^^Serialisation : \OT1/cmr/m/n/10.95 G^^Sen^^Rere des contrats de lo-ca-tion per-son-na-li-sables qui peuvent
  []
 
 
 Overfull \hbox (2.50256pt too wide) in paragraph at lines 166--167
-\OT1/cmr/m/n/10.95 ^etre sign^^Ses num^^Seriquement, avec la pos-si-bi-lit^^Se 
-de t^^Sel^^Secharger des pho-tos du v^^Sehicule
+\OT1/cmr/m/n/10.95 ^etre sign^^Ses num^^Seriquement, avec la pos-si-bi-lit^^Se de t^^Sel^^Secharger des pho-tos du v^^Sehicule
  []
 
 
 Underfull \vbox (badness 1237) has occurred while \output is active []
 
  [32 <./Chapitres/Figures/car_centric.jpg>]
-<Chapitres/Figures/HQ.png, id=1049, 1435.61343pt x 729.47531pt>
+<Chapitres/Figures/HQ.png, id=1042, 1435.61343pt x 729.47531pt>
 File: Chapitres/Figures/HQ.png Graphic file (type png)
 <use Chapitres/Figures/HQ.png>
 Package pdftex.def Info: Chapitres/Figures/HQ.png  used on input line 174.
 (pdftex.def)             Requested size: 350.68272pt x 178.18317pt.
 
 Overfull \hbox (2.26376pt too wide) in paragraph at lines 185--186
-[]\OT1/cmr/bx/n/10.95 Gestion de flotte : \OT1/cmr/m/n/10.95 Ou-tils pour g^^Se
-rer la dis-po-ni-bi-lit^^Se des v^^Sehicules, les r^^Separations
+[]\OT1/cmr/bx/n/10.95 Gestion de flotte : \OT1/cmr/m/n/10.95 Ou-tils pour g^^Serer la dis-po-ni-bi-lit^^Se des v^^Sehicules, les r^^Separations
  []
 
-<Chapitres/Figures/vevs_dashboard.png, id=1053, 1255.69125pt x 801.99625pt>
+<Chapitres/Figures/vevs_dashboard.png, id=1046, 1255.69125pt x 801.99625pt>
 File: Chapitres/Figures/vevs_dashboard.png Graphic file (type png)
 <use Chapitres/Figures/vevs_dashboard.png>
-Package pdftex.def Info: Chapitres/Figures/vevs_dashboard.png  used on input li
-ne 193.
+Package pdftex.def Info: Chapitres/Figures/vevs_dashboard.png  used on input line 193.
 (pdftex.def)             Requested size: 330.05322pt x 210.79027pt.
 
 Underfull \vbox (badness 3000) has occurred while \output is active []
 
- [33 <./Chapitres/Figures/HQ.png>] [34 <./Chapitres/Figures/vevs_dashboard.png>
-] [35]
-[36]
+ [33 <./Chapitres/Figures/HQ.png>] [34 <./Chapitres/Figures/vevs_dashboard.png>] [35] [36]
 Overfull \hbox (2.46877pt too wide) in paragraph at lines 245--246
-[]\OT1/cmr/bx/n/10.95 Une ges-tion compl^^Rete du pro-ces-sus de lo-ca-tion \OT
-1/cmr/m/n/10.95 (v^^Sehicule dis-po-nible, r^^Seserv^^Se,
+[]\OT1/cmr/bx/n/10.95 Une ges-tion compl^^Rete du pro-ces-sus de lo-ca-tion \OT1/cmr/m/n/10.95 (v^^Sehicule dis-po-nible, r^^Seserv^^Se,
  []
 
 
@@ -1877,8 +1560,7 @@ Underfull \vbox (badness 4316) has occurred while \output is active []
 
  [37]
 Overfull \hbox (8.91931pt too wide) in paragraph at lines 268--270
-\OT1/cmr/m/n/10.95 d^^Seploiement d'une bonne m^^Sethodologie de ges-tion de pr
-o-jet et de lan-gages de mod^^Selisation
+\OT1/cmr/m/n/10.95 d^^Seploiement d'une bonne m^^Sethodologie de ges-tion de pro-jet et de lan-gages de mod^^Selisation
  []
 
 
@@ -1886,7 +1568,7 @@ Overfull \hbox (10.97359pt too wide) in paragraph at lines 283--294
  [][] 
  []
 
-<Chapitres/Figures/agile.png, id=1087, 1806.75pt x 876.27374pt>
+<Chapitres/Figures/agile.png, id=1080, 1806.75pt x 876.27374pt>
 File: Chapitres/Figures/agile.png Graphic file (type png)
 <use Chapitres/Figures/agile.png>
 Package pdftex.def Info: Chapitres/Figures/agile.png  used on input line 298.
@@ -1895,11 +1577,10 @@ Package pdftex.def Info: Chapitres/Figures/agile.png  used on input line 298.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [38]
-<Chapitres/Figures/scrum_model.png, id=1094, 512.66531pt x 286.82156pt>
+<Chapitres/Figures/scrum_model.png, id=1087, 512.66531pt x 286.82156pt>
 File: Chapitres/Figures/scrum_model.png Graphic file (type png)
 <use Chapitres/Figures/scrum_model.png>
-Package pdftex.def Info: Chapitres/Figures/scrum_model.png  used on input line 
-331.
+Package pdftex.def Info: Chapitres/Figures/scrum_model.png  used on input line 331.
 (pdftex.def)             Requested size: 288.7942pt x 161.57306pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1913,17 +1594,15 @@ Overfull \hbox (9.14722pt too wide) in paragraph at lines 360--375
 Underfull \vbox (badness 3919) has occurred while \output is active []
 
  [40 <./Chapitres/Figures/scrum_model.png>]
-<Chapitres/Figures/UML-logo.png, id=1106, 513.92pt x 513.92pt>
+<Chapitres/Figures/UML-logo.png, id=1099, 513.92pt x 513.92pt>
 File: Chapitres/Figures/UML-logo.png Graphic file (type png)
 <use Chapitres/Figures/UML-logo.png>
-Package pdftex.def Info: Chapitres/Figures/UML-logo.png  used on input line 388
-.
+Package pdftex.def Info: Chapitres/Figures/UML-logo.png  used on input line 388.
 (pdftex.def)             Requested size: 82.51172pt x 82.51117pt.
 ) [41 <./Chapitres/Figures/UML-logo.png>]
 \openout2 = `Chapitres/Chapitre2.aux'.
 
-
-(Chapitres/Chapitre2.tex [42
+ (Chapitres/Chapitre2.tex [42
 
 
 
@@ -1931,26 +1610,21 @@ Package pdftex.def Info: Chapitres/Figures/UML-logo.png  used on input line 388
 ]
 Chapitre 2.
 [43]
-<Chapitres/Figures/Diag.contexte.stat.png, id=1125, 397.485pt x 189.70876pt>
+<Chapitres/Figures/Diag.contexte.stat.png, id=1118, 397.485pt x 189.70876pt>
 File: Chapitres/Figures/Diag.contexte.stat.png Graphic file (type png)
 <use Chapitres/Figures/Diag.contexte.stat.png>
-Package pdftex.def Info: Chapitres/Figures/Diag.contexte.stat.png  used on inpu
-t line 50.
+Package pdftex.def Info: Chapitres/Figures/Diag.contexte.stat.png  used on input line 50.
 (pdftex.def)             Requested size: 288.7942pt x 137.83781pt.
  [44 <./Chapitres/Figures/Diag.contexte.stat.png>] [45]
 Overfull \hbox (6.51723pt too wide) in paragraph at lines 107--109
-[]\OT1/cmr/bx/n/10.95 Consulter r^^Seservations en cours : \OT1/cmr/m/n/10.95 L
-e client peut suivre l'^^Setat de ses r^^Seservations. 
+[]\OT1/cmr/bx/n/10.95 Consulter r^^Seservations en cours : \OT1/cmr/m/n/10.95 Le client peut suivre l'^^Setat de ses r^^Seservations. 
  []
 
 [46] [47]
-<Chapitres/Figures/Diag.cas.utilisation.global.png, id=1146, 1385.175pt x 1184.
-425pt>
+<Chapitres/Figures/Diag.cas.utilisation.global.png, id=1139, 1385.175pt x 1184.425pt>
 File: Chapitres/Figures/Diag.cas.utilisation.global.png Graphic file (type png)
-
 <use Chapitres/Figures/Diag.cas.utilisation.global.png>
-Package pdftex.def Info: Chapitres/Figures/Diag.cas.utilisation.global.png  use
-d on input line 171.
+Package pdftex.def Info: Chapitres/Figures/Diag.cas.utilisation.global.png  used on input line 171.
 (pdftex.def)             Requested size: 495.07668pt x 423.3203pt.
 
 Overfull \hbox (82.51172pt too wide) in paragraph at lines 169--172
@@ -1958,16 +1632,14 @@ Overfull \hbox (82.51172pt too wide) in paragraph at lines 169--172
  []
 
 [48 <./Chapitres/Figures/Diag.cas.utilisation.global.png>]
-<Chapitres/Figures/Scrum-roles.png, id=1155, 437.2335pt x 178.41656pt>
+<Chapitres/Figures/Scrum-roles.png, id=1148, 437.2335pt x 178.41656pt>
 File: Chapitres/Figures/Scrum-roles.png Graphic file (type png)
 <use Chapitres/Figures/Scrum-roles.png>
-Package pdftex.def Info: Chapitres/Figures/Scrum-roles.png  used on input line 
-187.
+Package pdftex.def Info: Chapitres/Figures/Scrum-roles.png  used on input line 187.
 (pdftex.def)             Requested size: 412.56496pt x 168.35406pt.
 
 Overfull \hbox (16.9566pt too wide) in paragraph at lines 199--201
-\OT1/cmr/m/n/10.95 ract^^Seristiques at-ten-dues d'un pro-duit. Il s'agit d'un 
-^^Sel^^Sement fon-da-men-tal de la m^^Sethodologie
+\OT1/cmr/m/n/10.95 ract^^Seristiques at-ten-dues d'un pro-duit. Il s'agit d'un ^^Sel^^Sement fon-da-men-tal de la m^^Sethodologie
  []
 
 [49 <./Chapitres/Figures/Scrum-roles.png>]
@@ -2092,19 +1764,17 @@ Overfull \hbox (34.62pt too wide) in alignment at lines 229--254
 
 
 ignored: Infinite glue shrinkage found in box being split [50] [51]
-<Chapitres/Figures/sprint_1.png, id=1170, 1220.56pt x 851.18pt>
+<Chapitres/Figures/sprint_1.png, id=1163, 1220.56pt x 851.18pt>
 File: Chapitres/Figures/sprint_1.png Graphic file (type png)
 <use Chapitres/Figures/sprint_1.png>
-Package pdftex.def Info: Chapitres/Figures/sprint_1.png  used on input line 265
-.
+Package pdftex.def Info: Chapitres/Figures/sprint_1.png  used on input line 265.
 (pdftex.def)             Requested size: 288.7942pt x 201.39105pt.
-<Chapitres/Figures/sprint_2.png, id=1171, 1445.4pt x 813.0375pt>
+<Chapitres/Figures/sprint_2.png, id=1164, 1445.4pt x 813.0375pt>
 File: Chapitres/Figures/sprint_2.png Graphic file (type png)
 <use Chapitres/Figures/sprint_2.png>
-Package pdftex.def Info: Chapitres/Figures/sprint_2.png  used on input line 271
-.
+Package pdftex.def Info: Chapitres/Figures/sprint_2.png  used on input line 271.
 (pdftex.def)             Requested size: 412.56496pt x 232.06546pt.
-<Chapitres/Figures/gantt.png, id=1172, 930.47626pt x 258.9675pt>
+<Chapitres/Figures/gantt.png, id=1165, 930.47626pt x 258.9675pt>
 File: Chapitres/Figures/gantt.png Graphic file (type png)
 <use Chapitres/Figures/gantt.png>
 Package pdftex.def Info: Chapitres/Figures/gantt.png  used on input line 283.
@@ -2112,8 +1782,7 @@ Package pdftex.def Info: Chapitres/Figures/gantt.png  used on input line 283.
 
 Underfull \vbox (badness 6792) has occurred while \output is active []
 
- [52 <./Chapitres/Figures/sprint_1.png> <./Chapitres/Figures/sprint_2.png>]) [5
-3 <./Chapitres/Figures/gantt.png>]
+ [52 <./Chapitres/Figures/sprint_1.png> <./Chapitres/Figures/sprint_2.png>]) [53 <./Chapitres/Figures/gantt.png>]
 \openout2 = `Chapitres/Chapitre3.aux'.
 
  (Chapitres/Chapitre3.tex [54
@@ -2123,12 +1792,10 @@ Underfull \vbox (badness 6792) has occurred while \output is active []
 
 ]
 Chapitre 3.
-<Chapitres/Figures/Planification_sprint_1.png, id=1188, 1310.64656pt x 490.0809
-3pt>
+<Chapitres/Figures/Planification_sprint_1.png, id=1181, 1310.64656pt x 490.08093pt>
 File: Chapitres/Figures/Planification_sprint_1.png Graphic file (type png)
 <use Chapitres/Figures/Planification_sprint_1.png>
-Package pdftex.def Info: Chapitres/Figures/Planification_sprint_1.png  used on 
-input line 18.
+Package pdftex.def Info: Chapitres/Figures/Planification_sprint_1.png  used on input line 18.
 (pdftex.def)             Requested size: 412.56496pt x 154.26414pt.
 
 Underfull \hbox (badness 3815) in paragraph at lines 135--135
@@ -2171,131 +1838,99 @@ Underfull \hbox (badness 6995) in paragraph at lines 135--135
  []
 
 [55 <./Chapitres/Figures/Planification_sprint_1.png>] [56]
-<Chapitres/Figures/proto_inscription.png, id=1199, 647.41875pt x 456.20438pt>
+<Chapitres/Figures/proto_inscription.png, id=1192, 647.41875pt x 456.20438pt>
 File: Chapitres/Figures/proto_inscription.png Graphic file (type png)
 <use Chapitres/Figures/proto_inscription.png>
-Package pdftex.def Info: Chapitres/Figures/proto_inscription.png  used on input
- line 148.
+Package pdftex.def Info: Chapitres/Figures/proto_inscription.png  used on input line 148.
 (pdftex.def)             Requested size: 330.05322pt x 232.57065pt.
-<Chapitres/Figures/proto_client.png, id=1200, 643.6547pt x 456.95718pt>
+<Chapitres/Figures/proto_client.png, id=1193, 643.6547pt x 456.95718pt>
 File: Chapitres/Figures/proto_client.png Graphic file (type png)
 <use Chapitres/Figures/proto_client.png>
-Package pdftex.def Info: Chapitres/Figures/proto_client.png  used on input line
- 154.
+Package pdftex.def Info: Chapitres/Figures/proto_client.png  used on input line 154.
 (pdftex.def)             Requested size: 330.05322pt x 234.32803pt.
- [57 <./Chapitres/Figures/proto_inscription.png> <./Chapitres/Figures/proto_cli
-ent.png>]
-<Chapitres/Figures/diag_cas_sprint1.png, id=1207, 587.19376pt x 318.89137pt>
+ [57 <./Chapitres/Figures/proto_inscription.png> <./Chapitres/Figures/proto_client.png>]
+<Chapitres/Figures/diag_cas_sprint1.png, id=1200, 587.19376pt x 318.89137pt>
 File: Chapitres/Figures/diag_cas_sprint1.png Graphic file (type png)
 <use Chapitres/Figures/diag_cas_sprint1.png>
-Package pdftex.def Info: Chapitres/Figures/diag_cas_sprint1.png  used on input 
-line 175.
+Package pdftex.def Info: Chapitres/Figures/diag_cas_sprint1.png  used on input line 175.
 (pdftex.def)             Requested size: 330.05322pt x 179.24457pt.
  [58
 
  <./Chapitres/Figures/diag_cas_sprint1.png>]
-<Chapitres/Figures/Diag_seq_consulter_act.png, id=1213, 1350.04375pt x 977.6525
-pt>
+<Chapitres/Figures/Diag_seq_consulter_act.png, id=1206, 1350.04375pt x 977.6525pt>
 File: Chapitres/Figures/Diag_seq_consulter_act.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_consulter_act.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_consulter_act.png  used on 
-input line 222.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_consulter_act.png  used on input line 222.
 (pdftex.def)             Requested size: 412.56496pt x 298.7579pt.
  [59]
-<Chapitres/Figures/Sequence_diagram_S_inscrire.png, id=1219, 858.20625pt x 736.
-25063pt>
+<Chapitres/Figures/Sequence_diagram_S_inscrire.png, id=1212, 858.20625pt x 736.25063pt>
 File: Chapitres/Figures/Sequence_diagram_S_inscrire.png Graphic file (type png)
-
 <use Chapitres/Figures/Sequence_diagram_S_inscrire.png>
-Package pdftex.def Info: Chapitres/Figures/Sequence_diagram_S_inscrire.png  use
-d on input line 275.
+Package pdftex.def Info: Chapitres/Figures/Sequence_diagram_S_inscrire.png  used on input line 275.
 (pdftex.def)             Requested size: 412.56496pt x 353.93553pt.
  [60 <./Chapitres/Figures/Diag_seq_consulter_act.png>]
 Overfull \vbox (141.75694pt too high) has occurred while \output is active []
 
-
-[61 <./Chapitres/Figures/Sequence_diagram_S_inscrire.png>]
-<Chapitres/Figures/Sequence_diagram_S_authentifier.png, id=1232, 858.20625pt x 
-709.14937pt>
-File: Chapitres/Figures/Sequence_diagram_S_authentifier.png Graphic file (type 
-png)
+ [61 <./Chapitres/Figures/Sequence_diagram_S_inscrire.png>]
+<Chapitres/Figures/Sequence_diagram_S_authentifier.png, id=1225, 858.20625pt x 709.14937pt>
+File: Chapitres/Figures/Sequence_diagram_S_authentifier.png Graphic file (type png)
 <use Chapitres/Figures/Sequence_diagram_S_authentifier.png>
-Package pdftex.def Info: Chapitres/Figures/Sequence_diagram_S_authentifier.png 
- used on input line 325.
+Package pdftex.def Info: Chapitres/Figures/Sequence_diagram_S_authentifier.png  used on input line 325.
 (pdftex.def)             Requested size: 412.56496pt x 340.90723pt.
  [62]
-<Chapitres/Figures/Diag_seq_chatbot.png, id=1237, 652.68843pt x 456.65607pt>
+<Chapitres/Figures/Diag_seq_chatbot.png, id=1230, 652.68843pt x 456.65607pt>
 File: Chapitres/Figures/Diag_seq_chatbot.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_chatbot.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_chatbot.png  used on input 
-line 367.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_chatbot.png  used on input line 367.
 (pdftex.def)             Requested size: 412.56496pt x 288.66339pt.
  [63 <./Chapitres/Figures/Sequence_diagram_S_authentifier.png>] [64]
-<Chapitres/Figures/Diag_cas_Gerer_profil.png, id=1247, 560.99588pt x 168.93112p
-t>
+<Chapitres/Figures/Diag_cas_Gerer_profil.png, id=1240, 560.99588pt x 168.93112pt>
 File: Chapitres/Figures/Diag_cas_Gerer_profil.png Graphic file (type png)
 <use Chapitres/Figures/Diag_cas_Gerer_profil.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_cas_Gerer_profil.png  used on i
-nput line 379.
+Package pdftex.def Info: Chapitres/Figures/Diag_cas_Gerer_profil.png  used on input line 379.
 (pdftex.def)             Requested size: 371.30594pt x 111.8145pt.
- [65 <./Chapitres/Figures/Diag_seq_chatbot.png> <./Chapitres/Figures/Diag_cas_G
-erer_profil.png>]
-<Chapitres/Figures/Diag_seq_cp.png, id=1254, 648.17157pt x 373.09387pt>
+ [65 <./Chapitres/Figures/Diag_seq_chatbot.png> <./Chapitres/Figures/Diag_cas_Gerer_profil.png>]
+<Chapitres/Figures/Diag_seq_cp.png, id=1247, 648.17157pt x 373.09387pt>
 File: Chapitres/Figures/Diag_seq_cp.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_cp.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_cp.png  used on input line 
-425.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_cp.png  used on input line 425.
 (pdftex.def)             Requested size: 412.56496pt x 237.48126pt.
  [66 <./Chapitres/Figures/Diag_seq_cp.png>]
-<Chapitres/Figures/Diag_seq_mdp.png, id=1262, 882.59738pt x 757.47993pt>
+<Chapitres/Figures/Diag_seq_mdp.png, id=1255, 882.59738pt x 757.47993pt>
 File: Chapitres/Figures/Diag_seq_mdp.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_mdp.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_mdp.png  used on input line
- 478.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_mdp.png  used on input line 478.
 (pdftex.def)             Requested size: 412.56496pt x 354.07384pt.
  [67]
-<Chapitres/Figures/Diag_seq_gerer_profil.png, id=1268, 858.20625pt x 709.14937p
-t>
+<Chapitres/Figures/Diag_seq_gerer_profil.png, id=1261, 858.20625pt x 709.14937pt>
 File: Chapitres/Figures/Diag_seq_gerer_profil.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_gerer_profil.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_gerer_profil.png  used on i
-nput line 532.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_gerer_profil.png  used on input line 532.
 (pdftex.def)             Requested size: 412.56496pt x 340.90723pt.
  [68 <./Chapitres/Figures/Diag_seq_mdp.png>]
 Overfull \vbox (100.55975pt too high) has occurred while \output is active []
 
-
-[69 <./Chapitres/Figures/Diag_seq_gerer_profil.png>]
+ [69 <./Chapitres/Figures/Diag_seq_gerer_profil.png>]
 Overfull \hbox (3.27101pt too wide) in paragraph at lines 543--544
-\OT1/cmr/bx/n/10.95 tures[]\OT1/cmr/m/n/10.95 , as-soci^^Se ^^Ra l'ac-teur \OT1
-/cmr/m/it/10.95 Uti-li-sa-teur\OT1/cmr/m/n/10.95 . Ce cas d'uti-li-sa-tion per-
-met ^^Ra l'uti-li-sa-teur d'acc^^Seder
+\OT1/cmr/bx/n/10.95 tures[]\OT1/cmr/m/n/10.95 , as-soci^^Se ^^Ra l'ac-teur \OT1/cmr/m/it/10.95 Uti-li-sa-teur\OT1/cmr/m/n/10.95 . Ce cas d'uti-li-sa-tion per-met ^^Ra l'uti-li-sa-teur d'acc^^Seder
  []
 
-<Chapitres/Figures/Diag_seq_consulter_voitures.png, id=1280, 613.39163pt x 344.
-18588pt>
+<Chapitres/Figures/Diag_seq_consulter_voitures.png, id=1273, 613.39163pt x 344.18588pt>
 File: Chapitres/Figures/Diag_seq_consulter_voitures.png Graphic file (type png)
-
 <use Chapitres/Figures/Diag_seq_consulter_voitures.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_consulter_voitures.png  use
-d on input line 584.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_consulter_voitures.png  used on input line 584.
 (pdftex.def)             Requested size: 412.56496pt x 231.5014pt.
 [70]
-<Chapitres/Figures/raf_consulter_agences.png, id=1285, 520.79568pt x 156.73557p
-t>
+<Chapitres/Figures/raf_consulter_agences.png, id=1278, 520.79568pt x 156.73557pt>
 File: Chapitres/Figures/raf_consulter_agences.png Graphic file (type png)
 <use Chapitres/Figures/raf_consulter_agences.png>
-Package pdftex.def Info: Chapitres/Figures/raf_consulter_agences.png  used on i
-nput line 602.
+Package pdftex.def Info: Chapitres/Figures/raf_consulter_agences.png  used on input line 602.
 (pdftex.def)             Requested size: 412.56496pt x 124.16411pt.
- [71 <./Chapitres/Figures/Diag_seq_consulter_voitures.png> <./Chapitres/Figures
-/raf_consulter_agences.png>]
-<Chapitres/Figures/Diag_seq_ajouter_agence.png, id=1292, 862.27144pt x 746.6394
-3pt>
+ [71 <./Chapitres/Figures/Diag_seq_consulter_voitures.png> <./Chapitres/Figures/raf_consulter_agences.png>]
+<Chapitres/Figures/Diag_seq_ajouter_agence.png, id=1285, 862.27144pt x 746.63943pt>
 File: Chapitres/Figures/Diag_seq_ajouter_agence.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_ajouter_agence.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_ajouter_agence.png  used on
- input line 657.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_ajouter_agence.png  used on input line 657.
 (pdftex.def)             Requested size: 412.56496pt x 357.24358pt.
  [72]
 Overfull \hbox (10.4952pt too wide) in paragraph at lines 674--707
@@ -2303,182 +1938,123 @@ Overfull \hbox (10.4952pt too wide) in paragraph at lines 674--707
  []
 
 [73 <./Chapitres/Figures/Diag_seq_ajouter_agence.png>]
-<Chapitres/Figures/Diag_seq_bloquer_agence.png, id=1303, 864.07819pt x 754.7698
-pt>
+<Chapitres/Figures/Diag_seq_bloquer_agence.png, id=1296, 864.07819pt x 754.7698pt>
 File: Chapitres/Figures/Diag_seq_bloquer_agence.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_bloquer_agence.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_bloquer_agence.png  used on
- input line 711.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_bloquer_agence.png  used on input line 711.
 (pdftex.def)             Requested size: 412.56496pt x 360.3736pt.
  [74] [75 <./Chapitres/Figures/Diag_seq_bloquer_agence.png>]
-<Chapitres/Figures/Raf_consulter_utilisateurs.png, id=1313, 534.798pt x 153.573
-75pt>
+<Chapitres/Figures/Raf_consulter_utilisateurs.png, id=1306, 534.798pt x 153.57375pt>
 File: Chapitres/Figures/Raf_consulter_utilisateurs.png Graphic file (type png)
 <use Chapitres/Figures/Raf_consulter_utilisateurs.png>
-Package pdftex.def Info: Chapitres/Figures/Raf_consulter_utilisateurs.png  used
- on input line 725.
+Package pdftex.def Info: Chapitres/Figures/Raf_consulter_utilisateurs.png  used on input line 725.
 (pdftex.def)             Requested size: 412.56496pt x 118.47476pt.
-<Chapitres/Figures/Diag_seq_ajouter_utilisateur.png, id=1314, 870.40181pt x 765
-.6103pt>
-File: Chapitres/Figures/Diag_seq_ajouter_utilisateur.png Graphic file (type png
-)
+<Chapitres/Figures/Diag_seq_ajouter_utilisateur.png, id=1307, 870.40181pt x 765.6103pt>
+File: Chapitres/Figures/Diag_seq_ajouter_utilisateur.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_ajouter_utilisateur.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_ajouter_utilisateur.png  us
-ed on input line 779.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_ajouter_utilisateur.png  used on input line 779.
 (pdftex.def)             Requested size: 412.56496pt x 362.89764pt.
- [76 <./Chapitres/Figures/Raf_consulter_utilisateurs.png>] [77 <./Chapitres/Fig
-ures/Diag_seq_ajouter_utilisateur.png>]
+ [76 <./Chapitres/Figures/Raf_consulter_utilisateurs.png>] [77 <./Chapitres/Figures/Diag_seq_ajouter_utilisateur.png>]
 Overfull \hbox (10.4952pt too wide) in paragraph at lines 797--830
  [][] 
  []
 
-<Chapitres/Figures/Diag_seq_bloquer_utilisateur.png, id=1325, 855.94781pt x 742
-.57425pt>
-File: Chapitres/Figures/Diag_seq_bloquer_utilisateur.png Graphic file (type png
-)
+<Chapitres/Figures/Diag_seq_bloquer_utilisateur.png, id=1318, 855.94781pt x 742.57425pt>
+File: Chapitres/Figures/Diag_seq_bloquer_utilisateur.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_bloquer_utilisateur.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_bloquer_utilisateur.png  us
-ed on input line 833.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_bloquer_utilisateur.png  used on input line 833.
 (pdftex.def)             Requested size: 412.56496pt x 357.91592pt.
 
 Underfull \hbox (badness 2744) in paragraph at lines 834--834
-[]\OT1/cmr/m/sc/10.95 Figure 3.19 \OT1/cmr/m/n/10.95 { |Dia-gramme de s^^Sequen
-ce syst^^Reme de cas d'uti-li-sa-tion []Blo-
+[]\OT1/cmr/m/sc/10.95 Figure 3.19 \OT1/cmr/m/n/10.95 { |Dia-gramme de s^^Sequence syst^^Reme de cas d'uti-li-sa-tion []Blo-
  []
 
 [78] [79 <./Chapitres/Figures/Diag_seq_bloquer_utilisateur.png>]
-<Chapitres/Figures/raf_gerer_vitrine.png, id=1336, 529.37775pt x 146.34676pt>
+<Chapitres/Figures/raf_gerer_vitrine.png, id=1329, 529.37775pt x 146.34676pt>
 File: Chapitres/Figures/raf_gerer_vitrine.png Graphic file (type png)
 <use Chapitres/Figures/raf_gerer_vitrine.png>
-Package pdftex.def Info: Chapitres/Figures/raf_gerer_vitrine.png  used on input
- line 851.
+Package pdftex.def Info: Chapitres/Figures/raf_gerer_vitrine.png  used on input line 851.
 (pdftex.def)             Requested size: 412.56496pt x 114.05397pt.
 
 Overfull \hbox (2.86227pt too wide) in paragraph at lines 858--859
-\OT1/cmr/m/n/10.95 aux-quels s'ajoute l'ana-lyse du cas d'uti-li-sa-tion \OT1/c
-mr/bx/n/10.95 "Consul-ter vi-tri-ne'' \OT1/cmr/m/n/10.95 de l'ac-teur \OT1/cmr/
-m/it/10.95 Agence\OT1/cmr/m/n/10.95 . 
+\OT1/cmr/m/n/10.95 aux-quels s'ajoute l'ana-lyse du cas d'uti-li-sa-tion \OT1/cmr/bx/n/10.95 "Consul-ter vi-tri-ne'' \OT1/cmr/m/n/10.95 de l'ac-teur \OT1/cmr/m/it/10.95 Agence\OT1/cmr/m/n/10.95 . 
  []
 
-<Chapitres/Figures/Diag_seq_consulter_vitrine.png, id=1337, 626.94225pt x 348.7
-0274pt>
+<Chapitres/Figures/Diag_seq_consulter_vitrine.png, id=1330, 626.94225pt x 348.70274pt>
 File: Chapitres/Figures/Diag_seq_consulter_vitrine.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_consulter_vitrine.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_consulter_vitrine.png  used
- on input line 896.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_consulter_vitrine.png  used on input line 896.
 (pdftex.def)             Requested size: 412.56496pt x 229.46346pt.
-[80 <./Chapitres/Figures/raf_gerer_vitrine.png>] [81 <./Chapitres/Figures/Diag_
-seq_consulter_vitrine.png>]
-<Chapitres/Figures/Diag_seq_ajouter_voiture.png, id=1349, 855.04443pt x 731.282
-06pt>
+[80 <./Chapitres/Figures/raf_gerer_vitrine.png>] [81 <./Chapitres/Figures/Diag_seq_consulter_vitrine.png>]
+<Chapitres/Figures/Diag_seq_ajouter_voiture.png, id=1342, 855.04443pt x 731.28206pt>
 File: Chapitres/Figures/Diag_seq_ajouter_voiture.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_ajouter_voiture.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_ajouter_voiture.png  used o
-n input line 950.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_ajouter_voiture.png  used on input line 950.
 (pdftex.def)             Requested size: 412.56496pt x 352.85254pt.
  [82]
-<Chapitres/Figures/Diag_seq_modifier_infos_voiture.png, id=1354, 855.04443pt x 
-734.44388pt>
-File: Chapitres/Figures/Diag_seq_modifier_infos_voiture.png Graphic file (type 
-png)
+<Chapitres/Figures/Diag_seq_modifier_infos_voiture.png, id=1347, 855.04443pt x 734.44388pt>
+File: Chapitres/Figures/Diag_seq_modifier_infos_voiture.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_modifier_infos_voiture.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_modifier_infos_voiture.png 
- used on input line 1002.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_modifier_infos_voiture.png  used on input line 1002.
 (pdftex.def)             Requested size: 412.56496pt x 354.37816pt.
  [83 <./Chapitres/Figures/Diag_seq_ajouter_voiture.png>]
 Overfull \vbox (114.03069pt too high) has occurred while \output is active []
 
-
-[84 <./Chapitres/Figures/Diag_seq_modifier_infos_voiture.png>]
-<Chapitres/Figures/Diag_classe_sprint_1.png, id=1367, 854.14107pt x 614.74669pt
->
+ [84 <./Chapitres/Figures/Diag_seq_modifier_infos_voiture.png>]
+<Chapitres/Figures/Diag_classe_sprint_1.png, id=1360, 854.14107pt x 614.74669pt>
 File: Chapitres/Figures/Diag_classe_sprint_1.png Graphic file (type png)
 <use Chapitres/Figures/Diag_classe_sprint_1.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_classe_sprint_1.png  used on in
-put line 1015.
+Package pdftex.def Info: Chapitres/Figures/Diag_classe_sprint_1.png  used on input line 1015.
 (pdftex.def)             Requested size: 391.93544pt x 282.08339pt.
  [85 <./Chapitres/Figures/Diag_classe_sprint_1.png>]
 Overfull \hbox (13.2385pt too wide) in paragraph at lines 1053--1058
-\OT1/cmr/m/n/10.95 classes contiennent des at-tri-buts per-sis-tants cor-res-po
-n-dant aux in-for-ma-tions stock^^Sees
+\OT1/cmr/m/n/10.95 classes contiennent des at-tri-buts per-sis-tants cor-res-pon-dant aux in-for-ma-tions stock^^Sees
  []
 
-<Chapitres/Figures/classes_participantes__internaute_s1.png, id=1376, 514.92375
-pt x 664.4825pt>
-File: Chapitres/Figures/classes_participantes__internaute_s1.png Graphic file (
-type png)
+<Chapitres/Figures/classes_participantes__internaute_s1.png, id=1369, 514.92375pt x 664.4825pt>
+File: Chapitres/Figures/classes_participantes__internaute_s1.png Graphic file (type png)
 <use Chapitres/Figures/classes_participantes__internaute_s1.png>
-Package pdftex.def Info: Chapitres/Figures/classes_participantes__internaute_s1
-.png  used on input line 1064.
+Package pdftex.def Info: Chapitres/Figures/classes_participantes__internaute_s1.png  used on input line 1064.
 (pdftex.def)             Requested size: 206.28247pt x 266.19385pt.
 [86]
-<Chapitres/Figures/classes_participantes__utilisateur_s1.png, id=1385, 380.4212
-5pt x 631.35875pt>
-File: Chapitres/Figures/classes_participantes__utilisateur_s1.png Graphic file 
-(type png)
+<Chapitres/Figures/classes_participantes__utilisateur_s1.png, id=1378, 380.42125pt x 631.35875pt>
+File: Chapitres/Figures/classes_participantes__utilisateur_s1.png Graphic file (type png)
 <use Chapitres/Figures/classes_participantes__utilisateur_s1.png>
-Package pdftex.def Info: Chapitres/Figures/classes_participantes__utilisateur_s
-1.png  used on input line 1073.
+Package pdftex.def Info: Chapitres/Figures/classes_participantes__utilisateur_s1.png  used on input line 1073.
 (pdftex.def)             Requested size: 206.28247pt x 342.36407pt.
  [87 <./Chapitres/Figures/classes_participantes__internaute_s1.png>]
-<Chapitres/Figures/classes_participantes__client_s1.png, id=1392, 168.63pt x 55
-0.055pt>
-File: Chapitres/Figures/classes_participantes__client_s1.png Graphic file (type
- png)
-<use Chapitres/Figures/classes_participantes__client_s1.png>
-Package pdftex.def Info: Chapitres/Figures/classes_participantes__client_s1.png
-  used on input line 1082.
-(pdftex.def)             Requested size: 82.51172pt x 269.15161pt.
-
-[88 <./Chapitres/Figures/classes_participantes__utilisateur_s1.png>]
-<Chapitres/Figures/classes_participantes__agence_s1.png, id=1398, 343.2825pt x 
-550.055pt>
-File: Chapitres/Figures/classes_participantes__agence_s1.png Graphic file (type
- png)
+<Chapitres/Figures/classes_participantes__agence_s1.png, id=1384, 343.2825pt x 550.055pt>
+File: Chapitres/Figures/classes_participantes__agence_s1.png Graphic file (type png)
 <use Chapitres/Figures/classes_participantes__agence_s1.png>
-Package pdftex.def Info: Chapitres/Figures/classes_participantes__agence_s1.png
-  used on input line 1091.
+Package pdftex.def Info: Chapitres/Figures/classes_participantes__agence_s1.png  used on input line 1082.
 (pdftex.def)             Requested size: 206.28247pt x 330.53073pt.
- [89 <./Chapitres/Figures/classes_participantes__client_s1.png>]
-<Chapitres/Figures/classes_participantes__admin_s1.png, id=1404, 336.25626pt x 
-550.055pt>
-File: Chapitres/Figures/classes_participantes__admin_s1.png Graphic file (type 
-png)
+ [88 <./Chapitres/Figures/classes_participantes__utilisateur_s1.png>]
+<Chapitres/Figures/classes_participantes__admin_s1.png, id=1390, 336.25626pt x 550.055pt>
+File: Chapitres/Figures/classes_participantes__admin_s1.png Graphic file (type png)
 <use Chapitres/Figures/classes_participantes__admin_s1.png>
-Package pdftex.def Info: Chapitres/Figures/classes_participantes__admin_s1.png 
- used on input line 1100.
+Package pdftex.def Info: Chapitres/Figures/classes_participantes__admin_s1.png  used on input line 1091.
 (pdftex.def)             Requested size: 206.28247pt x 337.4383pt.
- [90 <./Chapitres/Figures/classes_participantes__agence_s1.png>]
-<Chapitres/Figures/test1_code.png, id=1411, 677.53125pt x 505.89pt>
+ [89 <./Chapitres/Figures/classes_participantes__agence_s1.png>]
+<Chapitres/Figures/test1_code.png, id=1396, 677.53125pt x 505.89pt>
 File: Chapitres/Figures/test1_code.png Graphic file (type png)
 <use Chapitres/Figures/test1_code.png>
-Package pdftex.def Info: Chapitres/Figures/test1_code.png  used on input line 1
-115.
+Package pdftex.def Info: Chapitres/Figures/test1_code.png  used on input line 1106.
 (pdftex.def)             Requested size: 371.30594pt x 277.25229pt.
- [91 <./Chapitres/Figures/classes_participantes__admin_s1.png>]
-<Chapitres/Figures/test2_code.png, id=1417, 642.14906pt x 575.14874pt>
+ [90 <./Chapitres/Figures/classes_participantes__admin_s1.png>]
+<Chapitres/Figures/test2_code.png, id=1403, 642.14906pt x 575.14874pt>
 File: Chapitres/Figures/test2_code.png Graphic file (type png)
 <use Chapitres/Figures/test2_code.png>
-Package pdftex.def Info: Chapitres/Figures/test2_code.png  used on input line 1
-129.
+Package pdftex.def Info: Chapitres/Figures/test2_code.png  used on input line 1120.
 (pdftex.def)             Requested size: 371.30594pt x 332.56848pt.
- [92 <./Chapitres/Figures/test1_code.png>]) [93 <./Chapitres/Figures/test2_code
-.png>]
+ [91 <./Chapitres/Figures/test1_code.png>]) [92 <./Chapitres/Figures/test2_code.png>]
 \openout2 = `Chapitres/Chapitre4.aux'.
 
- (Chapitres/Chapitre4.tex [94
-
-
-
-
-]
+ (Chapitres/Chapitre4.tex
 Chapitre 4.
-<Chapitres/figures/Planification_sprint_2.png, id=1434, 1325.70282pt x 499.8675
-pt>
+<Chapitres/figures/Planification_sprint_2.png, id=1416, 1325.70282pt x 499.8675pt>
 File: Chapitres/figures/Planification_sprint_2.png Graphic file (type png)
 <use Chapitres/figures/Planification_sprint_2.png>
-Package pdftex.def Info: Chapitres/figures/Planification_sprint_2.png  used on 
-input line 24.
+Package pdftex.def Info: Chapitres/figures/Planification_sprint_2.png  used on input line 24.
 (pdftex.def)             Requested size: 330.05322pt x 124.4479pt.
 
 Underfull \hbox (badness 1701) in paragraph at lines 101--101
@@ -2560,12 +2136,16 @@ Underfull \hbox (badness 3815) in paragraph at lines 101--101
 []|\OT1/cmr/m/n/10.95 Impl^^Sementer l'af-fi-chage des
  []
 
-[95 <./Chapitres/figures/Planification_sprint_2.png>] [96]
-<Chapitres/figures/diag_cas_sprint2.png, id=1445, 350.96118pt x 272.81924pt>
+[93
+
+
+
+
+ <./Chapitres/figures/Planification_sprint_2.png>] [94]
+<Chapitres/figures/diag_cas_sprint2.png, id=1426, 350.96118pt x 272.81924pt>
 File: Chapitres/figures/diag_cas_sprint2.png Graphic file (type png)
 <use Chapitres/figures/diag_cas_sprint2.png>
-Package pdftex.def Info: Chapitres/figures/diag_cas_sprint2.png  used on input 
-line 141.
+Package pdftex.def Info: Chapitres/figures/diag_cas_sprint2.png  used on input line 141.
 (pdftex.def)             Requested size: 330.05322pt x 256.57916pt.
 
 Underfull \hbox (badness 2189) in paragraph at lines 183--183
@@ -2577,15 +2157,13 @@ Underfull \hbox (badness 2495) in paragraph at lines 189--189
 []|\OT1/cmr/bx/n/10.95 Sc^^Senario al-ter-na-
  []
 
-[97 <./Chapitres/figures/diag_cas_sprint2.png>]
-<Chapitres/figures/diag_seq_voir_score_client.png, id=1451, 657.2053pt x 469.30
-331pt>
+[95 <./Chapitres/figures/diag_cas_sprint2.png>]
+<Chapitres/figures/diag_seq_voir_score_client.png, id=1432, 657.2053pt x 469.30331pt>
 File: Chapitres/figures/diag_seq_voir_score_client.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_voir_score_client.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_voir_score_client.png  used
- on input line 200.
+Package pdftex.def Info: Chapitres/figures/diag_seq_voir_score_client.png  used on input line 200.
 (pdftex.def)             Requested size: 412.56496pt x 294.60997pt.
- [98]
+ [96]
 Underfull \hbox (badness 2189) in paragraph at lines 239--239
 []|\OT1/cmr/m/n/10.95 Encha^^^Pnement prin-
  []
@@ -2595,24 +2173,20 @@ Underfull \hbox (badness 2495) in paragraph at lines 250--250
 []|\OT1/cmr/bx/n/10.95 Sc^^Senario al-ter-na-
  []
 
-[99 <./Chapitres/figures/diag_seq_voir_score_client.png>]
-<Chapitres/figures/Diag_seq_effectuer_reservation.png, id=1461, 756.12488pt x 7
-25.86182pt>
-File: Chapitres/figures/Diag_seq_effectuer_reservation.png Graphic file (type p
-ng)
+[97 <./Chapitres/figures/diag_seq_voir_score_client.png>]
+<Chapitres/figures/Diag_seq_effectuer_reservation.png, id=1443, 756.12488pt x 725.86182pt>
+File: Chapitres/figures/Diag_seq_effectuer_reservation.png Graphic file (type png)
 <use Chapitres/figures/Diag_seq_effectuer_reservation.png>
-Package pdftex.def Info: Chapitres/figures/Diag_seq_effectuer_reservation.png  
-used on input line 265.
+Package pdftex.def Info: Chapitres/figures/Diag_seq_effectuer_reservation.png  used on input line 265.
 (pdftex.def)             Requested size: 412.56496pt x 396.05756pt.
- [100]
+ [98]
 Underfull \hbox (badness 2189) in paragraph at lines 298--298
 []|\OT1/cmr/m/n/10.95 Encha^^^Pnement prin-
  []
 
 
 Underfull \hbox (badness 1038) in paragraph at lines 299--304
-\OT1/cmr/m/n/10.95 5. Le syst^^Reme af-fiche les in-for-ma-tions d^^Setaill^^Se
-es de la
+\OT1/cmr/m/n/10.95 5. Le syst^^Reme af-fiche les in-for-ma-tions d^^Setaill^^Sees de la
  []
 
 
@@ -2620,20 +2194,15 @@ Underfull \hbox (badness 2495) in paragraph at lines 305--305
 []|\OT1/cmr/bx/n/10.95 Sc^^Senario al-ter-na-
  []
 
-[101 <./Chapitres/figures/Diag_seq_effectuer_reservation.png>]
-<Chapitres/figures/diag_seq_consulter_reservations_en_cours.png, id=1471, 672.1
-11pt x 451.23581pt>
-File: Chapitres/figures/diag_seq_consulter_reservations_en_cours.png Graphic fi
-le (type png)
+[99 <./Chapitres/figures/Diag_seq_effectuer_reservation.png>]
+<Chapitres/figures/diag_seq_consulter_reservations_en_cours.png, id=1453, 672.111pt x 451.23581pt>
+File: Chapitres/figures/diag_seq_consulter_reservations_en_cours.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_consulter_reservations_en_cours.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_consulter_reservations_en_c
-ours.png  used on input line 316.
+Package pdftex.def Info: Chapitres/figures/diag_seq_consulter_reservations_en_cours.png  used on input line 316.
 (pdftex.def)             Requested size: 412.56496pt x 276.98854pt.
- [102]
+ [100]
 Overfull \hbox (17.51239pt too wide) in paragraph at lines 329--331
-\OT1/cmr/m/n/10.95 tion tex-tuelle et un dia-gramme de s^^Sequence du cas d'uti
--li-sa-tion []\OT1/cmr/bx/n/10.95 Trai-ter r^^Seservations[] \OT1/cmr/m/n/10.95
- de
+\OT1/cmr/m/n/10.95 tion tex-tuelle et un dia-gramme de s^^Sequence du cas d'uti-li-sa-tion []\OT1/cmr/bx/n/10.95 Trai-ter r^^Seservations[] \OT1/cmr/m/n/10.95 de
  []
 
 
@@ -2646,21 +2215,18 @@ Underfull \hbox (badness 2495) in paragraph at lines 363--363
 []|\OT1/cmr/bx/n/10.95 Sc^^Senario al-ter-na-
  []
 
-[103 <./Chapitres/figures/diag_seq_consulter_reservations_en_cours.png>]
-<Chapitres/figures/seq_traiter_reservation.png, id=1482, 1003.64963pt x 508.148
-44pt>
+[101 <./Chapitres/figures/diag_seq_consulter_reservations_en_cours.png>]
+<Chapitres/figures/seq_traiter_reservation.png, id=1463, 1003.64963pt x 508.14844pt>
 File: Chapitres/figures/seq_traiter_reservation.png Graphic file (type png)
 <use Chapitres/figures/seq_traiter_reservation.png>
-Package pdftex.def Info: Chapitres/figures/seq_traiter_reservation.png  used on
- input line 374.
+Package pdftex.def Info: Chapitres/figures/seq_traiter_reservation.png  used on input line 374.
 (pdftex.def)             Requested size: 412.56496pt x 208.88496pt.
 
 Underfull \hbox (badness 1067) in paragraph at lines 375--375
-[]\OT1/cmr/m/sc/10.95 Figure 4.6 \OT1/cmr/m/n/10.95 { |Dia-gramme de s^^Sequenc
-e syst^^Reme de cas d'uti-li-sa-tion [] Trai-ter
+[]\OT1/cmr/m/sc/10.95 Figure 4.6 \OT1/cmr/m/n/10.95 { |Dia-gramme de s^^Sequence syst^^Reme de cas d'uti-li-sa-tion [] Trai-ter
  []
 
-[104]
+[102]
 Underfull \hbox (badness 2189) in paragraph at lines 406--406
 []|\OT1/cmr/m/n/10.95 Encha^^^Pnement prin-
  []
@@ -2670,14 +2236,13 @@ Underfull \hbox (badness 2495) in paragraph at lines 412--412
 []|\OT1/cmr/bx/n/10.95 Sc^^Senario al-ter-na-
  []
 
-[105 <./Chapitres/figures/seq_traiter_reservation.png>]
-<Chapitres/figures/seq_stats_agence.png, id=1492, 759.28668pt x 508.60013pt>
+[103 <./Chapitres/figures/seq_traiter_reservation.png>]
+<Chapitres/figures/seq_stats_agence.png, id=1474, 759.28668pt x 508.60013pt>
 File: Chapitres/figures/seq_stats_agence.png Graphic file (type png)
 <use Chapitres/figures/seq_stats_agence.png>
-Package pdftex.def Info: Chapitres/figures/seq_stats_agence.png  used on input 
-line 423.
+Package pdftex.def Info: Chapitres/figures/seq_stats_agence.png  used on input line 423.
 (pdftex.def)             Requested size: 412.56496pt x 276.3473pt.
- [106]
+ [104]
 Underfull \hbox (badness 2189) in paragraph at lines 459--459
 []|\OT1/cmr/m/n/10.95 Encha^^^Pnement prin-
  []
@@ -2687,17 +2252,15 @@ Underfull \hbox (badness 2495) in paragraph at lines 468--468
 []|\OT1/cmr/bx/n/10.95 Sc^^Senario al-ter-na-
  []
 
-[107 <./Chapitres/figures/seq_stats_agence.png>]
-<Chapitres/figures/seq_gerer_messages.png, id=1502, 790.00143pt x 557.38237pt>
+[105 <./Chapitres/figures/seq_stats_agence.png>]
+<Chapitres/figures/seq_gerer_messages.png, id=1484, 790.00143pt x 557.38237pt>
 File: Chapitres/figures/seq_gerer_messages.png Graphic file (type png)
 <use Chapitres/figures/seq_gerer_messages.png>
-Package pdftex.def Info: Chapitres/figures/seq_gerer_messages.png  used on inpu
-t line 479.
+Package pdftex.def Info: Chapitres/figures/seq_gerer_messages.png  used on input line 479.
 (pdftex.def)             Requested size: 412.56496pt x 291.09073pt.
- [108]
+ [106]
 Underfull \hbox (badness 4913) in paragraph at lines 510--511
-[]|\OT1/cmr/m/n/10.95 Les in-di-ca-teurs glo-baux sont af-fich^^Ses (nombre to-
-tal
+[]|\OT1/cmr/m/n/10.95 Les in-di-ca-teurs glo-baux sont af-fich^^Ses (nombre to-tal
  []
 
 
@@ -2710,159 +2273,126 @@ Underfull \hbox (badness 2495) in paragraph at lines 519--519
 []|\OT1/cmr/bx/n/10.95 Sc^^Senario al-ter-na-
  []
 
-[109 <./Chapitres/figures/seq_gerer_messages.png>]
-<Chapitres/figures/seq_stats_admin.png, id=1513, 775.54744pt x 512.66531pt>
+[107 <./Chapitres/figures/seq_gerer_messages.png>]
+<Chapitres/figures/seq_stats_admin.png, id=1494, 775.54744pt x 512.66531pt>
 File: Chapitres/figures/seq_stats_admin.png Graphic file (type png)
 <use Chapitres/figures/seq_stats_admin.png>
-Package pdftex.def Info: Chapitres/figures/seq_stats_admin.png  used on input l
-ine 530.
+Package pdftex.def Info: Chapitres/figures/seq_stats_admin.png  used on input line 530.
 (pdftex.def)             Requested size: 412.56496pt x 272.72043pt.
- [110]
-<Chapitres/Figures/classes_participantes__utilisateur_s2.png, id=1518, 233.8737
-5pt x 500.87125pt>
-File: Chapitres/Figures/classes_participantes__utilisateur_s2.png Graphic file 
-(type png)
+ [108]
+<Chapitres/Figures/classes_participantes__utilisateur_s2.png, id=1500, 233.87375pt x 500.87125pt>
+File: Chapitres/Figures/classes_participantes__utilisateur_s2.png Graphic file (type png)
 <use Chapitres/Figures/classes_participantes__utilisateur_s2.png>
-Package pdftex.def Info: Chapitres/Figures/classes_participantes__utilisateur_s
-2.png  used on input line 564.
+Package pdftex.def Info: Chapitres/Figures/classes_participantes__utilisateur_s2.png  used on input line 564.
 (pdftex.def)             Requested size: 123.77074pt x 265.07071pt.
- [111 <./Chapitres/figures/seq_stats_admin.png>]
-<Chapitres/Figures/classes_participantes__client_s2.png, id=1524, 363.3575pt x 
-566.115pt>
-File: Chapitres/Figures/classes_participantes__client_s2.png Graphic file (type
- png)
+ [109 <./Chapitres/figures/seq_stats_admin.png>]
+<Chapitres/Figures/classes_participantes__client_s2.png, id=1506, 363.3575pt x 566.115pt>
+File: Chapitres/Figures/classes_participantes__client_s2.png Graphic file (type png)
 <use Chapitres/Figures/classes_participantes__client_s2.png>
-Package pdftex.def Info: Chapitres/Figures/classes_participantes__client_s2.png
-  used on input line 573.
+Package pdftex.def Info: Chapitres/Figures/classes_participantes__client_s2.png  used on input line 573.
 (pdftex.def)             Requested size: 165.02345pt x 257.11626pt.
- [112 <./Chapitres/Figures/classes_participantes__utilisateur_s2.png>]
-<Chapitres/Figures/classes_participantes__agence_s2.png, id=1530, 355.3275pt x 
-532.99126pt>
-File: Chapitres/Figures/classes_participantes__agence_s2.png Graphic file (type
- png)
+ [110 <./Chapitres/Figures/classes_participantes__utilisateur_s2.png>]
+<Chapitres/Figures/classes_participantes__agence_s2.png, id=1512, 355.3275pt x 532.99126pt>
+File: Chapitres/Figures/classes_participantes__agence_s2.png Graphic file (type png)
 <use Chapitres/Figures/classes_participantes__agence_s2.png>
-Package pdftex.def Info: Chapitres/Figures/classes_participantes__agence_s2.png
-  used on input line 582.
+Package pdftex.def Info: Chapitres/Figures/classes_participantes__agence_s2.png  used on input line 582.
 (pdftex.def)             Requested size: 165.02345pt x 247.53746pt.
- [113 <./Chapitres/Figures/classes_participantes__client_s2.png>]
-<Chapitres/Figures/classes_participantes__admin_s2.png, id=1536, 385.44pt x 550
-.055pt>
-File: Chapitres/Figures/classes_participantes__admin_s2.png Graphic file (type 
-png)
+ [111 <./Chapitres/Figures/classes_participantes__client_s2.png>]
+<Chapitres/Figures/classes_participantes__admin_s2.png, id=1518, 385.44pt x 550.055pt>
+File: Chapitres/Figures/classes_participantes__admin_s2.png Graphic file (type png)
 <use Chapitres/Figures/classes_participantes__admin_s2.png>
-Package pdftex.def Info: Chapitres/Figures/classes_participantes__admin_s2.png 
- used on input line 591.
+Package pdftex.def Info: Chapitres/Figures/classes_participantes__admin_s2.png  used on input line 591.
 (pdftex.def)             Requested size: 165.02345pt x 235.49507pt.
- [114 <./Chapitres/Figures/classes_participantes__agence_s2.png>]) [115 <./Chap
-itres/Figures/classes_participantes__admin_s2.png>]
+ [112 <./Chapitres/Figures/classes_participantes__agence_s2.png>]) [113 <./Chapitres/Figures/classes_participantes__admin_s2.png>]
 \openout2 = `Chapitres/Chapitre5.aux'.
 
- (Chapitres/Chapitre5.tex
-[116
+ (Chapitres/Chapitre5.tex [114
 
 
 
 
 ]
 Chapitre 5.
-<Chapitres/Figures/Laravel-Logo.png, id=1552, 3011.25pt x 2007.5pt>
+<Chapitres/Figures/Laravel-Logo.png, id=1534, 3011.25pt x 2007.5pt>
 File: Chapitres/Figures/Laravel-Logo.png Graphic file (type png)
 <use Chapitres/Figures/Laravel-Logo.png>
-Package pdftex.def Info: Chapitres/Figures/Laravel-Logo.png  used on input line
- 36.
+Package pdftex.def Info: Chapitres/Figures/Laravel-Logo.png  used on input line 36.
 (pdftex.def)             Requested size: 29.86613pt x 19.91684pt.
-<Chapitres/Figures/React-logo.png, id=1553, 863.225pt x 820.06375pt>
+<Chapitres/Figures/React-logo.png, id=1535, 863.225pt x 820.06375pt>
 File: Chapitres/Figures/React-logo.png Graphic file (type png)
 <use Chapitres/Figures/React-logo.png>
-Package pdftex.def Info: Chapitres/Figures/React-logo.png  used on input line 3
-8.
+Package pdftex.def Info: Chapitres/Figures/React-logo.png  used on input line 38.
 (pdftex.def)             Requested size: 20.95622pt x 19.91684pt.
-<Chapitres/Figures/Mysql-logo.png, id=1554, 803.0pt x 803.0pt>
+<Chapitres/Figures/Mysql-logo.png, id=1536, 803.0pt x 803.0pt>
 File: Chapitres/Figures/Mysql-logo.png Graphic file (type png)
 <use Chapitres/Figures/Mysql-logo.png>
-Package pdftex.def Info: Chapitres/Figures/Mysql-logo.png  used on input line 4
-0.
+Package pdftex.def Info: Chapitres/Figures/Mysql-logo.png  used on input line 40.
 (pdftex.def)             Requested size: 19.91075pt x 19.91684pt.
-<Chapitres/Figures/vite-logo.png, id=1555, 360.34625pt x 361.35pt>
+<Chapitres/Figures/vite-logo.png, id=1537, 360.34625pt x 361.35pt>
 File: Chapitres/Figures/vite-logo.png Graphic file (type png)
 <use Chapitres/Figures/vite-logo.png>
-Package pdftex.def Info: Chapitres/Figures/vite-logo.png  used on input line 42
-.
+Package pdftex.def Info: Chapitres/Figures/vite-logo.png  used on input line 42.
 (pdftex.def)             Requested size: 19.86034pt x 19.91684pt.
-<Chapitres/Figures/Tailwind-logo.png, id=1556, 361.35pt x 216.81pt>
+<Chapitres/Figures/Tailwind-logo.png, id=1538, 361.35pt x 216.81pt>
 File: Chapitres/Figures/Tailwind-logo.png Graphic file (type png)
 <use Chapitres/Figures/Tailwind-logo.png>
-Package pdftex.def Info: Chapitres/Figures/Tailwind-logo.png  used on input lin
-e 44.
+Package pdftex.def Info: Chapitres/Figures/Tailwind-logo.png  used on input line 44.
 (pdftex.def)             Requested size: 33.19276pt x 19.91684pt.
 
 Overfull \hbox (7.13216pt too wide) in paragraph at lines 32--47
  [][] 
  []
 
-[117]
-<Chapitres/Figures/lucid-logo.png, id=1561, 332.24126pt x 351.3125pt>
+[115]
+<Chapitres/Figures/lucid-logo.png, id=1543, 332.24126pt x 351.3125pt>
 File: Chapitres/Figures/lucid-logo.png Graphic file (type png)
 <use Chapitres/Figures/lucid-logo.png>
-Package pdftex.def Info: Chapitres/Figures/lucid-logo.png  used on input line 6
-5.
+Package pdftex.def Info: Chapitres/Figures/lucid-logo.png  used on input line 65.
 (pdftex.def)             Requested size: 18.83351pt x 19.91684pt.
-<Chapitres/Figures/vscode-logo.png, id=1562, 513.92pt x 513.92pt>
+<Chapitres/Figures/vscode-logo.png, id=1544, 513.92pt x 513.92pt>
 File: Chapitres/Figures/vscode-logo.png Graphic file (type png)
 <use Chapitres/Figures/vscode-logo.png>
-Package pdftex.def Info: Chapitres/Figures/vscode-logo.png  used on input line 
-67.
+Package pdftex.def Info: Chapitres/Figures/vscode-logo.png  used on input line 67.
 (pdftex.def)             Requested size: 19.91026pt x 19.91684pt.
-<Chapitres/Figures/overleaf-logo.png, id=1563, 182.18062pt x 208.27812pt>
+<Chapitres/Figures/overleaf-logo.png, id=1545, 182.18062pt x 208.27812pt>
 File: Chapitres/Figures/overleaf-logo.png Graphic file (type png)
 <use Chapitres/Figures/overleaf-logo.png>
-Package pdftex.def Info: Chapitres/Figures/overleaf-logo.png  used on input lin
-e 69.
+Package pdftex.def Info: Chapitres/Figures/overleaf-logo.png  used on input line 69.
 (pdftex.def)             Requested size: 17.41852pt x 19.91684pt.
-<Chapitres/Figures/teams-logo.png, id=1564, 1003.75pt x 1003.75pt>
+<Chapitres/Figures/teams-logo.png, id=1546, 1003.75pt x 1003.75pt>
 File: Chapitres/Figures/teams-logo.png Graphic file (type png)
 <use Chapitres/Figures/teams-logo.png>
-Package pdftex.def Info: Chapitres/Figures/teams-logo.png  used on input line 7
-1.
+Package pdftex.def Info: Chapitres/Figures/teams-logo.png  used on input line 71.
 (pdftex.def)             Requested size: 19.91075pt x 19.91684pt.
-<Chapitres/Figures/XAMPP-logo.png, id=1565, 224.84pt x 225.84375pt>
+<Chapitres/Figures/XAMPP-logo.png, id=1547, 224.84pt x 225.84375pt>
 File: Chapitres/Figures/XAMPP-logo.png Graphic file (type png)
 <use Chapitres/Figures/XAMPP-logo.png>
-Package pdftex.def Info: Chapitres/Figures/XAMPP-logo.png  used on input line 7
-3.
+Package pdftex.def Info: Chapitres/Figures/XAMPP-logo.png  used on input line 73.
 (pdftex.def)             Requested size: 19.82646pt x 19.91684pt.
 
 Underfull \hbox (badness 2351) in paragraph at lines 73--74
 []|\OT1/cmr/m/n/10.95 Environnement lo-cal re-grou-pant Apache et PHP pour
  []
 
-<Chapitres/Figures/phpmyadmin-logo.png, id=1566, 863.225pt x 513.92pt>
+<Chapitres/Figures/phpmyadmin-logo.png, id=1548, 863.225pt x 513.92pt>
 File: Chapitres/Figures/phpmyadmin-logo.png Graphic file (type png)
 <use Chapitres/Figures/phpmyadmin-logo.png>
-Package pdftex.def Info: Chapitres/Figures/phpmyadmin-logo.png  used on input l
-ine 75.
+Package pdftex.def Info: Chapitres/Figures/phpmyadmin-logo.png  used on input line 75.
 (pdftex.def)             Requested size: 33.44302pt x 19.91684pt.
-<Chapitres/Figures/github-logo.png, id=1567, 1204.5pt x 632.3625pt>
+<Chapitres/Figures/github-logo.png, id=1549, 1204.5pt x 632.3625pt>
 File: Chapitres/Figures/github-logo.png Graphic file (type png)
 <use Chapitres/Figures/github-logo.png>
-Package pdftex.def Info: Chapitres/Figures/github-logo.png  used on input line 
-77.
+Package pdftex.def Info: Chapitres/Figures/github-logo.png  used on input line 77.
 (pdftex.def)             Requested size: 37.93459pt x 19.91684pt.
 
 Overfull \hbox (21.5897pt too wide) in paragraph at lines 61--80
  [][] 
  []
 
-[118 <./Chapitres/Figures/Laravel-Logo.png> <./Chapitres/Figures/React-logo.png
-> <./Chapitres/Figures/Mysql-logo.png> <./Chapitres/Figures/vite-logo.png> <./C
-hapitres/Figures/Tailwind-logo.png>] [119 <./Chapitres/Figures/lucid-logo.png> 
-<./Chapitres/Figures/vscode-logo.png> <./Chapitres/Figures/overleaf-logo.png> <
-./Chapitres/Figures/teams-logo.png> <./Chapitres/Figures/XAMPP-logo.png> <./Cha
-pitres/Figures/phpmyadmin-logo.png> <./Chapitres/Figures/github-logo.png>])
-[120]
+[116 <./Chapitres/Figures/Laravel-Logo.png> <./Chapitres/Figures/React-logo.png> <./Chapitres/Figures/Mysql-logo.png> <./Chapitres/Figures/vite-logo.png> <./Chapitres/Figures/Tailwind-logo.png>] [117 <./Chapitres/Figures/lucid-logo.png> <./Chapitres/Figures/vscode-logo.png> <./Chapitres/Figures/overleaf-logo.png> <./Chapitres/Figures/teams-logo.png> <./Chapitres/Figures/XAMPP-logo.png> <./Chapitres/Figures/phpmyadmin-logo.png> <./Chapitres/Figures/github-logo.png>]) [118]
 \openout2 = `Chapitres/Conclusion.aux'.
 
- (Chapitres/Conclusion.tex) [121
+ (Chapitres/Conclusion.tex) [119
 
 
 
@@ -2893,18 +2423,16 @@ Package biblatex Warning: Split bibliography detected.
 (biblatex)                This warning can be suppressed with
 (biblatex)                '\BiblatexSplitbibDefernumbersWarningOff'.
 
-[122
+[120
 
 
 
 
 
 
-] [123]
+] [121]
 Overfull \hbox (8.93143pt too wide) in paragraph at lines 122--122
-[][]\OT1/cmr/m/sc/10.95 scrumguides[]\OT1/cmr/m/n/10.95 . \OT1/cmr/m/it/10.95 S
-crum\OT1/cmr/m/n/10.95 . 2016. \OT1/cmr/m/sc/10.95 url \OT1/cmr/m/n/10.95 : []$
-\OT1/cmtt/m/n/10.95 https : / / scrumguides . org / docs / scrumguide /
+[][]\OT1/cmr/m/sc/10.95 scrumguides[]\OT1/cmr/m/n/10.95 . \OT1/cmr/m/it/10.95 Scrum\OT1/cmr/m/n/10.95 . 2016. \OT1/cmr/m/sc/10.95 url \OT1/cmr/m/n/10.95 : []$\OT1/cmtt/m/n/10.95 https : / / scrumguides . org / docs / scrumguide /
  []
 
 Package minitoc Info: I0009
@@ -2927,50 +2455,31 @@ Package minitoc(hints) Warning: W0024
 (minitoc(hints))                Some hints have been written 
 (minitoc(hints))                in the Thesis-report.log file.
 
-[124] (Thesis-report.aux (Chapitres/Declaration.aux) (Chapitres/dedication.aux)
-(Chapitres/Acknowledgements.aux) (Chapitres/Abstract.aux)
-(Chapitres/Introduction.aux) (Chapitres/Chapitre1.aux
+[122] (Thesis-report.aux (Chapitres/Declaration.aux) (Chapitres/dedication.aux) (Chapitres/Acknowledgements.aux) (Chapitres/Abstract.aux) (Chapitres/Introduction.aux) (Chapitres/Chapitre1.aux
 \renewcommand {\insertminitoc }{}
-) (Chapitres/Chapitre2.aux) (Chapitres/Chapitre3.aux) (Chapitres/Chapitre4.aux)
-(Chapitres/Chapitre5.aux) (Chapitres/Conclusion.aux) (Chapitres/Webographie.aux
-))
+) (Chapitres/Chapitre2.aux) (Chapitres/Chapitre3.aux) (Chapitres/Chapitre4.aux) (Chapitres/Chapitre5.aux) (Chapitres/Conclusion.aux) (Chapitres/Webographie.aux))
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `Thesis-report.out' has not changed.
-(rerunfilecheck)             Checksum: 268193C1100C16E256BB0B8C98978323;28801.
+(rerunfilecheck)             Checksum: 71AB1BCD67ED6FDBEA4511D35940BC61;28457.
 Package logreq Info: Writing requests to 'Thesis-report.run.xml'.
 \openout1 = `Thesis-report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 41010 strings out of 467867
- 803308 string characters out of 5418334
- 1644377 words of memory out of 5000000
- 68799 multiletter control sequences out of 15000+600000
+ 40994 strings out of 467867
+ 802193 string characters out of 5418818
+ 1644103 words of memory out of 5000000
+ 68788 multiletter control sequences out of 15000+600000
  645436 words of font info for 103 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 102i,17n,108p,1227b,3166s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/ouech/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
-cmbx10.pfb><C:/Users/ouech/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
-fonts/cm/cmbx12.pfb><C:/Users/ouech/AppData/Local/Programs/MiKTeX/fonts/type1/p
-ublic/amsfonts/cm/cmbxti10.pfb><C:/Users/ouech/AppData/Local/Programs/MiKTeX/fo
-nts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Users/ouech/AppData/Local/Programs
-/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/ouech/AppData/Local/
-Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/ouech/AppDat
-a/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy5.pfb><C:/Users/ouec
-h/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Us
-ers/ouech/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pf
-b><C:/Users/ouech/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
-cmti10.pfb><C:/Users/ouech/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
-fonts/cm/cmti12.pfb><C:/Users/ouech/AppData/Local/Programs/MiKTeX/fonts/type1/p
-ublic/amsfonts/cm/cmtt10.pfb><C:/Users/ouech/AppData/Local/Programs/MiKTeX/font
-s/type1/urw/helvetic/uhvr8a.pfb><C:/Users/ouech/AppData/Local/Programs/MiKTeX/f
-onts/type1/urw/times/utmr8a.pfb>
-Output written on Thesis-report.pdf (125 pages, 7573499 bytes).
+ 102i,17n,108p,1226b,3166s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy5.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb>
+Output written on Thesis-report.pdf (123 pages, 7563969 bytes).
 PDF statistics:
- 1795 PDF objects out of 2073 (max. 8388607)
- 373 named destinations out of 1000 (max. 500000)
- 1278 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1776 PDF objects out of 2073 (max. 8388607)
+ 368 named destinations out of 1000 (max. 500000)
+ 1265 words of extra memory for PDF output out of 10000 (max. 10000000)
 
