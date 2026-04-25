@@ -18,9 +18,9 @@
 {\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.11.2}Analyse de cas d'utilisation «Consulter statistiques (Administrateur)»}{\reset@font\mtcSSfont 107}{subsection.4.11.2}}
 {\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.12}Diagramme de classe du deuxième sprint}{\reset@font\mtcSfont 109}{section.4.12}}
 {\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.13}Conception des cas d'utilisation}{\reset@font\mtcSfont 109}{section.4.13}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.14}Diagramme des classes participantes}{\reset@font\mtcSfont 110}{section.4.14}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.14.1}Diagramme des classes participantes par acteur "Utilisateur"}{\reset@font\mtcSSfont 110}{subsection.4.14.1}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.14.2}Diagramme des classes participantes par acteur "Client''}{\reset@font\mtcSSfont 111}{subsection.4.14.2}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.14.3}Diagramme des classes participantes par acteur "Agence''}{\reset@font\mtcSSfont 112}{subsection.4.14.3}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.14.4}Diagramme des classes participantes par acteur "Administrateur''}{\reset@font\mtcSSfont 113}{subsection.4.14.4}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.15}Conclusion}{\reset@font\mtcSfont 113}{section.4.15}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.13.1}Diagramme des classes participantes}{\reset@font\mtcSSfont 110}{subsection.4.13.1}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {4.13.1.1}Diagramme des classes participantes par acteur «Utilisateur»}{\reset@font\mtcSSSfont 110}{subsubsection.4.13.1.1}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {4.13.1.2}Diagramme des classes participantes par acteur «Client»}{\reset@font\mtcSSSfont 111}{subsubsection.4.13.1.2}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {4.13.1.3}Diagramme des classes participantes par acteur «Agence»}{\reset@font\mtcSSSfont 112}{subsubsection.4.13.1.3}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {4.13.1.4}Diagramme des classes participantes par acteur «Administrateur»}{\reset@font\mtcSSSfont 113}{subsubsection.4.13.1.4}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.14}Conclusion}{\reset@font\mtcSfont 113}{section.4.14}}

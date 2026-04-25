@@ -12,9 +12,9 @@
 \contentsline {section}{\numberline {1.4}Analyse de l'Existant}{26}{section.1.4}%
 \contentsline {subsection}{\numberline {1.4.1}Étude des solutions existantes au niveau national}{26}{subsection.1.4.1}%
 \contentsline {subsection}{\numberline {1.4.2}Étude des solutions existantes au niveau international}{31}{subsection.1.4.2}%
-\contentsline {subsubsection}{Analyse de la plateforme Rent Centric}{31}{section*.19}%
-\contentsline {subsubsection}{Analyse de HQ Rental Software}{32}{section*.21}%
-\contentsline {subsubsection}{Analyse de VEVS Car Rental platform}{33}{section*.23}%
+\contentsline {subsubsection}{\numberline {1.4.2.1}Analyse de la plateforme Rent Centric}{31}{subsubsection.1.4.2.1}%
+\contentsline {subsubsection}{\numberline {1.4.2.2}Analyse de HQ Rental Software}{32}{subsubsection.1.4.2.2}%
+\contentsline {subsubsection}{\numberline {1.4.2.3}Analyse de VEVS Car Rental platform}{33}{subsubsection.1.4.2.3}%
 \contentsline {section}{\numberline {1.5}Critique de l'Existant}{34}{section.1.5}%
 \contentsline {subsection}{\numberline {1.5.1}Critique des solutions existantes au niveau national}{34}{subsection.1.5.1}%
 \contentsline {subsection}{\numberline {1.5.2}Critique des solutions existantes au niveau international}{36}{subsection.1.5.2}%
@@ -52,9 +52,9 @@
 \contentsline {subsection}{\numberline {3.9.1}Analyse de cas d'utilisation «S'authentifier»}{62}{subsection.3.9.1}%
 \contentsline {subsection}{\numberline {3.9.2}Analyse de cas d'utilisation «Interagir avec Chatbot»}{63}{subsection.3.9.2}%
 \contentsline {subsection}{\numberline {3.9.3}Analyse de cas d'utilisation «Gérer profil»}{65}{subsection.3.9.3}%
-\contentsline {subsubsection}{Analyse de cas d'utilisation «Consulter profil»}{66}{section*.51}%
-\contentsline {subsubsection}{Analyse de cas d'utilisation «Modifier mot de passe»}{67}{section*.54}%
-\contentsline {subsubsection}{Analyse de cas d'utilisation «Modifier informations personnelles»}{68}{section*.57}%
+\contentsline {subsubsection}{\numberline {3.9.3.1}Analyse de cas d'utilisation «Consulter profil»}{66}{subsubsection.3.9.3.1}%
+\contentsline {subsubsection}{\numberline {3.9.3.2}Analyse de cas d'utilisation «Modifier mot de passe»}{67}{subsubsection.3.9.3.2}%
+\contentsline {subsubsection}{\numberline {3.9.3.3}Analyse de cas d'utilisation «Modifier informations personnelles»}{68}{subsubsection.3.9.3.3}%
 \contentsline {subsection}{\numberline {3.9.4}Analyse du cas d'utilisation «Consulter voitures»}{70}{subsection.3.9.4}%
 \contentsline {section}{\numberline {3.10}Analyse des cas d'utilisation de l'acteur «Administrateur»}{71}{section.3.10}%
 \contentsline {subsection}{\numberline {3.10.1}Analyse de cas d'utilisation «Consulter agences»}{71}{subsection.3.10.1}%
@@ -65,20 +65,20 @@
 \contentsline {subsection}{\numberline {3.10.6}Analyse de cas d'utilisation «Bloquer/ Débloquer utilisateur»}{78}{subsection.3.10.6}%
 \contentsline {section}{\numberline {3.11}Analyse des cas d'utilisation de l'acteur «Agence»}{80}{section.3.11}%
 \contentsline {subsection}{\numberline {3.11.1}Analyse de cas d'utilisation «Gérer vitrine»}{80}{subsection.3.11.1}%
-\contentsline {subsubsection}{Analyse de cas d'utilisation «Consulter vitrine»}{80}{section*.73}%
+\contentsline {subsubsection}{\numberline {3.11.1.1}Analyse de cas d'utilisation «Consulter vitrine»}{80}{subsubsection.3.11.1.1}%
 \contentsline {subsection}{\numberline {3.11.2}Analyse de cas d'utilisation «Ajouter voiture»}{81}{subsection.3.11.2}%
-\contentsline {subsubsection}{Analyse de cas d'utilisation «Modifier informations voiture»}{83}{section*.78}%
+\contentsline {subsubsection}{\numberline {3.11.2.1}Analyse de cas d'utilisation «Modifier informations voiture»}{83}{subsubsection.3.11.2.1}%
 \contentsline {section}{\numberline {3.12}Diagramme de classe du premier sprint}{85}{section.3.12}%
 \contentsline {section}{\numberline {3.13}Conception des cas d'utilisation}{85}{section.3.13}%
-\contentsline {section}{\numberline {3.14}Diagramme des classes participantes}{86}{section.3.14}%
-\contentsline {subsection}{\numberline {3.14.1}Diagramme des classes participantes par acteur "Internaute''}{87}{subsection.3.14.1}%
-\contentsline {subsection}{\numberline {3.14.2}Diagramme des classes participantes par acteur "Utilisateur"}{88}{subsection.3.14.2}%
-\contentsline {subsection}{\numberline {3.14.3}Diagramme des classes participantes par acteur "Agence''}{89}{subsection.3.14.3}%
-\contentsline {subsection}{\numberline {3.14.4}Diagramme des classes participantes par acteur "Administrateur''}{90}{subsection.3.14.4}%
-\contentsline {section}{\numberline {3.15}Test unitaire}{90}{section.3.15}%
-\contentsline {subsection}{\numberline {3.15.1}Test unitaire du cas d’utilisation « S’authentifier »}{90}{subsection.3.15.1}%
-\contentsline {subsection}{\numberline {3.15.2}Test unitaire du cas d’utilisation « Bloquer ou Débloquer une agence »}{91}{subsection.3.15.2}%
-\contentsline {section}{\numberline {3.16}Conclusion}{92}{section.3.16}%
+\contentsline {subsection}{\numberline {3.13.1}Diagramme des classes participantes}{86}{subsection.3.13.1}%
+\contentsline {subsubsection}{\numberline {3.13.1.1}Diagramme des classes participantes par acteur «Internaute»}{87}{subsubsection.3.13.1.1}%
+\contentsline {subsubsection}{\numberline {3.13.1.2}Diagramme des classes participantes par acteur «Utilisateur»}{88}{subsubsection.3.13.1.2}%
+\contentsline {subsubsection}{\numberline {3.13.1.3}Diagramme des classes participantes par acteur «Agence»}{89}{subsubsection.3.13.1.3}%
+\contentsline {subsubsection}{\numberline {3.13.1.4}Diagramme des classes participantes par acteur «Administrateur»}{90}{subsubsection.3.13.1.4}%
+\contentsline {section}{\numberline {3.14}Test unitaire}{90}{section.3.14}%
+\contentsline {subsection}{\numberline {3.14.1}Test unitaire du cas d’utilisation «S’authentifier»}{90}{subsection.3.14.1}%
+\contentsline {subsection}{\numberline {3.14.2}Test unitaire du cas d’utilisation «Bloquer ou Débloquer une agence»}{91}{subsection.3.14.2}%
+\contentsline {section}{\numberline {3.15}Conclusion}{92}{section.3.15}%
 \contentsline {chapter}{\numberline {4}Réalisation du deuxième sprint}{93}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Introduction}{93}{section.4.1}%
 \contentsline {section}{\numberline {4.2}Planification du sprint 2}{93}{section.4.2}%
@@ -100,12 +100,12 @@
 \contentsline {subsection}{\numberline {4.11.2}Analyse de cas d'utilisation «Consulter statistiques (Administrateur)»}{107}{subsection.4.11.2}%
 \contentsline {section}{\numberline {4.12}Diagramme de classe du deuxième sprint}{109}{section.4.12}%
 \contentsline {section}{\numberline {4.13}Conception des cas d'utilisation}{109}{section.4.13}%
-\contentsline {section}{\numberline {4.14}Diagramme des classes participantes}{110}{section.4.14}%
-\contentsline {subsection}{\numberline {4.14.1}Diagramme des classes participantes par acteur "Utilisateur"}{110}{subsection.4.14.1}%
-\contentsline {subsection}{\numberline {4.14.2}Diagramme des classes participantes par acteur "Client''}{111}{subsection.4.14.2}%
-\contentsline {subsection}{\numberline {4.14.3}Diagramme des classes participantes par acteur "Agence''}{112}{subsection.4.14.3}%
-\contentsline {subsection}{\numberline {4.14.4}Diagramme des classes participantes par acteur "Administrateur''}{113}{subsection.4.14.4}%
-\contentsline {section}{\numberline {4.15}Conclusion}{113}{section.4.15}%
+\contentsline {subsection}{\numberline {4.13.1}Diagramme des classes participantes}{110}{subsection.4.13.1}%
+\contentsline {subsubsection}{\numberline {4.13.1.1}Diagramme des classes participantes par acteur «Utilisateur»}{110}{subsubsection.4.13.1.1}%
+\contentsline {subsubsection}{\numberline {4.13.1.2}Diagramme des classes participantes par acteur «Client»}{111}{subsubsection.4.13.1.2}%
+\contentsline {subsubsection}{\numberline {4.13.1.3}Diagramme des classes participantes par acteur «Agence»}{112}{subsubsection.4.13.1.3}%
+\contentsline {subsubsection}{\numberline {4.13.1.4}Diagramme des classes participantes par acteur «Administrateur»}{113}{subsubsection.4.13.1.4}%
+\contentsline {section}{\numberline {4.14}Conclusion}{113}{section.4.14}%
 \contentsline {chapter}{\numberline {5}Phase de clôture}{115}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Introduction}{115}{section.5.1}%
 \contentsline {section}{\numberline {5.2}Environnement technique et outils adoptés}{115}{section.5.2}%
@@ -115,4 +115,4 @@
 \contentsline {section}{\numberline {5.6}Choix technologiques}{118}{section.5.6}%
 \contentsline {subsection}{\numberline {5.6.1}Architecture retenue dans notre projet}{118}{subsection.5.6.1}%
 \contentsline {section}{\numberline {5.7}Conclusion}{118}{section.5.7}%
-\contentsline {chapter}{Conclusion}{119}{chapter*.113}%
+\contentsline {chapter}{Conclusion}{119}{chapter*.105}%
