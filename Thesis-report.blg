@@ -1,20 +1,20 @@
 [0] Config.pm:328> INFO - This is Biber 2.21
 [0] Config.pm:331> INFO - Logfile is 'Thesis-report.blg'
-[163] biber-MSWIN64:342> INFO - === 
-[258] Biber.pm:421> INFO - Reading 'Thesis-report.bcf'
-[480] Biber.pm:1002> INFO - Found 23 citekeys in bib section 0
-[502] Biber.pm:4487> INFO - Processing section 0
-[525] Biber.pm:4678> INFO - Looking for bibtex file 'Thesis-report.bib' for section 0
-[648] bibtex.pm:1713> INFO - LaTeX decoding ...
-[666] bibtex.pm:1519> INFO - Found BibTeX data source 'Thesis-report.bib'
-[688] Biber.pm:4678> INFO - Looking for bibtex file 'webographie.bib' for section 0
-[794] bibtex.pm:1713> INFO - LaTeX decoding ...
-[839] bibtex.pm:1519> INFO - Found BibTeX data source 'webographie.bib'
-[998] UCollate.pm:68> INFO - Overriding locale 'fr-FR' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[998] UCollate.pm:68> INFO - Overriding locale 'fr-FR' defaults 'variable = shifted' with 'variable = non-ignorable'
-[998] Biber.pm:4307> INFO - Sorting list 'nty/global//global/global/global' of type 'entry' with template 'nty' and locale 'fr-FR'
-[998] Biber.pm:4313> INFO - No sort tailoring available for locale 'fr-FR'
-[1025] bbl.pm:676> INFO - Writing 'Thesis-report.bbl' with encoding 'UTF-8'
-[1041] bbl.pm:779> INFO - Output to Thesis-report.bbl
-[1042] Biber.pm:132> WARN - legacy year field 's.d.' in entry 'drivotunisie' is not an integer - this will probably not sort properly.
-[1042] Biber.pm:134> INFO - WARNINGS: 1
+[210] biber-MSWIN64:342> INFO - === 
+[289] Biber.pm:421> INFO - Reading 'Thesis-report.bcf'
+[467] Biber.pm:1002> INFO - Found 23 citekeys in bib section 0
+[488] Biber.pm:4487> INFO - Processing section 0
+[499] Biber.pm:4678> INFO - Looking for bibtex file 'Thesis-report.bib' for section 0
+[626] bibtex.pm:1713> INFO - LaTeX decoding ...
+[637] bibtex.pm:1519> INFO - Found BibTeX data source 'Thesis-report.bib'
+[676] Biber.pm:4678> INFO - Looking for bibtex file 'webographie.bib' for section 0
+[785] bibtex.pm:1713> INFO - LaTeX decoding ...
+[820] bibtex.pm:1519> INFO - Found BibTeX data source 'webographie.bib'
+[1087] UCollate.pm:68> INFO - Overriding locale 'fr-FR' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1087] UCollate.pm:68> INFO - Overriding locale 'fr-FR' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1087] Biber.pm:4307> INFO - Sorting list 'nty/global//global/global/global' of type 'entry' with template 'nty' and locale 'fr-FR'
+[1087] Biber.pm:4313> INFO - No sort tailoring available for locale 'fr-FR'
+[1171] bbl.pm:676> INFO - Writing 'Thesis-report.bbl' with encoding 'UTF-8'
+[1214] bbl.pm:779> INFO - Output to Thesis-report.bbl
+[1215] Biber.pm:132> WARN - legacy year field 's.d.' in entry 'drivotunisie' is not an integer - this will probably not sort properly.
+[1215] Biber.pm:134> INFO - WARNINGS: 1
