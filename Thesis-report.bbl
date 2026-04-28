@@ -50,6 +50,37 @@
       \verb https://www.atlassian.com/fr/agile
       \endverb
     \endentry
+    \entry{cybermedian}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=ef1afe57a31521a89b4e8ec9dbd35dfb}{%
+           family={Cybermedian},
+           familyi={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{ef1afe57a31521a89b4e8ec9dbd35dfb}
+      \strng{fullhash}{ef1afe57a31521a89b4e8ec9dbd35dfb}
+      \strng{fullhashraw}{ef1afe57a31521a89b4e8ec9dbd35dfb}
+      \strng{bibnamehash}{ef1afe57a31521a89b4e8ec9dbd35dfb}
+      \strng{authorbibnamehash}{ef1afe57a31521a89b4e8ec9dbd35dfb}
+      \strng{authornamehash}{ef1afe57a31521a89b4e8ec9dbd35dfb}
+      \strng{authorfullhash}{ef1afe57a31521a89b4e8ec9dbd35dfb}
+      \strng{authorfullhashraw}{ef1afe57a31521a89b4e8ec9dbd35dfb}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{details sequence diagram}
+      \field{urlday}{28}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2012}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.cybermedian.com/fr/comprehensive-guide-to-sequence-diagrams/
+      \endverb
+      \verb{url}
+      \verb https://www.cybermedian.com/fr/comprehensive-guide-to-sequence-diagrams/
+      \endverb
+    \endentry
     \entry{Logiciel_de_gestion_des_locations}{online}{}{}
       \name{author}{1}{}{%
         {{hash=5462d3f595a387fd7710ff13e3813418}{%

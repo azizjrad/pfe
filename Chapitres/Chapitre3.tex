@@ -1004,18 +1004,7 @@ Enchaînement principal &
     \label{fig:modifier_infos_voiture}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-\FloatBarrier
-\section{Diagramme de classe du premier sprint}
-\label{section3.diag_classes}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.95\textwidth]{Chapitres/Figures/Diag_classe_sprint_1.png}
-    \caption{Diagramme de classe du premier sprint}
-    \label{fig:diag_classes}
-\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \FloatBarrier
@@ -1061,7 +1050,7 @@ Ce diagramme repose généralement sur trois catégories principales de classes 
 \label{Diag_classes_participantes_internaute_s1}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{Chapitres/Figures/classes_participantes__internaute_s1.png}
+    \includegraphics[width=1\textwidth]{Chapitres/Figures/classes_participantes__internaute_s1.png}
     \caption{Diagramme des classes participantes par acteur Internaute}
     \label{fig:classes_participantes_internaute_s1}
 \end{figure}
@@ -1070,7 +1059,7 @@ Ce diagramme repose généralement sur trois catégories principales de classes 
 \label{Diag_classes_participantes_utilisateur_s1}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{Chapitres/Figures/classes_participantes__utilisateur_s1.png}
+    \includegraphics[width=1\textwidth]{Chapitres/Figures/classes_participantes__utilisateur_s1.png}
     \caption{Diagramme des classes participantes par acteur Utilisateur}
     \label{fig:classes_participantes_utilisateur_s1}
 \end{figure}
@@ -1079,7 +1068,7 @@ Ce diagramme repose généralement sur trois catégories principales de classes 
 \label{Diag_classes_participantes_agence_s1}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{Chapitres/Figures/classes_participantes__agence_s1.png}
+    \includegraphics[width=1\textwidth]{Chapitres/Figures/classes_participantes__agence_s1.png}
     \caption{Diagramme des classes participantes par acteur Agence}
     \label{fig:classes_participantes_agence_s1}
 \end{figure}
@@ -1088,11 +1077,152 @@ Ce diagramme repose généralement sur trois catégories principales de classes 
 \label{Diag_classes_participantes_administrateur_s1}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{Chapitres/Figures/classes_participantes__admin_s1.png}
+    \includegraphics[width=1\textwidth]{Chapitres/Figures/classes_participantes__admin_s1.png}
     \caption{Diagramme des classes participantes par acteur Administrateur}
     \label{fig:classes_participantes_admin_s1}
 \end{figure}
 
+%%%%%%%%%%%seq_détaillé%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Diagrammes de séquence détaillés du premier sprint}
+\label{sec:diag_seq_detail_s1}
+\textit{"Les diagrammes de séquence sont un outil essentiel en génie logiciel pour visualiser les interactions entre les objets d’un système au fil du temps. Ils aident à comprendre le comportement dynamique d’un système, à concevoir son architecture et à documenter des processus complexes. Ce guide couvrira les concepts clés, les recommandations, un exemple concret et une étude de cas pour vous aider à maîtriser les diagrammes de séquence.''}\cite{cybermedian}
+
+
+%====================================================x²
+\subsection{Diagrammes de séquence détaillés de l’acteur Internaute}
+\label{sec:diag_seq_internaute}
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Consulter actualités »}
+\label{sec:diag_seq_det_consulter_actualite}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_actualite.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « Consulter actualités »}
+    \label{fig:seq_det_consulter_actualite}
+\end{figure}
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « S’inscrire »}
+\label{sec:diag_seq_det_s_inscrire}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_inscrire.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « S’inscrire »}
+    \label{fig:seq_det_s_inscrire}
+\end{figure}
+
+%====================================================
+\subsection{Diagrammes de séquence détaillés de l’acteur Utilisateur}
+\label{sec:diag_seq_utilisateur}
+
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « S’authentifier »}
+\label{sec:diag_seq_det_s_authentifier}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_authentifier.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « S’authentifier »}
+    \label{fig:seq_det_s_authentifier}
+\end{figure}
+
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Interagir avec Chatbot »}
+\label{sec:diag_seq_det_chatbot}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_chatbot.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « Interagir avec Chatbot »}
+    \label{fig:seq_det_chatbot}
+\end{figure}
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Consulter profil »}
+\label{sec:diag_seq_det_consulter_profil}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_profil.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « Consulter profil »}
+    \label{fig:seq_det_consulter_profil}
+\end{figure}
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Modifier mot de passe »}
+\label{sec:diag_seq_det_modif_mdp}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_modif_mdp.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « Modifier mot de passe »}
+    \label{fig:seq_det_modif_mdp}
+\end{figure}
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Modifier informations personnelles »}
+\label{sec:diag_seq_det_modif_infos}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_modif_infos.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « Modifier informations personnelles »}
+    \label{fig:seq_det_modif_infos}
+\end{figure}
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Consulter voitures »}
+\label{sec:diag_seq_det_consulter_voiture}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_voiture.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « Consulter voitures »}
+    \label{fig:seq_det_consulter_voiture}
+\end{figure}
+
+%====================================================
+\subsection{Diagrammes de séquence détaillés de l’acteur Administrateur}
+\label{sec:diag_seq_admin_s1}
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Ajouter agence »}
+\label{sec:diag_seq_det_ajouter_agence}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_agence.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « Ajouter agence »}
+    \label{fig:seq_det_ajouter_agence}
+\end{figure}
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Bloquer/Débloquer agence »}
+\label{sec:diag_seq_det_bloquer_agence}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_agence.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « Bloquer/Débloquer agence »}
+    \label{fig:seq_det_bloquer_agence}
+\end{figure}
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Ajouter utilisateur »}
+\label{sec:diag_seq_det_ajouter_utilisateur}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_utilisateur.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « Ajouter utilisateur »}
+    \label{fig:seq_det_ajouter_utilisateur}
+\end{figure}
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Bloquer/Débloquer utilisateur »}
+\label{sec:diag_seq_det_bloquer_agence}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_utilisateur.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « Bloquer/Débloquer utilisateur »}
+    \label{fig:seq_det_bloquer_utilisateur}
+\end{figure}
+
+\newpage
+\FloatBarrier
+\section{Diagramme de classe du premier sprint}
+\label{section3.diag_classes}
+Un diagramme de classes est une représentation graphique qui identifie les principales classes d’un système, leurs attributs, leurs méthodes et les relations qui les lient. Chaque classe est figurée par un rectangle divisé en trois parties (nom, attributs, opérations), et les liens entre classes traduisent des relations comme l’héritage, l’association ou la dépendance. Ce type de diagramme permet de structurer et de visualiser l’architecture logicielle, en offrant une vue claire des entités et de leurs interactions essentielles.\cite{Lucidchart}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Chapitres/Figures/Diag_classe_sprint_1.png}
+    \caption{Diagramme de classe du premier sprint}
+    \label{fig:diag_classes}
+\end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Implémentation}
 \label{sec:implementation_s1}
