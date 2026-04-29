@@ -3,103 +3,104 @@
 \contentsline {chapter}{Dédicace}{3}{section*.4}%
 \contentsline {chapter}{Remerciements}{5}{section*.6}%
 \contentsline {chapter}{Abstract et Résumé}{7}{section*.8}%
-\contentsline {starchapter}{Introduction}{25}{chapter*.12}%
-\contentsline {chapter}{\numberline {1}Étude de Projet}{27}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Introduction}{27}{section.1.1}%
-\contentsline {section}{\numberline {1.2}Présentation de l'Organisme d'Accueil}{27}{section.1.2}%
-\contentsline {subsection}{\numberline {1.2.1}Structure organisationnelle}{28}{subsection.1.2.1}%
-\contentsline {section}{\numberline {1.3}Cadre et Présentation du Projet}{29}{section.1.3}%
-\contentsline {section}{\numberline {1.4}Analyse de l'Existant}{30}{section.1.4}%
-\contentsline {subsection}{\numberline {1.4.1}Étude des solutions existantes au niveau national}{30}{subsection.1.4.1}%
-\contentsline {subsection}{\numberline {1.4.2}Étude des solutions existantes au niveau international}{35}{subsection.1.4.2}%
-\contentsline {subsubsection}{\numberline {1.4.2.1}Analyse de la plateforme Rent Centric}{35}{subsubsection.1.4.2.1}%
-\contentsline {subsubsection}{\numberline {1.4.2.2}Analyse de HQ Rental Software}{36}{subsubsection.1.4.2.2}%
-\contentsline {subsubsection}{\numberline {1.4.2.3}Analyse de VEVS Car Rental platform}{37}{subsubsection.1.4.2.3}%
-\contentsline {section}{\numberline {1.5}Critique de l'Existant}{38}{section.1.5}%
-\contentsline {subsection}{\numberline {1.5.1}Critique des solutions existantes au niveau national}{38}{subsection.1.5.1}%
-\contentsline {subsection}{\numberline {1.5.2}Critique des solutions existantes au niveau international}{40}{subsection.1.5.2}%
-\contentsline {section}{\numberline {1.6}Solution Proposée}{41}{section.1.6}%
-\contentsline {section}{\numberline {1.7}Méthodologie et Modélisations}{42}{section.1.7}%
-\contentsline {subsection}{\numberline {1.7.1}Les méthodes agiles}{42}{subsection.1.7.1}%
-\contentsline {subsection}{\numberline {1.7.2}La méthodologie Scrum}{43}{subsection.1.7.2}%
-\contentsline {subsection}{\numberline {1.7.3}Product Backlog et Sprint Backlog}{44}{subsection.1.7.3}%
-\contentsline {section}{\numberline {1.8}Langage de Modélisation : UML}{45}{section.1.8}%
-\contentsline {section}{\numberline {1.9}Conclusion}{45}{section.1.9}%
-\contentsline {chapter}{\numberline {2}Planification et architecture}{47}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Identification des acteurs}{47}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Diagramme de contexte statique}{48}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Identification et analyse des besoins}{48}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Identification des besoins fonctionnels}{48}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Identification des besoins non fonctionnels}{51}{subsection.2.3.2}%
-\contentsline {section}{\numberline {2.4}Diagramme des cas d'utilisation global}{52}{section.2.4}%
-\contentsline {section}{\numberline {2.5}Identification de l'équipe Scrum}{53}{section.2.5}%
-\contentsline {section}{\numberline {2.6}Le Backlog produit}{53}{section.2.6}%
-\contentsline {section}{\numberline {2.7}La planification des sprints}{56}{section.2.7}%
-\contentsline {section}{\numberline {2.8}Diagramme de Gantt}{57}{section.2.8}%
-\contentsline {section}{\numberline {2.9}Conclusion}{57}{section.2.9}%
-\contentsline {chapter}{\numberline {3}Réalisation du premier sprint}{59}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Introduction}{59}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Planification du sprint 1}{59}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Backlog produit du premier sprint}{60}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Les prototypes des interfaces}{61}{section.3.4}%
-\contentsline {section}{\numberline {3.5}La spécification fonctionnelle des besoins}{62}{section.3.5}%
-\contentsline {section}{\numberline {3.6}Diagramme de cas d'utilisation du premier sprint}{62}{section.3.6}%
-\contentsline {section}{\numberline {3.7}Analyse des cas d'utilisation du premier sprint}{63}{section.3.7}%
-\contentsline {section}{\numberline {3.8}Analyse des cas d'utilisation de l'acteur «Internaute»}{63}{section.3.8}%
-\contentsline {subsection}{\numberline {3.8.1}Analyse de cas d'utilisation «Consulter actualités»}{63}{subsection.3.8.1}%
-\contentsline {subsection}{\numberline {3.8.2}Analyse de cas d'utilisation «S'inscrire»}{64}{subsection.3.8.2}%
-\contentsline {section}{\numberline {3.9}Analyse des cas d'utilisation de l'acteur «Utilisateur»}{66}{section.3.9}%
-\contentsline {subsection}{\numberline {3.9.1}Analyse de cas d'utilisation «S'authentifier»}{66}{subsection.3.9.1}%
-\contentsline {subsection}{\numberline {3.9.2}Analyse de cas d'utilisation «Interagir avec Chatbot»}{67}{subsection.3.9.2}%
-\contentsline {subsection}{\numberline {3.9.3}Analyse de cas d'utilisation «Gérer profil»}{69}{subsection.3.9.3}%
-\contentsline {subsubsection}{\numberline {3.9.3.1}Analyse de cas d'utilisation «Consulter profil»}{70}{subsubsection.3.9.3.1}%
-\contentsline {subsubsection}{\numberline {3.9.3.2}Analyse de cas d'utilisation «Modifier mot de passe»}{71}{subsubsection.3.9.3.2}%
-\contentsline {subsubsection}{\numberline {3.9.3.3}Analyse de cas d'utilisation «Modifier informations personnelles»}{72}{subsubsection.3.9.3.3}%
-\contentsline {subsection}{\numberline {3.9.4}Analyse du cas d'utilisation «Consulter voitures»}{74}{subsection.3.9.4}%
-\contentsline {section}{\numberline {3.10}Analyse des cas d'utilisation de l'acteur «Administrateur»}{75}{section.3.10}%
-\contentsline {subsection}{\numberline {3.10.1}Analyse de cas d'utilisation «Consulter agences»}{75}{subsection.3.10.1}%
-\contentsline {subsection}{\numberline {3.10.2}Analyse de cas d'utilisation «Ajouter agence»}{76}{subsection.3.10.2}%
-\contentsline {subsection}{\numberline {3.10.3}Analyse de cas d'utilisation «Bloquer/Débloquer agence»}{77}{subsection.3.10.3}%
-\contentsline {subsection}{\numberline {3.10.4}Analyse de cas d'utilisation «Consulter utilisateurs»}{80}{subsection.3.10.4}%
-\contentsline {subsection}{\numberline {3.10.5}Analyse de cas d'utilisation «Ajouter utilisateur»}{80}{subsection.3.10.5}%
-\contentsline {subsection}{\numberline {3.10.6}Analyse de cas d'utilisation «Bloquer/ Débloquer utilisateur»}{82}{subsection.3.10.6}%
-\contentsline {section}{\numberline {3.11}Analyse des cas d'utilisation de l'acteur «Agence»}{84}{section.3.11}%
-\contentsline {subsection}{\numberline {3.11.1}Analyse de cas d'utilisation «Gérer vitrine»}{84}{subsection.3.11.1}%
-\contentsline {subsubsection}{\numberline {3.11.1.1}Analyse de cas d'utilisation «Consulter vitrine»}{84}{subsubsection.3.11.1.1}%
-\contentsline {subsection}{\numberline {3.11.2}Analyse de cas d'utilisation «Ajouter voiture»}{85}{subsection.3.11.2}%
-\contentsline {subsubsection}{\numberline {3.11.2.1}Analyse de cas d'utilisation «Modifier informations voiture»}{87}{subsubsection.3.11.2.1}%
-\contentsline {section}{\numberline {3.12}Conception des cas d'utilisation}{89}{section.3.12}%
-\contentsline {subsection}{\numberline {3.12.1}Diagramme des classes participantes}{90}{subsection.3.12.1}%
-\contentsline {subsubsection}{\numberline {3.12.1.1}Diagramme des classes participantes par acteur «Internaute»}{90}{subsubsection.3.12.1.1}%
-\contentsline {subsubsection}{\numberline {3.12.1.2}Diagramme des classes participantes par acteur «Utilisateur»}{91}{subsubsection.3.12.1.2}%
-\contentsline {subsubsection}{\numberline {3.12.1.3}Diagramme des classes participantes par acteur «Agence»}{91}{subsubsection.3.12.1.3}%
-\contentsline {subsubsection}{\numberline {3.12.1.4}Diagramme des classes participantes par acteur «Administrateur»}{91}{subsubsection.3.12.1.4}%
-\contentsline {section}{\numberline {3.13}Diagrammes de séquence détaillés du premier sprint}{91}{section.3.13}%
-\contentsline {subsection}{\numberline {3.13.1}Diagrammes de séquence détaillés de l’acteur Internaute}{92}{subsection.3.13.1}%
-\contentsline {subsubsection}{\numberline {3.13.1.1}Diagrammes de séquence détaillé du cas d’utilisation « Consulter actualités »}{92}{subsubsection.3.13.1.1}%
-\contentsline {subsubsection}{\numberline {3.13.1.2}Diagrammes de séquence détaillé du cas d’utilisation « S’inscrire »}{93}{subsubsection.3.13.1.2}%
-\contentsline {subsection}{\numberline {3.13.2}Diagrammes de séquence détaillés de l’acteur Utilisateur}{94}{subsection.3.13.2}%
-\contentsline {subsubsection}{\numberline {3.13.2.1}Diagrammes de séquence détaillé du cas d’utilisation « S’authentifier »}{94}{subsubsection.3.13.2.1}%
-\contentsline {subsubsection}{\numberline {3.13.2.2}Diagrammes de séquence détaillé du cas d’utilisation « Interagir avec Chatbot »}{94}{subsubsection.3.13.2.2}%
-\contentsline {subsubsection}{\numberline {3.13.2.3}Diagrammes de séquence détaillé du cas d’utilisation « Consulter profil »}{95}{subsubsection.3.13.2.3}%
-\contentsline {subsubsection}{\numberline {3.13.2.4}Diagrammes de séquence détaillé du cas d’utilisation « Modifier mot de passe »}{96}{subsubsection.3.13.2.4}%
-\contentsline {subsubsection}{\numberline {3.13.2.5}Diagrammes de séquence détaillé du cas d’utilisation « Modifier informations personnelles »}{96}{subsubsection.3.13.2.5}%
-\contentsline {subsubsection}{\numberline {3.13.2.6}Diagrammes de séquence détaillé du cas d’utilisation « Consulter voitures »}{97}{subsubsection.3.13.2.6}%
-\contentsline {subsection}{\numberline {3.13.3}Diagrammes de séquence détaillés de l’acteur Administrateur}{97}{subsection.3.13.3}%
-\contentsline {subsubsection}{\numberline {3.13.3.1}Diagrammes de séquence détaillé du cas d’utilisation « Ajouter agence »}{97}{subsubsection.3.13.3.1}%
-\contentsline {subsubsection}{\numberline {3.13.3.2}Diagrammes de séquence détaillé du cas d’utilisation « Bloquer/Débloquer agence »}{98}{subsubsection.3.13.3.2}%
-\contentsline {subsubsection}{\numberline {3.13.3.3}Diagrammes de séquence détaillé du cas d’utilisation « Ajouter utilisateur »}{98}{subsubsection.3.13.3.3}%
-\contentsline {subsubsection}{\numberline {3.13.3.4}Diagrammes de séquence détaillé du cas d’utilisation « Bloquer/Débloquer utilisateur »}{99}{subsubsection.3.13.3.4}%
-\contentsline {section}{\numberline {3.14}Diagramme de classe du premier sprint}{100}{section.3.14}%
-\contentsline {section}{\numberline {3.15}Implémentation}{100}{section.3.15}%
-\contentsline {subsection}{\numberline {3.15.1}Tables de la base de données}{100}{subsection.3.15.1}%
-\contentsline {subsection}{\numberline {3.15.2}Réalisation des interfaces du premier sprint}{101}{subsection.3.15.2}%
+\contentsline {starchapter}{Introduction}{23}{chapter*.12}%
+\contentsline {chapter}{\numberline {1}Étude de Projet}{25}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Introduction}{25}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Présentation de l'Organisme d'Accueil}{25}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Structure organisationnelle}{26}{subsection.1.2.1}%
+\contentsline {section}{\numberline {1.3}Cadre et Présentation du Projet}{27}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Analyse de l'Existant}{28}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}Étude des solutions existantes au niveau national}{28}{subsection.1.4.1}%
+\contentsline {subsection}{\numberline {1.4.2}Étude des solutions existantes au niveau international}{33}{subsection.1.4.2}%
+\contentsline {subsubsection}{\numberline {1.4.2.1}Analyse de la plateforme Rent Centric}{33}{subsubsection.1.4.2.1}%
+\contentsline {subsubsection}{\numberline {1.4.2.2}Analyse de HQ Rental Software}{34}{subsubsection.1.4.2.2}%
+\contentsline {subsubsection}{\numberline {1.4.2.3}Analyse de VEVS Car Rental platform}{35}{subsubsection.1.4.2.3}%
+\contentsline {section}{\numberline {1.5}Critique de l'Existant}{36}{section.1.5}%
+\contentsline {subsection}{\numberline {1.5.1}Critique des solutions existantes au niveau national}{36}{subsection.1.5.1}%
+\contentsline {subsection}{\numberline {1.5.2}Critique des solutions existantes au niveau international}{38}{subsection.1.5.2}%
+\contentsline {section}{\numberline {1.6}Solution Proposée}{39}{section.1.6}%
+\contentsline {section}{\numberline {1.7}Méthodologie et Modélisations}{40}{section.1.7}%
+\contentsline {subsection}{\numberline {1.7.1}Les méthodes agiles}{40}{subsection.1.7.1}%
+\contentsline {subsection}{\numberline {1.7.2}La méthodologie Scrum}{41}{subsection.1.7.2}%
+\contentsline {subsection}{\numberline {1.7.3}Product Backlog et Sprint Backlog}{42}{subsection.1.7.3}%
+\contentsline {section}{\numberline {1.8}Langage de Modélisation : UML}{43}{section.1.8}%
+\contentsline {section}{\numberline {1.9}Conclusion}{43}{section.1.9}%
+\contentsline {chapter}{\numberline {2}Planification et architecture}{45}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Identification des acteurs}{45}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Diagramme de contexte statique}{46}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Identification et analyse des besoins}{46}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Identification des besoins fonctionnels}{46}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Identification des besoins non fonctionnels}{49}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}Diagramme des cas d'utilisation global}{50}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Identification de l'équipe Scrum}{51}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Le Backlog produit}{51}{section.2.6}%
+\contentsline {section}{\numberline {2.7}La planification des sprints}{54}{section.2.7}%
+\contentsline {section}{\numberline {2.8}Diagramme de Gantt}{55}{section.2.8}%
+\contentsline {section}{\numberline {2.9}Conclusion}{55}{section.2.9}%
+\contentsline {chapter}{\numberline {3}Réalisation du premier sprint}{57}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Introduction}{57}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Planification du sprint 1}{57}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Backlog produit du premier sprint}{58}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Les prototypes des interfaces}{59}{section.3.4}%
+\contentsline {section}{\numberline {3.5}La spécification fonctionnelle des besoins}{60}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Diagramme de cas d'utilisation du premier sprint}{60}{section.3.6}%
+\contentsline {section}{\numberline {3.7}Analyse des cas d'utilisation du premier sprint}{61}{section.3.7}%
+\contentsline {section}{\numberline {3.8}Analyse des cas d'utilisation de l'acteur «Internaute»}{61}{section.3.8}%
+\contentsline {subsection}{\numberline {3.8.1}Analyse de cas d'utilisation «Consulter actualités»}{61}{subsection.3.8.1}%
+\contentsline {subsection}{\numberline {3.8.2}Analyse de cas d'utilisation «S'inscrire»}{62}{subsection.3.8.2}%
+\contentsline {section}{\numberline {3.9}Analyse des cas d'utilisation de l'acteur «Utilisateur»}{64}{section.3.9}%
+\contentsline {subsection}{\numberline {3.9.1}Analyse de cas d'utilisation «S'authentifier»}{64}{subsection.3.9.1}%
+\contentsline {subsection}{\numberline {3.9.2}Analyse de cas d'utilisation «Interagir avec Chatbot»}{65}{subsection.3.9.2}%
+\contentsline {subsection}{\numberline {3.9.3}Analyse de cas d'utilisation «Gérer profil»}{67}{subsection.3.9.3}%
+\contentsline {subsubsection}{\numberline {3.9.3.1}Analyse de cas d'utilisation «Consulter profil»}{68}{subsubsection.3.9.3.1}%
+\contentsline {subsubsection}{\numberline {3.9.3.2}Analyse de cas d'utilisation «Modifier mot de passe»}{69}{subsubsection.3.9.3.2}%
+\contentsline {subsubsection}{\numberline {3.9.3.3}Analyse de cas d'utilisation «Modifier informations personnelles»}{70}{subsubsection.3.9.3.3}%
+\contentsline {subsection}{\numberline {3.9.4}Analyse du cas d'utilisation «Consulter voitures»}{72}{subsection.3.9.4}%
+\contentsline {section}{\numberline {3.10}Analyse des cas d'utilisation de l'acteur «Administrateur»}{73}{section.3.10}%
+\contentsline {subsection}{\numberline {3.10.1}Analyse de cas d'utilisation «Consulter agences»}{73}{subsection.3.10.1}%
+\contentsline {subsection}{\numberline {3.10.2}Analyse de cas d'utilisation «Ajouter agence»}{74}{subsection.3.10.2}%
+\contentsline {subsection}{\numberline {3.10.3}Analyse de cas d'utilisation «Bloquer/Débloquer agence»}{75}{subsection.3.10.3}%
+\contentsline {subsection}{\numberline {3.10.4}Analyse de cas d'utilisation «Consulter utilisateurs»}{78}{subsection.3.10.4}%
+\contentsline {subsection}{\numberline {3.10.5}Analyse de cas d'utilisation «Ajouter utilisateur»}{78}{subsection.3.10.5}%
+\contentsline {subsection}{\numberline {3.10.6}Analyse de cas d'utilisation «Bloquer/ Débloquer utilisateur»}{80}{subsection.3.10.6}%
+\contentsline {section}{\numberline {3.11}Analyse des cas d'utilisation de l'acteur «Agence»}{82}{section.3.11}%
+\contentsline {subsection}{\numberline {3.11.1}Analyse de cas d'utilisation «Gérer vitrine»}{82}{subsection.3.11.1}%
+\contentsline {subsubsection}{\numberline {3.11.1.1}Analyse de cas d'utilisation «Consulter vitrine»}{82}{subsubsection.3.11.1.1}%
+\contentsline {subsection}{\numberline {3.11.2}Analyse de cas d'utilisation «Ajouter voiture»}{83}{subsection.3.11.2}%
+\contentsline {subsubsection}{\numberline {3.11.2.1}Analyse de cas d'utilisation «Modifier informations voiture»}{85}{subsubsection.3.11.2.1}%
+\contentsline {section}{\numberline {3.12}Conception des cas d'utilisation}{87}{section.3.12}%
+\contentsline {subsection}{\numberline {3.12.1}Diagramme des classes participantes}{88}{subsection.3.12.1}%
+\contentsline {subsubsection}{\numberline {3.12.1.1}Diagramme des classes participantes par acteur «Internaute»}{88}{subsubsection.3.12.1.1}%
+\contentsline {subsubsection}{\numberline {3.12.1.2}Diagramme des classes participantes par acteur «Utilisateur»}{89}{subsubsection.3.12.1.2}%
+\contentsline {subsubsection}{\numberline {3.12.1.3}Diagramme des classes participantes par acteur «Agence»}{89}{subsubsection.3.12.1.3}%
+\contentsline {subsubsection}{\numberline {3.12.1.4}Diagramme des classes participantes par acteur «Administrateur»}{89}{subsubsection.3.12.1.4}%
+\contentsline {section}{\numberline {3.13}Diagrammes de séquence détaillés du premier sprint}{89}{section.3.13}%
+\contentsline {subsection}{\numberline {3.13.1}Diagrammes de séquence détaillés de l’acteur Internaute}{90}{subsection.3.13.1}%
+\contentsline {subsubsection}{\numberline {3.13.1.1}Diagrammes de séquence détaillé du cas d’utilisation « Consulter actualités »}{90}{subsubsection.3.13.1.1}%
+\contentsline {subsubsection}{\numberline {3.13.1.2}Diagrammes de séquence détaillé du cas d’utilisation « S’inscrire »}{91}{subsubsection.3.13.1.2}%
+\contentsline {subsection}{\numberline {3.13.2}Diagrammes de séquence détaillés de l’acteur Utilisateur}{92}{subsection.3.13.2}%
+\contentsline {subsubsection}{\numberline {3.13.2.1}Diagrammes de séquence détaillé du cas d’utilisation « S’authentifier »}{92}{subsubsection.3.13.2.1}%
+\contentsline {subsubsection}{\numberline {3.13.2.2}Diagrammes de séquence détaillé du cas d’utilisation « Interagir avec Chatbot »}{92}{subsubsection.3.13.2.2}%
+\contentsline {subsubsection}{\numberline {3.13.2.3}Diagrammes de séquence détaillé du cas d’utilisation « Consulter profil »}{93}{subsubsection.3.13.2.3}%
+\contentsline {subsubsection}{\numberline {3.13.2.4}Diagrammes de séquence détaillé du cas d’utilisation « Modifier mot de passe »}{94}{subsubsection.3.13.2.4}%
+\contentsline {subsubsection}{\numberline {3.13.2.5}Diagrammes de séquence détaillé du cas d’utilisation « Modifier informations personnelles »}{94}{subsubsection.3.13.2.5}%
+\contentsline {subsubsection}{\numberline {3.13.2.6}Diagrammes de séquence détaillé du cas d’utilisation « Consulter voitures »}{95}{subsubsection.3.13.2.6}%
+\contentsline {subsection}{\numberline {3.13.3}Diagrammes de séquence détaillés de l’acteur Administrateur}{95}{subsection.3.13.3}%
+\contentsline {subsubsection}{\numberline {3.13.3.1}Diagrammes de séquence détaillé du cas d’utilisation « Ajouter agence »}{95}{subsubsection.3.13.3.1}%
+\contentsline {subsubsection}{\numberline {3.13.3.2}Diagrammes de séquence détaillé du cas d’utilisation « Bloquer/Débloquer agence »}{96}{subsubsection.3.13.3.2}%
+\contentsline {subsubsection}{\numberline {3.13.3.3}Diagrammes de séquence détaillé du cas d’utilisation « Ajouter utilisateur »}{96}{subsubsection.3.13.3.3}%
+\contentsline {subsubsection}{\numberline {3.13.3.4}Diagrammes de séquence détaillé du cas d’utilisation « Bloquer/Débloquer utilisateur »}{97}{subsubsection.3.13.3.4}%
+\contentsline {section}{\numberline {3.14}Diagramme de classe du premier sprint}{98}{section.3.14}%
+\contentsline {section}{\numberline {3.15}Implémentation}{98}{section.3.15}%
+\contentsline {subsection}{\numberline {3.15.1}Tables de la base de données}{98}{subsection.3.15.1}%
+\contentsline {subsubsection}{\numberline {3.15.1.1}Tableau « users »}{99}{subsubsection.3.15.1.1}%
+\contentsline {subsubsection}{\numberline {3.15.1.2}Tableau « vehicles »}{100}{subsubsection.3.15.1.2}%
+\contentsline {subsection}{\numberline {3.15.2}Réalisation des interfaces du premier sprint}{100}{subsection.3.15.2}%
 \contentsline {subsubsection}{\numberline {3.15.2.1}Interface d'inscription :}{101}{subsubsection.3.15.2.1}%
 \contentsline {subsubsection}{\numberline {3.15.2.2}Interface d'authentication :}{101}{subsubsection.3.15.2.2}%
 \contentsline {subsubsection}{\numberline {3.15.2.3}Interface profil :}{102}{subsubsection.3.15.2.3}%
-\contentsline {subsubsection}{\numberline {3.15.2.4}Interface vitrine :}{102}{subsubsection.3.15.2.4}%
-\contentsline {subsubsection}{\numberline {3.15.2.5}Interface chatbot :}{103}{subsubsection.3.15.2.5}%
-\contentsline {subsubsection}{\numberline {3.15.2.6}Interface bloquer/debloquer une agence :}{103}{subsubsection.3.15.2.6}%
+\contentsline {subsubsection}{\numberline {3.15.2.4}Interface chatbot :}{102}{subsubsection.3.15.2.4}%
+\contentsline {subsubsection}{\numberline {3.15.2.5}Interface bloquer/debloquer une agence :}{103}{subsubsection.3.15.2.5}%
 \contentsline {section}{\numberline {3.16}Test unitaire}{103}{section.3.16}%
 \contentsline {subsection}{\numberline {3.16.1}Test unitaire du cas d’utilisation «S’authentifier»}{103}{subsection.3.16.1}%
 \contentsline {subsection}{\numberline {3.16.2}Test unitaire du cas d’utilisation «Bloquer ou Débloquer une agence»}{104}{subsection.3.16.2}%
@@ -162,4 +163,4 @@
 \contentsline {section}{\numberline {5.6}Choix technologiques}{142}{section.5.6}%
 \contentsline {subsection}{\numberline {5.6.1}Architecture retenue dans notre projet}{142}{subsection.5.6.1}%
 \contentsline {section}{\numberline {5.7}Conclusion}{142}{section.5.7}%
-\contentsline {chapter}{Conclusion}{143}{chapter*.139}%
+\contentsline {chapter}{Conclusion}{143}{chapter*.140}%

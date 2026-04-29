@@ -1,0 +1,759 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global/global}
+    \entry{atlassian}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=deff6b318be72040c25ff1208b1a96a2}{%
+           family={atlassian},
+           familyi={a\bibinitperiod}}}%
+      }
+      \strng{namehash}{deff6b318be72040c25ff1208b1a96a2}
+      \strng{fullhash}{deff6b318be72040c25ff1208b1a96a2}
+      \strng{fullhashraw}{deff6b318be72040c25ff1208b1a96a2}
+      \strng{bibnamehash}{deff6b318be72040c25ff1208b1a96a2}
+      \strng{authorbibnamehash}{deff6b318be72040c25ff1208b1a96a2}
+      \strng{authornamehash}{deff6b318be72040c25ff1208b1a96a2}
+      \strng{authorfullhash}{deff6b318be72040c25ff1208b1a96a2}
+      \strng{authorfullhashraw}{deff6b318be72040c25ff1208b1a96a2}
+      \field{sortinit}{a}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Agile}
+      \field{urlday}{24}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.atlassian.com/fr/agile
+      \endverb
+      \verb{url}
+      \verb https://www.atlassian.com/fr/agile
+      \endverb
+    \endentry
+    \entry{cybermedian}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=ef1afe57a31521a89b4e8ec9dbd35dfb}{%
+           family={Cybermedian},
+           familyi={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{ef1afe57a31521a89b4e8ec9dbd35dfb}
+      \strng{fullhash}{ef1afe57a31521a89b4e8ec9dbd35dfb}
+      \strng{fullhashraw}{ef1afe57a31521a89b4e8ec9dbd35dfb}
+      \strng{bibnamehash}{ef1afe57a31521a89b4e8ec9dbd35dfb}
+      \strng{authorbibnamehash}{ef1afe57a31521a89b4e8ec9dbd35dfb}
+      \strng{authornamehash}{ef1afe57a31521a89b4e8ec9dbd35dfb}
+      \strng{authorfullhash}{ef1afe57a31521a89b4e8ec9dbd35dfb}
+      \strng{authorfullhashraw}{ef1afe57a31521a89b4e8ec9dbd35dfb}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{details sequence diagram}
+      \field{urlday}{28}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2012}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.cybermedian.com/fr/comprehensive-guide-to-sequence-diagrams/
+      \endverb
+      \verb{url}
+      \verb https://www.cybermedian.com/fr/comprehensive-guide-to-sequence-diagrams/
+      \endverb
+    \endentry
+    \entry{Logiciel_de_gestion_des_locations}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=5462d3f595a387fd7710ff13e3813418}{%
+           family={Edwige},
+           familyi={E\bibinitperiod},
+           given={Olivier},
+           giveni={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{5462d3f595a387fd7710ff13e3813418}
+      \strng{fullhash}{5462d3f595a387fd7710ff13e3813418}
+      \strng{fullhashraw}{5462d3f595a387fd7710ff13e3813418}
+      \strng{bibnamehash}{5462d3f595a387fd7710ff13e3813418}
+      \strng{authorbibnamehash}{5462d3f595a387fd7710ff13e3813418}
+      \strng{authornamehash}{5462d3f595a387fd7710ff13e3813418}
+      \strng{authorfullhash}{5462d3f595a387fd7710ff13e3813418}
+      \strng{authorfullhashraw}{5462d3f595a387fd7710ff13e3813418}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Logiciel de gestion des locations}
+      \field{urlday}{8}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2018}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://edeotech.blogspot.com/2018/12/logiciel-de-location-de-voiture.html
+      \endverb
+      \verb{url}
+      \verb https://edeotech.blogspot.com/2018/12/logiciel-de-location-de-voiture.html
+      \endverb
+    \endentry
+    \entry{etude_faisabilite_cairn}{online}{}{}
+      \name{author}{2}{}{%
+        {{hash=42c06a12c116dd9b4bf0d31112de33cd}{%
+           family={Englender},
+           familyi={E\bibinitperiod},
+           given={Olivier},
+           giveni={O\bibinitperiod}}}%
+        {{hash=9b17cbdeee7b6321ca2667cbd117d2f6}{%
+           family={Fernandes},
+           familyi={F\bibinitperiod},
+           given={Sophie},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{c421e767947eb7c098ad3a1da0cad1ab}
+      \strng{fullhash}{c421e767947eb7c098ad3a1da0cad1ab}
+      \strng{fullhashraw}{c421e767947eb7c098ad3a1da0cad1ab}
+      \strng{bibnamehash}{c421e767947eb7c098ad3a1da0cad1ab}
+      \strng{authorbibnamehash}{c421e767947eb7c098ad3a1da0cad1ab}
+      \strng{authornamehash}{c421e767947eb7c098ad3a1da0cad1ab}
+      \strng{authorfullhash}{c421e767947eb7c098ad3a1da0cad1ab}
+      \strng{authorfullhashraw}{c421e767947eb7c098ad3a1da0cad1ab}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{L'étude de faisabilité dans la gestion de projet}
+      \field{urlday}{1}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2022}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://shs.cairn.info/pro-en-gestion-de-projet--9782311622188?lang=fr
+      \endverb
+      \verb{url}
+      \verb https://shs.cairn.info/pro-en-gestion-de-projet--9782311622188?lang=fr
+      \endverb
+    \endentry
+    \entry{gestion-de-location-par_excel}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=e93230b9bcedf16f8b67fab6270e99bd}{%
+           family={Facile},
+           familyi={F\bibinitperiod},
+           given={Informatique},
+           giveni={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{e93230b9bcedf16f8b67fab6270e99bd}
+      \strng{fullhash}{e93230b9bcedf16f8b67fab6270e99bd}
+      \strng{fullhashraw}{e93230b9bcedf16f8b67fab6270e99bd}
+      \strng{bibnamehash}{e93230b9bcedf16f8b67fab6270e99bd}
+      \strng{authorbibnamehash}{e93230b9bcedf16f8b67fab6270e99bd}
+      \strng{authornamehash}{e93230b9bcedf16f8b67fab6270e99bd}
+      \strng{authorfullhash}{e93230b9bcedf16f8b67fab6270e99bd}
+      \strng{authorfullhashraw}{e93230b9bcedf16f8b67fab6270e99bd}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Gestion de location par Excel}
+      \field{urlday}{8}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2012}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://forum.excel-pratique.com/excel/planning-gestion-de-vehicules-50986
+      \endverb
+      \verb{url}
+      \verb https://forum.excel-pratique.com/excel/planning-gestion-de-vehicules-50986
+      \endverb
+    \endentry
+    \entry{rc}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=124886e6b78908d846a8ac41d90dbbbf}{%
+           family={GetApp},
+           familyi={G\bibinitperiod}}}%
+      }
+      \strng{namehash}{124886e6b78908d846a8ac41d90dbbbf}
+      \strng{fullhash}{124886e6b78908d846a8ac41d90dbbbf}
+      \strng{fullhashraw}{124886e6b78908d846a8ac41d90dbbbf}
+      \strng{bibnamehash}{124886e6b78908d846a8ac41d90dbbbf}
+      \strng{authorbibnamehash}{124886e6b78908d846a8ac41d90dbbbf}
+      \strng{authornamehash}{124886e6b78908d846a8ac41d90dbbbf}
+      \strng{authorfullhash}{124886e6b78908d846a8ac41d90dbbbf}
+      \strng{authorfullhashraw}{124886e6b78908d846a8ac41d90dbbbf}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Car Rental Software - Management and Booking | RentSyst}
+      \field{urlday}{2}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2012}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.getapp.fr/software/103915/rent-centric
+      \endverb
+      \verb{url}
+      \verb https://www.getapp.fr/software/103915/rent-centric
+      \endverb
+    \endentry
+    \entry{ISO}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=214201a75bc48e1d0617500d7b3ba814}{%
+           family={ISO15288},
+           familyi={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{214201a75bc48e1d0617500d7b3ba814}
+      \strng{fullhash}{214201a75bc48e1d0617500d7b3ba814}
+      \strng{fullhashraw}{214201a75bc48e1d0617500d7b3ba814}
+      \strng{bibnamehash}{214201a75bc48e1d0617500d7b3ba814}
+      \strng{authorbibnamehash}{214201a75bc48e1d0617500d7b3ba814}
+      \strng{authornamehash}{214201a75bc48e1d0617500d7b3ba814}
+      \strng{authorfullhash}{214201a75bc48e1d0617500d7b3ba814}
+      \strng{authorfullhashraw}{214201a75bc48e1d0617500d7b3ba814}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{System life cycle}
+      \field{urlday}{10}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2015}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.iso.org/standard/63711.html?utm_source=copilot.com
+      \endverb
+      \verb{url}
+      \verb https://www.iso.org/standard/63711.html?utm_source=copilot.com
+      \endverb
+    \endentry
+    \entry{ittrip}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=b94e3f706f78a003b18df077b47b438c}{%
+           family={ittrip},
+           familyi={i\bibinitperiod}}}%
+      }
+      \strng{namehash}{b94e3f706f78a003b18df077b47b438c}
+      \strng{fullhash}{b94e3f706f78a003b18df077b47b438c}
+      \strng{fullhashraw}{b94e3f706f78a003b18df077b47b438c}
+      \strng{bibnamehash}{b94e3f706f78a003b18df077b47b438c}
+      \strng{authorbibnamehash}{b94e3f706f78a003b18df077b47b438c}
+      \strng{authornamehash}{b94e3f706f78a003b18df077b47b438c}
+      \strng{authorfullhash}{b94e3f706f78a003b18df077b47b438c}
+      \strng{authorfullhashraw}{b94e3f706f78a003b18df077b47b438c}
+      \field{sortinit}{i}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Ittrip}
+      \field{urlday}{24}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2018}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://fr.ittrip.xyz/ms-office/excel/excel-filter-calc-powerquery
+      \endverb
+      \verb{url}
+      \verb https://fr.ittrip.xyz/ms-office/excel/excel-filter-calc-powerquery
+      \endverb
+    \endentry
+    \entry{journaldunet}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=292214e5c983ba65fc06b63322753130}{%
+           family={journaldunet},
+           familyi={j\bibinitperiod}}}%
+      }
+      \strng{namehash}{292214e5c983ba65fc06b63322753130}
+      \strng{fullhash}{292214e5c983ba65fc06b63322753130}
+      \strng{fullhashraw}{292214e5c983ba65fc06b63322753130}
+      \strng{bibnamehash}{292214e5c983ba65fc06b63322753130}
+      \strng{authorbibnamehash}{292214e5c983ba65fc06b63322753130}
+      \strng{authornamehash}{292214e5c983ba65fc06b63322753130}
+      \strng{authorfullhash}{292214e5c983ba65fc06b63322753130}
+      \strng{authorfullhashraw}{292214e5c983ba65fc06b63322753130}
+      \field{sortinit}{j}
+      \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Dependance aux outils ucaas et saas}
+      \field{urlday}{24}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2014}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.journaldunet.com/cloud/1533559-quand-la-dependance-aux-outils-ucaas-et-saas-met-les-entreprises-a-l-epreuve/
+      \endverb
+      \verb{url}
+      \verb https://www.journaldunet.com/cloud/1533559-quand-la-dependance-aux-outils-ucaas-et-saas-met-les-entreprises-a-l-epreuve/
+      \endverb
+    \endentry
+    \entry{modele-contrat-location-vehicule}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=50dfce673a9f10e082015a195716abad}{%
+           family={Juristique.org},
+           familyi={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{50dfce673a9f10e082015a195716abad}
+      \strng{fullhash}{50dfce673a9f10e082015a195716abad}
+      \strng{fullhashraw}{50dfce673a9f10e082015a195716abad}
+      \strng{bibnamehash}{50dfce673a9f10e082015a195716abad}
+      \strng{authorbibnamehash}{50dfce673a9f10e082015a195716abad}
+      \strng{authornamehash}{50dfce673a9f10e082015a195716abad}
+      \strng{authorfullhash}{50dfce673a9f10e082015a195716abad}
+      \strng{authorfullhashraw}{50dfce673a9f10e082015a195716abad}
+      \field{sortinit}{J}
+      \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Modèle de contrat de location de véhicule}
+      \field{urlday}{8}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2020}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.juristique.org/commercial/modele-contrat-location-vehicule
+      \endverb
+      \verb{url}
+      \verb https://www.juristique.org/commercial/modele-contrat-location-vehicule
+      \endverb
+    \endentry
+    \entry{Lucidchart}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=0831ebf392685227f29806bf11ade668}{%
+           family={Lucidchart},
+           familyi={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{0831ebf392685227f29806bf11ade668}
+      \strng{fullhash}{0831ebf392685227f29806bf11ade668}
+      \strng{fullhashraw}{0831ebf392685227f29806bf11ade668}
+      \strng{bibnamehash}{0831ebf392685227f29806bf11ade668}
+      \strng{authorbibnamehash}{0831ebf392685227f29806bf11ade668}
+      \strng{authornamehash}{0831ebf392685227f29806bf11ade668}
+      \strng{authorfullhash}{0831ebf392685227f29806bf11ade668}
+      \strng{authorfullhashraw}{0831ebf392685227f29806bf11ade668}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Diagramme de cas d'utilisation UML}
+      \field{urlday}{24}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2016}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.lucidchart.com/pages/fr/diagramme-de-cas-dutilisation-uml
+      \endverb
+      \verb{url}
+      \verb https://www.lucidchart.com/pages/fr/diagramme-de-cas-dutilisation-uml
+      \endverb
+    \endentry
+    \entry{letemps_news}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=f9a027736f3298032ce8e0f25166d820}{%
+           family={News},
+           familyi={N\bibinitperiod},
+           given={Le\bibnamedelima Temps},
+           giveni={L\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+      }
+      \strng{namehash}{f9a027736f3298032ce8e0f25166d820}
+      \strng{fullhash}{f9a027736f3298032ce8e0f25166d820}
+      \strng{fullhashraw}{f9a027736f3298032ce8e0f25166d820}
+      \strng{bibnamehash}{f9a027736f3298032ce8e0f25166d820}
+      \strng{authorbibnamehash}{f9a027736f3298032ce8e0f25166d820}
+      \strng{authornamehash}{f9a027736f3298032ce8e0f25166d820}
+      \strng{authorfullhash}{f9a027736f3298032ce8e0f25166d820}
+      \strng{authorfullhashraw}{f9a027736f3298032ce8e0f25166d820}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{731 sociétés de location de voitures : et des défis à relever !}
+      \field{urlday}{1}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://letemps.news/2026/01/15/731-societes-de-location-de-voitures-et-des-defis-a-relever/
+      \endverb
+      \verb{url}
+      \verb https://letemps.news/2026/01/15/731-societes-de-location-de-voitures-et-des-defis-a-relever/
+      \endverb
+    \endentry
+    \entry{uml}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=28b901e3041d5eddb024f7a581b78f76}{%
+           family={omg},
+           familyi={o\bibinitperiod}}}%
+      }
+      \strng{namehash}{28b901e3041d5eddb024f7a581b78f76}
+      \strng{fullhash}{28b901e3041d5eddb024f7a581b78f76}
+      \strng{fullhashraw}{28b901e3041d5eddb024f7a581b78f76}
+      \strng{bibnamehash}{28b901e3041d5eddb024f7a581b78f76}
+      \strng{authorbibnamehash}{28b901e3041d5eddb024f7a581b78f76}
+      \strng{authornamehash}{28b901e3041d5eddb024f7a581b78f76}
+      \strng{authorfullhash}{28b901e3041d5eddb024f7a581b78f76}
+      \strng{authorfullhashraw}{28b901e3041d5eddb024f7a581b78f76}
+      \field{sortinit}{o}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Uml}
+      \field{urlday}{9}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2010}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.omg.org/UML/
+      \endverb
+      \verb{url}
+      \verb https://www.omg.org/UML/
+      \endverb
+    \endentry
+    \entry{stackoverflow}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=928a3e3d99440ed892dda5028159a3aa}{%
+           family={Overflow},
+           familyi={O\bibinitperiod},
+           given={Stack},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{928a3e3d99440ed892dda5028159a3aa}
+      \strng{fullhash}{928a3e3d99440ed892dda5028159a3aa}
+      \strng{fullhashraw}{928a3e3d99440ed892dda5028159a3aa}
+      \strng{bibnamehash}{928a3e3d99440ed892dda5028159a3aa}
+      \strng{authorbibnamehash}{928a3e3d99440ed892dda5028159a3aa}
+      \strng{authornamehash}{928a3e3d99440ed892dda5028159a3aa}
+      \strng{authorfullhash}{928a3e3d99440ed892dda5028159a3aa}
+      \strng{authorfullhashraw}{928a3e3d99440ed892dda5028159a3aa}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{UML Class Diagram}
+      \field{urlday}{24}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2000}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://stackoverflow.com/questions/683825/in-uml-class-diagrams-what-are-boundary-classes-control-classes-and-entity-cl?utm_source=chatgpt.com
+      \endverb
+      \verb{url}
+      \verb https://stackoverflow.com/questions/683825/in-uml-class-diagrams-what-are-boundary-classes-control-classes-and-entity-cl?utm_source=chatgpt.com
+      \endverb
+    \endentry
+    \entry{yesinternet}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=68650a99fff8ad3da8cf5aeae0f948e8}{%
+           family={saberdai},
+           familyi={s\bibinitperiod}}}%
+      }
+      \strng{namehash}{68650a99fff8ad3da8cf5aeae0f948e8}
+      \strng{fullhash}{68650a99fff8ad3da8cf5aeae0f948e8}
+      \strng{fullhashraw}{68650a99fff8ad3da8cf5aeae0f948e8}
+      \strng{bibnamehash}{68650a99fff8ad3da8cf5aeae0f948e8}
+      \strng{authorbibnamehash}{68650a99fff8ad3da8cf5aeae0f948e8}
+      \strng{authornamehash}{68650a99fff8ad3da8cf5aeae0f948e8}
+      \strng{authorfullhash}{68650a99fff8ad3da8cf5aeae0f948e8}
+      \strng{authorfullhashraw}{68650a99fff8ad3da8cf5aeae0f948e8}
+      \field{sortinit}{s}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Yesinternt}
+      \field{urlday}{6}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://yes-internet.com/
+      \endverb
+      \verb{url}
+      \verb https://yes-internet.com/
+      \endverb
+    \endentry
+    \entry{scribd_contrat_standard}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=860d569c28bad277b170f60b4c4ed966}{%
+           family={Scribd},
+           familyi={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{860d569c28bad277b170f60b4c4ed966}
+      \strng{fullhash}{860d569c28bad277b170f60b4c4ed966}
+      \strng{fullhashraw}{860d569c28bad277b170f60b4c4ed966}
+      \strng{bibnamehash}{860d569c28bad277b170f60b4c4ed966}
+      \strng{authorbibnamehash}{860d569c28bad277b170f60b4c4ed966}
+      \strng{authornamehash}{860d569c28bad277b170f60b4c4ed966}
+      \strng{authorfullhash}{860d569c28bad277b170f60b4c4ed966}
+      \strng{authorfullhashraw}{860d569c28bad277b170f60b4c4ed966}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Contrat de location de voiture standard}
+      \field{urlday}{1}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://fr.scribd.com/document/972747770/Contrat-de-location-de-voiture-standard
+      \endverb
+      \verb{url}
+      \verb https://fr.scribd.com/document/972747770/Contrat-de-location-de-voiture-standard
+      \endverb
+    \endentry
+    \entry{scrum}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=e750f90deba009f80b273bccc3980bcf}{%
+           family={scrumguides},
+           familyi={s\bibinitperiod}}}%
+      }
+      \strng{namehash}{e750f90deba009f80b273bccc3980bcf}
+      \strng{fullhash}{e750f90deba009f80b273bccc3980bcf}
+      \strng{fullhashraw}{e750f90deba009f80b273bccc3980bcf}
+      \strng{bibnamehash}{e750f90deba009f80b273bccc3980bcf}
+      \strng{authorbibnamehash}{e750f90deba009f80b273bccc3980bcf}
+      \strng{authornamehash}{e750f90deba009f80b273bccc3980bcf}
+      \strng{authorfullhash}{e750f90deba009f80b273bccc3980bcf}
+      \strng{authorfullhashraw}{e750f90deba009f80b273bccc3980bcf}
+      \field{sortinit}{s}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Scrum}
+      \field{urlday}{25}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2016}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://scrumguides.org/docs/scrumguide/v2016/2016-Scrum-Guide-French.pdf
+      \endverb
+      \verb{url}
+      \verb https://scrumguides.org/docs/scrumguide/v2016/2016-Scrum-Guide-French.pdf
+      \endverb
+    \endentry
+    \entry{hq_features}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=100bd179ae051abbfef47480c7b17167}{%
+           family={Software},
+           familyi={S\bibinitperiod},
+           given={HQ\bibnamedelima Rental},
+           giveni={H\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+      }
+      \strng{namehash}{100bd179ae051abbfef47480c7b17167}
+      \strng{fullhash}{100bd179ae051abbfef47480c7b17167}
+      \strng{fullhashraw}{100bd179ae051abbfef47480c7b17167}
+      \strng{bibnamehash}{100bd179ae051abbfef47480c7b17167}
+      \strng{authorbibnamehash}{100bd179ae051abbfef47480c7b17167}
+      \strng{authornamehash}{100bd179ae051abbfef47480c7b17167}
+      \strng{authorfullhash}{100bd179ae051abbfef47480c7b17167}
+      \strng{authorfullhashraw}{100bd179ae051abbfef47480c7b17167}
+      \field{extraname}{1}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Car Rental Software - Features}
+      \field{urlday}{6}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.hqrentalsoftware.com/features
+      \endverb
+      \verb{url}
+      \verb https://www.hqrentalsoftware.com/features
+      \endverb
+    \endentry
+    \entry{renthub_tarifs}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=4500be50f62362fad55446a271301f2d}{%
+           family={Software},
+           familyi={S\bibinitperiod},
+           given={Renthub},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{4500be50f62362fad55446a271301f2d}
+      \strng{fullhash}{4500be50f62362fad55446a271301f2d}
+      \strng{fullhashraw}{4500be50f62362fad55446a271301f2d}
+      \strng{bibnamehash}{4500be50f62362fad55446a271301f2d}
+      \strng{authorbibnamehash}{4500be50f62362fad55446a271301f2d}
+      \strng{authornamehash}{4500be50f62362fad55446a271301f2d}
+      \strng{authorfullhash}{4500be50f62362fad55446a271301f2d}
+      \strng{authorfullhashraw}{4500be50f62362fad55446a271301f2d}
+      \field{extraname}{2}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Tarifs du logiciel de gestion pour la location de voitures}
+      \field{urlday}{1}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2015}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.renthubsoftware.com/fr/logiciel-cloud-gestion-vtc-location-avec-chauffeur/prix-logiciel-cloud-gestion-location-avec-chauffeur/
+      \endverb
+      \verb{url}
+      \verb https://www.renthubsoftware.com/fr/logiciel-cloud-gestion-vtc-location-avec-chauffeur/prix-logiciel-cloud-gestion-location-avec-chauffeur/
+      \endverb
+    \endentry
+    \entry{tunisiadrive_benefits}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=09ddafb6cdc9175065159595ee30353b}{%
+           family={TunisiaDrive.com},
+           familyi={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{09ddafb6cdc9175065159595ee30353b}
+      \strng{fullhash}{09ddafb6cdc9175065159595ee30353b}
+      \strng{fullhashraw}{09ddafb6cdc9175065159595ee30353b}
+      \strng{bibnamehash}{09ddafb6cdc9175065159595ee30353b}
+      \strng{authorbibnamehash}{09ddafb6cdc9175065159595ee30353b}
+      \strng{authornamehash}{09ddafb6cdc9175065159595ee30353b}
+      \strng{authorfullhash}{09ddafb6cdc9175065159595ee30353b}
+      \strng{authorfullhashraw}{09ddafb6cdc9175065159595ee30353b}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Location de voiture en Tunisie}
+      \field{urlday}{1}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2023}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://tunisiadrive.com/partners/benefits
+      \endverb
+      \verb{url}
+      \verb https://tunisiadrive.com/partners/benefits
+      \endverb
+    \endentry
+    \entry{drivotunisie}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=995e73e792cd34bea868ed24e0312070}{%
+           family={Tunisie},
+           familyi={T\bibinitperiod},
+           given={Drivo},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{995e73e792cd34bea868ed24e0312070}
+      \strng{fullhash}{995e73e792cd34bea868ed24e0312070}
+      \strng{fullhashraw}{995e73e792cd34bea868ed24e0312070}
+      \strng{bibnamehash}{995e73e792cd34bea868ed24e0312070}
+      \strng{authorbibnamehash}{995e73e792cd34bea868ed24e0312070}
+      \strng{authornamehash}{995e73e792cd34bea868ed24e0312070}
+      \strng{authorfullhash}{995e73e792cd34bea868ed24e0312070}
+      \strng{authorfullhashraw}{995e73e792cd34bea868ed24e0312070}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Informations pratiques pour votre location de voiture en Tunisie}
+      \field{urlday}{1}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{s.d.}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.drivotunisie.com/infos-pratiques/
+      \endverb
+      \verb{url}
+      \verb https://www.drivotunisie.com/infos-pratiques/
+      \endverb
+    \endentry
+    \entry{vevs_features}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=9a32aceafc624f84783b889b117c3b6e}{%
+           family={VEVS},
+           familyi={V\bibinitperiod}}}%
+      }
+      \strng{namehash}{9a32aceafc624f84783b889b117c3b6e}
+      \strng{fullhash}{9a32aceafc624f84783b889b117c3b6e}
+      \strng{fullhashraw}{9a32aceafc624f84783b889b117c3b6e}
+      \strng{bibnamehash}{9a32aceafc624f84783b889b117c3b6e}
+      \strng{authorbibnamehash}{9a32aceafc624f84783b889b117c3b6e}
+      \strng{authornamehash}{9a32aceafc624f84783b889b117c3b6e}
+      \strng{authorfullhash}{9a32aceafc624f84783b889b117c3b6e}
+      \strng{authorfullhashraw}{9a32aceafc624f84783b889b117c3b6e}
+      \field{sortinit}{V}
+      \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{VEVS Car Rental Software Features}
+      \field{urlday}{24}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{year}{2016}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.vevs.com/car-rental-software/features.php
+      \endverb
+      \verb{url}
+      \verb https://www.vevs.com/car-rental-software/features.php
+      \endverb
+    \endentry
+    \entry{youtube_excel_gestion}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=8dd1bae8da2e2408210d0656fbe6b7d1}{%
+           family={YouTube},
+           familyi={Y\bibinitperiod}}}%
+      }
+      \strng{namehash}{8dd1bae8da2e2408210d0656fbe6b7d1}
+      \strng{fullhash}{8dd1bae8da2e2408210d0656fbe6b7d1}
+      \strng{fullhashraw}{8dd1bae8da2e2408210d0656fbe6b7d1}
+      \strng{bibnamehash}{8dd1bae8da2e2408210d0656fbe6b7d1}
+      \strng{authorbibnamehash}{8dd1bae8da2e2408210d0656fbe6b7d1}
+      \strng{authornamehash}{8dd1bae8da2e2408210d0656fbe6b7d1}
+      \strng{authorfullhash}{8dd1bae8da2e2408210d0656fbe6b7d1}
+      \strng{authorfullhashraw}{8dd1bae8da2e2408210d0656fbe6b7d1}
+      \field{sortinit}{Y}
+      \field{sortinithash}{fd67ad5a9ef0f7456bdd9aab10fe1495}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Gestion de location de véhicules sur Excel}
+      \field{urlday}{1}
+      \field{urlmonth}{4}
+      \field{urlyear}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.youtube.com/watch?v=6IV2tpBoXGkY
+      \endverb
+      \verb{url}
+      \verb https://www.youtube.com/watch?v=6IV2tpBoXGkY
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

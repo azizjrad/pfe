@@ -1233,6 +1233,106 @@ Le module d'implémentation d'un projet prévoit l'implémentation des fonctions
 
 Le tableau ci-joint décrit le répertoire de données afin d'illustrer les attributs que l'on retrouve dans les différentes classes, ainsi que leurs étiquettes et leurs types.
 
+\subsubsection{Tableau « users »}
+
+\begin{table}[H]
+\centering
+\caption{Tableau « users »}
+\label{tab:users}
+\renewcommand{\arraystretch}{1.3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|p{4cm}|l|}
+\hline
+\textbf{Champs} & \textbf{Type} & \textbf{Libellé} & \textbf{Contraintes} \\
+\hline
+id & Int & Identifiant unique de l'utilisateur & PRIMARY KEY, NOT NULL \\
+\hline
+name & String & Le nom de l'utilisateur & NOT NULL \\
+\hline
+email & String & L'email de l'utilisateur & NOT NULL, UNIQUE \\
+\hline
+email\_verified\_at & Timestamp & La date de vérification de l'email & NULLABLE \\
+\hline
+password & String & Le mot de passe de l'utilisateur & NOT NULL \\
+\hline
+must\_change\_password & Tinyint(1) & Indique si l'utilisateur doit changer son mot de passe & NOT NULL, DEFAULT 0 \\
+\hline
+role & Enum & Le rôle de l'utilisateur (client / agency\_admin / super\_admin) & NOT NULL \\
+\hline
+agency\_id & BigInt & Identifiant unique de l'agence & FOREIGN KEY, NULLABLE \\
+\hline
+phone & String & Le numéro de téléphone de l'utilisateur & NULLABLE \\
+\hline
+address & Text & L'adresse de l'utilisateur & NULLABLE \\
+\hline
+driver\_license & String & Le permis de conduire de l'utilisateur & NULLABLE \\
+\hline
+is\_suspended & Tinyint(1) & Indique si l'utilisateur est suspendu & NOT NULL, DEFAULT 0 \\
+\hline
+suspension\_reason & Text & La raison de la suspension de l'utilisateur & NULLABLE \\
+\hline
+suspended\_at & Timestamp & La date de suspension de l'utilisateur & NULLABLE \\
+\hline
+remember\_token & String & Token de mémorisation & NULLABLE \\
+\hline
+created\_at & Timestamp & Date de création & NOT NULL \\
+\hline
+updated\_at & Timestamp & Date de modification & NOT NULL \\
+\hline
+\end{tabular}%
+}
+\end{table}
+
+\subsubsection{Tableau « vehicles »}
+
+\begin{table}[H]
+\centering
+\caption{Tableau « vehicles »}
+\label{tab:vehicles}
+\renewcommand{\arraystretch}{1.3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|p{4cm}|l|}
+\hline
+\textbf{Champs} & \textbf{Type} & \textbf{Libellé} & \textbf{Contraintes} \\
+\hline
+id & Int & Identifiant unique du véhicule & PRIMARY KEY, NOT NULL \\
+\hline
+brand & String & La marque du véhicule & NOT NULL \\
+\hline
+model & String & Le modèle du véhicule & NOT NULL \\
+\hline
+year & Int & L'année du véhicule & NOT NULL \\
+\hline
+mileage & Int & Le kilométrage du véhicule & NOT NULL \\
+\hline
+daily\_price & Decimal(8,2) & Le prix journalier de location & NOT NULL \\
+\hline
+caution\_amount & Decimal(10,2) & Le montant de la caution fixé par l'agence & NULLABLE \\
+\hline
+license\_plate & String & La plaque d'immatriculation & NOT NULL, UNIQUE \\
+\hline
+color & String & La couleur du véhicule & NOT NULL \\
+\hline
+seats & Int & Le nombre de places & NOT NULL \\
+\hline
+transmission & Enum & Le type de transmission (manual / automatic) & NOT NULL \\
+\hline
+fuel\_type & Enum & Le type de carburant (petrol / diesel / electric / hybrid) & NOT NULL \\
+\hline
+status & Enum & L'état du véhicule (available / reserved / in\_use / returned) & NOT NULL, DEFAULT available \\
+\hline
+agency\_id & BigInt UNSIGNED & Identifiant unique de l'agence & FOREIGN KEY, NOT NULL \\
+\hline
+created\_at & Timestamp & Date de création & NULLABLE \\
+\hline
+updated\_at & Timestamp & Date de modification & NULLABLE \\
+\hline
+images & Text & Les images du véhicule & NULLABLE \\
+\hline
+\end{tabular}%
+}
+\end{table}
+
 \subsection{Réalisation des interfaces du premier sprint}
 
 Nous présentons dans cette section les interfaces graphiques développées lors du premier sprint.
@@ -1262,15 +1362,6 @@ Nous présentons dans cette section les interfaces graphiques développées lors
     \includegraphics[width=0.9\linewidth]{Chapitres/Figures/inter_profil.png}
     \caption{Interface profil}
     \label{fig:interface_profil_s1}
-\end{figure}
-
-\subsubsection{Interface vitrine :}
-
-\begin{figure}[H]
-    \centering
-    \fbox{\parbox[c][5cm][c]{0.88\linewidth}{\centering Emplacement réservé pour la capture de l'interface vitrine.}}
-    \caption{Interface vitrine}
-    \label{fig:interface_vitrine_s1}
 \end{figure}
 
 \subsubsection{Interface chatbot :}
