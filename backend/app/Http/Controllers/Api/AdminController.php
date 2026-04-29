@@ -137,7 +137,7 @@ class AdminController extends Controller
         $frontend = config('app.frontend_url', env('FRONTEND_URL', config('app.url')));
         $link = rtrim($frontend, '/') . '/set-password?token=' . urlencode($token) . '&email=' . urlencode($user->email);
 
-        Mail::to($user->email)->queue(new InviteUserMail($link, $user->name ?? null, $user->role ?? null));
+        Mail::to($user->email)->send(new InviteUserMail($link, $user->name ?? null, $user->role ?? null));
 
         return $this->apiSuccessResponse(null, new UserResource($user), 201);
     }

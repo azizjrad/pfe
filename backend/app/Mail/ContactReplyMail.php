@@ -3,13 +3,12 @@
 namespace App\Mail;
 
 use App\Models\ContactMessage;
-use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 class ContactReplyMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use SerializesModels;
 
     public ContactMessage $contactMessage;
     public string $reply;

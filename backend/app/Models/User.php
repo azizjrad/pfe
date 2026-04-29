@@ -125,7 +125,7 @@ class User extends Authenticatable
         $frontend = config('app.frontend_url', env('FRONTEND_URL', config('app.url')));
         $link = rtrim($frontend, '/') . '/set-password?token=' . urlencode($token) . '&email=' . urlencode($this->email);
 
-        // Queue the branded mailable instead of the default notification
-        \Illuminate\Support\Facades\Mail::to($this->email)->queue(new \App\Mail\ResetPasswordMail($link, $this->email));
+        // Send the branded mailable immediately
+        \Illuminate\Support\Facades\Mail::to($this->email)->send(new \App\Mail\ResetPasswordMail($link, $this->email));
     }
 }
