@@ -692,8 +692,143 @@ diagramme de séquence détaillé correspondant à chaque cas d'utilisation anal
 Le module d'implémentation du deuxième sprint présente la mise en œuvre technique des fonctionnalités développées, en détaillant leur réalisation au niveau du code et leur intégration dans l'application.
 
 \subsection{Tables de la base de données}
+\subsubsection{Tableau « reservations »}
+\begin{table}[H]
+\centering
+\caption{Tableau « reservations »}
+\label{tab:reservations}
+\renewcommand{\arraystretch}{1.3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|p{4cm}|l|}
+\hline
+\textbf{Champs} & \textbf{Type} & \textbf{Libellé} & \textbf{Contraintes} \\
+\hline
+id & BigInt UNSIGNED & Identifiant unique de la réservation & PRIMARY KEY, AUTO\_INCREMENT, NOT NULL \\
+\hline
+user\_id & BigInt UNSIGNED & Identifiant du client & FOREIGN KEY (users), NOT NULL \\
+\hline
+vehicle\_id & BigInt UNSIGNED & Identifiant du véhicule & FOREIGN KEY (vehicles), NOT NULL \\
+\hline
+start\_date & Date & Date de début de location & NOT NULL \\
+\hline
+end\_date & Date & Date de fin de location & NOT NULL \\
+\hline
+pickup\_location & Varchar(255) & Lieu de récupération & NULLABLE \\
+\hline
+dropoff\_location & Varchar(255) & Lieu de retour & NULLABLE \\
+\hline
+base\_price & Decimal(10,2) & Coût base de location & NOT NULL \\
+\hline
+discount\_amount & Decimal(10,2) & Montant remise appliquée & NOT NULL, DEFAULT 0.00 \\
+\hline
+additional\_charges & Decimal(10,2) & Frais supplémentaires & NOT NULL, DEFAULT 0.00 \\
+\hline
+total\_price & Decimal(10,2) & Prix total à payer & NOT NULL \\
+\hline
+platform\_commission\_rate & Decimal(5,4) & Taux commission plateforme & NOT NULL, DEFAULT 0.0800 \\
+\hline
+platform\_commission & Decimal(10,2) & Commission plateforme & NOT NULL, DEFAULT 0.00 \\
+\hline
+agency\_payout & Decimal(10,2) & Paiement agence & NOT NULL, DEFAULT 0.00 \\
+\hline
+paid\_amount & Decimal(10,2) & Montant déjà payé & NOT NULL, DEFAULT 0.00 \\
+\hline
+remaining\_amount & Decimal(10,2) & Solde impayé & NOT NULL, DEFAULT 0.00 \\
+\hline
+\end{tabular}%
+}
+\end{table}
+
 
 Le tableau suivant présente le dictionnaire des données du deuxième sprint, en précisant pour chaque table les attributs définis, leurs libellés ainsi que leurs types.
+
+\subsubsection{Tableau « contact\_messages »}
+\begin{table}[H]
+\centering
+\caption{Tableau « contact\_messages »}
+\label{tab:contact_messages}
+\renewcommand{\arraystretch}{1.3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|p{4cm}|l|}
+\hline
+\textbf{Champs} & \textbf{Type} & \textbf{Libellé} & \textbf{Contraintes} \\
+\hline
+id & BigInt UNSIGNED & Identifiant unique du message & PRIMARY KEY, AUTO\_INCREMENT, NOT NULL \\
+\hline
+name & Varchar(255) & Nom du contact & NOT NULL \\
+\hline
+email & Varchar(255) & Email du contact & NOT NULL \\
+\hline
+phone & Varchar(255) & Numéro téléphone & NULLABLE \\
+\hline
+subject & Varchar(255) & Sujet du message & NOT NULL \\
+\hline
+message & Text & Corps du message & NOT NULL \\
+\hline
+admin\_reply & Text & Réponse de l'admin (snapshot) & NULLABLE \\
+\hline
+replied\_by\_email & Varchar(255) & Email de l'admin qui répond & NULLABLE \\
+\hline
+replied\_at & Timestamp & Date de réponse & NULLABLE \\
+\hline
+is\_read & TinyInt(1) & Message lu & NOT NULL, DEFAULT 0 \\
+\hline
+submitted\_at & Timestamp & Date de soumission & NULLABLE \\
+\hline
+read\_at & Timestamp & Date de lecture & NULLABLE \\
+\hline
+created\_at & Timestamp & Date de création & NULLABLE \\
+\hline
+updated\_at & Timestamp & Date de modification & NULLABLE \\
+\hline
+\end{tabular}%
+}
+\end{table}
+
+\subsubsection{Tableau « client\_reliability\_scores »}
+\begin{table}[H]
+\centering
+\caption{Tableau « client\_reliability\_scores »}
+\label{tab:client_reliability_scores}
+\renewcommand{\arraystretch}{1.3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|p{4cm}|l|}
+\hline
+\textbf{Champs} & \textbf{Type} & \textbf{Libellé} & \textbf{Contraintes} \\
+\hline
+id & BigInt UNSIGNED & Identifiant unique du score & PRIMARY KEY, AUTO\_INCREMENT, NOT NULL \\
+\hline
+user\_id & BigInt UNSIGNED & Identifiant du client & FOREIGN KEY (users), NOT NULL \\
+\hline
+total\_reservations & Int & Nombre total de réservations & NOT NULL, DEFAULT 0 \\
+\hline
+completed\_reservations & Int & Réservations complétées & NOT NULL, DEFAULT 0 \\
+\hline
+cancelled\_reservations & Int & Réservations annulées & NOT NULL, DEFAULT 0 \\
+\hline
+late\_returns & Int & Retours en retard & NOT NULL, DEFAULT 0 \\
+\hline
+payment\_delays & Int & Retards de paiement & NOT NULL, DEFAULT 0 \\
+\hline
+damage\_incidents & Int & Incidents dommages & NOT NULL, DEFAULT 0 \\
+\hline
+total\_unpaid\_amount & Decimal(10,2) & Solde impayé total & NOT NULL, DEFAULT 0.00 \\
+\hline
+reliability\_score & Int & Score fiabilité (0-100) & NOT NULL, DEFAULT 100 \\
+\hline
+risk\_level & Enum('low','medium','high','blocked') & Niveau risque & NOT NULL, DEFAULT 'low' \\
+\hline
+admin\_notes & Text & Notes administrateur & NULLABLE \\
+\hline
+last\_calculated\_at & Timestamp & Dernière recalculation & NULLABLE \\
+\hline
+created\_at & Timestamp & Date de création & NULLABLE \\
+\hline
+updated\_at & Timestamp & Date de modification & NULLABLE \\
+\hline
+\end{tabular}%
+}
+\end{table}
 
 \subsection{Réalisation des interfaces du deuxième sprint}
 
