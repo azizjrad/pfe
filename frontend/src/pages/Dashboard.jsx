@@ -112,6 +112,7 @@ const Dashboard = () => {
   const allReservations = adminDashboard.allReservations;
   const contactMessages = adminDashboard.contactMessages;
   const financialStats = adminDashboard.financialStats;
+  const financialFilters = adminDashboard.financialFilters;
   const agencyStats = agencyDashboard.agencyStats;
   const clientStats = clientDashboard.clientStats;
 
@@ -683,14 +684,11 @@ const Dashboard = () => {
             contactMessages={contactMessages}
             setHistoryModal={setHistoryModal}
             financialStats={financialStats}
+            financialFilters={financialFilters}
             user={user}
-            onDeleteAgency={(id) => {
-              setDeleteModal({
-                isOpen: true,
-                type: "agency",
-                item: agencies.find((a) => a.id === id),
-              });
-            }}
+            onFinancialFiltersChange={
+              adminDashboard.handleFinancialFiltersChange
+            }
             onEditAgency={(item) => {
               setEditModal({ isOpen: true, type: "agency", item });
             }}
@@ -741,6 +739,7 @@ const Dashboard = () => {
             onPermanentDeleteReport={adminDashboard.handlePermanentDeleteReport}
             onMarkMessageRead={adminDashboard.handleMarkMessageRead}
             onDeleteContactMessage={adminDashboard.handleDeleteContactMessage}
+            onReplyContactMessage={adminDashboard.handleReplyContactMessage}
             onViewReportDetails={(report) => {
               setReportDetailsModal({ isOpen: true, report });
             }}
@@ -1086,27 +1085,15 @@ const Dashboard = () => {
           setDeleteModal({ isOpen: false, type: null, item: null })
         }
         onConfirm={() => {
-          if (deleteModal.type === "agency") {
-            adminDashboard.handleDeleteAgency(deleteModal.item.id);
-          } else if (deleteModal.type === "user") {
+          if (deleteModal.type === "user") {
             adminDashboard.handleDeleteUser(deleteModal.item.id);
           }
           setDeleteModal({ isOpen: false, type: null, item: null });
         }}
-        title={
-          deleteModal.type === "agency"
-            ? t("dashboard.modals.deleteAgencyTitle")
-            : t("dashboard.modals.deleteUserTitle")
-        }
-        message={
-          deleteModal.type === "agency"
-            ? t("dashboard.modals.deleteAgencyDesc", {
-                name: deleteModal.item?.name,
-              })
-            : t("dashboard.modals.deleteUserDesc", {
-                name: deleteModal.item?.name,
-              })
-        }
+        title={t("dashboard.modals.deleteUserTitle")}
+        message={t("dashboard.modals.deleteUserDesc", {
+          name: deleteModal.item?.name,
+        })}
         confirmText={t("dashboard.actionLabels.delete")}
         cancelText={t("dashboard.actionLabels.cancel")}
         danger
@@ -1243,26 +1230,7 @@ const Dashboard = () => {
           });
           setEditModal({ isOpen: true, type: detailsModal.type, item });
         }}
-        onDelete={(itemId) => {
-          const item =
-            detailsModal.type === "agency"
-              ? agencies.find((a) => a.id === itemId)
-              : users.find((u) => u.id === itemId);
-          setDetailsModal({
-            isOpen: false,
-            type: null,
-            item: null,
-            reports: [],
-            userReportsSubmitted: [],
-            vehicles: [],
-          });
-          setDeleteModal({
-            isOpen: true,
-            type: detailsModal.type,
-            item,
-          });
-        }}
-        onSuspend={(user) => {
+        onSuspend={(item) => {
           setDetailsModal({
             isOpen: false,
             type: null,
@@ -1273,8 +1241,8 @@ const Dashboard = () => {
           });
           setSuspendModal({
             isOpen: true,
-            type: "user",
-            item: user,
+            type: detailsModal.type === "agency" ? "agency" : "user",
+            item,
           });
         }}
       />

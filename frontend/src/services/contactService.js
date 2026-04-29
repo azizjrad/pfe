@@ -26,6 +26,15 @@ export const contactService = {
     return normalizeApiResponse(response);
   },
 
+  /** Reply to a contact message by email (super admin only) */
+  reply: async (id, payload) => {
+    const response = await http.post(
+      `/admin/contact-messages/${id}/reply`,
+      payload,
+    );
+    return normalizeApiResponse(response);
+  },
+
   /** Delete a contact message (super admin only) */
   delete: async (id) => {
     const response = await http.delete(`/admin/contact-messages/${id}`);

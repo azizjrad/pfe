@@ -16,7 +16,6 @@ Route::middleware(['auth:sanctum', 'not_suspended', 'password_changed', 'role:su
     Route::get('/admin/agencies/{id}/vehicles', [AdminController::class, 'getAgencyVehicles']);
     Route::get('/admin/agencies/{id}/reports', [ReportController::class, 'getAgencyReportsAgainst']);
     Route::put('/admin/agencies/{id}', [AdminController::class, 'updateAgency']);
-    Route::delete('/admin/agencies/{id}', [AdminController::class, 'deleteAgency']);
     Route::post('/admin/agencies', [AdminController::class, 'createAgency']);
 
     Route::get('/admin/financial-stats', [AdminController::class, 'getFinancialStats']);
@@ -40,5 +39,6 @@ Route::middleware(['auth:sanctum', 'not_suspended', 'password_changed', 'role:su
 
     Route::get('/admin/contact-messages', [ContactController::class, 'index']);
     Route::patch('/admin/contact-messages/{contactMessage}/read', [ContactController::class, 'markAsRead']);
+    Route::post('/admin/contact-messages/{contactMessage}/reply', [ContactController::class, 'reply']);
     Route::delete('/admin/contact-messages/{contactMessage}', [ContactController::class, 'destroy']);
 });

@@ -2,7 +2,11 @@
 
 namespace App\Services;
 
+use App\Mail\ContactReplyMail;
 use App\Models\ContactMessage;
+use App\Models\ContactMessageReply;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ContactService
 {
@@ -27,7 +31,11 @@ class ContactService
      */
     public function getAll(array $filters = [], int $perPage = 25)
     {
-        $query = ContactMessage::query();
+        $query = ContactMessage::query()->with([
+            'replies' => function ($replyQuery) {
+                $replyQuery->orderBy('replied_at')->orderBy('id');
+            },
+        ]);
 
         if (isset($filters['is_read'])) {
             $query->where('is_read', $filters['is_read']);
@@ -50,7 +58,9 @@ class ContactService
      */
     public function markAsRead(int $id): ContactMessage
     {
-        $message = ContactMessage::findOrFail($id);
+        $message = ContactMessage::with(['replies' => function ($replyQuery) {
+            $replyQuery->orderBy('replied_at')->orderBy('id');
+        }])->findOrFail($id);
         $message->update(['is_read' => true, 'read_at' => now()]);
         return $message;
     }
@@ -62,5 +72,39 @@ class ContactService
     {
         $message = ContactMessage::findOrFail($id);
         $message->delete();
+    }
+
+    /**
+     * Reply to a contact message by email and persist reply metadata.
+     */
+    public function reply(int $id, string $replyText, string $adminEmail): ContactMessage
+    {
+        $message = ContactMessage::findOrFail($id);
+        $replyAt = now();
+
+        DB::transaction(function () use ($message, $replyText, $adminEmail, $replyAt): void {
+            ContactMessageReply::create([
+                'contact_message_id' => $message->id,
+                'reply' => $replyText,
+                'replied_by_email' => $adminEmail,
+                'replied_at' => $replyAt,
+            ]);
+
+            $message->update([
+                'admin_reply' => $replyText,
+                'replied_by_email' => $adminEmail,
+                'replied_at' => $replyAt,
+                'is_read' => true,
+                'read_at' => $message->read_at ?? $replyAt,
+            ]);
+        });
+
+        Mail::to($message->email)->send(new ContactReplyMail($message->fresh(), $replyText));
+
+        return ContactMessage::with([
+            'replies' => function ($replyQuery) {
+                $replyQuery->orderBy('replied_at')->orderBy('id');
+            },
+        ])->findOrFail($message->id);
     }
 }

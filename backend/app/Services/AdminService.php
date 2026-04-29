@@ -326,12 +326,26 @@ class AdminService
     /**
      * Get financial statistics for admin dashboard
      */
-    public function getFinancialStats(): array
+    public function getFinancialStats(array $filters = []): array
     {
         $platformCommissionRate = 0.05;
 
+        $agencyId = isset($filters['agency_id']) ? (int) $filters['agency_id'] : null;
+        $startDate = $filters['start_date'] ?? null;
+        $endDate = $filters['end_date'] ?? null;
+
+        $completedReservations = Reservation::query()
+            ->where('status', ReservationStatus::COMPLETED->value)
+            ->when($agencyId, function ($query) use ($agencyId) {
+                $query->whereHas('vehicle', function ($vehicleQuery) use ($agencyId) {
+                    $vehicleQuery->where('agency_id', $agencyId);
+                });
+            })
+            ->when($startDate, fn ($query) => $query->whereDate('created_at', '>=', $startDate))
+            ->when($endDate, fn ($query) => $query->whereDate('created_at', '<=', $endDate));
+
         // Monthly revenue (YYYY-MM)
-        $monthly = Reservation::where('status', ReservationStatus::COMPLETED->value)
+        $monthly = (clone $completedReservations)
             ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, SUM(total_price) as revenue")
             ->groupBy('month')
             ->orderBy('month')
@@ -349,9 +363,15 @@ class AdminService
             })
             ->toArray();
 
-        $agencies = Agency::query()->select('id', 'name')->orderBy('id')->get();
+        $agencies = Agency::query()
+            ->select('id', 'name')
+            ->when($agencyId, fn ($query) => $query->where('id', $agencyId))
+            ->orderBy('id')
+            ->get();
         $revenueByAgency = $this->getCompletedRevenueByAgency(
-            $agencies->pluck('id')->all()
+            $agencies->pluck('id')->all(),
+            $startDate,
+            $endDate
         );
 
         // Revenue by agency
@@ -369,7 +389,7 @@ class AdminService
         })->toArray();
 
         $totals = [];
-        $totals['revenue'] = round((float) Reservation::where('status', ReservationStatus::COMPLETED->value)->sum('total_price'), 2);
+        $totals['revenue'] = round((float) (clone $completedReservations)->sum('total_price'), 2);
         $totals['commission'] = round($totals['revenue'] * $platformCommissionRate, 2);
         $totals['profit'] = round($totals['revenue'] - $totals['commission'], 2);
         $totals['avgMonthly'] = !empty($monthly) ? round(array_sum(array_column($monthly, 'revenue')) / count($monthly), 2) : 0;
@@ -388,7 +408,7 @@ class AdminService
      * @param array<int> $agencyIds
      * @return array<int, float>
      */
-    private function getCompletedRevenueByAgency(array $agencyIds): array
+    private function getCompletedRevenueByAgency(array $agencyIds, ?string $startDate = null, ?string $endDate = null): array
     {
         if (empty($agencyIds)) {
             return [];
@@ -398,6 +418,8 @@ class AdminService
             ->join('vehicles', 'reservations.vehicle_id', '=', 'vehicles.id')
             ->where('reservations.status', ReservationStatus::COMPLETED->value)
             ->whereIn('vehicles.agency_id', $agencyIds)
+            ->when($startDate, fn ($query) => $query->whereDate('reservations.created_at', '>=', $startDate))
+            ->when($endDate, fn ($query) => $query->whereDate('reservations.created_at', '<=', $endDate))
             ->groupBy('vehicles.agency_id')
             ->select('vehicles.agency_id', DB::raw('SUM(reservations.total_price) as revenue'))
             ->get()

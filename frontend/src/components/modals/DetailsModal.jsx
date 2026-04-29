@@ -870,17 +870,17 @@ export default function DetailsModal({
                   : t("admin.users.suspend")}
               </button>
             )}
-            {type === "agency" && onDelete && (
+            {type === "agency" && onSuspend && (
               <button
                 onClick={() => {
-                  if (confirm(t("admin.agencies.deleteConfirm"))) {
-                    onClose();
-                    onDelete(item.id);
-                  }
+                  onClose();
+                  onSuspend(item);
                 }}
-                className="flex-1 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-red-500 hover:bg-red-600 transition-colors"
+                className={`flex-1 px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors ${item.status === "inactive" ? "text-white bg-green-600 hover:bg-green-700" : "text-white bg-orange-500 hover:bg-orange-600"}`}
               >
-                {t("common.delete")}
+                {item.status === "inactive"
+                  ? t("dashboard.unblock")
+                  : t("dashboard.block")}
               </button>
             )}
             <button

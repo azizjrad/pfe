@@ -9,6 +9,24 @@ import AgencyStatisticsTab from "./AgencyStatisticsTab";
 import Toast from "../common/Toast";
 import { ROLES } from "../../constants/roles";
 import { REPORT_STATUS, RESERVATION_STATUS } from "../../constants/statuses";
+import { normalizeArray } from "../../utils/normalizers";
+
+const INITIAL_VEHICLE_FORM = {
+  brand: "",
+  model: "",
+  year: new Date().getFullYear(),
+  mileage: 0,
+  daily_price: 0,
+  caution_amount: "",
+  license_plate: "",
+  color: "",
+  seats: 5,
+  transmission: "automatic",
+  fuel_type: "petrol",
+  status: "available",
+  image: "",
+};
+
 const AgencyContent = ({
   activeTab,
   reports = [],
@@ -26,6 +44,7 @@ const AgencyContent = ({
   const [creatingVehicle, setCreatingVehicle] = useState(false);
   const [editingVehicleId, setEditingVehicleId] = useState(null);
   const [deletingVehicleId, setDeletingVehicleId] = useState(null);
+  const [vehicleForm, setVehicleForm] = useState(INITIAL_VEHICLE_FORM);
   const [vehicleHistoryModal, setVehicleHistoryModal] = useState({
     isOpen: false,
     vehicle: null,
@@ -44,7 +63,12 @@ const AgencyContent = ({
     setLoading(propsLoading);
   }, [propsReservations, propsVehicles, propsLoading]);
 
-  const handleCreateVehicle = async (event) => {
+  const resetVehicleForm = () => {
+    setEditingVehicleId(null);
+    setVehicleForm({ ...INITIAL_VEHICLE_FORM });
+  };
+
+  const handleSubmitVehicle = async (event) => {
     event.preventDefault();
     setCreatingVehicle(true);
 
@@ -64,26 +88,44 @@ const AgencyContent = ({
         status: vehicleForm.status || "available",
       };
 
-      const response = await vehicleService.create(payload);
-      const createdVehicle = response?.data;
+      if (editingVehicleId) {
+        const response = await vehicleService.update(editingVehicleId, payload);
+        const updatedVehicle = response?.data;
 
-      if (createdVehicle) {
-        setVehicles((prev) => [createdVehicle, ...prev]);
+        setVehicles((prev) =>
+          prev.map((vehicle) =>
+            vehicle.id === editingVehicleId
+              ? { ...vehicle, ...(updatedVehicle || payload) }
+              : vehicle,
+          ),
+        );
+
+        setToast({
+          show: true,
+          message: "Véhicule modifié avec succès",
+          type: "success",
+        });
       } else {
-        await fetchVehicles();
+        const response = await vehicleService.create(payload);
+        const createdVehicle = response?.data;
+
+        setVehicles((prev) => [createdVehicle || payload, ...prev]);
+
+        setToast({
+          show: true,
+          message: "Véhicule ajouté avec succès",
+          type: "success",
+        });
       }
 
-      setToast({
-        show: true,
-        message: "Véhicule ajouté avec succès",
-        type: "success",
-      });
       setIsVehicleModalOpen(false);
       resetVehicleForm();
     } catch (error) {
       setToast({
         show: true,
-        message: error.response?.data?.message || "Erreur ajout véhicule",
+        message:
+          error.response?.data?.message ||
+          "Erreur lors de l'enregistrement du véhicule",
         type: "error",
       });
     } finally {
@@ -119,6 +161,27 @@ const AgencyContent = ({
       image: vehicle.image || vehicle.image_url || "",
     });
     setIsVehicleModalOpen(true);
+  };
+
+  const handleDeleteVehicle = async (vehicle) => {
+    try {
+      setDeletingVehicleId(vehicle.id);
+      await vehicleService.delete(vehicle.id);
+      setVehicles((prev) => prev.filter((item) => item.id !== vehicle.id));
+      setToast({
+        show: true,
+        message: "Véhicule supprimé avec succès",
+        type: "success",
+      });
+    } catch (error) {
+      setToast({
+        show: true,
+        message: error.response?.data?.message || "Erreur suppression véhicule",
+        type: "error",
+      });
+    } finally {
+      setDeletingVehicleId(null);
+    }
   };
 
   const handleVehicleFormChange = (event) => {

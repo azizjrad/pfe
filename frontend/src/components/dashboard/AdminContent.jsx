@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import {
@@ -43,8 +43,9 @@ const AdminContent = ({
   contactMessages,
   setHistoryModal,
   financialStats,
+  financialFilters,
   user,
-  onDeleteAgency,
+  onFinancialFiltersChange,
   onEditAgency,
   onSuspendAgency,
   onDeleteUser,
@@ -59,6 +60,7 @@ const AdminContent = ({
   onPermanentDeleteReport,
   onMarkMessageRead,
   onDeleteContactMessage,
+  onReplyContactMessage,
   onViewReportDetails,
 }) => {
   const { t } = useTranslation();
@@ -82,6 +84,21 @@ const AdminContent = ({
     isOpen: false,
     message: null,
   });
+  const [messageReply, setMessageReply] = useState("");
+  const [sendingReply, setSendingReply] = useState(false);
+  const [statsFiltersDraft, setStatsFiltersDraft] = useState({
+    agencyId: financialFilters?.agencyId || "",
+    startDate: financialFilters?.startDate || "",
+    endDate: financialFilters?.endDate || "",
+  });
+
+  useEffect(() => {
+    setStatsFiltersDraft({
+      agencyId: financialFilters?.agencyId || "",
+      startDate: financialFilters?.startDate || "",
+      endDate: financialFilters?.endDate || "",
+    });
+  }, [financialFilters]);
 
   // Loading state
   if (loading) {
@@ -396,15 +413,6 @@ const AdminContent = ({
                     ? t("dashboard.unblock")
                     : t("dashboard.block")}
                 </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDeleteAgency(agency.id);
-                  }}
-                  className="flex-1 py-1.5 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100"
-                >
-                  {t("dashboard.delete")}
-                </button>
               </div>
             </div>
           ))}
@@ -490,16 +498,7 @@ const AdminContent = ({
                       }}
                       className={`mr-3 ${agency.status === "inactive" ? "text-green-600 hover:text-green-900" : "text-orange-600 hover:text-orange-900"}`}
                     >
-                      {agency.status === "inactive" ? "Débloquer" : "Bloquer"}
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onDeleteAgency(agency.id);
-                      }}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      Supprimer
+                      {agency.status === "inactive" ? "Débloquer" : "Suspendre"}
                     </button>
                   </td>
                 </tr>
@@ -736,6 +735,16 @@ const AdminContent = ({
       });
     };
 
+    const openMessageDetails = (message) => {
+      setMessageDetailsModal({ isOpen: true, message });
+      setMessageReply("");
+    };
+
+    const closeMessageDetails = () => {
+      setMessageDetailsModal({ isOpen: false, message: null });
+      setMessageReply("");
+    };
+
     const unreadCount = (contactMessages || []).filter(
       (message) => !message.is_read,
     ).length;
@@ -780,15 +789,22 @@ const AdminContent = ({
                       </h3>
                       <p className="text-sm text-gray-500">{message.email}</p>
                     </div>
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        message.is_read
-                          ? "bg-green-100 text-green-700"
-                          : "bg-yellow-100 text-yellow-700"
-                      }`}
-                    >
-                      {message.is_read ? "Lu" : "Non lu"}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          message.is_read
+                            ? "bg-green-100 text-green-700"
+                            : "bg-yellow-100 text-yellow-700"
+                        }`}
+                      >
+                        {message.is_read ? "Lu" : "Non lu"}
+                      </span>
+                      {message.replied_at && (
+                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                          Repondu
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <div className="mt-3 space-y-2 text-sm text-gray-600">
@@ -806,12 +822,10 @@ const AdminContent = ({
 
                   <div className="mt-4 flex items-center gap-2">
                     <button
-                      onClick={() =>
-                        setMessageDetailsModal({ isOpen: true, message })
-                      }
+                      onClick={() => openMessageDetails(message)}
                       className="flex-1 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
                     >
-                      Voir détails
+                      Voir details
                     </button>
                     {!message.is_read && (
                       <button
@@ -837,7 +851,7 @@ const AdminContent = ({
                 <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Expéditeur
+                      Expediteur
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                       Sujet
@@ -858,9 +872,7 @@ const AdminContent = ({
                     <tr
                       key={message.id}
                       className="hover:bg-gray-50 transition-colors cursor-pointer"
-                      onClick={() =>
-                        setMessageDetailsModal({ isOpen: true, message })
-                      }
+                      onClick={() => openMessageDetails(message)}
                     >
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="font-medium text-gray-900">
@@ -889,6 +901,11 @@ const AdminContent = ({
                         >
                           {message.is_read ? "Lu" : "Non lu"}
                         </span>
+                        {message.replied_at && (
+                          <span className="ml-2 px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                            Repondu
+                          </span>
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         {!message.is_read && (
@@ -924,28 +941,24 @@ const AdminContent = ({
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
               className="absolute inset-0 bg-black/40"
-              onClick={() =>
-                setMessageDetailsModal({ isOpen: false, message: null })
-              }
+              onClick={closeMessageDetails}
             ></div>
             <div className="relative bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-auto shadow-2xl p-6">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h3 className="text-xl font-bold text-gray-900">
-                    Détail du message
+                    Detail du message
                   </h3>
                   <p className="text-sm text-gray-500 mt-1">
-                    Reçu le{" "}
+                    Recu le{" "}
                     {formatMessageDate(messageDetailsModal.message.created_at)}
                   </p>
                 </div>
                 <button
-                  onClick={() =>
-                    setMessageDetailsModal({ isOpen: false, message: null })
-                  }
+                  onClick={closeMessageDetails}
                   className="text-gray-500 hover:text-gray-700 text-xl leading-none"
                 >
-                  ×
+                  x
                 </button>
               </div>
 
@@ -965,7 +978,7 @@ const AdminContent = ({
                   </div>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="text-gray-500">Téléphone</p>
+                  <p className="text-gray-500">Telephone</p>
                   <p className="font-medium text-gray-900">
                     {messageDetailsModal.message.phone || "-"}
                   </p>
@@ -981,6 +994,106 @@ const AdminContent = ({
                   <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
                     {messageDetailsModal.message.message}
                   </p>
+                </div>
+
+                {messageDetailsModal.message.replies?.length > 0 && (
+                  <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
+                    <div className="flex items-center justify-between gap-3 mb-3">
+                      <p className="text-slate-700 font-semibold">
+                        Historique des reponses
+                      </p>
+                      <span className="text-xs font-medium text-slate-500">
+                        {messageDetailsModal.message.replies.length} reponse
+                        {messageDetailsModal.message.replies.length > 1
+                          ? "s"
+                          : ""}
+                      </span>
+                    </div>
+                    <div className="space-y-3 max-h-72 overflow-auto pr-1">
+                      {messageDetailsModal.message.replies.map((reply) => (
+                        <div
+                          key={reply.id}
+                          className="rounded-lg border border-slate-200 bg-white p-3"
+                        >
+                          <div className="flex items-center justify-between gap-3 mb-2">
+                            <span className="text-xs font-semibold text-primary-700">
+                              {reply.replied_by_email || "Administration"}
+                            </span>
+                            <span className="text-xs text-slate-500">
+                              {formatMessageDate(
+                                reply.replied_at || reply.created_at,
+                              )}
+                            </span>
+                          </div>
+                          <p className="text-sm text-slate-700 whitespace-pre-wrap leading-relaxed">
+                            {reply.reply}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="bg-blue-50 rounded-lg p-3 border border-blue-100">
+                  <div className="flex items-center justify-between gap-3 mb-2">
+                    <p className="text-blue-700 font-semibold">
+                      Ajouter une reponse
+                    </p>
+                    {messageDetailsModal.message.replied_at && (
+                      <p className="text-xs text-blue-700">
+                        Derniere reponse:{" "}
+                        {formatMessageDate(
+                          messageDetailsModal.message.replied_at,
+                        )}
+                      </p>
+                    )}
+                  </div>
+                  <textarea
+                    value={messageReply}
+                    onChange={(e) => setMessageReply(e.target.value)}
+                    rows={5}
+                    placeholder="Ecrivez ici une nouvelle reponse..."
+                    className="w-full rounded-lg border border-blue-200 px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  />
+                  <div className="mt-3 flex items-center justify-between gap-3">
+                    <p className="text-xs text-gray-500">
+                      Le client recevra un email signe Elite Drive et la reponse
+                      sera ajoutee a l'historique.
+                    </p>
+                    <button
+                      onClick={async () => {
+                        const messageId = messageDetailsModal.message?.id;
+                        if (
+                          !messageId ||
+                          !messageReply.trim() ||
+                          sendingReply
+                        ) {
+                          return;
+                        }
+
+                        try {
+                          setSendingReply(true);
+                          const updatedMessage = await onReplyContactMessage?.(
+                            messageId,
+                            messageReply,
+                          );
+
+                          if (updatedMessage) {
+                            setMessageDetailsModal({
+                              isOpen: true,
+                              message: updatedMessage,
+                            });
+                          }
+                        } finally {
+                          setSendingReply(false);
+                        }
+                      }}
+                      disabled={!messageReply.trim() || sendingReply}
+                      className="rounded-lg bg-primary-600 text-white px-4 py-2 text-sm font-semibold hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {sendingReply ? "Envoi..." : "Ajouter la reponse"}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1756,6 +1869,11 @@ const AdminContent = ({
         "commission",
       );
       const commissionRate = platformCommissionRate * 100;
+      const appliedFiltersCount = [
+        financialFilters?.agencyId,
+        financialFilters?.startDate,
+        financialFilters?.endDate,
+      ].filter(Boolean).length;
 
       if (normalizedMonthlyRevenue.length === 0) {
         // If the overall dashboard loading finished and we still have no
@@ -1786,10 +1904,118 @@ const AdminContent = ({
 
       return (
         <div className="space-y-6 animate-fadeIn">
+          <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-base font-semibold text-gray-900">
+                Filtres des statistiques
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1.5">
+                  Agence
+                </label>
+                <select
+                  value={statsFiltersDraft.agencyId}
+                  onChange={(e) =>
+                    setStatsFiltersDraft((prev) => ({
+                      ...prev,
+                      agencyId: e.target.value,
+                    }))
+                  }
+                  className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                >
+                  <option value="">Toutes les agences</option>
+                  {(agencies || []).map((agency) => (
+                    <option key={agency.id} value={String(agency.id)}>
+                      {agency.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1.5">
+                  Date debut
+                </label>
+                <input
+                  type="date"
+                  value={statsFiltersDraft.startDate}
+                  onChange={(e) =>
+                    setStatsFiltersDraft((prev) => ({
+                      ...prev,
+                      startDate: e.target.value,
+                    }))
+                  }
+                  className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1.5">
+                  Date fin
+                </label>
+                <input
+                  type="date"
+                  value={statsFiltersDraft.endDate}
+                  onChange={(e) =>
+                    setStatsFiltersDraft((prev) => ({
+                      ...prev,
+                      endDate: e.target.value,
+                    }))
+                  }
+                  className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+
+              <div className="flex items-end gap-2">
+                <button
+                  onClick={() => onFinancialFiltersChange?.(statsFiltersDraft)}
+                  disabled={
+                    !!statsFiltersDraft.startDate &&
+                    !!statsFiltersDraft.endDate &&
+                    statsFiltersDraft.endDate < statsFiltersDraft.startDate
+                  }
+                  className="flex-1 rounded-xl bg-primary-600 text-white px-3 py-2.5 text-sm font-semibold hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Appliquer
+                </button>
+                <button
+                  onClick={() => {
+                    const resetFilters = {
+                      agencyId: "",
+                      startDate: "",
+                      endDate: "",
+                    };
+                    setStatsFiltersDraft(resetFilters);
+                    onFinancialFiltersChange?.(resetFilters);
+                  }}
+                  className="flex-1 rounded-xl bg-gray-100 text-gray-700 px-3 py-2.5 text-sm font-semibold hover:bg-gray-200"
+                >
+                  Reinitialiser
+                </button>
+              </div>
+            </div>
+
+            {!!statsFiltersDraft.startDate &&
+              !!statsFiltersDraft.endDate &&
+              statsFiltersDraft.endDate < statsFiltersDraft.startDate && (
+                <p className="mt-3 text-xs text-red-600">
+                  La date de fin doit etre superieure ou egale a la date debut.
+                </p>
+              )}
+          </div>
+
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold text-gray-900">
               Tableau de Bord Financier
             </h2>
+            {appliedFiltersCount > 0 && (
+              <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+                Filtres actifs: {appliedFiltersCount}
+              </span>
+            )}
           </div>
 
           {/* Key Financial Metrics */}

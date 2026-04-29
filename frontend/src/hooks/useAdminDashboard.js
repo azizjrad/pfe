@@ -25,6 +25,12 @@ const DEFAULT_FINANCIAL_STATS = {
   totals: { revenue: 0, commission: 0, profit: 0, avgMonthly: 0 },
 };
 
+const DEFAULT_FINANCIAL_FILTERS = {
+  agencyId: "",
+  startDate: "",
+  endDate: "",
+};
+
 const normalizePlatformStats = (stats = {}) => ({
   totalAgencies: Number(stats.totalAgencies ?? stats.total_agencies ?? 0),
   totalUsers: Number(stats.totalUsers ?? stats.total_users ?? 0),
@@ -65,6 +71,9 @@ export default function useAdminDashboard({
   const [contactMessages, setContactMessages] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [financialStats, setFinancialStats] = useState(DEFAULT_FINANCIAL_STATS);
+  const [financialFilters, setFinancialFilters] = useState(
+    DEFAULT_FINANCIAL_FILTERS,
+  );
 
   const fetchDashboardData = async () => {
     setLoading(true);
@@ -144,9 +153,23 @@ export default function useAdminDashboard({
     }
   };
 
-  const fetchFinancialStats = async () => {
+  const fetchFinancialStats = async (filters = financialFilters) => {
     try {
-      const response = await adminService.getFinancialStats();
+      const params = {};
+
+      if (filters?.agencyId) {
+        params.agency_id = Number(filters.agencyId);
+      }
+
+      if (filters?.startDate) {
+        params.start_date = filters.startDate;
+      }
+
+      if (filters?.endDate) {
+        params.end_date = filters.endDate;
+      }
+
+      const response = await adminService.getFinancialStats(params);
       setFinancialStats(response?.data || DEFAULT_FINANCIAL_STATS);
     } catch (error) {
       console.error("Error fetching financial stats:", error);
@@ -155,6 +178,17 @@ export default function useAdminDashboard({
         "error",
       );
     }
+  };
+
+  const handleFinancialFiltersChange = async (nextFilters) => {
+    const normalized = {
+      agencyId: nextFilters?.agencyId ? String(nextFilters.agencyId) : "",
+      startDate: nextFilters?.startDate || "",
+      endDate: nextFilters?.endDate || "",
+    };
+
+    setFinancialFilters(normalized);
+    await fetchFinancialStats(normalized);
   };
 
   const fetchUserDetails = async (userId) => {
@@ -221,14 +255,26 @@ export default function useAdminDashboard({
     }
   };
 
-  const handleDeleteAgency = async (id) => {
-    await adminService.deleteAgency(id);
-    setAgencies((prev) => prev.filter((a) => a.id !== id));
-    setPlatformStats((prev) => ({
-      ...prev,
-      totalAgencies: Math.max(0, (prev.totalAgencies || 0) - 1),
-    }));
-    showToast?.(t("admin.agencies.deleteSuccess"), "success");
+  const handleReplyContactMessage = async (id, replyText) => {
+    const trimmedReply = (replyText || "").trim();
+    if (!trimmedReply) {
+      throw new Error("Reply is required");
+    }
+
+    const response = await contactService.reply(id, { reply: trimmedReply });
+    const updatedMessage = response?.data;
+
+    if (updatedMessage?.id) {
+      setContactMessages((prev) =>
+        prev.map((message) =>
+          message.id === id ? { ...message, ...updatedMessage } : message,
+        ),
+      );
+    }
+
+    showToast?.("Reponse envoyee avec succes", "success");
+
+    return updatedMessage;
   };
 
   const handleDeleteUser = async (id) => {
@@ -359,7 +405,7 @@ export default function useAdminDashboard({
     ]);
 
     if (activeTab === "statistics" && statisticsSubTab === "finance") {
-      await fetchFinancialStats();
+      await fetchFinancialStats(financialFilters);
     }
   };
 
@@ -379,7 +425,7 @@ export default function useAdminDashboard({
       activeTab === "statistics" &&
       statisticsSubTab === "finance"
     ) {
-      fetchFinancialStats();
+      fetchFinancialStats(financialFilters);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.role, activeTab, statisticsSubTab]);
@@ -399,12 +445,14 @@ export default function useAdminDashboard({
     contactMessages,
     notifications,
     financialStats,
+    financialFilters,
     refreshData,
+    handleFinancialFiltersChange,
     fetchUserDetails,
     fetchAgencyDetails,
     handleMarkMessageRead,
     handleDeleteContactMessage,
-    handleDeleteAgency,
+    handleReplyContactMessage,
     handleDeleteUser,
     handleEditAgency,
     handleEditUser,

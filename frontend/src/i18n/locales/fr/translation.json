@@ -403,7 +403,7 @@
       "reports": "Reclamations",
       "contact": "Messages",
       "contactMessages": "Messages",
-      "statisticsSuper": "Statistiques",
+      "statisticsSuper": "Statistiques globales",
       "active": "Vue d'ensemble",
       "all": "Tous",
       "financial": "Finances",
@@ -431,8 +431,7 @@
       "blockAgencyDesc": "Êtes-vous sûr de vouloir bloquer l'agence {{name}} ?",
       "unblockAgencyTitle": "Débloquer l'agence",
       "unblockAgencyDesc": "Voulez-vous débloquer l'agence {{name}} ?",
-      "deleteUserDesc": "Supprimer définitivement {{name}} ? Cette action est irréversible.",
-      "deleteAgencyDesc": "Supprimer définitivement l'agence {{name}} ? Cette action est irréversible."
+      "deleteUserDesc": "Supprimer définitivement {{name}} ? Cette action est irréversible."
     },
     "stats": {
       "totalAgencies": "Agences totales",
@@ -495,12 +494,9 @@
       "search": "Rechercher une agence...",
       "add": "Ajouter une agence",
       "edit": "Modifier l'agence",
-      "delete": "Supprimer l'agence",
       "suspend": "Suspendre",
       "activate": "Activer",
       "noAgencies": "Aucune agence trouvée",
-      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette agence ?",
-      "deleteSuccess": "Agence supprimée avec succès",
       "createSuccess": "Agence créée avec succès",
       "editSuccess": "Agence modifiée avec succès",
       "suspendSuccess": "Statut de l'agence mis à jour"
@@ -1484,9 +1480,7 @@
         "unblock": "Débloquer"
       },
       "modals": {
-        "deleteAgencyTitle": "Supprimer l'agence",
         "deleteUserTitle": "Supprimer l'utilisateur",
-        "deleteAgencyDesc": "Êtes-vous sûr de vouloir supprimer l'agence \"{{name}}\" ? Cette action est irréversible.",
         "deleteUserDesc": "Êtes-vous sûr de vouloir supprimer l'utilisateur \"{{name}}\" ? Cette action est irréversible.",
         "unblockAgencyTitle": "Débloquer l'agence",
         "blockAgencyTitle": "Bloquer l'agence",

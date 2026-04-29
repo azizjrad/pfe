@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ReplyContactMessageRequest;
 use App\Http\Requests\StoreContactMessageRequest;
 use App\Http\Resources\ContactMessageResource;
 use App\Services\ContactService;
@@ -50,6 +51,19 @@ class ContactController extends Controller
         $message = $this->contactService->markAsRead($id);
 
         return $this->apiSuccessResponse('Message marked as read.', new ContactMessageResource($message));
+    }
+
+    /**
+     * Reply to a contact message (super_admin only).
+     */
+    public function reply(ReplyContactMessageRequest $request, $id)
+    {
+        $validated = $request->validated();
+        $adminEmail = auth()->user()?->email ?? 'support@elitedrive.tn';
+
+        $message = $this->contactService->reply($id, $validated['reply'], $adminEmail);
+
+        return $this->apiSuccessResponse('Reply sent successfully.', new ContactMessageResource($message));
     }
 
     /**

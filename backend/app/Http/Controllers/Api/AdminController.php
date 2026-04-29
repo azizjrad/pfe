@@ -82,9 +82,15 @@ class AdminController extends Controller
     /**
      * Get financial statistics for platform
      */
-    public function getFinancialStats()
+    public function getFinancialStats(Request $request)
     {
-        $stats = $this->adminService->getFinancialStats();
+        $filters = $request->validate([
+            'agency_id' => ['nullable', 'integer', 'exists:agencies,id'],
+            'start_date' => ['nullable', 'date'],
+            'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
+        ]);
+
+        $stats = $this->adminService->getFinancialStats($filters);
 
         return $this->apiSuccessResponse(null, $stats);
     }
@@ -233,25 +239,5 @@ class AdminController extends Controller
         ]);
     }
 
-    /**
-     * Delete agency (super admin)
-     */
-    public function deleteAgency($id)
-    {
-        $agency = Agency::findOrFail($id);
-
-        $vehicleIds = Vehicle::where('agency_id', $agency->id)->pluck('id');
-        $hasActiveReservations = Reservation::whereIn('vehicle_id', $vehicleIds)
-            ->whereIn('status', ReservationStatus::activeValues())
-            ->exists();
-
-        if ($hasActiveReservations) {
-            return $this->apiErrorMessageResponse('Cannot delete agency with active reservations', 400);
-        }
-
-        $agency->delete();
-
-        return $this->apiSuccessResponse('Agency deleted successfully');
-    }
 }
 

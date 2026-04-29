@@ -44,12 +44,6 @@ export const adminService = {
     return normalizeApiResponse(response);
   },
 
-  /** Delete an agency */
-  deleteAgency: async (id) => {
-    const response = await http.delete(`/admin/agencies/${id}`);
-    return normalizeApiResponse(response);
-  },
-
   /**
    * Suspend or unsuspend an agency.
    * @param {string} status - 'active' or 'inactive'
@@ -89,16 +83,16 @@ export const adminService = {
   },
 
   /** Get financial statistics with monthly breakdown */
-  getFinancialStats: async () => {
+  getFinancialStats: async (params = {}) => {
     // Some deployments expose agency-level financial stats at /agency/financial-stats
     // while others may expose admin-level endpoints. Try admin first, then agency.
     try {
-      const response = await http.get("/admin/financial-stats");
+      const response = await http.get("/admin/financial-stats", { params });
       return normalizeApiResponse(response);
     } catch (err) {
       if (err.response?.status === 404) {
         try {
-          const resp = await http.get("/agency/financial-stats");
+          const resp = await http.get("/agency/financial-stats", { params });
           return normalizeApiResponse(resp);
         } catch (err2) {
           // Fallback to empty structure when endpoint isn't available
