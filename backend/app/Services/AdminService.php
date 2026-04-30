@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Domain\Enums\AgencyStatus;
 use App\Domain\Enums\ReservationStatus;
 use App\Exceptions\Domain\BusinessRuleViolationException;
 use App\Exceptions\Domain\ConflictException;
@@ -277,7 +278,39 @@ class AdminService
         ]));
 
         if (!empty($allowed)) {
-            $agency->update($allowed);
+            DB::transaction(function () use ($agency, $allowed) {
+                $agency->update($allowed);
+
+                if (!array_key_exists('status', $allowed)) {
+                    return;
+                }
+
+                $agencyAdmins = $agency->admins()->get();
+
+                if ($allowed['status'] === AgencyStatus::INACTIVE->value) {
+                    foreach ($agencyAdmins as $admin) {
+                        $admin->update([
+                            'is_suspended' => true,
+                            'suspension_reason' => 'Agency suspended',
+                            'suspended_at' => now(),
+                        ]);
+
+                        $admin->tokens()->delete();
+                    }
+
+                    return;
+                }
+
+                if ($allowed['status'] === AgencyStatus::ACTIVE->value) {
+                    foreach ($agencyAdmins as $admin) {
+                        $admin->update([
+                            'is_suspended' => false,
+                            'suspension_reason' => null,
+                            'suspended_at' => null,
+                        ]);
+                    }
+                }
+            });
         }
 
         return $agency;
