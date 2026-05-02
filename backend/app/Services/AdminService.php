@@ -35,9 +35,12 @@ class AdminService
 
         $clientCount = User::where('role', 'client')->count();
         $agencyAdminCount = User::where('role', 'agency_admin')->count();
+        $totalUsersExcludingAgencyAdmins = User::where('role', '!=', 'agency_admin')->count();
 
         return [
-            'total_users' => $totalUsers,
+            'total_users' => $totalUsersExcludingAgencyAdmins,
+            'total_user_accounts' => $totalUsers,
+            'total_users_excluding_agency_admins' => $totalUsersExcludingAgencyAdmins,
             'client_count' => $clientCount,
             'agency_admin_count' => $agencyAdminCount,
             'total_agencies' => $totalAgencies,
@@ -119,14 +122,22 @@ class AdminService
             throw new NotFoundException('User not found', 'USER_NOT_FOUND');
         }
 
-        $user->update([
-            'is_suspended' => true,
-            'suspension_reason' => $reason,
-            'suspended_at' => now(),
-        ]);
+        DB::transaction(function () use ($user, $reason): void {
+            $user->update([
+                'is_suspended' => true,
+                'suspension_reason' => $reason,
+                'suspended_at' => now(),
+            ]);
 
-        // Revoke all tokens
-        $user->tokens()->delete();
+            if ($user->role === 'agency_admin' && !empty($user->agency_id)) {
+                Agency::where('id', $user->agency_id)->update([
+                    'status' => AgencyStatus::INACTIVE->value,
+                ]);
+            }
+
+            // Revoke all tokens
+            $user->tokens()->delete();
+        });
 
         return $user;
     }
@@ -142,11 +153,19 @@ class AdminService
             throw new NotFoundException('User not found', 'USER_NOT_FOUND');
         }
 
-        $user->update([
-            'is_suspended' => false,
-            'suspension_reason' => null,
-            'suspended_at' => null,
-        ]);
+        DB::transaction(function () use ($user): void {
+            $user->update([
+                'is_suspended' => false,
+                'suspension_reason' => null,
+                'suspended_at' => null,
+            ]);
+
+            if ($user->role === 'agency_admin' && !empty($user->agency_id)) {
+                Agency::where('id', $user->agency_id)->update([
+                    'status' => AgencyStatus::ACTIVE->value,
+                ]);
+            }
+        });
 
         return $user;
     }

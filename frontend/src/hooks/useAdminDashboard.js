@@ -34,6 +34,16 @@ const DEFAULT_FINANCIAL_FILTERS = {
 const normalizePlatformStats = (stats = {}) => ({
   totalAgencies: Number(stats.totalAgencies ?? stats.total_agencies ?? 0),
   totalUsers: Number(stats.totalUsers ?? stats.total_users ?? 0),
+  totalUserAccounts: Number(
+    stats.totalUserAccounts ?? stats.total_user_accounts ?? 0,
+  ),
+  totalUsersExcludingAgencyAdmins: Number(
+    stats.totalUsersExcludingAgencyAdmins ??
+      stats.total_users_excluding_agency_admins ??
+      stats.totalUsers ??
+      stats.total_users ??
+      0,
+  ),
   totalVehicles: Number(stats.totalVehicles ?? stats.total_vehicles ?? 0),
   totalReservations: Number(
     stats.totalReservations ?? stats.total_reservations ?? 0,
@@ -362,6 +372,17 @@ export default function useAdminDashboard({
         u.id === targetUser.id ? { ...u, is_suspended: !isSuspended } : u,
       ),
     );
+
+    if (targetUser?.role === ROLES.AGENCY_ADMIN && targetUser?.agency_id) {
+      const nextStatus = !isSuspended ? "inactive" : "active";
+      setAgencies((prev) =>
+        prev.map((agency) =>
+          agency.id === targetUser.agency_id
+            ? { ...agency, status: nextStatus }
+            : agency,
+        ),
+      );
+    }
   };
 
   const handleResolveReport = async (report, notes) => {

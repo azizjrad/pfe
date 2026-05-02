@@ -887,10 +887,6 @@ const Dashboard = () => {
                               {getStatIcon(featuredCard.icon)}
                             </svg>
                           </div>
-                          <div className="flex items-center gap-2 text-slate-300 text-sm">
-                            {getTrendIcon(featuredCard.trend)}
-                            Priorite du jour
-                          </div>
                         </div>
                       </div>
                     </div>
