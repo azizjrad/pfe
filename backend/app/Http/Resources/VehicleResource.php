@@ -14,6 +14,9 @@ class VehicleResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $images = is_array($this->images ?? null) ? $this->images : [];
+        $resolvedMainImage = $this->image_url ?? $this->image ?? ($images[0] ?? null);
+
         return [
             'id' => $this->id,
             'name' => $this->name ?? trim("{$this->brand} {$this->model}"),
@@ -37,6 +40,8 @@ class VehicleResource extends JsonResource
             'agency' => new AgencyResource($this->whenLoaded('agency')),
             'image' => $this->image,
             'image_url' => $this->image_url ?? $this->image,
+            'images' => $images,
+            'main_image' => $resolvedMainImage,
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
         ];

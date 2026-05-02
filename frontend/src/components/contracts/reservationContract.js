@@ -9,13 +9,15 @@ const formatDateTime = (value) => {
   if (!value) return "N/A";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "N/A";
-  return date.toLocaleString("fr-FR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  return date
+    .toLocaleString("fr-FR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+    .replace(",", "");
 };
 
 const formatMoney = (value) => {
@@ -24,19 +26,20 @@ const formatMoney = (value) => {
 };
 
 const getVehicleImage = (reservation) =>
+  (Array.isArray(reservation?.vehicle?.images) &&
+    reservation.vehicle.images[0]) ||
+  reservation?.vehicle?.main_image ||
   reservation?.vehicle_image ||
   reservation?.vehicle?.image ||
   reservation?.vehicle?.image_url ||
   reservation?.vehicle?.photo ||
   reservation?.vehicle?.image_path ||
-  "";
+  "/default-car.jpg";
 
 export const buildReservationContractHtml = (reservation) => {
   const contractNumber = reservation?.contract_number || reservation?.id || "-";
   const startDate = formatDate(reservation?.start_date);
   const endDate = formatDate(reservation?.end_date);
-  const pickupTime = formatDateTime(reservation?.start_date);
-  const returnTime = formatDateTime(reservation?.end_date);
   const clientName =
     reservation?.client_name || reservation?.user?.name || "Client";
   const clientPhone =
@@ -201,11 +204,10 @@ export const buildReservationContractHtml = (reservation) => {
           }
           .mini-grid {
             display: grid;
-            grid-template-columns: 1.2fr 1fr;
+            grid-template-columns: 1fr;
             border: 2px solid #6b7280;
           }
-          .mini-grid .left { border-right: 2px solid #6b7280; }
-          .mini-grid .left, .mini-grid .right {
+          .mini-grid .left {
             padding: 8px;
             min-height: 150px;
           }
@@ -272,14 +274,14 @@ export const buildReservationContractHtml = (reservation) => {
                 <div class="label-row"><span>Immatriculation :</span> ${vehiclePlate}</div>
                 <div class="label-row"><span>Montant de la franchise :</span> ${cautionAmount ? formatMoney(cautionAmount) : "N/A"}</div>
                 <div class="label-row"><span>Montant de la caution :</span> ${cautionAmount ? formatMoney(cautionAmount) : "N/A"}</div>
-                ${vehicleImage ? `<img class="vehicle-photo" src="${vehicleImage}" alt="Photo du véhicule" />` : `<div class="placeholder" style="min-height: 92px; margin-top: 8px;">Photo principale du véhicule</div>`}
+                <img class="vehicle-photo" src="${vehicleImage}" alt="Photo du véhicule" onerror="this.onerror=null;this.src='/default-car.jpg';" />
               </div>
             </div>
             <div class="box">
               <div class="box-header">LOCATION</div>
               <div class="box-body">
-                <div class="label-row"><span>Début :</span> ${startDate} à ${pickupTime.split(", ")[1] || "[heure]"} à ${reservation?.pickup_location || "[Lieu]"}</div>
-                <div class="label-row"><span>Fin :</span> ${endDate} à ${returnTime.split(", ")[1] || "[heure]"} à ${reservation?.return_location || "[Lieu]"}</div>
+                <div class="label-row"><span>Début :</span> ${formatDateTime(reservation?.start_date)} à ${reservation?.pickup_location || "[Lieu]"}</div>
+                <div class="label-row"><span>Fin :</span> ${formatDateTime(reservation?.end_date)} à ${reservation?.return_location || "[Lieu]"}</div>
                 <div class="label-row"><span>Prix total :</span> ${price}</div>
                 <div class="label-row"><span>Options :</span> ${options}</div>
                 <div class="label-row"><span>Durée :</span> ${durationDays} jour(s)</div>
@@ -344,9 +346,6 @@ export const buildReservationContractHtml = (reservation) => {
                   <div><strong>Le loueur</strong></div>
                 </div>
               </div>
-              <div class="right">
-                <div class="placeholder">Insérer des photos du véhicule au départ</div>
-              </div>
             </div>
 
             <div class="mini-grid">
@@ -360,9 +359,6 @@ export const buildReservationContractHtml = (reservation) => {
                   <div><strong>Le Client</strong></div>
                   <div><strong>Le loueur</strong></div>
                 </div>
-              </div>
-              <div class="right">
-                <div class="placeholder">Insérer des photos du véhicule au retour</div>
               </div>
             </div>
           </div>
@@ -379,28 +375,21 @@ export const buildReservationContractHtml = (reservation) => {
 export const openReservationContract = (reservation) => {
   const html = buildReservationContractHtml(reservation);
   const contractWindow = window.open(
-    "",
+    "about:blank",
     "_blank",
-    "noopener,noreferrer,width=1200,height=900",
+    "width=1200,height=900",
   );
 
-  if (!contractWindow) return;
+  if (!contractWindow) {
+    const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+    const blobUrl = URL.createObjectURL(blob);
+    window.open(blobUrl, "_blank");
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+    return;
+  }
 
   contractWindow.document.open();
   contractWindow.document.write(html);
   contractWindow.document.close();
   contractWindow.focus();
-
-  const triggerPrint = () => {
-    setTimeout(() => {
-      contractWindow.print();
-    }, 250);
-  };
-
-  if (contractWindow.document.readyState === "complete") {
-    triggerPrint();
-    return;
-  }
-
-  contractWindow.onload = triggerPrint;
 };
