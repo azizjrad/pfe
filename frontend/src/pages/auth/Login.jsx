@@ -151,10 +151,10 @@ const Login = () => {
 
             <div className="space-y-6">
               {[
-                t("auth.login.feature1"),
                 t("auth.login.feature2"),
                 t("auth.login.feature3"),
                 t("auth.login.feature4"),
+                t("auth.login.feature5"),
               ].map((feature, index) => (
                 <div key={index} className="flex items-center gap-4">
                   <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0">

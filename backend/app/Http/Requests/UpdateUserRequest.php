@@ -27,6 +27,7 @@ class UpdateUserRequest extends FormRequest
             'email' => ['sometimes', 'required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->route('id'))],
             'phone' => 'sometimes|nullable|string',
             'role' => ['sometimes', Rule::in(['client', 'agency_admin', 'super_admin'])],
+            'agency_id' => 'sometimes|nullable|integer|exists:agencies,id',
         ];
     }
 }

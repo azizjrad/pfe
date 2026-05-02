@@ -347,8 +347,26 @@ class AdminService
             }
         }
 
+        // Keep role and agency linkage consistent.
+        $nextRole = $data['role'] ?? $user->role;
+        $nextAgencyId = array_key_exists('agency_id', $data)
+            ? $data['agency_id']
+            : $user->agency_id;
+
+        if ($nextRole === 'agency_admin' && empty($nextAgencyId)) {
+            throw new BusinessRuleViolationException(
+                'Agency admin must be linked to an agency.',
+                422,
+                'user.agency_admin_requires_agency'
+            );
+        }
+
+        if ($nextRole !== 'agency_admin' && !array_key_exists('agency_id', $data)) {
+            $data['agency_id'] = null;
+        }
+
         // Update allowed profile fields
-        $allowed = array_intersect_key($data, array_flip(['name','email','phone','role']));
+        $allowed = array_intersect_key($data, array_flip(['name','email','phone','role','agency_id']));
         if (!empty($allowed)) {
             $user->update($allowed);
         }

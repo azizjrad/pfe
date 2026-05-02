@@ -23,9 +23,11 @@ use App\Http\Resources\VehicleResource;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Passwords\PasswordBroker;
+use Illuminate\Validation\ValidationException;
 
 class AdminController extends Controller
 {
@@ -112,22 +114,51 @@ class AdminController extends Controller
     {
         $data = $request->validated();
 
-        // Create user without immediate password; send invite link to set password
-        if ($data['role'] === 'client') {
-            $user = $this->clientService->create($data);
-        } else {
+        $user = DB::transaction(function () use ($data) {
+            // Create user without immediate password; send invite link to set password
+            if ($data['role'] === 'client') {
+                return $this->clientService->create($data);
+            }
+
+            $agencyId = $data['agency_id'] ?? null;
+
+            if ($data['role'] === 'agency_admin') {
+                $agencyOption = $data['agency_option'] ?? 'existing';
+
+                if ($agencyOption === 'new') {
+                    $agencyPayload = $data['agency'] ?? [];
+                    $agency = $this->agencyService->create($agencyPayload);
+                    $agencyId = $agency->id;
+                }
+
+                if (empty($agencyId)) {
+                    throw ValidationException::withMessages([
+                        'agency_id' => 'Agency is required for agency admin.',
+                    ]);
+                }
+
+                // Replace previous agency admin account for this agency.
+                User::where('role', 'agency_admin')
+                    ->where('agency_id', $agencyId)
+                    ->get()
+                    ->each(function (User $agencyAdmin): void {
+                        $agencyAdmin->tokens()->delete();
+                        $agencyAdmin->delete();
+                    });
+            }
+
             // agency_admin or super_admin
-            $user = User::create([
+            return User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 // DB password is required. Store a temporary hash until invite flow sets the real password.
                 'password' => Hash::make($data['password'] ?? Str::random(40)),
                 'role' => $data['role'],
-                'agency_id' => $data['agency_id'] ?? null,
+                'agency_id' => $data['role'] === 'agency_admin' ? $agencyId : null,
                 'phone' => $data['phone'] ?? null,
                 'address' => $data['address'] ?? null,
             ]);
-        }
+        });
 
         // Generate a password reset token and send invite email
         /** @var PasswordBroker $passwordBroker */

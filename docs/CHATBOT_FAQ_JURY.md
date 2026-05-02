@@ -7,8 +7,9 @@
 R: Notre chatbot utilise une **IA réelle et avancée** alimentée par **Google AI Studio (Gemini)**. Il n'y a pas de réponses pré-écrites - chaque réponse est générée en temps réel par un modèle de langage avancé.
 
 Le flux complet est:
+
 ```
-Frontend (Chatbot.jsx) 
+Frontend (Chatbot.jsx)
   → Backend (/api/chatbot/message)
     → ChatbotService
       → Google AI Studio (Gemini)
@@ -24,6 +25,7 @@ Frontend (Chatbot.jsx)
 R: Non, nous n'utilisons pas un modèle entraîné custom. À la place, nous utilisons **Gemini (pré-entraîné par Google)** avec une **intégration base de données en temps réel**.
 
 Avantages:
+
 - ✅ Pas besoin de pré-entraînement coûteux
 - ✅ Le modèle est toujours à jour avec les dernières techniques d'IA
 - ✅ Les données du chatbot sont **dynamiques**, pas statiques
@@ -47,6 +49,7 @@ R: Le chatbot est **directement intégré à votre base de données**. Voici com
    - Avec les prix, modèles, années
 
 3. **Contexte Enrichi**: Ces données sont ajoutées au **contexte système** envoyé à Gemini:
+
    ```
    Contexte système: "L'utilisateur demande des voitures de marque Toyota.
    Véhicules disponibles:
@@ -72,7 +75,7 @@ private function buildInventoryContext(string $userMessage): ?string
 {
     // Détecte si la question est sur les véhicules
     $normalizedMessage = $this->normalizeText($userMessage);
-    
+
     if (!$this->looksLikeVehicleAvailabilityQuestion($normalizedMessage)) {
         return null;
     }
@@ -187,6 +190,7 @@ GEMINI_SYSTEM_PROMPT="Tu es un assistant utile et concis pour une plateforme de 
 ```
 
 Paramètres AI:
+
 - **Temperature**: 0.4 (réponses plus déterministes, moins créatives)
 - **Max Tokens**: 300 (réponses concises)
 - **Max History**: 10 messages (contexte court mais suffisant)
@@ -200,9 +204,11 @@ Paramètres AI:
 R: Nous avons un système robuste de fallback:
 
 1. **Erreur API (503)**:
+
    ```php
    throw new \RuntimeException('Chatbot provider request failed...');
    ```
+
    Réponse: "Le service chatbot est temporairement indisponible"
 
 2. **Erreur Serveur (500)**:
@@ -320,6 +326,7 @@ Vous pouvez faire une réservation directement dans l'app!"
 
 **Q: Pourquoi ne pas créer un modèle custom?**
 R: Parce que notre approche hybride (Gemini + DB réelle) est:
+
 - Plus rapide à déployer
 - Plus économique
 - Plus flexible
@@ -327,12 +334,14 @@ R: Parce que notre approche hybride (Gemini + DB réelle) est:
 
 **Q: Quel est l'avantage de maintenir l'historique?**
 R: Cela permet des conversations naturelles et contextuelles:
+
 - "Parle-moi plus sur celle-ci" - le chatbot se souvient
 - Questions de suivi
 - Meilleure UX
 
 **Q: Comment gérez-vous les requêtes malveillantes?**
 R: Plusieurs couches:
+
 - Validation request (ChatbotMessageRequest)
 - Throttling (20 req/min)
 - System prompt guidage
@@ -340,6 +349,7 @@ R: Plusieurs couches:
 
 **Q: Peut-on personnaliser le comportement du chatbot?**
 R: Oui! Via:
+
 - `GEMINI_SYSTEM_PROMPT` - Instruction système
 - `Temperature` - Créativité vs déterminisme
 - `buildInventoryContext()` - Logique de requête DB
@@ -383,12 +393,12 @@ tail -f storage/logs/laravel.log
 
 Notre chatbot est une **solution hybride intelligente**:
 
-| Aspect | Détail |
-|--------|--------|
-| **AI** | Google Gemini (pré-entraîné, moderne) |
-| **Données** | Intégration BD temps réel (précision) |
-| **Sécurité** | Backend-only, clé cachée, validation |
-| **UX** | Historique, fallback, erreurs gérées |
-| **Flexibilité** | Configurable, extensible, scalable |
+| Aspect          | Détail                                |
+| --------------- | ------------------------------------- |
+| **AI**          | Google Gemini (pré-entraîné, moderne) |
+| **Données**     | Intégration BD temps réel (précision) |
+| **Sécurité**    | Backend-only, clé cachée, validation  |
+| **UX**          | Historique, fallback, erreurs gérées  |
+| **Flexibilité** | Configurable, extensible, scalable    |
 
 **Résultat**: Un chatbot qui combine l'intelligence artificielle avec la précision des données réelles. ✨

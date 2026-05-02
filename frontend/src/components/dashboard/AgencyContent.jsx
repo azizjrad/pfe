@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import ConfirmationModal from "../modals/ConfirmationModal";
 import { useTranslation } from "react-i18next";
 import { agencyService } from "../../services/agencyService";
 import { vehicleService } from "../../services/vehicleService";
@@ -44,6 +45,10 @@ const AgencyContent = ({
   const [creatingVehicle, setCreatingVehicle] = useState(false);
   const [editingVehicleId, setEditingVehicleId] = useState(null);
   const [deletingVehicleId, setDeletingVehicleId] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState({
+    open: false,
+    vehicle: null,
+  });
   const [vehicleForm, setVehicleForm] = useState(INITIAL_VEHICLE_FORM);
   const [vehicleHistoryModal, setVehicleHistoryModal] = useState({
     isOpen: false,
@@ -163,7 +168,13 @@ const AgencyContent = ({
     setIsVehicleModalOpen(true);
   };
 
-  const handleDeleteVehicle = async (vehicle) => {
+  const handleDeleteVehicle = (vehicle) => {
+    setConfirmDelete({ open: true, vehicle });
+  };
+
+  const confirmDeleteVehicle = async () => {
+    const vehicle = confirmDelete.vehicle;
+    if (!vehicle) return;
     try {
       setDeletingVehicleId(vehicle.id);
       await vehicleService.delete(vehicle.id);
@@ -181,6 +192,7 @@ const AgencyContent = ({
       });
     } finally {
       setDeletingVehicleId(null);
+      setConfirmDelete({ open: false, vehicle: null });
     }
   };
 
@@ -748,6 +760,21 @@ const AgencyContent = ({
                                     ? "Suppression..."
                                     : "Supprimer"}
                                 </button>
+                                <ConfirmationModal
+                                  isOpen={confirmDelete.open}
+                                  onClose={() =>
+                                    setConfirmDelete({
+                                      open: false,
+                                      vehicle: null,
+                                    })
+                                  }
+                                  onConfirm={confirmDeleteVehicle}
+                                  title="Confirmer la suppression"
+                                  message="Êtes-vous sûr de vouloir supprimer ce véhicule de la vitrine ? Cette action est irréversible."
+                                  confirmText="Supprimer"
+                                  cancelText="Annuler"
+                                  danger
+                                />
                               </div>
                             </td>
                           </>

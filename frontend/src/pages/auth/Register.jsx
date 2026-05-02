@@ -216,7 +216,7 @@ const Register = () => {
         <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full mix-blend-soft-light opacity-10 -translate-y-1/2 translate-x-1/2"></div>
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-primary-300 rounded-full mix-blend-soft-light opacity-10 translate-y-1/2 -translate-x-1/2"></div>
 
-        <div className="relative z-10 flex flex-col justify-between w-full text-white">
+        <div className="relative z-10 flex h-full w-full flex-col text-white">
           <div>
             <Link to="/" className="inline-flex items-center space-x-3 group">
               <div className="w-12 h-12 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -226,103 +226,108 @@ const Register = () => {
             </Link>
           </div>
 
-          <div className="space-y-8">
-            <div>
-              <h1 className="text-5xl font-bold mb-6 leading-tight">
-                {t("auth.register.welcomeTitle1")}
-                <br />
-                {t("app.name")}
-              </h1>
-              <p className="text-xl text-primary-100 leading-relaxed">
-                {t("auth.register.welcomeSubtitle")}
-              </p>
-            </div>
+          <div className="flex-1 flex items-center">
+            <div className="space-y-8">
+              <div>
+                <h1 className="text-5xl font-bold mb-6 leading-tight">
+                  {t("auth.register.welcomeTitle1")}
+                  <br />
+                  {t("app.name")}
+                </h1>
+                <p className="text-xl text-primary-100 leading-relaxed">
+                  {t("auth.register.welcomeSubtitle")}
+                </p>
+              </div>
 
-            <div className="space-y-6">
-              {[
-                {
-                  icon: (
-                    <svg
-                      className="w-6 h-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  ),
-                  text: t("auth.login.feature1"),
-                },
-                {
-                  icon: (
-                    <svg
-                      className="w-6 h-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  ),
-                  text: t("auth.login.feature2"),
-                },
-                {
-                  icon: (
-                    <svg
-                      className="w-6 h-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                      />
-                    </svg>
-                  ),
-                  text: t("auth.login.feature3"),
-                },
-                {
-                  icon: (
-                    <svg
-                      className="w-6 h-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                      />
-                    </svg>
-                  ),
-                  text: t("auth.login.feature4"),
-                },
-              ].map((feature, index) => (
-                <div key={index} className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0">
-                    {feature.icon}
+              <div className="space-y-6">
+                {[
+                  {
+                    icon: (
+                      <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    ),
+                    text: t("auth.login.feature1"),
+                  },
+                  {
+                    icon: (
+                      <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    ),
+                    text: t("auth.login.feature2"),
+                  },
+                  {
+                    icon: (
+                      <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                        />
+                      </svg>
+                    ),
+                    text: t("auth.login.feature3"),
+                  },
+                  {
+                    icon: (
+                      <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                        />
+                      </svg>
+                    ),
+                    text: t("auth.login.feature4"),
+                  },
+                ].map((feature, index) => (
+                  <div key={index} className="flex items-center gap-4">
+                    <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0">
+                      {feature.icon}
+                    </div>
+                    <span className="text-primary-50">{feature.text}</span>
                   </div>
-                  <span className="text-primary-50">{feature.text}</span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-          <div className="text-sm text-primary-200">{t("app.copyright")}</div>
+
+          <div className="pt-6 text-sm text-primary-200">
+            {t("app.copyright")}
+          </div>
         </div>
       </div>
 
@@ -987,17 +992,6 @@ const Register = () => {
                   t("auth.register.submitButton")
                 )}
               </button>
-
-              <div className="relative my-6">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-200"></div>
-                </div>
-                <div className="relative flex justify-center text-xs">
-                  <span className="px-4 bg-white text-gray-400 font-medium">
-                    {t("auth.register.orRegisterWith")}
-                  </span>
-                </div>
-              </div>
             </form>
           </div>
 
