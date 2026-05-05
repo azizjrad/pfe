@@ -36,7 +36,7 @@ class EnsureUserNotSuspended
 
         return response()->json([
             'success' => false,
-            'message' => 'Your account is suspended. Contact support.',
+            'message' => __('auth.account_suspended'),
         ], 403);
     }
 }

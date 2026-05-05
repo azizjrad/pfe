@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
 
       // Clear auth state
       setUser(null);
-      setError("Authorization failed. Please log in again.");
+      setError("Autorisation échouée. Veuillez vous reconnecter.");
 
       // Clear localStorage
       await authService.logout();
@@ -91,7 +91,9 @@ export const AuthProvider = ({ children }) => {
         if (freshData?.is_suspended && !user?.is_suspended) {
           console.warn("User was suspended server-side");
           setUser(null);
-          setError("Your account has been suspended. Please contact support.");
+          setError(
+            "Votre compte a été suspendu. Veuillez contacter le support.",
+          );
           await authService.logout();
           navigate("/login", { replace: true });
           return;
@@ -110,7 +112,7 @@ export const AuthProvider = ({ children }) => {
         // On validation error, emit unauthorized to trigger logout
         if (err.response?.status === 401) {
           authEventEmitter.emit("unauthorized", {
-            reason: "Session validation failed",
+            reason: "Échec de la validation de session",
           });
         }
       }
@@ -121,16 +123,16 @@ export const AuthProvider = ({ children }) => {
 
   /**
    * Register a new user
-   * Creates account and automatically logs them in
+   * Creates account and leaves the user logged out until email verification
    */
   const register = async (userData) => {
     setError(null);
     try {
       const response = await authService.register(userData);
-      setUser(response.user);
       return response;
     } catch (err) {
-      const errorMessage = err.response?.data?.message || "Registration failed";
+      const errorMessage =
+        err.response?.data?.message || "Échec de l'inscription";
       setError(errorMessage);
       throw err;
     }
@@ -147,7 +149,8 @@ export const AuthProvider = ({ children }) => {
       setUser(response.user);
       return response;
     } catch (err) {
-      const errorMessage = err.response?.data?.message || "Invalid credentials";
+      const errorMessage =
+        err.response?.data?.message || "E-mail ou mot de passe invalide";
       setError(errorMessage);
       throw err;
     }
@@ -221,5 +224,3 @@ export const useAuth = () => {
   }
   return context;
 };
-
-export default AuthContext;

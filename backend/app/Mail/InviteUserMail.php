@@ -8,6 +8,7 @@ use Illuminate\Queue\SerializesModels;
 class InviteUserMail extends Mailable
 {
     use SerializesModels;
+
     public string $link;
     public ?string $name;
     public ?string $role;

@@ -293,6 +293,23 @@
       "error": "Impossible de réinitialiser le mot de passe",
       "missingToken": "Jeton manquant. Veuillez demander un lien de réinitialisation.",
       "backLoginLink": "Retour à la connexion"
+    },
+    "verify": {
+      "verifyingTitle": "Vérification de votre email...",
+      "verifyingMsg": "Veuillez patienter pendant que nous vérifions votre adresse e-mail.",
+      "successTitle": "Email Vérifié!",
+      "successMsg": "Votre email a été vérifié avec succès. Vous pouvez maintenant vous connecter.",
+      "emailVerified": "Email vérifié:",
+      "redirectingMsg": "Redirection vers la connexion...",
+      "goToLogin": "Aller à la connexion",
+      "errorTitle": "Vérification échouée",
+      "errorInvalidLink": "Lien de vérification invalide ou expiré.",
+      "errorVerification": "Impossible de vérifier votre email. Veuillez réessayer.",
+      "errorTips": "Ce que vous pouvez faire:",
+      "errorTip1": "Vérifiez que le lien est complet et correct",
+      "errorTip2": "Assurez-vous que le lien n'a pas expiré",
+      "errorTip3": "Demandez un nouvel email de vérification",
+      "registerAgain": "S'inscrire à nouveau"
     }
   },
 

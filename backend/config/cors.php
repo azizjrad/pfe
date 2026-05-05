@@ -24,7 +24,6 @@ return [
         'http://localhost:5176',
         'http://localhost:5177',
         'http://localhost:5178',
-        'http://localhost:3000',
         'http://127.0.0.1:5173',
         'http://127.0.0.1:5178',
         'https://web-production-d6858.up.railway.app',  // Railway frontend

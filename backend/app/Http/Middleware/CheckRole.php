@@ -19,14 +19,14 @@ class CheckRole
         // Reject unauthenticated requests immediately
         if (!$request->user()) {
             return response()->json([
-                'message' => 'Unauthenticated',
+                'message' => __('messages.unauthenticated'),
             ], 401);
         }
 
         // Verify user has at least one of the required roles (authorization check)
         if (!in_array($request->user()->role, $roles)) {
             return response()->json([
-                'message' => 'Access denied. Insufficient permissions.',
+                'message' => __('messages.forbidden'),
                 'required_roles' => $roles,
                 'user_role' => $request->user()->role,
             ], 403);

@@ -25,10 +25,6 @@ export const authService = {
   register: async (userData) => {
     const response = await http.post("/register", userData);
     const payload = authService.normalizeResponse(response);
-
-    if (payload.user) {
-      localStorage.setItem("user", JSON.stringify(payload.user));
-    }
     return payload;
   },
 

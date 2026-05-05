@@ -79,10 +79,10 @@ class AuthController extends Controller
         );
 
         if ($status == Password::PASSWORD_RESET) {
-            return $this->apiSuccessResponse('Password set successfully');
+            return $this->apiSuccessResponse(__('auth.password_set_success'));
         }
 
-        return $this->apiErrorMessageResponse('Failed to reset password', 400);
+        return $this->apiErrorMessageResponse(__('auth.failed_reset_password'), 400);
     }
 
     /**
@@ -93,21 +93,20 @@ class AuthController extends Controller
         $validated = $request->validated();
 
         $user = $this->authService->register($validated);
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return $this->withAuthCookie($this->apiSuccessResponse('Registration successful', [
+        return $this->apiSuccessResponse(__('auth.registration_success'), [
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'role' => $user->role,
-                    'must_change_password' => (bool) $user->must_change_password,
+                'must_change_password' => (bool) $user->must_change_password,
                 'phone' => $user->phone,
                 'address' => $user->address,
                 'driver_license' => $user->driver_license,
                 'agency_id' => $user->agency_id,
+                'email_verified' => true,
             ],
-        ], 201), $token, 60 * 24 * 30);
+        ], 201);
     }
 
     /**
@@ -128,7 +127,7 @@ class AuthController extends Controller
             $token = $result['token'];
             $cookieExpiration = $result['cookie_expiration'];
 
-            return $this->withAuthCookie($this->apiSuccessResponse('Login successful', [
+            return $this->withAuthCookie($this->apiSuccessResponse(__('auth.login_success'), [
                 'user' => [
                     'id' => $user->id,
                     'name' => $user->name,
@@ -161,7 +160,7 @@ class AuthController extends Controller
     {
         $this->authService->logout($request->user());
 
-        return $this->clearAuthCookie($this->apiSuccessResponse('Logout successful'));
+        return $this->clearAuthCookie($this->apiSuccessResponse(__('auth.logout_success')));
     }
 
     /**
@@ -204,7 +203,7 @@ class AuthController extends Controller
         $user = $this->authService->updateProfile($request->user(), $validated);
         $user->load('agency', 'reliabilityScore');
 
-        return $this->apiSuccessResponse('Profile updated successfully', [
+        return $this->apiSuccessResponse(__('auth.profile_updated'), [
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
@@ -224,4 +223,5 @@ class AuthController extends Controller
             ],
         ]);
     }
+
 }

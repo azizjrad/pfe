@@ -32,13 +32,14 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Http\Middleware\CheckRole::class,
             'not_suspended' => \App\Http\Middleware\EnsureUserNotSuspended::class,
             'password_changed' => \App\Http\Middleware\EnsurePasswordChanged::class,
+            'verified_email' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (ValidationException $exception, Request $request) {
             return response()->json([
                 'success' => false,
-                'message' => 'Validation failed.',
+                'message' => __('messages.validation_failed'),
                 'errors' => $exception->errors(),
             ], $exception->status);
         });
@@ -46,21 +47,21 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (AuthenticationException $exception) {
             return response()->json([
                 'success' => false,
-                'message' => 'Unauthenticated.',
+                'message' => __('messages.unauthenticated'),
             ], 401);
         });
 
         $exceptions->render(function (AuthorizationException $exception) {
             return response()->json([
                 'success' => false,
-                'message' => $exception->getMessage() ?: 'Forbidden.',
+                'message' => $exception->getMessage() ?: __('messages.forbidden'),
             ], 403);
         });
 
         $exceptions->render(function (ModelNotFoundException $exception) {
             return response()->json([
                 'success' => false,
-                'message' => 'Resource not found.',
+                'message' => __('messages.resource_not_found'),
             ], 404);
         });
 

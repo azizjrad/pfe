@@ -16,6 +16,13 @@ use Illuminate\Support\Facades\DB;
 
 class AdminService
 {
+    private ?BrevoService $brevoService;
+
+    public function __construct(?BrevoService $brevoService = null)
+    {
+        $this->brevoService = $brevoService;
+    }
+
     /**
      * Get super admin dashboard data
      */
@@ -87,7 +94,7 @@ class AdminService
         $user = User::with('agency', 'reliabilityScore')->find($userId);
 
         if (!$user) {
-            throw new NotFoundException('User not found', 'USER_NOT_FOUND');
+            throw new NotFoundException(__('messages.resource_not_found'), 'USER_NOT_FOUND');
         }
 
         $reservationCount = $user->reservations()->count();
@@ -139,6 +146,16 @@ class AdminService
             $user->tokens()->delete();
         });
 
+        $user->refresh()->loadMissing('agency');
+
+        if ($this->brevoService !== null) {
+            try {
+                $this->brevoService->sendAccountStatusEmail($user, true, $reason);
+            } catch (\Throwable $e) {
+                logger()->error('AdminService: failed to send suspension email: ' . $e->getMessage());
+            }
+        }
+
         return $user;
     }
 
@@ -167,6 +184,16 @@ class AdminService
             }
         });
 
+        $user->refresh()->loadMissing('agency');
+
+        if ($this->brevoService !== null) {
+            try {
+                $this->brevoService->sendAccountStatusEmail($user, false, null);
+            } catch (\Throwable $e) {
+                logger()->error('AdminService: failed to send unsuspension email: ' . $e->getMessage());
+            }
+        }
+
         return $user;
     }
 
@@ -182,7 +209,7 @@ class AdminService
         }
 
         if ($currentUserId !== null && $user->id === $currentUserId) {
-            throw new BusinessRuleViolationException('You cannot delete your own account', 400, 'SELF_DELETE_FORBIDDEN');
+            throw new BusinessRuleViolationException(__('auth.profile_delete_self_forbidden'), 400, 'SELF_DELETE_FORBIDDEN');
         }
 
         $hasActiveReservations = $user->reservations()
@@ -190,7 +217,7 @@ class AdminService
             ->exists();
 
         if ($hasActiveReservations) {
-            throw new ConflictException('Cannot delete user with active reservations', 'USER_HAS_ACTIVE_RESERVATIONS');
+            throw new ConflictException(__('auth.cannot_delete_user_with_active_reservations'), 'USER_HAS_ACTIVE_RESERVATIONS');
         }
 
         // Revoke tokens
@@ -208,7 +235,7 @@ class AdminService
         $agency = Agency::find($agencyId);
 
         if (!$agency) {
-            throw new NotFoundException('Agency not found', 'AGENCY_NOT_FOUND');
+            throw new NotFoundException(__('messages.resource_not_found'), 'AGENCY_NOT_FOUND');
         }
 
         $vehicleCount = $agency->vehicles()->count();

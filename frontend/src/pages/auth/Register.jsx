@@ -194,10 +194,10 @@ const Register = () => {
       // Show success toast
       showToast(t("auth.register.successMsg"), "success");
 
-      // Redirect to universal dashboard after brief delay for toast visibility
+      // Redirect to login after brief delay for toast visibility
       setTimeout(() => {
-        navigate("/dashboard");
-      }, 1500);
+        navigate("/login");
+      }, 2000);
     } catch (err) {
       console.error("Registration error:", err);
       const errorMessage = err.response?.data?.message || "Registration failed";

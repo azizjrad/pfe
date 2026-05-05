@@ -17,10 +17,12 @@ use Illuminate\Support\Facades\DB;
 class ReservationService
 {
     private ClientService $clientService;
+    private ?BrevoService $brevoService = null;
 
-    public function __construct(ClientService $clientService)
+    public function __construct(ClientService $clientService, ?BrevoService $brevoService = null)
     {
         $this->clientService = $clientService;
+        $this->brevoService = $brevoService;
     }
 
     /**
@@ -305,6 +307,16 @@ class ReservationService
                         'vehicle_id' => $reservation->vehicle_id,
                     ],
                 ]);
+
+                // Send contract email with PDF attachment (if Brevo configured)
+                try {
+                    if ($this->brevoService !== null) {
+                        $this->brevoService->sendReservationContract($reservation->load(['vehicle', 'user']));
+                    }
+                } catch (\Throwable $e) {
+                    // Log error but don't interrupt flow
+                    logger()->error('ReservationService: sendReservationContract failed: ' . $e->getMessage());
+                }
             }
 
             if ($status === ReservationStatus::CANCELLED->value) {

@@ -29,8 +29,18 @@ class AuthService
      */
     public function register(array $data): User
     {
+        $existingUser = User::where('email', $data['email'] ?? null)->first();
+
+        if ($existingUser && $existingUser->email_verified_at !== null) {
+            throw new BusinessRuleViolationException(
+                __('auth.email_taken'),
+                422,
+                'auth.email_taken'
+            );
+        }
+
         // Wrap registration in a transaction to ensure atomicity
-        return DB::transaction(function () use ($data) {
+        $user = DB::transaction(function () use ($data, $existingUser) {
             // Create user (clients via ClientService, others inline)
             $userPayload = [
                 'name' => $data['name'] ?? null,
@@ -41,7 +51,17 @@ class AuthService
                 'address' => $data['address'] ?? null,
             ];
 
-            if (($data['role'] ?? null) === 'client') {
+            if ($existingUser && $existingUser->email_verified_at === null) {
+                $user = $existingUser;
+                $user->update([
+                    'name' => $userPayload['name'],
+                    'password' => $userPayload['password'] ? Hash::make($userPayload['password']) : $user->password,
+                    'role' => $userPayload['role'],
+                    'phone' => $userPayload['phone'] ?? null,
+                    'address' => $userPayload['address'] ?? null,
+                    'email_verified_at' => now(),
+                ]);
+            } elseif (($data['role'] ?? null) === 'client') {
                 $user = $this->clientService->create($userPayload);
             } else {
                 // create non-client users directly
@@ -52,6 +72,7 @@ class AuthService
                     'role' => $userPayload['role'],
                     'phone' => $userPayload['phone'] ?? null,
                     'address' => $userPayload['address'] ?? null,
+                    'email_verified_at' => now(),
                 ]);
             }
 
@@ -65,8 +86,13 @@ class AuthService
                     'address' => $data['address'] ?? '',
                 ];
 
-                $agency = $this->agencyService->create($agencyPayload);
-                $user->update(['agency_id' => $agency->id]);
+                if ($user->agency_id) {
+                    $user->agency?->update($agencyPayload);
+                    $agency = $user->agency;
+                } else {
+                    $agency = $this->agencyService->create($agencyPayload);
+                    $user->update(['agency_id' => $agency->id]);
+                }
             }
 
             // Initialize reliability score for clients (starts at 100)
@@ -86,8 +112,10 @@ class AuthService
                 ]);
             }
 
-            return $user->load('agency', 'reliabilityScore');
+            return $user->fresh()->load('agency', 'reliabilityScore');
         });
+
+        return $user;
     }
 
     /**
@@ -100,12 +128,12 @@ class AuthService
 
         if (!$user) {
             Log::warning('Failed login - User not found', ['email' => $email]);
-            throw new BusinessRuleViolationException('Invalid email or password.', 401, 'auth.invalid_credentials');
+            throw new BusinessRuleViolationException(__('auth.invalid_credentials'), 401, 'auth.invalid_credentials');
         }
 
         if (!Hash::check($password, $user->password)) {
             Log::warning('Failed login - Invalid password', ['user_id' => $user->id, 'email' => $email]);
-            throw new BusinessRuleViolationException('Invalid email or password.', 401, 'auth.invalid_credentials');
+            throw new BusinessRuleViolationException(__('auth.invalid_credentials'), 401, 'auth.invalid_credentials');
         }
 
         if ((bool) $user->is_suspended) {
@@ -115,7 +143,7 @@ class AuthService
                 'suspended_at' => $user->suspended_at,
             ]);
 
-            throw new BusinessRuleViolationException('Your account is suspended. Contact support.', 403, 'auth.account_suspended');
+            throw new BusinessRuleViolationException(__('auth.account_suspended'), 403, 'auth.account_suspended');
         }
 
         // Limit sessions to 3 devices
@@ -155,8 +183,8 @@ class AuthService
     {
         // Verify current password if changing password
         if (isset($data['new_password'])) {
-            if (!isset($data['current_password']) || !Hash::check($data['current_password'], $user->password)) {
-                throw new BusinessRuleViolationException('Current password is incorrect.', 422, 'auth.invalid_current_password');
+                if (!isset($data['current_password']) || !Hash::check($data['current_password'], $user->password)) {
+                throw new BusinessRuleViolationException(__('auth.invalid_current_password'), 422, 'auth.invalid_current_password');
             }
             $data['password'] = Hash::make($data['new_password']);
             $data['must_change_password'] = false;

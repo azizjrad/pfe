@@ -6,11 +6,13 @@ use App\Models\Agency;
 use App\Models\Report;
 use App\Models\Reservation;
 use App\Models\Vehicle;
+use App\Mail\Transport\BrevoTransport;
 use App\Policies\AgencyPolicy;
 use App\Policies\ReportPolicy;
 use App\Policies\ReservationPolicy;
 use App\Policies\VehiclePolicy;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Mail\MailManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
@@ -23,7 +25,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->afterResolving(MailManager::class, function (MailManager $manager): void {
+            $manager->extend('brevo', function (array $config) {
+                return new BrevoTransport(
+                    apiKey: $config['api_key'] ?? env('BREVO_API_KEY'),
+                    endpoint: $config['endpoint'] ?? env('BREVO_API_ENDPOINT', 'https://api.brevo.com/v3/smtp/email')
+                );
+            });
+        });
     }
 
     /**
