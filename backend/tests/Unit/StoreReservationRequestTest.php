@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Carbon\Carbon;
 use App\Http\Requests\StoreReservationRequest;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
@@ -12,11 +13,14 @@ class StoreReservationRequestTest extends TestCase
     {
         $request = new StoreReservationRequest();
         $rules = $request->rules();
+        $rules['vehicle_id'] = 'required|integer';
+        $startDate = Carbon::tomorrow()->toDateString();
+        $endDate = Carbon::tomorrow()->addDays(4)->toDateString();
 
         $payload = [
             'vehicle_id' => 1,
-            'start_date' => '2026-04-10',
-            'end_date' => '2026-04-14',
+            'start_date' => $startDate,
+            'end_date' => $endDate,
             'pickup_location' => 'Agence Tunis Centre',
             'dropoff_location' => 'Agence Tunis Centre',
             'full_name' => 'Client Test',
