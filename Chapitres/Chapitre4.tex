@@ -27,7 +27,7 @@ traitement des réclamations, la consultation des statistiques et la gestion des
 \resizebox{\textwidth}{!}{
 \begin{tabular}{|l|c|l|p{4cm}|p{5cm}|c|}
 \hline
-\textbf{Acteur} & \textbf{ID tâche} & \textbf{Thème} & \textbf{User Story} & \textbf{Tâche} & \textbf{Estimation (Jours)} \\
+\textbf{Acteur} & \textbf{ID} & \textbf{Thème} & \textbf{User Story} & \textbf{Tâche} & \textbf{Estimation (Jours)} \\
 \hline
 
 \multirow{6}{*}{Internaute}
@@ -37,15 +37,15 @@ traitement des réclamations, la consultation des statistiques et la gestion des
 \cline{5-5}
 & & & & Tester. & \\
 \cline{2-6}
-& US11 & Contacter administrateur 
-& Contacter l'administrateur
-& Implémenter le formulaire de contact. & \multirow{2}{*}{2} \\
-\cline{5-5}
-& & & & Tester. & \\
-\cline{2-6}
 & US15 & Interagir avec chatbot 
 & Interagir avec le chatbot
 & Intégrer le module chatbot. & \multirow{2}{*}{3} \\
+\cline{5-5}
+& & & & Tester. & \\
+\cline{2-6}
+& US11 & Contacter administrateur 
+& Contacter l'administrateur
+& Implémenter le formulaire de contact. & \multirow{2}{*}{2} \\
 \cline{5-5}
 & & & & Tester. & \\
 \hline
@@ -154,6 +154,91 @@ La figure suivante présente le diagramme des cas d'utilisation du deuxième spr
 
 À chaque cas d'utilisation, nous allons associer une description textuelle pour détailler
 le scénario ainsi que les éventuelles situations exceptionnelles.
+
+%----------------------------------------------------------
+\section{Analyse des cas d'utilisation de l'acteur "Internaute''}
+\label{sec:acteur_internaute}
+%----------------------------------------------------------
+
+\subsection{Analyse de cas d'utilisation «Consulter actualités»}
+\label{sec:cons_act}
+Afin de mieux illustrer le déroulement du scénario, nous proposons ci‑après une description textuelle accompagnée du diagramme de séquence du cas d'utilisation \textbf{«Consulter actualités»}.
+\begin{table}[H]
+\centering
+\caption{Description textuelle du cas d'utilisation «Consulter actualités»}
+\label{tab:consulter_actualites}
+\renewcommand{\arraystretch}{1.3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|p{11cm}|}
+\hline
+\textbf{Élément} & \textbf{Description} \\
+\hline
+Acteur & Internaute \\
+\hline
+Description & Permet à l’internaute de consulter les dernières actualités publiées sur la plateforme.\\
+\hline
+Précondition & L’internaute accède à la plateforme.\newline Des actualités sont disponibles. \\
+\hline
+Postcondition & L’internaute visualise les actualités.\newline Il peut accéder au détail d’une actualité. \\
+\hline
+Scénario nominal & L’internaute accède à la section actualités.\newline
+Le système affiche la liste des actualités.\newline
+L’internaute sélectionne une actualité.\newline
+Le système affiche le contenu détaillé. \\
+\hline
+Scénario alternatif & Si aucune actualité n’est disponible, un message informatif est affiché.\newline
+Si une erreur survient, le système affiche un message d’erreur. \\
+\hline
+\end{tabular}
+}
+\end{table}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Chapitres/Figures/Diag_seq_consulter_act.png}
+    \caption{Diagramme de séquence système de cas d'utilisation «Consulter actualités»}
+    \label{fig:consulter_actualites}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Analyse de cas d'utilisation «Interagir avec Chatbot»}
+\label{sec:section_chatbot}
+Afin de mieux illustrer le déroulement du scénario, nous proposons ci‑après une description textuelle accompagnée du diagramme de séquence du cas d'utilisation \textbf{«Interagir avec Chatbot»}.
+\begin{table}[H]
+\centering
+\caption{Description textuelle du cas d'utilisation «Interagir avec Chatbot»}
+\label{tab:interagir_chatbot}
+\renewcommand{\arraystretch}{1.3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|p{11cm}|}
+\hline
+\textbf{Élément} & \textbf{Description} \\
+\hline
+Acteur & Internaute \\
+\hline
+Description & Permet à l’internaute de communiquer avec un chatbot intelligent afin d’obtenir des informations ou de l’assistance.\\
+\hline
+Précondition & L’internaute accède à la plateforme.\newline Le chatbot est disponible et fonctionnel. \\
+\hline
+Postcondition & L’internaute obtient une réponse pertinente à sa requête.\newline L’interaction peut être enregistrée pour amélioration du service. \\
+\hline
+Scénario nominal & L’internaute ouvre l’interface du chatbot.\newline
+Il saisit une question ou une demande.\newline
+Le chatbot analyse la requête.\newline
+Le chatbot génère une réponse adaptée.\newline
+La réponse est affichée à l’internaute. \\
+\hline
+Scénario alternatif & Si la requête est incomprise, le chatbot demande une reformulation.\newline
+Si le chatbot est indisponible, un message d’erreur est affiché. \\
+\hline
+\end{tabular}%
+}
+\end{table}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Chapitres/Figures/Diag_seq_chatbot.png}
+    \caption{Diagramme de séquence système de cas d'utilisation «Interagir avec Chatbot»}
+    \label{fig:chatbot}
+\end{figure}
 
 %==========================================================
 \section{Analyse des cas d'utilisation de l'acteur "Utilisateur''}

@@ -22,103 +22,52 @@ et devant être complétées avant la clôture du sprint.\cite{atlassian}
 \label{tab:backlog-sprint1}
 \renewcommand{\arraystretch}{1.4}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|c|l|c|p{4cm}|p{5cm}|}
+\begin{tabular}{|l|c|l|p{4cm}|p{5cm}|c|}
 \hline
-\textbf{Acteur} & \textbf{US} & \textbf{Thème} & \textbf{ID tâche} & \textbf{User Story} & \textbf{Tâche} \\
+\textbf{Acteur} & \textbf{ID tâche} & \textbf{Thème} & \textbf{User Story} & \textbf{Tâche} & \textbf{Estimation (Jours)} \\
 \hline
 
-\multirow{6}{*}{Internaute}
-& US02 & Gestion des comptes & 2.1 
+\multirow{3}{*}{Internaute}
+& US01 & S'inscrire 
 & S'inscrire afin d'accéder aux services
-& Rédiger les spécifications et diagrammes du cas «S'inscrire». \\
-\cline{6-6}
-& & & & & Implémenter l'inscription. \\
-\cline{6-6}
-& & & & & Tester et valider. \\
-\cline{2-6}
-
-& US01 & Actualités & 1.1 
-& Consulter les actualités
-& Implémenter l'affichage des actualités. \\
-\cline{6-6}
-& & & & & Tester l'affichage. \\
-\cline{2-6}
-
-& US03 & Support & 3.1 
-& contacter l’administra-
-teur afin d’obtenir plus
-d’informations
-& Développer un formulaire de contact. \\
-\cline{6-6}
-& & & & & Tester l'envoie \\
-\cline{2-6}
-
-& US05 & Assistance & 5.1 
-& Interagir avec le chatbot afin d'obtenir des réponses automatiques&
-Intégrer le chatbot.
-\\
-\cline{6-6}
-& & & & & Tester les interactions.\\ 
-\cline{2-6}
-
-
+& Rédiger les spécifications et diagrammes du cas «S'inscrire». & \multirow{3}{*}{4} \\
+\cline{5-5}
+& & & & Implémenter l'inscription. & \\
+\cline{5-5}
+& & & & Tester. & \\
 \hline
 
-\multirow{9}{*}{Utilisateur}
-& US06 & Authentification & 5.1 
+\multirow{4}{*}{Utilisateur}
+& US02 & Authentification 
 & S'authentifier afin d'accéder au système
-& Rédiger les diagrammes du cas «S'authentifier». \\
-\cline{6-6}
-& & & & & Implémenter l'authentification. \\
-\cline{6-6}
-& & & & & Tester. \\
+& Rédiger les diagrammes du cas «S'authentifier». & \multirow{2}{*}{4} \\
+\cline{5-5}
+& & & & Implémenter l'authentification et tester. & \\
 \cline{2-6}
 
-& US07 & Profil & 6.1 
+& US03 & Gérer profil 
 & Gérer mon profil
-& Implémenter la consultation et modification du profil. \\
-\cline{6-6}
-& & & & & Tester. \\
-\cline{2-6}
-
-& US08 & Véhicules & 7.1 
-& Consulter les véhicules disponibles
-& Implémenter la liste des véhicules. \\
-\cline{6-6}
-& & & & & Tester. \\
-\cline{2-6}
-
-
+& Implémenter la consultation et modification du profil. & \multirow{2}{*}{4} \\
+\cline{5-5}
+& & & & Tester. & \\
 \hline
 
-\multirow{6}{*}{Administrateur}
-& US16 & Consultation des agences & 15.1 
-& consulter les agences afin de visualiser, ajou-
-ter, modifier ou bloquer
-les agences
-& Implémenter la consultation des agences. \\
-\cline{6-6}
-& & & & & Tester. \\
-\cline{2-6}
-
-& US17 & Consultation des utilisateurs & 16.1 
-& consulter les agences
-afin de visualiser, ajou-
-ter, modifier ou bloquer
-les utilisateurs
-& Implémenter la consultation des utilisateurs. \\
-\cline{6-6}
-& & & & & Tester. \\
-\hline
-
-\multirow{3}{*}{Agence}
-& US13 & Vitrine & 12.1 
+\multirow{2}{*}{Agence}
+& US04 & Gérer vitrine 
 & Gérer la vitrine
-& Implémenter la gestion de la vitrine. \\
-\cline{6-6}
-& & & & & Tester. \\
+& Implémenter la gestion de la vitrine. & \multirow{2}{*}{4} \\
+\cline{5-5}
+& & & & Tester. & \\
 \hline
 
+\multirow{2}{*}{Administrateur}
+& US05 & Gérer agences 
+& Gérer les agences afin de visualiser, ajouter, modifier ou bloquer
+& Implémenter la gestion des agences. & \multirow{2}{*}{4} \\
+\cline{5-5}
+& & & & Tester. & \\
+\hline
+\multicolumn{5}{|r|}{\textbf{Estimation Totale (Jours)}} & \textbf{20} \\ \hline
 \end{tabular}%
 }
 \end{table}
@@ -232,7 +181,7 @@ Scénario nominal &
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Analyse de cas d'utilisation «S'authentifier»}
 \label{sec:authentifier}
-
+Afin de mieux illustrer le déroulement du scénario, nous proposons ci‑après une description textuelle accompagnée du diagramme de séquence du cas d'utilisation \textbf{«S'authentifier»}.
 \begin{table}[htbp]
 \centering
 \caption{Description textuelle du cas d'utilisation «S'authentifier»}
@@ -274,48 +223,6 @@ Scénario nominal &
     \includegraphics[width=1\textwidth]{Chapitres/Figures/Sequence_diagram_S_authentifier.png}
     \caption{Diagramme de séquence système de cas d'utilisation «S'authentifier»}
     \label{fig:authentifier}
-\end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Analyse de cas d'utilisation «Interagir avec Chatbot»}
-\label{sec:section_chatbot}
-Afin de mieux illustrer le déroulement du scénario, nous proposons ci‑après une description textuelle accompagnée du diagramme de séquence du cas d'utilisation \textbf{«Interagir avec Chatbot»}.
-\begin{table}[H]
-\centering
-\caption{Description textuelle du cas d'utilisation «Interagir avec Chatbot»}
-\label{tab:interagir_chatbot}
-\renewcommand{\arraystretch}{1.3}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|p{11cm}|}
-\hline
-\textbf{Élément} & \textbf{Description} \\
-\hline
-Acteur & Internaute \\
-\hline
-Description & Permet à l’internaute de communiquer avec un chatbot intelligent afin d’obtenir des informations ou de l’assistance.\\
-\hline
-Précondition & L’internaute accède à la plateforme.\newline Le chatbot est disponible et fonctionnel. \\
-\hline
-Postcondition & L’internaute obtient une réponse pertinente à sa requête.\newline L’interaction peut être enregistrée pour amélioration du service. \\
-\hline
-Scénario nominal & L’internaute ouvre l’interface du chatbot.\newline
-Il saisit une question ou une demande.\newline
-Le chatbot analyse la requête.\newline
-Le chatbot génère une réponse adaptée.\newline
-La réponse est affichée à l’internaute. \\
-\hline
-Scénario alternatif & Si la requête est incomprise, le chatbot demande une reformulation.\newline
-Si le chatbot est indisponible, un message d’erreur est affiché. \\
-\hline
-\end{tabular}%
-}
-\end{table}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/Diag_seq_chatbot.png}
-    \caption{Diagramme de séquence système de cas d'utilisation «Interagir avec Chatbot»}
-    \label{fig:chatbot}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
