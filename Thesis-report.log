@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.4.12)  12 MAY 2026 21:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.4.12)  12 MAY 2026 21:35
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1306,43 +1306,43 @@ Package biblatex Info: Reference section=0 on input line 89.
 Package biblatex Info: Reference segment=0 on input line 89.
 
 
-pdfTeX warning: pdflatex (file ./Chapitres/Page_garde_BC.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<Chapitres/Page_garde_BC.pdf, id=654, 597.432pt x 845.07718pt>
-File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
-<use Chapitres/Page_garde_BC.pdf>
-Package pdftex.def Info: Chapitres/Page_garde_BC.pdf  used on input line 90.
+pdfTeX warning: pdflatex (file ./Chapitres/page_garde_BC.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<Chapitres/page_garde_BC.pdf, id=654, 597.432pt x 845.07718pt>
+File: Chapitres/page_garde_BC.pdf Graphic file (type pdf)
+<use Chapitres/page_garde_BC.pdf>
+Package pdftex.def Info: Chapitres/page_garde_BC.pdf  used on input line 90.
 (pdftex.def)             Requested size: 597.43054pt x 845.07512pt.
 
 
-pdfTeX warning: pdflatex (file ./Chapitres/Page_garde_BC.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+pdfTeX warning: pdflatex (file ./Chapitres/page_garde_BC.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
 
 
-pdfTeX warning: pdflatex (file ./Chapitres/Page_garde_BC.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<Chapitres/Page_garde_BC.pdf, id=656, page=1, 597.432pt x 845.07718pt>
-File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
-<use Chapitres/Page_garde_BC.pdf, page 1>
-Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 90.
+pdfTeX warning: pdflatex (file ./Chapitres/page_garde_BC.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<Chapitres/page_garde_BC.pdf, id=656, page=1, 597.432pt x 845.07718pt>
+File: Chapitres/page_garde_BC.pdf Graphic file (type pdf)
+<use Chapitres/page_garde_BC.pdf, page 1>
+Package pdftex.def Info: Chapitres/page_garde_BC.pdf , page1 used on input line 90.
 (pdftex.def)             Requested size: 597.43054pt x 845.07512pt.
-File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
-<use Chapitres/Page_garde_BC.pdf, page 1>
-Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 90.
+File: Chapitres/page_garde_BC.pdf Graphic file (type pdf)
+<use Chapitres/page_garde_BC.pdf, page 1>
+Package pdftex.def Info: Chapitres/page_garde_BC.pdf , page1 used on input line 90.
 (pdftex.def)             Requested size: 597.45789pt x 845.1138pt.
-File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
-<use Chapitres/Page_garde_BC.pdf, page 1>
-Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 90.
+File: Chapitres/page_garde_BC.pdf Graphic file (type pdf)
+<use Chapitres/page_garde_BC.pdf, page 1>
+Package pdftex.def Info: Chapitres/page_garde_BC.pdf , page1 used on input line 90.
 (pdftex.def)             Requested size: 597.45789pt x 845.1138pt.
-File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
-<use Chapitres/Page_garde_BC.pdf, page 1>
-Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 90.
+File: Chapitres/page_garde_BC.pdf Graphic file (type pdf)
+<use Chapitres/page_garde_BC.pdf, page 1>
+Package pdftex.def Info: Chapitres/page_garde_BC.pdf , page1 used on input line 90.
 (pdftex.def)             Requested size: 597.45789pt x 845.1138pt.
-File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
-<use Chapitres/Page_garde_BC.pdf, page 1>
-Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 90.
+File: Chapitres/page_garde_BC.pdf Graphic file (type pdf)
+<use Chapitres/page_garde_BC.pdf, page 1>
+Package pdftex.def Info: Chapitres/page_garde_BC.pdf , page1 used on input line 90.
 (pdftex.def)             Requested size: 597.45789pt x 845.1138pt.
 [1
 
 
- <./Chapitres/Page_garde_BC.pdf>]
+ <./Chapitres/page_garde_BC.pdf>]
 \openout2 = `Chapitres/Declaration.aux'.
 
  (Chapitres/Declaration.tex)
