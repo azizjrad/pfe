@@ -208,7 +208,7 @@ définissent les caractéristiques attendues d'un produit. Il s'agit d'un élém
 \newpage
 \renewcommand{\arraystretch}{1}
 
-\begin{longtable}{|c|c|c|p{4cm}|c|}
+\begin{longtable}{|c|l|c|p{4cm}|c|}
 \caption{Backlog produit}
 \label{tab:backlogproduit} \\
 
@@ -228,28 +228,22 @@ définissent les caractéristiques attendues d'un produit. Il s'agit d'un élém
 \hline
 \endlastfoot
 
-US01 & Actualités & Internaute & consulter les actualités afin d'accéder aux informations publiées sur la plateforme & Moyenne \\ \hline
-US02 & Gestion des comptes & Internaute & s'inscrire afin d'accéder aux services & Haute \\ \hline
-US03 & Assistance & Internaute & interagir avec le chatbot afin d'obtenir des réponses automatiques & Moyenne \\ \hline
-US04 & Support & Internaute & contacter l'administrateur afin d'obtenir plus d’informations & Haute \\ \hline
-US05 & Chatbot & Internaute & interagir avec le chatbot afin d'obtenir des réponses automatiques & Moyenne \\ \hline
+US01 & S'inscrire & Internaute & s'inscrire afin d'accéder aux services & Haute \\ \hline
+US02 & Authentification & Utilisateur & m'authentifier afin d'accéder aux fonctionnalités du système & Haute \\ \hline
+US03 & Gérer profil & Utilisateur & gérer mon profil afin de modifier mes informations personnelles et préférences & Haute \\ \hline
+US04 & Gérer vitrine & Agence & gérer la vitrine afin de publier et mettre à jour les véhicules disponibles & Haute \\ \hline
+US05 & Gérer agences & Admin & gérer les agences afin de visualiser, ajouter, modifier ou bloquer les agences & Haute \\ \hline
 
-
-US06 & Authentification & Utilisateur & m'authentifier afin d'accéder aux fonctionnalités du système & Haute \\ \hline
-US07 & Profil & Utilisateur & gérer mon profil afin de modifier mes informations personnelles et préférences & Moyenne \\ \hline
-US08 & Véhicules & Utilisateur & consulter les véhicules disponibles ainsi que leurs détails & Haute \\ \hline
-US09 & Score client & Utilisateur & voir mon score afin de connaître mon indice de fiabilité & Moyenne \\ \hline
-
-US10 & Réservations & Client & effectuer une réservation afin de louer un véhicule auprès d'une agence & Haute \\ \hline
-US11 & Réservations & Client & consulter mes réservations en cours afin de suivre leur état & Haute \\ \hline
-US12 & Vitrine & Agence & gérer la vitrine afin de publier et mettre à jour les véhicules disponibles & Haute \\ \hline
-US13 & Réservations & Agence & traiter les réservations afin d'accepter ou refuser les demandes et gérer les réclamations & Haute \\ \hline
-US14 & Statistiques & Agence & consulter les statistiques afin d'analyser les performances & Moyenne \\ \hline
-
-US15 & Consultation des agences & Admin & consulter les agences afin de visualiser, ajouter, modifier ou bloquer les agences & Haute \\ \hline
-US16 & Consultation des utilisateurs & Admin & consulter les utilisateurs afin de visualiser, ajouter, modifier ou bloquer les comptes & Haute \\ \hline
-US17 & Messages & Admin & gérer les messages afin de consulter et répondre aux utilisateurs & Moyenne \\ \hline
-US18 & Statistiques globales & Admin & consulter les statistiques globales afin d'analyser les performances du système & Haute \\ \hline
+US06 & Consulter actualités & Internaute & consulter les actualités afin d'accéder aux informations publiées sur la plateforme & Moyenne \\ \hline
+US07 & Effectuer réservation & Client & effectuer une réservation afin de louer un véhicule auprès d'une agence & Moyenne \\ \hline
+US08 & Consulter réservations en cours & Client & consulter mes réservations en cours afin de suivre leur état & Moyenne \\ \hline
+US09 & Traiter réservations et reclamations & Agence & traiter les réservations et reclamations afin d'accepter/refuser les demandes et gérer les litiges & Moyenne \\ \hline
+US10 & Voir score client & Utilisateur & voir mon score client afin de connaître mon indice de fiabilité & Moyenne \\ \hline
+US11 & Contacter administrateur & Internaute & contacter l'administrateur afin d'obtenir plus d’informations & Moyenne \\ \hline
+US12 & Gérer messages & Admin & gérer les messages afin de consulter et répondre aux utilisateurs & Moyenne \\ \hline
+US13 & Consulter statistiques(Agence) & Agence & consulter les statistiques afin d'analyser les performances & Moyenne \\ \hline
+US14 & Consulter statistiques (Admin) & Admin & consulter les statistiques globales afin d'analyser les performances du système & Moyenne \\ \hline
+US15 & Interagir avec chatbot & Internaute & interagir avec le chatbot afin d'obtenir des réponses automatiques & Moyenne \\ \hline
 
 \end{longtable}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -268,7 +262,7 @@ La planification de sprint permet d'identifier les tâches qui seront accomplies
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/sprint_2.png}
+    \includegraphics[width=0.7\textwidth]{Chapitres/Figures/sprint_2.png}
     \caption{Sprint 2}
     \label{fig:sprint_2}
 \end{figure}

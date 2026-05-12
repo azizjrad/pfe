@@ -9,18 +9,6 @@ En se basant sur la planification établie dans le chapitre précédent, ce chap
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Planification du sprint 1}
-\label{sec:planification_sprint1}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/Planification_sprint_1.png}
-    \caption{Sprint 1}
-    \label{fig:planning_sprint1}
-\end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Backlog produit du premier sprint}
 \label{sec:backlog_sprint1}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -185,45 +173,6 @@ La figure suivante présente le diagramme des cas d'utilisation du premier sprin
 \section{Analyse des cas d'utilisation de l'acteur «Internaute»}
 \label{sec:acteur_internaute}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Analyse de cas d'utilisation «Consulter actualités»}
-\label{sec:cons_act}
-Afin de mieux illustrer le déroulement du scénario, nous proposons ci‑après une description textuelle accompagnée du diagramme de séquence du cas d'utilisation \textbf{«Consulter actualités»}.
-\begin{table}[H]
-\centering
-\caption{Description textuelle du cas d'utilisation «Consulter actualités»}
-\label{tab:consulter_actualites}
-\renewcommand{\arraystretch}{1.3}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|p{11cm}|}
-\hline
-\textbf{Élément} & \textbf{Description} \\
-\hline
-Acteur & Internaute \\
-\hline
-Description & Permet à l’internaute de consulter les dernières actualités publiées sur la plateforme.\\
-\hline
-Précondition & L’internaute accède à la plateforme.\newline Des actualités sont disponibles. \\
-\hline
-Postcondition & L’internaute visualise les actualités.\newline Il peut accéder au détail d’une actualité. \\
-\hline
-Scénario nominal & L’internaute accède à la section actualités.\newline
-Le système affiche la liste des actualités.\newline
-L’internaute sélectionne une actualité.\newline
-Le système affiche le contenu détaillé. \\
-\hline
-Scénario alternatif & Si aucune actualité n’est disponible, un message informatif est affiché.\newline
-Si une erreur survient, le système affiche un message d’erreur. \\
-\hline
-\end{tabular}
-}
-\end{table}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/Diag_seq_consulter_act.png}
-    \caption{Diagramme de séquence système de cas d'utilisation «Consulter actualités»}
-    \label{fig:consulter_actualites}
-\end{figure}
-
 \subsection{Analyse de cas d'utilisation «S'inscrire»}
 \label{sec:s_inscrire}
 Afin de mieux illustrer le déroulement du scénario, nous proposons ci‑après une description textuelle accompagnée du diagramme de séquence du cas d'utilisation 
@@ -425,165 +374,6 @@ Pas d'exceptions\\
     \includegraphics[width=1\textwidth]{Chapitres/Figures/Diag_seq_cp.png}
     \caption{Diagramme de séquence système de cas d'utilisation «Consulter profil»}
     \label{fig:consulter_profil}
-\end{figure}
-
-
-%%%%%%%%44444%%%%%%%%%%%
-\subsubsection{Analyse de cas d'utilisation «Modifier mot de passe»}
-\label{sec:modifier_mdp}
-La section suivante propose une description textuelle et un diagramme de séquence, auxquels s'ajoute l'analyse du cas d'utilisation \textbf{«Modifier mot de passe»} de l'acteur \textit{Utilisateur}.
-
-
-\begin{table}[htbp]
-\centering
-\caption{Description textuelle du cas d'utilisation «Modifier mot de passe»}
-\label{tab:modifier_mdp}
-\renewcommand{\arraystretch}{1.3}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|p{11cm}|}
-\hline
-\textbf{Élément} & \textbf{Description} \\
-\hline
-Nom & Modifier mot de passe \\
-\hline
-Acteur & Utilisateur \\
-\hline
-Description brève & Permet à un utilisateur de modifier le mot de passe d'accès. \\
-\hline
-Précondition & 
-L'utilisateur est authentifié. \newline
-Le système est accessible. \\
-\hline
-Postcondition & 
-Le mot de passe est mis à jour. \\
-\hline
-Enchaînement principal & 
-1. L'utilisateur clique sur «Mot de passe». \newline
-2. Le système affiche le mot de passe actuel. \newline
-3. L'utilisateur modifie le mot de passe et confirme le nouveau mot de passe. \newline
-4. Le système vérifie le nouveau mot de passe et effectue la modification. \newline
-5. Le système affiche un message de confirmation. \\
-\hline
-\multirow{4}{*}{\textbf{Scénarios alternatifs}} 
-& 4.1 Mot de passe invalide. \\
-& \quad 4.1.1 Le système affiche un message d'erreur. \\
-& 5.1 Échec lors de l'enregistrement. \\
-& \quad 5.1.1 Le système affiche un message d'échec. \\
-\hline
-\end{tabular}%
-}
-\end{table}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/Diag_seq_mdp.png}
-    \caption{Diagramme de séquence système de cas d'utilisation «Modifier mot de passe»}
-    \label{fig:modifier_mdp}
-\end{figure}
-
-%%%%%%22222%%%%%%%
-
-\subsubsection{Analyse de cas d'utilisation «Modifier informations personnelles»}
-\label{sec:modifier_infos}
-La section suivante propose une description textuelle et un diagramme de séquence, auxquels s'ajoute l'analyse du cas d'utilisation \textbf{«Modifier informations personnelles»} de l'acteur \textit{Utilisateur}.
-
-
-\begin{table}[htbp]
-\centering
-\caption{Description textuelle du cas d'utilisation «Modifier informations personnelles»}
-\label{tab:modifier_infos}
-\renewcommand{\arraystretch}{1.3}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|p{11cm}|}
-\hline
-\textbf{Élément} & \textbf{Description} \\
-\hline
-Nom & Modifier informations personnelles \\
-\hline
-Acteur & Utilisateur \\
-\hline
-Description brève & Permet à un utilisateur de consulter et de modifier ses informations personnelles (nom, email, adresse, numéro de téléphone). \\
-\hline
-Précondition & 
-L'utilisateur est authentifié. \newline
-Le système est accessible. \\
-\hline
-Postcondition & 
-Les informations du profil sont mises à jour. \newline
-Les nouvelles données sont enregistrées. \\
-\hline
-Enchaînement principal & 
-1. L'utilisateur accède à la page de profil. \newline
-2. Le système affiche les informations actuelles. \newline
-3. L'utilisateur modifie les informations. \newline
-4. Le système vérifie les données et effectue l'action. \newline
-5. Le système affiche un message de confirmation. \\
-\hline
-\multirow{4}{*}{\textbf{Scénarios alternatifs}} 
-& 4.1 Informations invalides. \\
-& \quad 4.1.1 Le système affiche un message d'erreur. \\
-& 5.1 Échec lors de l'enregistrement. \\
-& \quad 5.1.1 Le système affiche un message d'échec. \\
-\hline
-\end{tabular}%
-}
-\end{table}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/Diag_seq_gerer_profil.png}
-    \caption{Diagramme de séquence système de cas d'utilisation «Modifier informations personnelles»}
-    \label{fig:modifier_infos}
-\end{figure}
-
-%%%%%33333333%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newpage
-\subsection{Analyse du cas d'utilisation «Consulter voitures»}
-\label{sec:consulter_voitures}
-
-Cette section présente une analyse détaillée du cas d'utilisation \textbf{«Consulter voitures»}, associé à l’acteur \textit{Utilisateur}. Ce cas d'utilisation permet à l’utilisateur d’accéder à la liste des véhicules disponibles ainsi qu’à leurs informations descriptives. Il constitue une fonctionnalité essentielle pour la consultation préalable à une éventuelle réservation.
-
-\begin{table}[htbp]
-\centering
-\caption{Description textuelle du cas d'utilisation «Consulter voitures»}
-\label{tab:consulter_voitures}
-\renewcommand{\arraystretch}{1.3}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|p{11cm}|}
-\hline
-\textbf{Élément} & \textbf{Description} \\
-\hline
-Nom & Consulter voitures \\
-\hline
-Acteur principal & Utilisateur \\
-\hline
-Description brève & Permet à un utilisateur de visualiser la liste des voitures disponibles ainsi que leurs caractéristiques (marque, modèle, prix, disponibilité, etc.). \\
-\hline
-Préconditions & 
-1. L'utilisateur est authentifié dans le système. \newline
-2. Le système est opérationnel et accessible. \\
-\hline
-Postconditions & 
-1. La liste des voitures est affichée avec leurs informations détaillées. \newline
-2. L'utilisateur peut consulter les détails de chaque véhicule. \\
-\hline
-Enchaînement principal & 
-1. L'utilisateur accède à la section «Voitures». \newline
-2. Le système envoie une requête pour récupérer les données des véhicules. \newline
-3. Le système affiche la liste des voitures disponibles avec leurs informations. \newline
-4. L'utilisateur parcourt la liste et peut sélectionner une voiture pour consulter plus de détails. \\
-\hline
-Scénarios alternatifs & 
-2.1 Aucune voiture disponible : le système affiche un message informant que la liste est vide. \newline
-3.1 Erreur de chargement : le système affiche un message d'erreur et propose de réessayer. \\
-\hline
-\end{tabular}%
-}
-\end{table}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/Diag_seq_consulter_voitures.png}
-    \caption{Diagramme de séquence système du cas d'utilisation «Consulter voitures»}
-    \label{fig:consulter_voitures}
 \end{figure}
 
 
@@ -1141,33 +931,6 @@ Ce diagramme repose généralement sur trois catégories principales de classes 
     \includegraphics[width=0.85\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_profil.png}
     \caption{Diagramme de séquence détaillé du cas d’utilisation « Consulter profil »}
     \label{fig:seq_det_consulter_profil}
-\end{figure}
-
-\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Modifier mot de passe »}
-\label{sec:diag_seq_det_modif_mdp}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_modif_mdp.png}
-    \caption{Diagramme de séquence détaillé du cas d’utilisation « Modifier mot de passe »}
-    \label{fig:seq_det_modif_mdp}
-\end{figure}
-
-\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Modifier informations personnelles »}
-\label{sec:diag_seq_det_modif_infos}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_modif_infos.png}
-    \caption{Diagramme de séquence détaillé du cas d’utilisation « Modifier informations personnelles »}
-    \label{fig:seq_det_modif_infos}
-\end{figure}
-
-\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Consulter voitures »}
-\label{sec:diag_seq_det_consulter_voiture}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_voiture.png}
-    \caption{Diagramme de séquence détaillé du cas d’utilisation « Consulter voitures »}
-    \label{fig:seq_det_consulter_voiture}
 \end{figure}
 
 %====================================================

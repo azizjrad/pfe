@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.4.12)  29 APR 2026 14:58
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.4.12)  12 MAY 2026 14:41
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -26,6 +26,8 @@ File: bk11.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
 \bibindent=\dimen148
 ) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/emptypage\emptypage.sty
 Package: emptypage 2010/05/30 v1.2 Suppress page numbers and headings on empty pages
+) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
+Package: fontenc 2025/07/18 v2.1d Standard LaTeX package
 ) (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/tools\calc.sty
 Package: calc 2025/03/01 v4.3b Infix arithmetic (KKT,FJ)
 \calc@Acount=\count284
@@ -423,7 +425,7 @@ File: english.mld 2006/01/13
 File: english.mld 2006/01/13
 ))
 Package minitoc Info: I0024
-(minitoc)             PREPARING MINITOCS FROM Thesis-report.toc on input line 28.
+(minitoc)             PREPARING MINITOCS FROM Thesis-report.toc on input line 29.
 Package minitoc Info: I0033
 (minitoc)             Writing Thesis-report.mtc1.
 \openout4 = `Thesis-report.mtc1'.
@@ -1144,19 +1146,13 @@ Package: blx-case-expl3 2025/07/10 v3.21 expl3 case changing code for biblatex
 \longueurrestante=\skip120
 Package french3.ldf Info: Setting StandardItemizeEnv=true for
 (french3.ldf)             compatibility with enumitem package,
-(french3.ldf)             reported on input line 88.
+(french3.ldf)             reported on input line 89.
 Package french3.ldf Info: Setting StandardEnumerateEnv=true for
 (french3.ldf)             compatibility with enumitem package,
-(french3.ldf)             reported on input line 88.
-
-
-Package french3.ldf Warning: OT1 encoding should not be used for French.
-(french3.ldf)                Add \usepackage[T1]{fontenc} to the preamble
-(french3.ldf)                of your document; reported on input line 88.
-
+(french3.ldf)             reported on input line 89.
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
-(Thesis-report.aux
+ (Thesis-report.aux
 Package babel Info: 'french' activates 'french' shorthands.
 (babel)             Reported on input line 12.
  (Chapitres/Declaration.aux) (Chapitres/dedication.aux) (Chapitres/Acknowledgements.aux) (Chapitres/Abstract.aux) (Chapitres/Introduction.aux) (Chapitres/Chapitre1.aux) (Chapitres/Chapitre2.aux) (Chapitres/Chapitre3.aux
@@ -1173,24 +1169,24 @@ LaTeX Warning: Label `fig:classe_sprint2' multiply defined.
 ) (Chapitres/Chapitre5.aux) (Chapitres/Conclusion.aux) (Chapitres/Webographie.aux))
 \openout1 = `Thesis-report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 88.
-LaTeX Font Info:    ... okay on input line 88.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 88.
-LaTeX Font Info:    ... okay on input line 88.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 88.
-LaTeX Font Info:    ... okay on input line 88.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 88.
-LaTeX Font Info:    ... okay on input line 88.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 88.
-LaTeX Font Info:    ... okay on input line 88.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 88.
-LaTeX Font Info:    ... okay on input line 88.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 88.
-LaTeX Font Info:    ... okay on input line 88.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 88.
-LaTeX Font Info:    ... okay on input line 88.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 88.
-LaTeX Font Info:    ... okay on input line 88.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 89.
+LaTeX Font Info:    ... okay on input line 89.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 89.
+LaTeX Font Info:    ... okay on input line 89.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 89.
+LaTeX Font Info:    ... okay on input line 89.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 89.
+LaTeX Font Info:    ... okay on input line 89.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 89.
+LaTeX Font Info:    ... okay on input line 89.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 89.
+LaTeX Font Info:    ... okay on input line 89.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 89.
+LaTeX Font Info:    ... okay on input line 89.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 89.
+LaTeX Font Info:    ... okay on input line 89.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 89.
+LaTeX Font Info:    ... okay on input line 89.
  (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count533
@@ -1219,7 +1215,7 @@ Package caption Info: longtable package is loaded.
 Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
 )
 Package caption Info: End \AtBeginDocument code.
-LaTeX Info: Redefining \degres on input line 88.
+LaTeX Info: Redefining \degres on input line 89.
  (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/pdflscape\pdflscape.sty
 Package: pdflscape 2022-10-27 v0.13 Display of landscape pages in PDF
  (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/pdflscape\pdflscape-nometadata.sty
@@ -1250,7 +1246,7 @@ Package minitoc(hints) Warning: W0023
 (minitoc(hints))                --- It may be the consequence 
 (minitoc(hints))                of loading the ``hyperref'' package.
 
-Package hyperref Info: Link coloring OFF on input line 88.
+Package hyperref Info: Link coloring OFF on input line 89.
 (Thesis-report.out) (Thesis-report.out)
 \@outlinefile=\write8
 \openout8 = `Thesis-report.out'.
@@ -1303,15 +1299,15 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'Thesis-report.bbl' found.
  (Thesis-report.bbl)
-Package biblatex Info: Reference section=0 on input line 88.
-Package biblatex Info: Reference segment=0 on input line 88.
+Package biblatex Info: Reference section=0 on input line 89.
+Package biblatex Info: Reference segment=0 on input line 89.
 
 
 pdfTeX warning: pdflatex (file ./Chapitres/Page_garde_BC.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<Chapitres/Page_garde_BC.pdf, id=678, 597.432pt x 845.07718pt>
+<Chapitres/Page_garde_BC.pdf, id=646, 597.432pt x 845.07718pt>
 File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
 <use Chapitres/Page_garde_BC.pdf>
-Package pdftex.def Info: Chapitres/Page_garde_BC.pdf  used on input line 89.
+Package pdftex.def Info: Chapitres/Page_garde_BC.pdf  used on input line 90.
 (pdftex.def)             Requested size: 597.43054pt x 845.07512pt.
 
 
@@ -1319,26 +1315,26 @@ pdfTeX warning: pdflatex (file ./Chapitres/Page_garde_BC.pdf): PDF inclusion: fo
 
 
 pdfTeX warning: pdflatex (file ./Chapitres/Page_garde_BC.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<Chapitres/Page_garde_BC.pdf, id=680, page=1, 597.432pt x 845.07718pt>
+<Chapitres/Page_garde_BC.pdf, id=648, page=1, 597.432pt x 845.07718pt>
 File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
 <use Chapitres/Page_garde_BC.pdf, page 1>
-Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 89.
+Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 90.
 (pdftex.def)             Requested size: 597.43054pt x 845.07512pt.
 File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
 <use Chapitres/Page_garde_BC.pdf, page 1>
-Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 89.
+Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 90.
 (pdftex.def)             Requested size: 597.45789pt x 845.1138pt.
 File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
 <use Chapitres/Page_garde_BC.pdf, page 1>
-Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 89.
+Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 90.
 (pdftex.def)             Requested size: 597.45789pt x 845.1138pt.
 File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
 <use Chapitres/Page_garde_BC.pdf, page 1>
-Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 89.
+Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 90.
 (pdftex.def)             Requested size: 597.45789pt x 845.1138pt.
 File: Chapitres/Page_garde_BC.pdf Graphic file (type pdf)
 <use Chapitres/Page_garde_BC.pdf, page 1>
-Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 89.
+Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 90.
 (pdftex.def)             Requested size: 597.45789pt x 845.1138pt.
 [1
 
@@ -1346,16 +1342,11 @@ Package pdftex.def Info: Chapitres/Page_garde_BC.pdf , page1 used on input line 
  <./Chapitres/Page_garde_BC.pdf>]
 \openout2 = `Chapitres/Declaration.aux'.
 
- (Chapitres/Declaration.tex
-Overfull \hbox (11.25633pt too wide) in paragraph at lines 9--10
-[]\OT1/cmr/bx/n/10.95 D^^Sebogage de code \OT1/cmr/m/n/10.95 : Nous avons uti-lis^^Se \OT1/cmr/bx/n/10.95 Claude \OT1/cmr/m/n/10.95 comme as-sis-tant de d^^Seveloppement
- []
-
-)
+ (Chapitres/Declaration.tex)
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.94 \include{Chapitres/Declaration}
+l.95 \include{Chapitres/Declaration}
                                      [1
 
 
@@ -1399,68 +1390,31 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 8.
  (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-Underfull \vbox (badness 1521) has occurred while \output is active []
-
- [9]
+) [9]
 Package babel Info: 'french' activates 'french' shorthands.
-(babel)             Reported on input line 49.
- [10] [11]
-Underfull \vbox (badness 2080) has occurred while \output is active []
-
- [12]
-Underfull \vbox (badness 2556) has occurred while \output is active []
-
- [13]
+(babel)             Reported on input line 50.
+ [10] [11] [12]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [14])
+ [13] [14])
 \tf@toc=\write9
 \openout9 = `Thesis-report.toc'.
 
  [15] [16
 
-] (Thesis-report.lot
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [17])
+] (Thesis-report.lot [17])
 \tf@lot=\write10
 \openout10 = `Thesis-report.lot'.
 
  [18] (Thesis-report.lof
-Underfull \vbox (badness 4779) has occurred while \output is active []
+Underfull \vbox (badness 5460) has occurred while \output is active []
 
  [19
 
-]
-Underfull \vbox (badness 2671) has occurred while \output is active []
+] [20]
+Underfull \vbox (badness 8056) has occurred while \output is active []
 
- [20]
-Overfull \hbox (2.65643pt too wide) in paragraph at lines 62--62
- [][] [][]\OT1/cmr/m/n/10.95 Diagramme de s^^Sequence d^^Setaill^^Se du cas d'uti-li-sa-tion [] Blo-quer/D^^Sebloquer 
- []
-
-
-Overfull \hbox (2.65643pt too wide) in paragraph at lines 64--64
- [][] [][]\OT1/cmr/m/n/10.95 Diagramme de s^^Sequence d^^Setaill^^Se du cas d'uti-li-sa-tion [] Blo-quer/D^^Sebloquer 
- []
-
-[21]
-Overfull \hbox (12.99529pt too wide) in paragraph at lines 81--81
- [][] [][]\OT1/cmr/m/n/10.95 Diagramme de s^^Sequence syst^^Reme de cas d'uti-li-sa-tion "Consul-ter r^^Seservations 
- []
-
-
-Overfull \hbox (6.21236pt too wide) in paragraph at lines 92--92
- [][] [][]\OT1/cmr/m/n/10.95 Diagramme de s^^Sequence d^^Setaill^^Se du cas d'uti-li-sa-tion " Ef-fec-tuer r^^Seservation 
- []
-
-
-Overfull \hbox (13.78612pt too wide) in paragraph at lines 93--93
- [][] [][]\OT1/cmr/m/n/10.95 Diagramme de s^^Sequence d^^Setaill^^Se du cas d'uti-li-sa-tion " Consul-ter r^^Seservations 
- []
-
-)
+ [21])
 \tf@lof=\write11
 \openout11 = `Thesis-report.lof'.
 
@@ -1468,7 +1422,7 @@ Overfull \hbox (13.78612pt too wide) in paragraph at lines 93--93
 \openout2 = `Chapitres/Introduction.aux'.
 
  (Chapitres/Introduction.tex
-Underfull \vbox (badness 5533) has occurred while \output is active []
+Underfull \vbox (badness 5787) has occurred while \output is active []
 
  [23
 
@@ -1486,7 +1440,7 @@ LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 2.
  (C:\Users\AZIZ\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
-<Chapitres/Figures/Yesinternet.png, id=1367, 627.34375pt x 627.34375pt>
+<Chapitres/Figures/Yesinternet.png, id=1292, 627.34375pt x 627.34375pt>
 File: Chapitres/Figures/Yesinternet.png Graphic file (type png)
 <use Chapitres/Figures/Yesinternet.png>
 Package pdftex.def Info: Chapitres/Figures/Yesinternet.png  used on input line 20.
@@ -1497,7 +1451,7 @@ Package pdftex.def Info: Chapitres/Figures/Yesinternet.png  used on input line 2
 
 
 {C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc} <./Chapitres/Figures/Yesinternet.png>]
-<Chapitres/Figures/organigramme.png, id=1379, 830.6533pt x 517.18219pt>
+<Chapitres/Figures/organigramme.png, id=1305, 830.6533pt x 517.18219pt>
 File: Chapitres/Figures/organigramme.png Graphic file (type png)
 <use Chapitres/Figures/organigramme.png>
 Package pdftex.def Info: Chapitres/Figures/organigramme.png  used on input line 40.
@@ -1506,29 +1460,26 @@ Package pdftex.def Info: Chapitres/Figures/organigramme.png  used on input line 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [26 <./Chapitres/Figures/organigramme.png>] [27] [28]
-<Chapitres/Figures/contrat_papier.jpg, id=1403, 770.88pt x 1027.84pt>
+<Chapitres/Figures/contrat_papier.jpg, id=1330, 770.88pt x 1027.84pt>
 File: Chapitres/Figures/contrat_papier.jpg Graphic file (type jpg)
 <use Chapitres/Figures/contrat_papier.jpg>
 Package pdftex.def Info: Chapitres/Figures/contrat_papier.jpg  used on input line 97.
 (pdftex.def)             Requested size: 330.05322pt x 440.06488pt.
-<Chapitres/Figures/gestion_excel.jpg, id=1406, 949.5475pt x 825.0825pt>
+<Chapitres/Figures/gestion_excel.jpg, id=1333, 949.5475pt x 825.0825pt>
 File: Chapitres/Figures/gestion_excel.jpg Graphic file (type jpg)
 <use Chapitres/Figures/gestion_excel.jpg>
 Package pdftex.def Info: Chapitres/Figures/gestion_excel.jpg  used on input line 104.
 (pdftex.def)             Requested size: 412.56496pt x 358.47993pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 3503) has occurred while \output is active []
 
- [29]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [30 <./Chapitres/Figures/contrat_papier.jpg>]
-<Chapitres/Figures/exmp_sys.png, id=1422, 963.6pt x 541.02126pt>
+ [29 <./Chapitres/Figures/contrat_papier.jpg>]
+<Chapitres/Figures/exmp_sys.png, id=1344, 963.6pt x 541.02126pt>
 File: Chapitres/Figures/exmp_sys.png Graphic file (type png)
 <use Chapitres/Figures/exmp_sys.png>
 Package pdftex.def Info: Chapitres/Figures/exmp_sys.png  used on input line 117.
 (pdftex.def)             Requested size: 371.30594pt x 208.47131pt.
-<Chapitres/Figures/tunisiadr.png, id=1425, 1413.02907pt x 722.7pt>
+<Chapitres/Figures/tunisiadr.png, id=1347, 1413.02907pt x 722.7pt>
 File: Chapitres/Figures/tunisiadr.png Graphic file (type png)
 <use Chapitres/Figures/tunisiadr.png>
 Package pdftex.def Info: Chapitres/Figures/tunisiadr.png  used on input line 125.
@@ -1536,8 +1487,8 @@ Package pdftex.def Info: Chapitres/Figures/tunisiadr.png  used on input line 125
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [31 <./Chapitres/Figures/gestion_excel.jpg>] [32 <./Chapitres/Figures/exmp_sys.png> <./Chapitres/Figures/tunisiadr.png>]
-<Chapitres/Figures/car_centric.jpg, id=1439, 1284.8pt x 722.7pt>
+ [30 <./Chapitres/Figures/gestion_excel.jpg>] [31 <./Chapitres/Figures/exmp_sys.png> <./Chapitres/Figures/tunisiadr.png>]
+<Chapitres/Figures/car_centric.jpg, id=1362, 1284.8pt x 722.7pt>
 File: Chapitres/Figures/car_centric.jpg Graphic file (type jpg)
 <use Chapitres/Figures/car_centric.jpg>
 Package pdftex.def Info: Chapitres/Figures/car_centric.jpg  used on input line 154.
@@ -1545,57 +1496,32 @@ Package pdftex.def Info: Chapitres/Figures/car_centric.jpg  used on input line 1
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [33]
-Overfull \hbox (4.17865pt too wide) in paragraph at lines 166--167
-[]\OT1/cmr/bx/n/10.95 D^^Semat^^Serialisation : \OT1/cmr/m/n/10.95 G^^Sen^^Rere des contrats de lo-ca-tion per-son-na-li-sables qui peuvent
- []
+ [32]
+Underfull \vbox (badness 1264) has occurred while \output is active []
 
-
-Overfull \hbox (2.50256pt too wide) in paragraph at lines 166--167
-\OT1/cmr/m/n/10.95 ^etre sign^^Ses num^^Seriquement, avec la pos-si-bi-lit^^Se de t^^Sel^^Secharger des pho-tos du v^^Sehicule
- []
-
-
-Underfull \vbox (badness 1237) has occurred while \output is active []
-
- [34 <./Chapitres/Figures/car_centric.jpg>]
-<Chapitres/Figures/HQ.png, id=1451, 1435.61343pt x 729.47531pt>
+ [33 <./Chapitres/Figures/car_centric.jpg>]
+<Chapitres/Figures/HQ.png, id=1374, 1435.61343pt x 729.47531pt>
 File: Chapitres/Figures/HQ.png Graphic file (type png)
 <use Chapitres/Figures/HQ.png>
 Package pdftex.def Info: Chapitres/Figures/HQ.png  used on input line 174.
 (pdftex.def)             Requested size: 350.68272pt x 178.18317pt.
-
-Overfull \hbox (2.26376pt too wide) in paragraph at lines 185--186
-[]\OT1/cmr/bx/n/10.95 Gestion de flotte : \OT1/cmr/m/n/10.95 Ou-tils pour g^^Serer la dis-po-ni-bi-lit^^Se des v^^Sehicules, les r^^Separations
- []
-
-<Chapitres/Figures/vevs_dashboard.png, id=1455, 1255.69125pt x 801.99625pt>
+<Chapitres/Figures/vevs_dashboard.png, id=1378, 1255.69125pt x 801.99625pt>
 File: Chapitres/Figures/vevs_dashboard.png Graphic file (type png)
 <use Chapitres/Figures/vevs_dashboard.png>
 Package pdftex.def Info: Chapitres/Figures/vevs_dashboard.png  used on input line 193.
 (pdftex.def)             Requested size: 330.05322pt x 210.79027pt.
 
-Underfull \vbox (badness 3000) has occurred while \output is active []
+Underfull \vbox (badness 3039) has occurred while \output is active []
 
- [35 <./Chapitres/Figures/HQ.png>] [36 <./Chapitres/Figures/vevs_dashboard.png>] [37] [38]
-Overfull \hbox (2.46877pt too wide) in paragraph at lines 245--246
-[]\OT1/cmr/bx/n/10.95 Une ges-tion compl^^Rete du pro-ces-sus de lo-ca-tion \OT1/cmr/m/n/10.95 (v^^Sehicule dis-po-nible, r^^Seserv^^Se,
- []
+ [34 <./Chapitres/Figures/HQ.png>] [35 <./Chapitres/Figures/vevs_dashboard.png>] [36] [37]
+Underfull \vbox (badness 4531) has occurred while \output is active []
 
-
-Underfull \vbox (badness 4316) has occurred while \output is active []
-
- [39]
-Overfull \hbox (8.91931pt too wide) in paragraph at lines 268--270
-\OT1/cmr/m/n/10.95 d^^Seploiement d'une bonne m^^Sethodologie de ges-tion de pro-jet et de lan-gages de mod^^Selisation
- []
-
-
+ [38]
 Overfull \hbox (10.97359pt too wide) in paragraph at lines 283--294
  [][] 
  []
 
-<Chapitres/Figures/agile.png, id=1488, 1806.75pt x 876.27374pt>
+<Chapitres/Figures/agile.png, id=1411, 1806.75pt x 876.27374pt>
 File: Chapitres/Figures/agile.png Graphic file (type png)
 <use Chapitres/Figures/agile.png>
 Package pdftex.def Info: Chapitres/Figures/agile.png  used on input line 298.
@@ -1603,8 +1529,8 @@ Package pdftex.def Info: Chapitres/Figures/agile.png  used on input line 298.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [40]
-<Chapitres/Figures/scrum_model.png, id=1495, 512.66531pt x 286.82156pt>
+ [39]
+<Chapitres/Figures/scrum_model.png, id=1418, 512.66531pt x 286.82156pt>
 File: Chapitres/Figures/scrum_model.png Graphic file (type png)
 <use Chapitres/Figures/scrum_model.png>
 Package pdftex.def Info: Chapitres/Figures/scrum_model.png  used on input line 331.
@@ -1612,43 +1538,38 @@ Package pdftex.def Info: Chapitres/Figures/scrum_model.png  used on input line 3
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [41 <./Chapitres/Figures/agile.png>]
+ [40 <./Chapitres/Figures/agile.png>]
 Overfull \hbox (9.14722pt too wide) in paragraph at lines 360--375
  [][] 
  []
 
 
-Underfull \vbox (badness 3919) has occurred while \output is active []
+Underfull \vbox (badness 4805) has occurred while \output is active []
 
- [42 <./Chapitres/Figures/scrum_model.png>]
-<Chapitres/Figures/UML-logo.png, id=1508, 513.92pt x 513.92pt>
+ [41 <./Chapitres/Figures/scrum_model.png>]
+<Chapitres/Figures/UML-logo.png, id=1430, 513.92pt x 513.92pt>
 File: Chapitres/Figures/UML-logo.png Graphic file (type png)
 <use Chapitres/Figures/UML-logo.png>
 Package pdftex.def Info: Chapitres/Figures/UML-logo.png  used on input line 388.
 (pdftex.def)             Requested size: 82.51172pt x 82.51117pt.
-) [43 <./Chapitres/Figures/UML-logo.png>]
+) [42 <./Chapitres/Figures/UML-logo.png>]
 \openout2 = `Chapitres/Chapitre2.aux'.
 
- (Chapitres/Chapitre2.tex [44
+ (Chapitres/Chapitre2.tex
+Chapitre 2.
+[43
 
 
 
 
 ]
-Chapitre 2.
-[45]
-<Chapitres/Figures/Diag.contexte.stat.png, id=1526, 397.485pt x 189.70876pt>
+<Chapitres/Figures/Diag.contexte.stat.png, id=1445, 397.485pt x 189.70876pt>
 File: Chapitres/Figures/Diag.contexte.stat.png Graphic file (type png)
 <use Chapitres/Figures/Diag.contexte.stat.png>
 Package pdftex.def Info: Chapitres/Figures/Diag.contexte.stat.png  used on input line 50.
 (pdftex.def)             Requested size: 288.7942pt x 137.83781pt.
- [46 <./Chapitres/Figures/Diag.contexte.stat.png>] [47]
-Overfull \hbox (6.51723pt too wide) in paragraph at lines 107--109
-[]\OT1/cmr/bx/n/10.95 Consulter r^^Seservations en cours : \OT1/cmr/m/n/10.95 Le client peut suivre l'^^Setat de ses r^^Seservations. 
- []
-
-[48] [49]
-<Chapitres/Figures/Diag.cas.utilisation.global.png, id=1548, 1385.175pt x 1184.425pt>
+ [44 <./Chapitres/Figures/Diag.contexte.stat.png>] [45] [46] [47] [48]
+<Chapitres/Figures/Diag.cas.utilisation.global.png, id=1471, 1385.175pt x 1184.425pt>
 File: Chapitres/Figures/Diag.cas.utilisation.global.png Graphic file (type png)
 <use Chapitres/Figures/Diag.cas.utilisation.global.png>
 Package pdftex.def Info: Chapitres/Figures/Diag.cas.utilisation.global.png  used on input line 171.
@@ -1658,158 +1579,117 @@ Overfull \hbox (82.51172pt too wide) in paragraph at lines 169--172
  [] 
  []
 
-[50 <./Chapitres/Figures/Diag.cas.utilisation.global.png>]
-<Chapitres/Figures/Scrum-roles.png, id=1556, 437.2335pt x 178.41656pt>
+[49 <./Chapitres/Figures/Diag.cas.utilisation.global.png>]
+<Chapitres/Figures/Scrum-roles.png, id=1479, 437.2335pt x 178.41656pt>
 File: Chapitres/Figures/Scrum-roles.png Graphic file (type png)
 <use Chapitres/Figures/Scrum-roles.png>
 Package pdftex.def Info: Chapitres/Figures/Scrum-roles.png  used on input line 187.
 (pdftex.def)             Requested size: 412.56496pt x 168.35406pt.
-
-Overfull \hbox (16.9566pt too wide) in paragraph at lines 199--201
-\OT1/cmr/m/n/10.95 ract^^Seristiques at-ten-dues d'un pro-duit. Il s'agit d'un ^^Sel^^Sement fon-da-men-tal de la m^^Sethodologie
- []
-
-[51 <./Chapitres/Figures/Scrum-roles.png>]
+ [50 <./Chapitres/Figures/Scrum-roles.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 216--216
-[]|\OT1/cmr/bx/n/10.95 User Story (Je
+[]|\T1/cmr/bx/n/10.95 User Story (Je
  []
 
 
-Overfull \hbox (34.62pt too wide) in alignment at lines 211--218
+Overfull \hbox (65.47098pt too wide) in alignment at lines 211--218
  [] [] [] [] [] 
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 221--221
-[]|\OT1/cmr/bx/n/10.95 User Story (Je
+[]|\T1/cmr/bx/n/10.95 User Story (Je
  []
 
 
-Overfull \hbox (34.62pt too wide) in alignment at lines 218--223
+Overfull \hbox (65.47098pt too wide) in alignment at lines 218--223
  [] [] [] [] [] 
  []
 
 
-Overfull \hbox (34.62pt too wide) in alignment at lines 223--226
+Overfull \hbox (65.47098pt too wide) in alignment at lines 223--226
  [] [] [] [] [] 
  []
 
 
-Overfull \hbox (34.62pt too wide) in alignment at lines 226--229
+Overfull \hbox (65.47098pt too wide) in alignment at lines 226--229
  [] [] [] [] [] 
  []
 
 
-Underfull \hbox (badness 2181) in paragraph at lines 234--234
-[]|\OT1/cmr/m/n/10.95 contacter l'ad-mi-nis-tra-
+Underfull \hbox (badness 2744) in paragraph at lines 233--233
+[]|\T1/cmr/m/n/10.95 gérer mon pro-fil afin
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 238--238
-[]|\OT1/cmr/m/n/10.95 m'authentifier afin
+Underfull \hbox (badness 1655) in paragraph at lines 235--235
+[]|\T1/cmr/m/n/10.95 gérer les agences afin
  []
 
 
-Underfull \hbox (badness 2384) in paragraph at lines 239--239
-[]|\OT1/cmr/m/n/10.95 g^^Serer mon pro-fil afin
+Underfull \hbox (badness 3138) in paragraph at lines 235--235
+\T1/cmr/m/n/10.95 de vi-sua-li-ser, ajou-ter,
  []
 
 
-Underfull \hbox (badness 1072) in paragraph at lines 240--240
-[]|\OT1/cmr/m/n/10.95 consulter les v^^Sehicules
+Underfull \hbox (badness 1365) in paragraph at lines 239--239
+[]|\T1/cmr/m/n/10.95 consulter mes ré-ser-va-
  []
 
 
-Underfull \hbox (badness 7030) in paragraph at lines 240--240
-\OT1/cmr/m/n/10.95 dis-po-nibles ainsi que
+Underfull \hbox (badness 1097) in paragraph at lines 240--240
+[]|\T1/cmr/m/n/10.95 traiter les ré-ser-va-tions
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 243--243
-[]|\OT1/cmr/m/n/10.95 effectuer une
+Underfull \hbox (badness 10000) in paragraph at lines 240--240
+\T1/cmr/m/n/10.95 et re-cla-ma-tions afin
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 243--243
-\OT1/cmr/m/n/10.95 r^^Seservation afin de
+Underfull \hbox (badness 10000) in paragraph at lines 240--240
+\T1/cmr/m/n/10.95 d'ac-cep-ter/refuser les
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 243--243
-\OT1/cmr/m/n/10.95 louer un v^^Sehicule
+Underfull \hbox (badness 2027) in paragraph at lines 241--241
+[]|\T1/cmr/m/n/10.95 voir mon score client
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 244--244
-[]|\OT1/cmr/m/n/10.95 consulter mes
+Underfull \hbox (badness 3209) in paragraph at lines 242--242
+[]|\T1/cmr/m/n/10.95 contacter l'ad-mi-nis-tra-
  []
 
 
-Underfull \hbox (badness 5726) in paragraph at lines 244--244
-\OT1/cmr/m/n/10.95 r^^Seservations en cours
- []
-
-
-Underfull \hbox (badness 1092) in paragraph at lines 246--246
-\OT1/cmr/m/n/10.95 afin d'ac-cep-ter ou re-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 247--247
-[]|\OT1/cmr/m/n/10.95 consulter les sta-tis-
- []
-
-
-Underfull \hbox (badness 3601) in paragraph at lines 247--247
-\OT1/cmr/m/n/10.95 tiques afin d'ana-ly-ser
- []
-
-
-Underfull \hbox (badness 6995) in paragraph at lines 249--249
-[]|\OT1/cmr/m/n/10.95 consulter les agences
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 252--252
-[]|\OT1/cmr/m/n/10.95 consulter les sta-tis-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 252--252
-\OT1/cmr/m/n/10.95 tiques glo-bales afin
- []
-
-
-Underfull \hbox (badness 5077) in paragraph at lines 252--252
-\OT1/cmr/m/n/10.95 d'ana-ly-ser les per-for-
- []
-
-
-Overfull \hbox (34.62pt too wide) in alignment at lines 229--254
+Overfull \hbox (65.47098pt too wide) in alignment at lines 229--248
  [] [] [] [] [] 
  []
 
 
-ignored: Infinite glue shrinkage found in box being split [52] [53]
-<Chapitres/Figures/sprint_1.png, id=1571, 1220.56pt x 851.18pt>
+ignored: Infinite glue shrinkage found in box being split [51] [52]
+<Chapitres/Figures/sprint_1.png, id=1494, 971.63pt x 851.18pt>
 File: Chapitres/Figures/sprint_1.png Graphic file (type png)
 <use Chapitres/Figures/sprint_1.png>
-Package pdftex.def Info: Chapitres/Figures/sprint_1.png  used on input line 265.
-(pdftex.def)             Requested size: 288.7942pt x 201.39105pt.
-<Chapitres/Figures/sprint_2.png, id=1572, 1445.4pt x 813.0375pt>
+Package pdftex.def Info: Chapitres/Figures/sprint_1.png  used on input line 259.
+(pdftex.def)             Requested size: 288.7942pt x 252.99216pt.
+<Chapitres/Figures/sprint_2.png, id=1495, 799.98875pt x 770.88pt>
 File: Chapitres/Figures/sprint_2.png Graphic file (type png)
 <use Chapitres/Figures/sprint_2.png>
-Package pdftex.def Info: Chapitres/Figures/sprint_2.png  used on input line 271.
-(pdftex.def)             Requested size: 412.56496pt x 232.06546pt.
-<Chapitres/Figures/gantt.png, id=1573, 930.47626pt x 258.9675pt>
+Package pdftex.def Info: Chapitres/Figures/sprint_2.png  used on input line 265.
+(pdftex.def)             Requested size: 288.7942pt x 278.28116pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [53 <./Chapitres/Figures/sprint_1.png>]
+<Chapitres/Figures/gantt.png, id=1501, 930.47626pt x 258.9675pt>
 File: Chapitres/Figures/gantt.png Graphic file (type png)
 <use Chapitres/Figures/gantt.png>
-Package pdftex.def Info: Chapitres/Figures/gantt.png  used on input line 283.
+Package pdftex.def Info: Chapitres/Figures/gantt.png  used on input line 277.
 (pdftex.def)             Requested size: 412.56496pt x 114.82327pt.
 
-Underfull \vbox (badness 6792) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [54 <./Chapitres/Figures/sprint_1.png> <./Chapitres/Figures/sprint_2.png>]) [55 <./Chapitres/Figures/gantt.png>]
+ [54 <./Chapitres/Figures/sprint_2.png> <./Chapitres/Figures/gantt.png>]) [55]
 \openout2 = `Chapitres/Chapitre3.aux'.
 
  (Chapitres/Chapitre3.tex [56
@@ -1819,907 +1699,768 @@ Underfull \vbox (badness 6792) has occurred while \output is active []
 
 ]
 Chapitre 3.
-<Chapitres/Figures/Planification_sprint_1.png, id=1589, 1310.64656pt x 490.08093pt>
-File: Chapitres/Figures/Planification_sprint_1.png Graphic file (type png)
-<use Chapitres/Figures/Planification_sprint_1.png>
-Package pdftex.def Info: Chapitres/Figures/Planification_sprint_1.png  used on input line 18.
-(pdftex.def)             Requested size: 412.56496pt x 154.26414pt.
 
-Underfull \hbox (badness 1546) in paragraph at lines 135--135
-\OT1/cmr/m/n/10.95 dia-grammes du cas []S'ins-
+Underfull \hbox (badness 2376) in paragraph at lines 123--123
+\T1/cmr/m/n/10.95 dia-grammes du cas ^^SS'ins-
  []
 
 
-Underfull \hbox (badness 3815) in paragraph at lines 135--135
-[]|\OT1/cmr/m/n/10.95 Impl^^Sementer l'af-fi-chage des
+Underfull \hbox (badness 4647) in paragraph at lines 123--123
+[]|\T1/cmr/m/n/10.95 Implémenter l'af-fi-chage des
  []
 
 
-Underfull \hbox (badness 2181) in paragraph at lines 135--135
-[]|\OT1/cmr/m/n/10.95 contacter l'administra-
+Underfull \hbox (badness 3209) in paragraph at lines 123--123
+[]|\T1/cmr/m/n/10.95 contacter l'administra-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 135--135
-[]|\OT1/cmr/m/n/10.95 S'authentifier afin
+Underfull \hbox (badness 10000) in paragraph at lines 123--123
+[]|\T1/cmr/m/n/10.95 Implémenter l'au-then-ti-fi-ca-
  []
 
 
-Underfull \hbox (badness 1325) in paragraph at lines 135--135
-[]|\OT1/cmr/m/n/10.95 R^^Sediger les dia-grammes du
+Underfull \hbox (badness 1292) in paragraph at lines 123--123
+[]|\T1/cmr/m/n/10.95 Implémenter la consul-ta-tion
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 135--135
-[]|\OT1/cmr/m/n/10.95 Impl^^Sementer l'au-then-ti-fi-ca-
+Underfull \hbox (badness 7981) in paragraph at lines 123--123
+[]|\T1/cmr/m/n/10.95 consulter les agences
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 135--135
-[]|\OT1/cmr/m/n/10.95 Impl^^Sementer la liste des
+Underfull \hbox (badness 1292) in paragraph at lines 123--123
+[]|\T1/cmr/m/n/10.95 Implémenter la consul-ta-tion
  []
 
 
-Underfull \hbox (badness 6995) in paragraph at lines 135--135
-[]|\OT1/cmr/m/n/10.95 consulter les agences
+Underfull \hbox (badness 7981) in paragraph at lines 123--123
+[]|\T1/cmr/m/n/10.95 consulter les agences
  []
 
 
-Underfull \hbox (badness 6995) in paragraph at lines 135--135
-[]|\OT1/cmr/m/n/10.95 consulter les agences
+Underfull \hbox (badness 1292) in paragraph at lines 123--123
+[]|\T1/cmr/m/n/10.95 Implémenter la consul-ta-tion
  []
 
-[57 <./Chapitres/Figures/Planification_sprint_1.png>] [58]
-<Chapitres/Figures/proto_inscription.png, id=1600, 647.41875pt x 456.20438pt>
+[57] [58]
+<Chapitres/Figures/proto_inscription.png, id=1526, 647.41875pt x 456.20438pt>
 File: Chapitres/Figures/proto_inscription.png Graphic file (type png)
 <use Chapitres/Figures/proto_inscription.png>
-Package pdftex.def Info: Chapitres/Figures/proto_inscription.png  used on input line 148.
+Package pdftex.def Info: Chapitres/Figures/proto_inscription.png  used on input line 136.
 (pdftex.def)             Requested size: 330.05322pt x 232.57065pt.
-<Chapitres/Figures/proto_client.png, id=1601, 643.6547pt x 456.95718pt>
+<Chapitres/Figures/proto_client.png, id=1527, 643.6547pt x 456.95718pt>
 File: Chapitres/Figures/proto_client.png Graphic file (type png)
 <use Chapitres/Figures/proto_client.png>
-Package pdftex.def Info: Chapitres/Figures/proto_client.png  used on input line 154.
+Package pdftex.def Info: Chapitres/Figures/proto_client.png  used on input line 142.
 (pdftex.def)             Requested size: 330.05322pt x 234.32803pt.
  [59 <./Chapitres/Figures/proto_inscription.png> <./Chapitres/Figures/proto_client.png>]
-<Chapitres/Figures/diag_cas_sprint1.png, id=1608, 587.19376pt x 318.89137pt>
+<Chapitres/Figures/diag_cas_sprint1.png, id=1534, 587.19376pt x 318.89137pt>
 File: Chapitres/Figures/diag_cas_sprint1.png Graphic file (type png)
 <use Chapitres/Figures/diag_cas_sprint1.png>
-Package pdftex.def Info: Chapitres/Figures/diag_cas_sprint1.png  used on input line 175.
+Package pdftex.def Info: Chapitres/Figures/diag_cas_sprint1.png  used on input line 163.
 (pdftex.def)             Requested size: 330.05322pt x 179.24457pt.
  [60
 
  <./Chapitres/Figures/diag_cas_sprint1.png>]
-<Chapitres/Figures/Diag_seq_consulter_act.png, id=1615, 1350.04375pt x 977.6525pt>
-File: Chapitres/Figures/Diag_seq_consulter_act.png Graphic file (type png)
-<use Chapitres/Figures/Diag_seq_consulter_act.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_consulter_act.png  used on input line 222.
-(pdftex.def)             Requested size: 412.56496pt x 298.7579pt.
- [61]
-<Chapitres/Figures/Sequence_diagram_S_inscrire.png, id=1621, 858.20625pt x 736.25063pt>
+<Chapitres/Figures/Sequence_diagram_S_inscrire.png, id=1541, 858.20625pt x 736.25063pt>
 File: Chapitres/Figures/Sequence_diagram_S_inscrire.png Graphic file (type png)
 <use Chapitres/Figures/Sequence_diagram_S_inscrire.png>
-Package pdftex.def Info: Chapitres/Figures/Sequence_diagram_S_inscrire.png  used on input line 275.
+Package pdftex.def Info: Chapitres/Figures/Sequence_diagram_S_inscrire.png  used on input line 224.
 (pdftex.def)             Requested size: 412.56496pt x 353.93553pt.
- [62 <./Chapitres/Figures/Diag_seq_consulter_act.png>]
-Overfull \vbox (141.75694pt too high) has occurred while \output is active []
-
- [63 <./Chapitres/Figures/Sequence_diagram_S_inscrire.png>]
-<Chapitres/Figures/Sequence_diagram_S_authentifier.png, id=1633, 858.20625pt x 709.14937pt>
+ [61]
+<Chapitres/Figures/Sequence_diagram_S_authentifier.png, id=1546, 858.20625pt x 709.14937pt>
 File: Chapitres/Figures/Sequence_diagram_S_authentifier.png Graphic file (type png)
 <use Chapitres/Figures/Sequence_diagram_S_authentifier.png>
-Package pdftex.def Info: Chapitres/Figures/Sequence_diagram_S_authentifier.png  used on input line 325.
+Package pdftex.def Info: Chapitres/Figures/Sequence_diagram_S_authentifier.png  used on input line 274.
 (pdftex.def)             Requested size: 412.56496pt x 340.90723pt.
- [64]
-<Chapitres/Figures/Diag_seq_chatbot.png, id=1638, 652.68843pt x 456.65607pt>
+ [62 <./Chapitres/Figures/Sequence_diagram_S_inscrire.png>] [63]
+<Chapitres/Figures/Diag_seq_chatbot.png, id=1556, 652.68843pt x 456.65607pt>
 File: Chapitres/Figures/Diag_seq_chatbot.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_chatbot.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_chatbot.png  used on input line 367.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_chatbot.png  used on input line 316.
 (pdftex.def)             Requested size: 412.56496pt x 288.66339pt.
- [65 <./Chapitres/Figures/Sequence_diagram_S_authentifier.png>] [66]
-<Chapitres/Figures/Diag_cas_Gerer_profil.png, id=1649, 560.99588pt x 168.93112pt>
+ [64 <./Chapitres/Figures/Sequence_diagram_S_authentifier.png>]
+<Chapitres/Figures/Diag_cas_Gerer_profil.png, id=1562, 560.99588pt x 168.93112pt>
 File: Chapitres/Figures/Diag_cas_Gerer_profil.png Graphic file (type png)
 <use Chapitres/Figures/Diag_cas_Gerer_profil.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_cas_Gerer_profil.png  used on input line 379.
+Package pdftex.def Info: Chapitres/Figures/Diag_cas_Gerer_profil.png  used on input line 328.
 (pdftex.def)             Requested size: 371.30594pt x 111.8145pt.
- [67 <./Chapitres/Figures/Diag_seq_chatbot.png> <./Chapitres/Figures/Diag_cas_Gerer_profil.png>]
-<Chapitres/Figures/Diag_seq_cp.png, id=1656, 648.17157pt x 373.09387pt>
+ [65 <./Chapitres/Figures/Diag_seq_chatbot.png>]
+<Chapitres/Figures/Diag_seq_cp.png, id=1568, 648.17157pt x 373.09387pt>
 File: Chapitres/Figures/Diag_seq_cp.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_cp.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_cp.png  used on input line 425.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_cp.png  used on input line 374.
 (pdftex.def)             Requested size: 412.56496pt x 237.48126pt.
- [68 <./Chapitres/Figures/Diag_seq_cp.png>]
-<Chapitres/Figures/Diag_seq_mdp.png, id=1662, 882.59738pt x 757.47993pt>
-File: Chapitres/Figures/Diag_seq_mdp.png Graphic file (type png)
-<use Chapitres/Figures/Diag_seq_mdp.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_mdp.png  used on input line 478.
-(pdftex.def)             Requested size: 412.56496pt x 354.07384pt.
- [69]
-<Chapitres/Figures/Diag_seq_gerer_profil.png, id=1667, 858.20625pt x 709.14937pt>
-File: Chapitres/Figures/Diag_seq_gerer_profil.png Graphic file (type png)
-<use Chapitres/Figures/Diag_seq_gerer_profil.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_gerer_profil.png  used on input line 532.
-(pdftex.def)             Requested size: 412.56496pt x 340.90723pt.
- [70 <./Chapitres/Figures/Diag_seq_mdp.png>]
-Overfull \vbox (100.55975pt too high) has occurred while \output is active []
-
- [71 <./Chapitres/Figures/Diag_seq_gerer_profil.png>]
-Overfull \hbox (3.27101pt too wide) in paragraph at lines 543--544
-\OT1/cmr/bx/n/10.95 tures[]\OT1/cmr/m/n/10.95 , as-soci^^Se ^^Ra l'ac-teur \OT1/cmr/m/it/10.95 Uti-li-sa-teur\OT1/cmr/m/n/10.95 . Ce cas d'uti-li-sa-tion per-met ^^Ra l'uti-li-sa-teur d'acc^^Seder
- []
-
-<Chapitres/Figures/Diag_seq_consulter_voitures.png, id=1678, 613.39163pt x 344.18588pt>
-File: Chapitres/Figures/Diag_seq_consulter_voitures.png Graphic file (type png)
-<use Chapitres/Figures/Diag_seq_consulter_voitures.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_consulter_voitures.png  used on input line 584.
-(pdftex.def)             Requested size: 412.56496pt x 231.5014pt.
-[72]
-<Chapitres/Figures/raf_consulter_agences.png, id=1684, 520.79568pt x 156.73557pt>
+ [66 <./Chapitres/Figures/Diag_cas_Gerer_profil.png>]
+<Chapitres/Figures/raf_consulter_agences.png, id=1575, 520.79568pt x 156.73557pt>
 File: Chapitres/Figures/raf_consulter_agences.png Graphic file (type png)
 <use Chapitres/Figures/raf_consulter_agences.png>
-Package pdftex.def Info: Chapitres/Figures/raf_consulter_agences.png  used on input line 602.
+Package pdftex.def Info: Chapitres/Figures/raf_consulter_agences.png  used on input line 392.
 (pdftex.def)             Requested size: 412.56496pt x 124.16411pt.
- [73 <./Chapitres/Figures/Diag_seq_consulter_voitures.png> <./Chapitres/Figures/raf_consulter_agences.png>]
-<Chapitres/Figures/Diag_seq_ajouter_agence.png, id=1691, 862.27144pt x 746.63943pt>
+ [67 <./Chapitres/Figures/Diag_seq_cp.png> <./Chapitres/Figures/raf_consulter_agences.png>]
+<Chapitres/Figures/Diag_seq_ajouter_agence.png, id=1582, 862.27144pt x 746.63943pt>
 File: Chapitres/Figures/Diag_seq_ajouter_agence.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_ajouter_agence.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_ajouter_agence.png  used on input line 657.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_ajouter_agence.png  used on input line 447.
 (pdftex.def)             Requested size: 412.56496pt x 357.24358pt.
- [74]
-Overfull \hbox (10.4952pt too wide) in paragraph at lines 674--707
+ [68]
+Overfull \hbox (9.82518pt too wide) in paragraph at lines 464--497
  [][] 
  []
 
-[75 <./Chapitres/Figures/Diag_seq_ajouter_agence.png>]
-<Chapitres/Figures/Diag_seq_bloquer_agence.png, id=1701, 864.07819pt x 754.7698pt>
+[69 <./Chapitres/Figures/Diag_seq_ajouter_agence.png>]
+<Chapitres/Figures/Diag_seq_bloquer_agence.png, id=1592, 864.07819pt x 754.7698pt>
 File: Chapitres/Figures/Diag_seq_bloquer_agence.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_bloquer_agence.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_bloquer_agence.png  used on input line 711.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_bloquer_agence.png  used on input line 501.
 (pdftex.def)             Requested size: 412.56496pt x 360.3736pt.
- [76] [77 <./Chapitres/Figures/Diag_seq_bloquer_agence.png>]
-<Chapitres/Figures/Raf_consulter_utilisateurs.png, id=1711, 534.798pt x 153.57375pt>
+ [70] [71 <./Chapitres/Figures/Diag_seq_bloquer_agence.png>]
+<Chapitres/Figures/Raf_consulter_utilisateurs.png, id=1602, 534.798pt x 153.57375pt>
 File: Chapitres/Figures/Raf_consulter_utilisateurs.png Graphic file (type png)
 <use Chapitres/Figures/Raf_consulter_utilisateurs.png>
-Package pdftex.def Info: Chapitres/Figures/Raf_consulter_utilisateurs.png  used on input line 725.
+Package pdftex.def Info: Chapitres/Figures/Raf_consulter_utilisateurs.png  used on input line 515.
 (pdftex.def)             Requested size: 412.56496pt x 118.47476pt.
-<Chapitres/Figures/Diag_seq_ajouter_utilisateur.png, id=1712, 870.40181pt x 765.6103pt>
+<Chapitres/Figures/Diag_seq_ajouter_utilisateur.png, id=1603, 870.40181pt x 765.6103pt>
 File: Chapitres/Figures/Diag_seq_ajouter_utilisateur.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_ajouter_utilisateur.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_ajouter_utilisateur.png  used on input line 779.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_ajouter_utilisateur.png  used on input line 569.
 (pdftex.def)             Requested size: 412.56496pt x 362.89764pt.
- [78 <./Chapitres/Figures/Raf_consulter_utilisateurs.png>] [79 <./Chapitres/Figures/Diag_seq_ajouter_utilisateur.png>]
-Overfull \hbox (10.4952pt too wide) in paragraph at lines 797--830
+ [72 <./Chapitres/Figures/Raf_consulter_utilisateurs.png>] [73 <./Chapitres/Figures/Diag_seq_ajouter_utilisateur.png>]
+Overfull \hbox (9.82518pt too wide) in paragraph at lines 587--620
  [][] 
  []
 
-<Chapitres/Figures/Diag_seq_bloquer_utilisateur.png, id=1724, 855.94781pt x 742.57425pt>
+<Chapitres/Figures/Diag_seq_bloquer_utilisateur.png, id=1615, 855.94781pt x 742.57425pt>
 File: Chapitres/Figures/Diag_seq_bloquer_utilisateur.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_bloquer_utilisateur.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_bloquer_utilisateur.png  used on input line 833.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_bloquer_utilisateur.png  used on input line 623.
 (pdftex.def)             Requested size: 412.56496pt x 357.91592pt.
 
-Underfull \hbox (badness 2744) in paragraph at lines 834--834
-[]\OT1/cmr/m/sc/10.95 Figure 3.19 \OT1/cmr/m/n/10.95 { |Dia-gramme de s^^Sequence syst^^Reme de cas d'uti-li-sa-tion []Blo-
+Underfull \hbox (badness 3291) in paragraph at lines 624--624
+[]\T1/cmr/m/sc/10.95 Figure 3.14 \T1/cmr/m/n/10.95 ^^U |Dia-gramme de sé-quence sys-tème de cas d'uti-li-sa-tion ^^SBlo-
  []
 
-[80] [81 <./Chapitres/Figures/Diag_seq_bloquer_utilisateur.png>]
-<Chapitres/Figures/raf_gerer_vitrine.png, id=1734, 529.37775pt x 146.34676pt>
+[74] [75 <./Chapitres/Figures/Diag_seq_bloquer_utilisateur.png>]
+<Chapitres/Figures/raf_gerer_vitrine.png, id=1625, 529.37775pt x 146.34676pt>
 File: Chapitres/Figures/raf_gerer_vitrine.png Graphic file (type png)
 <use Chapitres/Figures/raf_gerer_vitrine.png>
-Package pdftex.def Info: Chapitres/Figures/raf_gerer_vitrine.png  used on input line 851.
+Package pdftex.def Info: Chapitres/Figures/raf_gerer_vitrine.png  used on input line 641.
 (pdftex.def)             Requested size: 412.56496pt x 114.05397pt.
-
-Overfull \hbox (4.32806pt too wide) in paragraph at lines 858--859
-\OT1/cmr/m/n/10.95 aux-quels s'ajoute l'ana-lyse du cas d'uti-li-sa-tion []\OT1/cmr/bx/n/10.95 Consul-ter vi-trine[] \OT1/cmr/m/n/10.95 de l'ac-teur \OT1/cmr/m/it/10.95 Agence\OT1/cmr/m/n/10.95 . 
- []
-
-<Chapitres/Figures/Diag_seq_consulter_vitrine.png, id=1735, 626.94225pt x 348.70274pt>
+<Chapitres/Figures/Diag_seq_consulter_vitrine.png, id=1626, 626.94225pt x 348.70274pt>
 File: Chapitres/Figures/Diag_seq_consulter_vitrine.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_consulter_vitrine.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_consulter_vitrine.png  used on input line 896.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_consulter_vitrine.png  used on input line 686.
 (pdftex.def)             Requested size: 412.56496pt x 229.46346pt.
-[82 <./Chapitres/Figures/raf_gerer_vitrine.png>] [83 <./Chapitres/Figures/Diag_seq_consulter_vitrine.png>]
-<Chapitres/Figures/Diag_seq_ajouter_voiture.png, id=1746, 855.04443pt x 731.28206pt>
+ [76 <./Chapitres/Figures/raf_gerer_vitrine.png>] [77 <./Chapitres/Figures/Diag_seq_consulter_vitrine.png>]
+<Chapitres/Figures/Diag_seq_ajouter_voiture.png, id=1637, 855.04443pt x 731.28206pt>
 File: Chapitres/Figures/Diag_seq_ajouter_voiture.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_ajouter_voiture.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_ajouter_voiture.png  used on input line 950.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_ajouter_voiture.png  used on input line 740.
 (pdftex.def)             Requested size: 412.56496pt x 352.85254pt.
- [84]
-<Chapitres/Figures/Diag_seq_modifier_infos_voiture.png, id=1752, 855.04443pt x 734.44388pt>
+ [78]
+<Chapitres/Figures/Diag_seq_modifier_infos_voiture.png, id=1643, 855.04443pt x 734.44388pt>
 File: Chapitres/Figures/Diag_seq_modifier_infos_voiture.png Graphic file (type png)
 <use Chapitres/Figures/Diag_seq_modifier_infos_voiture.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_seq_modifier_infos_voiture.png  used on input line 1002.
+Package pdftex.def Info: Chapitres/Figures/Diag_seq_modifier_infos_voiture.png  used on input line 792.
 (pdftex.def)             Requested size: 412.56496pt x 354.37816pt.
- [85 <./Chapitres/Figures/Diag_seq_ajouter_voiture.png>]
-Overfull \vbox (100.43068pt too high) has occurred while \output is active []
+ [79 <./Chapitres/Figures/Diag_seq_ajouter_voiture.png>]
+Overfull \vbox (100.8379pt too high) has occurred while \output is active []
 
- [86 <./Chapitres/Figures/Diag_seq_modifier_infos_voiture.png>] [87]
-Overfull \hbox (13.2385pt too wide) in paragraph at lines 1042--1047
-\OT1/cmr/m/n/10.95 classes contiennent des at-tri-buts per-sis-tants cor-res-pon-dant aux in-for-ma-tions stock^^Sees
- []
-
-<Chapitres/Figures/classes_participantes__internaute_s1.png, id=1771, 831.105pt x 264.68887pt>
+ [80 <./Chapitres/Figures/Diag_seq_modifier_infos_voiture.png>] [81]
+<Chapitres/Figures/classes_participantes__internaute_s1.png, id=1662, 831.105pt x 264.68887pt>
 File: Chapitres/Figures/classes_participantes__internaute_s1.png Graphic file (type png)
 <use Chapitres/Figures/classes_participantes__internaute_s1.png>
-Package pdftex.def Info: Chapitres/Figures/classes_participantes__internaute_s1.png  used on input line 1053.
+Package pdftex.def Info: Chapitres/Figures/classes_participantes__internaute_s1.png  used on input line 843.
 (pdftex.def)             Requested size: 412.56496pt x 131.39095pt.
-<Chapitres/Figures/classes_participantes__utilisateur_s1.png, id=1772, 858.20625pt x 235.78087pt>
+<Chapitres/Figures/classes_participantes__utilisateur_s1.png, id=1663, 858.20625pt x 235.78087pt>
 File: Chapitres/Figures/classes_participantes__utilisateur_s1.png Graphic file (type png)
 <use Chapitres/Figures/classes_participantes__utilisateur_s1.png>
-Package pdftex.def Info: Chapitres/Figures/classes_participantes__utilisateur_s1.png  used on input line 1062.
+Package pdftex.def Info: Chapitres/Figures/classes_participantes__utilisateur_s1.png  used on input line 852.
 (pdftex.def)             Requested size: 412.56496pt x 113.3462pt.
-[88 <./Chapitres/Figures/classes_participantes__internaute_s1.png>]
-<Chapitres/Figures/classes_participantes__agence_s1.png, id=1782, 831.105pt x 177.0615pt>
+ [82 <./Chapitres/Figures/classes_participantes__internaute_s1.png>]
+<Chapitres/Figures/classes_participantes__agence_s1.png, id=1673, 831.105pt x 177.0615pt>
 File: Chapitres/Figures/classes_participantes__agence_s1.png Graphic file (type png)
 <use Chapitres/Figures/classes_participantes__agence_s1.png>
-Package pdftex.def Info: Chapitres/Figures/classes_participantes__agence_s1.png  used on input line 1071.
+Package pdftex.def Info: Chapitres/Figures/classes_participantes__agence_s1.png  used on input line 861.
 (pdftex.def)             Requested size: 412.56496pt x 87.8929pt.
-<Chapitres/Figures/classes_participantes__admin_s1.png, id=1783, 831.105pt x 177.0615pt>
+<Chapitres/Figures/classes_participantes__admin_s1.png, id=1674, 831.105pt x 177.0615pt>
 File: Chapitres/Figures/classes_participantes__admin_s1.png Graphic file (type png)
 <use Chapitres/Figures/classes_participantes__admin_s1.png>
-Package pdftex.def Info: Chapitres/Figures/classes_participantes__admin_s1.png  used on input line 1080.
+Package pdftex.def Info: Chapitres/Figures/classes_participantes__admin_s1.png  used on input line 870.
 (pdftex.def)             Requested size: 412.56496pt x 87.8929pt.
- [89 <./Chapitres/Figures/classes_participantes__utilisateur_s1.png> <./Chapitres/Figures/classes_participantes__agence_s1.png> <./Chapitres/Figures/classes_participantes__admin_s1.png>]
-<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_actualite.png, id=1792, 369.63094pt x 182.93344pt>
+ [83 <./Chapitres/Figures/classes_participantes__utilisateur_s1.png> <./Chapitres/Figures/classes_participantes__agence_s1.png> <./Chapitres/Figures/classes_participantes__admin_s1.png>]
+<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_actualite.png, id=1683, 369.63094pt x 182.93344pt>
 File: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_actualite.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_actualite.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_actualite.png  used on input line 1099.
+Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_actualite.png  used on input line 889.
 (pdftex.def)             Requested size: 330.05322pt x 163.34618pt.
-<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_inscrire.png, id=1793, 420.82219pt x 412.54124pt>
+<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_inscrire.png, id=1684, 420.82219pt x 412.54124pt>
 File: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_inscrire.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_inscrire.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_inscrire.png  used on input line 1108.
+Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_inscrire.png  used on input line 898.
 (pdftex.def)             Requested size: 391.93544pt x 384.22594pt.
- [90 <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_actualite.png>]
-<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_authentifier.png, id=1801, 449.42906pt x 213.79875pt>
+ [84 <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_actualite.png>]
+<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_authentifier.png, id=1692, 449.42906pt x 213.79875pt>
 File: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_authentifier.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_authentifier.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_authentifier.png  used on input line 1122.
+Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_authentifier.png  used on input line 912.
 (pdftex.def)             Requested size: 350.68272pt x 166.83086pt.
- [91 <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_inscrire.png>]
-<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_chatbot.png, id=1807, 372.64218pt x 185.19188pt>
+ [85 <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_inscrire.png>]
+<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_chatbot.png, id=1698, 372.64218pt x 185.19188pt>
 File: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_chatbot.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_chatbot.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_chatbot.png  used on input line 1132.
+Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_chatbot.png  used on input line 922.
 (pdftex.def)             Requested size: 350.68272pt x 174.28383pt.
-<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_profil.png, id=1808, 304.88907pt x 181.42781pt>
+<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_profil.png, id=1699, 304.88907pt x 181.42781pt>
 File: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_profil.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_profil.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_profil.png  used on input line 1141.
+Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_profil.png  used on input line 931.
 (pdftex.def)             Requested size: 350.68272pt x 208.68465pt.
- [92 <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_authentifier.png> <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_chatbot.png>]
-<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_modif_mdp.png, id=1815, 433.62pt x 261.22594pt>
-File: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_modif_mdp.png Graphic file (type png)
-<use Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_modif_mdp.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_modif_mdp.png  used on input line 1150.
-(pdftex.def)             Requested size: 350.68272pt x 211.27295pt.
- [93 <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_profil.png>]
-<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_modif_infos.png, id=1821, 316.18124pt x 182.93344pt>
-File: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_modif_infos.png Graphic file (type png)
-<use Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_modif_infos.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_modif_infos.png  used on input line 1159.
-(pdftex.def)             Requested size: 350.68272pt x 202.90778pt.
-<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_voiture.png, id=1822, 338.76563pt x 183.68625pt>
-File: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_voiture.png Graphic file (type png)
-<use Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_voiture.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_voiture.png  used on input line 1168.
-(pdftex.def)             Requested size: 350.68272pt x 190.15468pt.
- [94 <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_modif_mdp.png> <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_modif_infos.png>]
-<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_agence.png, id=1829, 343.2825pt x 184.43906pt>
+ [86 <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_s_authentifier.png> <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_chatbot.png>]
+<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_agence.png, id=1706, 343.2825pt x 184.43906pt>
 File: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_agence.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_agence.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_agence.png  used on input line 1181.
+Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_agence.png  used on input line 944.
 (pdftex.def)             Requested size: 330.05322pt x 177.32965pt.
 
-Overfull \hbox (45.15862pt too wide) in paragraph at lines 1186--1186
-[]\OT1/cmr/bx/n/10.95 Diagrammes de s^^Sequence d^^Setaill^^Se du cas d'uti-li-sa-tion [] Blo-quer/D^^Sebloquer
+Overfull \hbox (41.57454pt too wide) in paragraph at lines 949--949
+[]\T1/cmr/bx/n/10.95 Diagrammes de sé-quence dé-taillé du cas d'uti-li-sa-tion ^^S Blo-quer/Débloquer
  []
 
-<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_agence.png, id=1830, 432.11438pt x 182.18062pt>
+<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_agence.png, id=1707, 432.11438pt x 182.18062pt>
 File: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_agence.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_agence.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_agence.png  used on input line 1190.
+Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_agence.png  used on input line 953.
 (pdftex.def)             Requested size: 330.05322pt x 139.15643pt.
 
-Underfull \hbox (badness 1845) in paragraph at lines 1191--1191
-[]\OT1/cmr/m/sc/10.95 Figure 3.37 \OT1/cmr/m/n/10.95 { |Dia-gramme de s^^Sequence d^^Setaill^^Se du cas d'uti-li-sa-tion [] Blo-
+Underfull \hbox (badness 2229) in paragraph at lines 954--954
+[]\T1/cmr/m/sc/10.95 Figure 3.29 \T1/cmr/m/n/10.95 ^^U |Dia-gramme de sé-quence dé-taillé du cas d'uti-li-sa-tion ^^S Blo-
  []
 
-[95 <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_voiture.png> <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_agence.png>]
-<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_utilisateur.png, id=1837, 319.94531pt x 184.43906pt>
+[87 <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_profil.png> <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_agence.png>]
+<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_utilisateur.png, id=1714, 319.94531pt x 184.43906pt>
 File: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_utilisateur.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_utilisateur.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_utilisateur.png  used on input line 1199.
+Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_utilisateur.png  used on input line 962.
 (pdftex.def)             Requested size: 330.05322pt x 190.26984pt.
 
-Overfull \hbox (45.15862pt too wide) in paragraph at lines 1204--1204
-[]\OT1/cmr/bx/n/10.95 Diagrammes de s^^Sequence d^^Setaill^^Se du cas d'uti-li-sa-tion [] Blo-quer/D^^Sebloquer
+Overfull \hbox (41.57454pt too wide) in paragraph at lines 967--967
+[]\T1/cmr/bx/n/10.95 Diagrammes de sé-quence dé-taillé du cas d'uti-li-sa-tion ^^S Blo-quer/Débloquer
  []
 
-<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_utilisateur.png, id=1838, 328.22626pt x 184.43906pt>
+<Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_utilisateur.png, id=1715, 328.22626pt x 184.43906pt>
 File: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_utilisateur.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_utilisateur.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_utilisateur.png  used on input line 1208.
+Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_utilisateur.png  used on input line 971.
 (pdftex.def)             Requested size: 330.05322pt x 185.46863pt.
 
-Underfull \hbox (badness 1845) in paragraph at lines 1209--1209
-[]\OT1/cmr/m/sc/10.95 Figure 3.39 \OT1/cmr/m/n/10.95 { |Dia-gramme de s^^Sequence d^^Setaill^^Se du cas d'uti-li-sa-tion [] Blo-
+Underfull \hbox (badness 2229) in paragraph at lines 972--972
+[]\T1/cmr/m/sc/10.95 Figure 3.31 \T1/cmr/m/n/10.95 ^^U |Dia-gramme de sé-quence dé-taillé du cas d'uti-li-sa-tion ^^S Blo-
  []
 
-[96 <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_agence.png> <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_utilisateur.png>] [97 <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_utilisateur.png>]
-<Chapitres/Figures/Diag_classe_sprint_1.png, id=1852, 738.96075pt x 500.46976pt>
+[88 <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_agence.png> <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_utilisateur.png>] [89 <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_utilisateur.png>]
+<Chapitres/Figures/Diag_classe_sprint_1.png, id=1728, 738.96075pt x 500.46976pt>
 File: Chapitres/Figures/Diag_classe_sprint_1.png Graphic file (type png)
 <use Chapitres/Figures/Diag_classe_sprint_1.png>
-Package pdftex.def Info: Chapitres/Figures/Diag_classe_sprint_1.png  used on input line 1222.
+Package pdftex.def Info: Chapitres/Figures/Diag_classe_sprint_1.png  used on input line 985.
 (pdftex.def)             Requested size: 391.93544pt x 265.44624pt.
 
-Underfull \hbox (badness 5681) in paragraph at lines 1283--1283
-[]|\OT1/cmr/m/n/10.95 Identifiant unique de
+Underfull \hbox (badness 6510) in paragraph at lines 1046--1046
+[]|\T1/cmr/m/n/10.95 Identifiant unique de
  []
 
 
-Underfull \hbox (badness 1221) in paragraph at lines 1283--1283
-[]|\OT1/cmr/m/n/10.95 Indique si l'uti-li-sa-teur
+Underfull \hbox (badness 1540) in paragraph at lines 1046--1046
+[]|\T1/cmr/m/n/10.95 Indique si l'uti-li-sa-teur
  []
 
 
-Underfull \hbox (badness 5681) in paragraph at lines 1283--1283
-[]|\OT1/cmr/m/n/10.95 Identifiant unique de
+Underfull \hbox (badness 6510) in paragraph at lines 1046--1046
+[]|\T1/cmr/m/n/10.95 Identifiant unique de
  []
 
 
-Underfull \hbox (badness 3977) in paragraph at lines 1283--1283
-[]|\OT1/cmr/m/n/10.95 L'adresse de l'uti-li-sa-
+Underfull \hbox (badness 4647) in paragraph at lines 1046--1046
+[]|\T1/cmr/m/n/10.95 L'adresse de l'uti-li-sa-
  []
 
 
-Underfull \hbox (badness 1221) in paragraph at lines 1283--1283
-[]|\OT1/cmr/m/n/10.95 Indique si l'uti-li-sa-teur
+Underfull \hbox (badness 1540) in paragraph at lines 1046--1046
+[]|\T1/cmr/m/n/10.95 Indique si l'uti-li-sa-teur
  []
 
-[98 <./Chapitres/Figures/Diag_classe_sprint_1.png>]
-Underfull \hbox (badness 4328) in paragraph at lines 1333--1333
-[]|\OT1/cmr/m/n/10.95 Identifiant unique du
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1333--1333
-[]|\OT1/cmr/m/n/10.95 Le ki-lom^^Setrage du
+[90 <./Chapitres/Figures/Diag_classe_sprint_1.png>]
+Underfull \hbox (badness 5022) in paragraph at lines 1096--1096
+[]|\T1/cmr/m/n/10.95 Identifiant unique du
  []
 
 
-Underfull \hbox (badness 1221) in paragraph at lines 1333--1333
-[]|\OT1/cmr/m/n/10.95 Le type de car-bu-rant
+Underfull \hbox (badness 1442) in paragraph at lines 1096--1096
+[]|\T1/cmr/m/n/10.95 Le type de car-bu-rant
  []
 
 
-Underfull \hbox (badness 5681) in paragraph at lines 1333--1333
-[]|\OT1/cmr/m/n/10.95 Identifiant unique de
+Underfull \hbox (badness 10000) in paragraph at lines 1096--1096
+[]|\T1/cmr/m/n/10.95 L'état du vé-hi-cule
  []
 
-[99]
-<Chapitres/Figures/inter_inscrire.png, id=1862, 1297.09593pt x 667.74469pt>
+
+Underfull \hbox (badness 6510) in paragraph at lines 1096--1096
+[]|\T1/cmr/m/n/10.95 Identifiant unique de
+ []
+
+[91]
+<Chapitres/Figures/inter_inscrire.png, id=1739, 1297.09593pt x 667.74469pt>
 File: Chapitres/Figures/inter_inscrire.png Graphic file (type png)
 <use Chapitres/Figures/inter_inscrire.png>
-Package pdftex.def Info: Chapitres/Figures/inter_inscrire.png  used on input line 1344.
+Package pdftex.def Info: Chapitres/Figures/inter_inscrire.png  used on input line 1107.
 (pdftex.def)             Requested size: 371.30594pt x 191.1447pt.
- [100]
-<Chapitres/Figures/inter_auth.png, id=1867, 1444.64719pt x 683.55376pt>
+ [92]
+<Chapitres/Figures/inter_auth.png, id=1744, 1444.64719pt x 683.55376pt>
 File: Chapitres/Figures/inter_auth.png Graphic file (type png)
 <use Chapitres/Figures/inter_auth.png>
-Package pdftex.def Info: Chapitres/Figures/inter_auth.png  used on input line 1353.
+Package pdftex.def Info: Chapitres/Figures/inter_auth.png  used on input line 1116.
 (pdftex.def)             Requested size: 371.30594pt x 175.6859pt.
-<Chapitres/Figures/inter_profil.png, id=1868, 1444.64719pt x 687.31781pt>
+<Chapitres/Figures/inter_profil.png, id=1745, 1444.64719pt x 687.31781pt>
 File: Chapitres/Figures/inter_profil.png Graphic file (type png)
 <use Chapitres/Figures/inter_profil.png>
-Package pdftex.def Info: Chapitres/Figures/inter_profil.png  used on input line 1362.
+Package pdftex.def Info: Chapitres/Figures/inter_profil.png  used on input line 1125.
 (pdftex.def)             Requested size: 371.30594pt x 176.65332pt.
- [101 <./Chapitres/Figures/inter_inscrire.png> <./Chapitres/Figures/inter_auth.png>]
-<Chapitres/Figures/inter_chatbot.png, id=1875, 1428.83812pt x 685.8122pt>
+ [93 <./Chapitres/Figures/inter_inscrire.png> <./Chapitres/Figures/inter_auth.png>]
+<Chapitres/Figures/inter_chatbot.png, id=1752, 1428.83812pt x 685.8122pt>
 File: Chapitres/Figures/inter_chatbot.png Graphic file (type png)
 <use Chapitres/Figures/inter_chatbot.png>
-Package pdftex.def Info: Chapitres/Figures/inter_chatbot.png  used on input line 1371.
+Package pdftex.def Info: Chapitres/Figures/inter_chatbot.png  used on input line 1134.
 (pdftex.def)             Requested size: 371.30594pt x 178.21278pt.
-<Chapitres/Figures/inter_bloqAgence.png, id=1876, 1139.00531pt x 414.79968pt>
+<Chapitres/Figures/inter_vitrine.png, id=1753, 1146.53343pt x 359.84438pt>
+File: Chapitres/Figures/inter_vitrine.png Graphic file (type png)
+<use Chapitres/Figures/inter_vitrine.png>
+Package pdftex.def Info: Chapitres/Figures/inter_vitrine.png  used on input line 1143.
+(pdftex.def)             Requested size: 371.30594pt x 116.53622pt.
+ [94 <./Chapitres/Figures/inter_profil.png> <./Chapitres/Figures/inter_chatbot.png>]
+<Chapitres/Figures/inter_bloqAgence.png, id=1760, 1139.00531pt x 414.79968pt>
 File: Chapitres/Figures/inter_bloqAgence.png Graphic file (type png)
 <use Chapitres/Figures/inter_bloqAgence.png>
-Package pdftex.def Info: Chapitres/Figures/inter_bloqAgence.png  used on input line 1380.
+Package pdftex.def Info: Chapitres/Figures/inter_bloqAgence.png  used on input line 1152.
 (pdftex.def)             Requested size: 371.30594pt x 135.2197pt.
- [102 <./Chapitres/Figures/inter_profil.png> <./Chapitres/Figures/inter_chatbot.png>]
-<Chapitres/Figures/test1_code.png, id=1884, 677.53125pt x 505.89pt>
+<Chapitres/Figures/test1_code.png, id=1761, 677.53125pt x 505.89pt>
 File: Chapitres/Figures/test1_code.png Graphic file (type png)
 <use Chapitres/Figures/test1_code.png>
-Package pdftex.def Info: Chapitres/Figures/test1_code.png  used on input line 1395.
+Package pdftex.def Info: Chapitres/Figures/test1_code.png  used on input line 1167.
 (pdftex.def)             Requested size: 371.30594pt x 277.25229pt.
- [103 <./Chapitres/Figures/inter_bloqAgence.png>]
-<Chapitres/Figures/test2_code.png, id=1890, 642.14906pt x 575.14874pt>
+ [95 <./Chapitres/Figures/inter_vitrine.png> <./Chapitres/Figures/inter_bloqAgence.png>]
+<Chapitres/Figures/test2_code.png, id=1768, 642.14906pt x 575.14874pt>
 File: Chapitres/Figures/test2_code.png Graphic file (type png)
 <use Chapitres/Figures/test2_code.png>
-Package pdftex.def Info: Chapitres/Figures/test2_code.png  used on input line 1409.
+Package pdftex.def Info: Chapitres/Figures/test2_code.png  used on input line 1181.
 (pdftex.def)             Requested size: 371.30594pt x 332.56848pt.
- [104 <./Chapitres/Figures/test1_code.png>]) [105 <./Chapitres/Figures/test2_code.png>]
+ [96 <./Chapitres/Figures/test1_code.png>]) [97 <./Chapitres/Figures/test2_code.png>]
 \openout2 = `Chapitres/Chapitre4.aux'.
 
- (Chapitres/Chapitre4.tex [106
+ (Chapitres/Chapitre4.tex [98
 
 
 
 
 ]
 Chapitre 4.
-<Chapitres/figures/Planification_sprint_2.png, id=1907, 1325.70282pt x 499.8675pt>
-File: Chapitres/figures/Planification_sprint_2.png Graphic file (type png)
-<use Chapitres/figures/Planification_sprint_2.png>
-Package pdftex.def Info: Chapitres/figures/Planification_sprint_2.png  used on input line 24.
-(pdftex.def)             Requested size: 330.05322pt x 124.4479pt.
 
-Underfull \hbox (badness 1701) in paragraph at lines 101--101
-[]|\OT1/cmr/m/n/10.95 Voir le score afin de
+Underfull \hbox (badness 4647) in paragraph at lines 106--106
+[]|\T1/cmr/m/n/10.95 Implémenter l'af-fi-chage des
  []
 
 
-Underfull \hbox (badness 7486) in paragraph at lines 101--101
-[]|\OT1/cmr/m/n/10.95 Impl^^Sementer l'af-fi-chage du
+Underfull \hbox (badness 2189) in paragraph at lines 106--106
+[]|\T1/cmr/m/n/10.95 Effectuer une ré-ser-va-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--101
-[]|\OT1/cmr/m/n/10.95 Effectuer une
+Underfull \hbox (badness 6876) in paragraph at lines 106--106
+[]|\T1/cmr/m/n/10.95 Implémenter la ré-ser-va-tion
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--101
-\OT1/cmr/m/n/10.95 r^^Seservation afin de
+Underfull \hbox (badness 3343) in paragraph at lines 106--106
+[]|\T1/cmr/m/n/10.95 Consulter les ré-ser-va-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--101
-[]|\OT1/cmr/m/n/10.95 R^^Sediger les sp^^Secifications
+Underfull \hbox (badness 1292) in paragraph at lines 106--106
+[]|\T1/cmr/m/n/10.95 Implémenter la consul-ta-tion
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--101
-\OT1/cmr/m/n/10.95 et dia-grammes du cas
+Underfull \hbox (badness 10000) in paragraph at lines 106--106
+[]|\T1/cmr/m/n/10.95 Consulter les sta-tis-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--101
-[]|\OT1/cmr/m/n/10.95 Consulter les
+Underfull \hbox (badness 4647) in paragraph at lines 106--106
+[]|\T1/cmr/m/n/10.95 Implémenter l'af-fi-chage des
  []
 
 
-Underfull \hbox (badness 5726) in paragraph at lines 101--101
-\OT1/cmr/m/n/10.95 r^^Seservations en cours
+Underfull \hbox (badness 10000) in paragraph at lines 106--106
+[]|\T1/cmr/m/n/10.95 Implémenter l'af-fi-chage du
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--101
-\OT1/cmr/m/n/10.95 et r^^Seclamations afin
+Underfull \hbox (badness 1888) in paragraph at lines 106--106
+[]|\T1/cmr/m/n/10.95 Implémenter la ges-tion des
  []
 
 
-Underfull \hbox (badness 1584) in paragraph at lines 101--101
-[]|\OT1/cmr/m/n/10.95 Impl^^Sementer la ges-tion des
+Underfull \hbox (badness 10000) in paragraph at lines 106--106
+[]|\T1/cmr/m/n/10.95 Consulter les sta-tis-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--101
-[]|\OT1/cmr/m/n/10.95 Consulter les sta-tis-
+Underfull \hbox (badness 4647) in paragraph at lines 106--106
+[]|\T1/cmr/m/n/10.95 Implémenter l'af-fi-chage des
  []
 
-
-Underfull \hbox (badness 3601) in paragraph at lines 101--101
-\OT1/cmr/m/n/10.95 tiques afin d'ana-ly-ser
- []
-
-
-Underfull \hbox (badness 3815) in paragraph at lines 101--101
-[]|\OT1/cmr/m/n/10.95 Impl^^Sementer l'af-fi-chage des
- []
-
-
-Underfull \hbox (badness 1584) in paragraph at lines 101--101
-[]|\OT1/cmr/m/n/10.95 Impl^^Sementer la ges-tion des
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 101--101
-[]|\OT1/cmr/m/n/10.95 Consulter les sta-tis-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 101--101
-\OT1/cmr/m/n/10.95 tiques glo-bales afin
- []
-
-
-Underfull \hbox (badness 5077) in paragraph at lines 101--101
-\OT1/cmr/m/n/10.95 d'ana-ly-ser les per-for-
- []
-
-
-Underfull \hbox (badness 3815) in paragraph at lines 101--101
-[]|\OT1/cmr/m/n/10.95 Impl^^Sementer l'af-fi-chage des
- []
-
-[107 <./Chapitres/figures/Planification_sprint_2.png>] [108]
-<Chapitres/figures/proto_reservation.png, id=1918, 761.84625pt x 541.27219pt>
+[99] [100]
+<Chapitres/figures/proto_reservation.png, id=1794, 761.84625pt x 541.27219pt>
 File: Chapitres/figures/proto_reservation.png Graphic file (type png)
 <use Chapitres/figures/proto_reservation.png>
-Package pdftex.def Info: Chapitres/figures/proto_reservation.png  used on input line 113.
+Package pdftex.def Info: Chapitres/figures/proto_reservation.png  used on input line 118.
 (pdftex.def)             Requested size: 330.05322pt x 234.49344pt.
-<Chapitres/figures/proto_dashboard.png, id=1919, 362.85562pt x 253.69781pt>
+<Chapitres/figures/proto_dashboard.png, id=1795, 362.85562pt x 253.69781pt>
 File: Chapitres/figures/proto_dashboard.png Graphic file (type png)
 <use Chapitres/figures/proto_dashboard.png>
-Package pdftex.def Info: Chapitres/figures/proto_dashboard.png  used on input line 120.
+Package pdftex.def Info: Chapitres/figures/proto_dashboard.png  used on input line 125.
 (pdftex.def)             Requested size: 330.05322pt x 230.76859pt.
- [109 <./Chapitres/figures/proto_reservation.png> <./Chapitres/figures/proto_dashboard.png>]
-<Chapitres/figures/diag_cas_sprint2.png, id=1926, 350.96118pt x 272.81924pt>
+ [101 <./Chapitres/figures/proto_reservation.png> <./Chapitres/figures/proto_dashboard.png>]
+<Chapitres/figures/diag_cas_sprint2.png, id=1802, 350.96118pt x 272.81924pt>
 File: Chapitres/figures/diag_cas_sprint2.png Graphic file (type png)
 <use Chapitres/figures/diag_cas_sprint2.png>
-Package pdftex.def Info: Chapitres/figures/diag_cas_sprint2.png  used on input line 141.
+Package pdftex.def Info: Chapitres/figures/diag_cas_sprint2.png  used on input line 146.
 (pdftex.def)             Requested size: 330.05322pt x 256.57916pt.
 
-Underfull \hbox (badness 2189) in paragraph at lines 183--183
-[]|\OT1/cmr/m/n/10.95 Encha^^^Pnement prin-
+Underfull \hbox (badness 3058) in paragraph at lines 188--188
+[]|\T1/cmr/m/n/10.95 Enchaînement prin-
  []
 
 
-Underfull \hbox (badness 2495) in paragraph at lines 188--188
-[]|\OT1/cmr/bx/n/10.95 Sc^^Senario al-ter-na-
+Underfull \hbox (badness 3514) in paragraph at lines 193--193
+[]|\T1/cmr/bx/n/10.95 Scénario al-ter-na-
  []
 
-[110 <./Chapitres/figures/diag_cas_sprint2.png>]
-<Chapitres/figures/diag_seq_voir_score_client.png, id=1932, 657.2053pt x 469.30331pt>
+[102 <./Chapitres/figures/diag_cas_sprint2.png>]
+<Chapitres/figures/diag_seq_voir_score_client.png, id=1809, 657.2053pt x 469.30331pt>
 File: Chapitres/figures/diag_seq_voir_score_client.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_voir_score_client.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_voir_score_client.png  used on input line 199.
+Package pdftex.def Info: Chapitres/figures/diag_seq_voir_score_client.png  used on input line 204.
 (pdftex.def)             Requested size: 412.56496pt x 294.60997pt.
- [111]
-Underfull \hbox (badness 2189) in paragraph at lines 238--238
-[]|\OT1/cmr/m/n/10.95 Encha^^^Pnement prin-
+ [103]
+Underfull \hbox (badness 3058) in paragraph at lines 243--243
+[]|\T1/cmr/m/n/10.95 Enchaînement prin-
  []
 
 
-Underfull \hbox (badness 2495) in paragraph at lines 249--249
-[]|\OT1/cmr/bx/n/10.95 Sc^^Senario al-ter-na-
+Underfull \hbox (badness 3514) in paragraph at lines 254--254
+[]|\T1/cmr/bx/n/10.95 Scénario al-ter-na-
  []
 
-[112 <./Chapitres/figures/diag_seq_voir_score_client.png>]
-<Chapitres/figures/Diag_seq_effectuer_reservation.png, id=1942, 756.12488pt x 725.86182pt>
+[104 <./Chapitres/figures/diag_seq_voir_score_client.png>]
+<Chapitres/figures/Diag_seq_effectuer_reservation.png, id=1819, 756.12488pt x 725.86182pt>
 File: Chapitres/figures/Diag_seq_effectuer_reservation.png Graphic file (type png)
 <use Chapitres/figures/Diag_seq_effectuer_reservation.png>
-Package pdftex.def Info: Chapitres/figures/Diag_seq_effectuer_reservation.png  used on input line 264.
+Package pdftex.def Info: Chapitres/figures/Diag_seq_effectuer_reservation.png  used on input line 269.
 (pdftex.def)             Requested size: 412.56496pt x 396.05756pt.
-
-Underfull \hbox (badness 1043) in paragraph at lines 265--265
-[]\OT1/cmr/m/sc/10.95 Figure 4.6 \OT1/cmr/m/n/10.95 { |Dia-gramme de s^^Sequence syst^^Reme de cas d'uti-li-sa-tion "Ef-fec-tuer
- []
-
-[113]
-Underfull \hbox (badness 2189) in paragraph at lines 297--297
-[]|\OT1/cmr/m/n/10.95 Encha^^^Pnement prin-
+ [105]
+Underfull \hbox (badness 3058) in paragraph at lines 302--302
+[]|\T1/cmr/m/n/10.95 Enchaînement prin-
  []
 
 
-Underfull \hbox (badness 1038) in paragraph at lines 298--303
-\OT1/cmr/m/n/10.95 5. Le syst^^Reme af-fiche les in-for-ma-tions d^^Setaill^^Sees de la
+Underfull \hbox (badness 3514) in paragraph at lines 309--309
+[]|\T1/cmr/bx/n/10.95 Scénario al-ter-na-
  []
 
-
-Underfull \hbox (badness 2495) in paragraph at lines 304--304
-[]|\OT1/cmr/bx/n/10.95 Sc^^Senario al-ter-na-
- []
-
-[114 <./Chapitres/figures/Diag_seq_effectuer_reservation.png>]
-<Chapitres/figures/diag_seq_consulter_reservations_en_cours.png, id=1953, 672.111pt x 451.23581pt>
+[106 <./Chapitres/figures/Diag_seq_effectuer_reservation.png>]
+<Chapitres/figures/diag_seq_consulter_reservations_en_cours.png, id=1829, 672.111pt x 451.23581pt>
 File: Chapitres/figures/diag_seq_consulter_reservations_en_cours.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_consulter_reservations_en_cours.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_consulter_reservations_en_cours.png  used on input line 315.
+Package pdftex.def Info: Chapitres/figures/diag_seq_consulter_reservations_en_cours.png  used on input line 320.
 (pdftex.def)             Requested size: 412.56496pt x 276.98854pt.
- [115]
-Underfull \hbox (badness 2189) in paragraph at lines 353--353
-[]|\OT1/cmr/m/n/10.95 Encha^^^Pnement prin-
+ [107]
+Underfull \hbox (badness 3058) in paragraph at lines 358--358
+[]|\T1/cmr/m/n/10.95 Enchaînement prin-
  []
 
 
-Underfull \hbox (badness 2495) in paragraph at lines 362--362
-[]|\OT1/cmr/bx/n/10.95 Sc^^Senario al-ter-na-
+Underfull \hbox (badness 3514) in paragraph at lines 367--367
+[]|\T1/cmr/bx/n/10.95 Scénario al-ter-na-
  []
 
-[116 <./Chapitres/figures/diag_seq_consulter_reservations_en_cours.png>]
-<Chapitres/figures/seq_traiter_reservation.png, id=1963, 1003.64963pt x 508.14844pt>
+[108 <./Chapitres/figures/diag_seq_consulter_reservations_en_cours.png>]
+<Chapitres/figures/seq_traiter_reservation.png, id=1840, 1003.64963pt x 508.14844pt>
 File: Chapitres/figures/seq_traiter_reservation.png Graphic file (type png)
 <use Chapitres/figures/seq_traiter_reservation.png>
-Package pdftex.def Info: Chapitres/figures/seq_traiter_reservation.png  used on input line 373.
+Package pdftex.def Info: Chapitres/figures/seq_traiter_reservation.png  used on input line 378.
 (pdftex.def)             Requested size: 412.56496pt x 208.88496pt.
-
-Underfull \hbox (badness 2012) in paragraph at lines 374--374
-[]\OT1/cmr/m/sc/10.95 Figure 4.8 \OT1/cmr/m/n/10.95 { |Dia-gramme de s^^Sequence syst^^Reme de cas d'uti-li-sa-tion "Trai-ter
- []
-
-[117]
-Underfull \hbox (badness 2189) in paragraph at lines 405--405
-[]|\OT1/cmr/m/n/10.95 Encha^^^Pnement prin-
+ [109]
+Underfull \hbox (badness 3058) in paragraph at lines 410--410
+[]|\T1/cmr/m/n/10.95 Enchaînement prin-
  []
 
 
-Underfull \hbox (badness 2495) in paragraph at lines 411--411
-[]|\OT1/cmr/bx/n/10.95 Sc^^Senario al-ter-na-
+Underfull \hbox (badness 3514) in paragraph at lines 416--416
+[]|\T1/cmr/bx/n/10.95 Scénario al-ter-na-
  []
 
-[118 <./Chapitres/figures/seq_traiter_reservation.png>]
-<Chapitres/figures/seq_stats_agence.png, id=1973, 759.28668pt x 508.60013pt>
+[110 <./Chapitres/figures/seq_traiter_reservation.png>]
+<Chapitres/figures/seq_stats_agence.png, id=1850, 759.28668pt x 508.60013pt>
 File: Chapitres/figures/seq_stats_agence.png Graphic file (type png)
 <use Chapitres/figures/seq_stats_agence.png>
-Package pdftex.def Info: Chapitres/figures/seq_stats_agence.png  used on input line 422.
+Package pdftex.def Info: Chapitres/figures/seq_stats_agence.png  used on input line 427.
 (pdftex.def)             Requested size: 412.56496pt x 276.3473pt.
- [119]
-Underfull \hbox (badness 2189) in paragraph at lines 458--458
-[]|\OT1/cmr/m/n/10.95 Encha^^^Pnement prin-
+ [111]
+Underfull \hbox (badness 3058) in paragraph at lines 463--463
+[]|\T1/cmr/m/n/10.95 Enchaînement prin-
  []
 
 
-Underfull \hbox (badness 2495) in paragraph at lines 467--467
-[]|\OT1/cmr/bx/n/10.95 Sc^^Senario al-ter-na-
+Underfull \hbox (badness 3514) in paragraph at lines 472--472
+[]|\T1/cmr/bx/n/10.95 Scénario al-ter-na-
  []
 
-[120 <./Chapitres/figures/seq_stats_agence.png>]
-<Chapitres/figures/seq_gerer_messages.png, id=1984, 790.00143pt x 557.38237pt>
+[112 <./Chapitres/figures/seq_stats_agence.png>]
+<Chapitres/figures/seq_gerer_messages.png, id=1860, 790.00143pt x 557.38237pt>
 File: Chapitres/figures/seq_gerer_messages.png Graphic file (type png)
 <use Chapitres/figures/seq_gerer_messages.png>
-Package pdftex.def Info: Chapitres/figures/seq_gerer_messages.png  used on input line 478.
+Package pdftex.def Info: Chapitres/figures/seq_gerer_messages.png  used on input line 483.
 (pdftex.def)             Requested size: 412.56496pt x 291.09073pt.
- [121]
-Underfull \hbox (badness 4913) in paragraph at lines 509--510
-[]|\OT1/cmr/m/n/10.95 Les in-di-ca-teurs glo-baux sont af-fich^^Ses (nombre to-tal
+ [113]
+Underfull \hbox (badness 5563) in paragraph at lines 514--515
+[]|\T1/cmr/m/n/10.95 Les in-di-ca-teurs glo-baux sont af-fi-chés (nombre to-tal
  []
 
 
-Underfull \hbox (badness 2189) in paragraph at lines 511--511
-[]|\OT1/cmr/m/n/10.95 Encha^^^Pnement prin-
+Underfull \hbox (badness 3058) in paragraph at lines 516--516
+[]|\T1/cmr/m/n/10.95 Enchaînement prin-
  []
 
 
-Underfull \hbox (badness 2495) in paragraph at lines 518--518
-[]|\OT1/cmr/bx/n/10.95 Sc^^Senario al-ter-na-
+Underfull \hbox (badness 3514) in paragraph at lines 523--523
+[]|\T1/cmr/bx/n/10.95 Scénario al-ter-na-
  []
 
-[122 <./Chapitres/figures/seq_gerer_messages.png>]
-<Chapitres/figures/seq_stats_admin.png, id=1994, 775.54744pt x 512.66531pt>
+[114 <./Chapitres/figures/seq_gerer_messages.png>]
+<Chapitres/figures/seq_stats_admin.png, id=1871, 775.54744pt x 512.66531pt>
 File: Chapitres/figures/seq_stats_admin.png Graphic file (type png)
 <use Chapitres/figures/seq_stats_admin.png>
-Package pdftex.def Info: Chapitres/figures/seq_stats_admin.png  used on input line 529.
+Package pdftex.def Info: Chapitres/figures/seq_stats_admin.png  used on input line 534.
 (pdftex.def)             Requested size: 412.56496pt x 272.72043pt.
- [123]
-<Chapitres/figures/Diag_classe_sprint_2.png, id=1999, 940.41338pt x 732.18544pt>
+ [115]
+<Chapitres/figures/Diag_classe_sprint_2.png, id=1876, 940.41338pt x 732.18544pt>
 File: Chapitres/figures/Diag_classe_sprint_2.png Graphic file (type png)
 <use Chapitres/figures/Diag_classe_sprint_2.png>
-Package pdftex.def Info: Chapitres/figures/Diag_classe_sprint_2.png  used on input line 541.
+Package pdftex.def Info: Chapitres/figures/Diag_classe_sprint_2.png  used on input line 546.
 (pdftex.def)             Requested size: 412.56496pt x 321.21295pt.
- [124 <./Chapitres/figures/seq_stats_admin.png>]
-<Chapitres/Figures/classes_participantes__utilisateur_s2.png, id=2005, 1826.825pt x 271.0125pt>
+ [116 <./Chapitres/figures/seq_stats_admin.png>]
+<Chapitres/Figures/classes_participantes__utilisateur_s2.png, id=1882, 1826.825pt x 271.0125pt>
 File: Chapitres/Figures/classes_participantes__utilisateur_s2.png Graphic file (type png)
 <use Chapitres/Figures/classes_participantes__utilisateur_s2.png>
-Package pdftex.def Info: Chapitres/Figures/classes_participantes__utilisateur_s2.png  used on input line 563.
+Package pdftex.def Info: Chapitres/Figures/classes_participantes__utilisateur_s2.png  used on input line 568.
 (pdftex.def)             Requested size: 412.56496pt x 61.20262pt.
- [125 <./Chapitres/figures/Diag_classe_sprint_2.png>]
-<Chapitres/Figures/classes_participantes__client_s2.png, id=2011, 785.93625pt x 256.5585pt>
+ [117 <./Chapitres/figures/Diag_classe_sprint_2.png>]
+<Chapitres/Figures/classes_participantes__client_s2.png, id=1888, 785.93625pt x 256.5585pt>
 File: Chapitres/Figures/classes_participantes__client_s2.png Graphic file (type png)
 <use Chapitres/Figures/classes_participantes__client_s2.png>
-Package pdftex.def Info: Chapitres/Figures/classes_participantes__client_s2.png  used on input line 572.
+Package pdftex.def Info: Chapitres/Figures/classes_participantes__client_s2.png  used on input line 577.
 (pdftex.def)             Requested size: 412.56496pt x 134.67957pt.
-<Chapitres/Figures/classes_participantes__agence_s2.png, id=2012, 785.93625pt x 215.90663pt>
+<Chapitres/Figures/classes_participantes__agence_s2.png, id=1889, 785.93625pt x 215.90663pt>
 File: Chapitres/Figures/classes_participantes__agence_s2.png Graphic file (type png)
 <use Chapitres/Figures/classes_participantes__agence_s2.png>
-Package pdftex.def Info: Chapitres/Figures/classes_participantes__agence_s2.png  used on input line 581.
+Package pdftex.def Info: Chapitres/Figures/classes_participantes__agence_s2.png  used on input line 586.
 (pdftex.def)             Requested size: 412.56496pt x 113.33948pt.
-<Chapitres/Figures/classes_participantes__admin_s2.png, id=2013, 785.93625pt x 236.23256pt>
+<Chapitres/Figures/classes_participantes__admin_s2.png, id=1890, 785.93625pt x 236.23256pt>
 File: Chapitres/Figures/classes_participantes__admin_s2.png Graphic file (type png)
 <use Chapitres/Figures/classes_participantes__admin_s2.png>
-Package pdftex.def Info: Chapitres/Figures/classes_participantes__admin_s2.png  used on input line 590.
+Package pdftex.def Info: Chapitres/Figures/classes_participantes__admin_s2.png  used on input line 595.
 (pdftex.def)             Requested size: 412.56496pt x 124.00952pt.
- [126 <./Chapitres/Figures/classes_participantes__utilisateur_s2.png> <./Chapitres/Figures/classes_participantes__client_s2.png> <./Chapitres/Figures/classes_participantes__agence_s2.png>]
-Overfull \hbox (4.8363pt too wide) in paragraph at lines 595--595
-[]\OT1/cmr/bx/n/14.4 Diagrammes de s^^Sequence d^^Setaill^^Ses du deuxi^^Seme sprint 
- []
-
-<Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_score_client.png, id=2022, 340.27126pt x 182.18062pt>
+ [118 <./Chapitres/Figures/classes_participantes__utilisateur_s2.png> <./Chapitres/Figures/classes_participantes__client_s2.png> <./Chapitres/Figures/classes_participantes__agence_s2.png>]
+<Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_score_client.png, id=1898, 340.27126pt x 182.18062pt>
 File: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_score_client.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_score_client.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_score_client.png  used on input line 606.
+Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_score_client.png  used on input line 611.
 (pdftex.def)             Requested size: 350.68272pt x 187.76486pt.
-<Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_effectuer_reservation.png, id=2023, 481.8pt x 304.13625pt>
+<Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_effectuer_reservation.png, id=1899, 481.8pt x 304.13625pt>
 File: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_effectuer_reservation.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_effectuer_reservation.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_effectuer_reservation.png  used on input line 619.
+Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_effectuer_reservation.png  used on input line 624.
 (pdftex.def)             Requested size: 391.93544pt x 247.41637pt.
-[127 <./Chapitres/Figures/classes_participantes__admin_s2.png> <./Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_score_client.png>]
-<Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_consulter_reservation.png, id=2030, 424.58624pt x 183.68625pt>
+ [119 <./Chapitres/Figures/classes_participantes__admin_s2.png> <./Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_score_client.png>]
+<Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_consulter_reservation.png, id=1906, 424.58624pt x 183.68625pt>
 File: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_consulter_reservation.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_consulter_reservation.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_consulter_reservation.png  used on input line 628.
+Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_consulter_reservation.png  used on input line 633.
 (pdftex.def)             Requested size: 371.30594pt x 160.64377pt.
- [128 <./Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_effectuer_reservation.png>]
-<Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_traiter_reservations.png, id=2036, 436.63126pt x 268.00125pt>
+ [120 <./Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_effectuer_reservation.png>]
+<Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_traiter_reservations.png, id=1913, 436.63126pt x 268.00125pt>
 File: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_traiter_reservations.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_traiter_reservations.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_traiter_reservations.png  used on input line 641.
+Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_traiter_reservations.png  used on input line 646.
 (pdftex.def)             Requested size: 391.93544pt x 240.56912pt.
- [129 <./Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_consulter_reservation.png>]
-<Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_stat_agence.png, id=2042, 274.02374pt x 245.41687pt>
+ [121 <./Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_consulter_reservation.png>]
+<Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_stat_agence.png, id=1919, 274.02374pt x 245.41687pt>
 File: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_stat_agence.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_stat_agence.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_stat_agence.png  used on input line 650.
+Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_stat_agence.png  used on input line 655.
 (pdftex.def)             Requested size: 350.68272pt x 314.0988pt.
- [130 <./Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_traiter_reservations.png>]
-<Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_gerer_messages.png, id=2048, 386.94562pt x 271.76532pt>
+ [122 <./Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_traiter_reservations.png>]
+<Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_gerer_messages.png, id=1925, 386.94562pt x 271.76532pt>
 File: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_gerer_messages.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_gerer_messages.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_gerer_messages.png  used on input line 663.
+Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_gerer_messages.png  used on input line 668.
 (pdftex.def)             Requested size: 371.30594pt x 260.78392pt.
- [131 <./Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_stat_agence.png>]
-<Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_stat_admin.png, id=2054, 376.40625pt x 185.94469pt>
+ [123 <./Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_stat_agence.png>]
+<Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_stat_admin.png, id=1931, 376.40625pt x 185.94469pt>
 File: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_stat_admin.png Graphic file (type png)
 <use Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_stat_admin.png>
-Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_stat_admin.png  used on input line 672.
+Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_stat_admin.png  used on input line 677.
 (pdftex.def)             Requested size: 350.68272pt x 173.2502pt.
- [132 <./Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_gerer_messages.png>]
+ [124 <./Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_gerer_messages.png>]
 File: Chapitres/figures/Diag_classe_sprint_2.png Graphic file (type png)
 <use Chapitres/figures/Diag_classe_sprint_2.png>
-Package pdftex.def Info: Chapitres/figures/Diag_classe_sprint_2.png  used on input line 684.
+Package pdftex.def Info: Chapitres/figures/Diag_classe_sprint_2.png  used on input line 689.
 (pdftex.def)             Requested size: 412.56496pt x 321.21295pt.
- [133 <./Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_stat_admin.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 739--739
-[]|\OT1/cmr/m/n/10.95 Montant re-mise ap-
+ [125 <./Chapitres/figures/diag_seq_det/seq_det_s2/seq_det_stat_admin.png>]
+Underfull \hbox (badness 1152) in paragraph at lines 744--744
+[]|\T1/cmr/m/n/10.95 Montant re-mise ap-pli-
  []
 
-[134]
-Underfull \hbox (badness 4328) in paragraph at lines 785--785
-[]|\OT1/cmr/m/n/10.95 Identifiant unique du
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 785--785
-[]|\OT1/cmr/m/n/10.95 R^^Seponse de l'ad-min
+[126]
+Underfull \hbox (badness 5022) in paragraph at lines 790--790
+[]|\T1/cmr/m/n/10.95 Identifiant unique du
  []
 
 
-Underfull \hbox (badness 1331) in paragraph at lines 785--785
-[]|\OT1/cmr/m/n/10.95 Email de l'ad-min qui
+Underfull \hbox (badness 10000) in paragraph at lines 790--790
+[]|\T1/cmr/m/n/10.95 Réponse de l'ad-min
  []
 
-[135]
-Underfull \hbox (badness 4328) in paragraph at lines 830--830
-[]|\OT1/cmr/m/n/10.95 Identifiant unique du
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 830--830
-[]|\OT1/cmr/m/n/10.95 Nombre to-tal de
+[127]
+Underfull \hbox (badness 5022) in paragraph at lines 835--835
+[]|\T1/cmr/m/n/10.95 Identifiant unique du
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 830--830
-[]|\OT1/cmr/m/n/10.95 R^^Seservations
+Overfull \hbox (3.33586pt too wide) in paragraph at lines 840--841
+[]\T1/cmr/m/n/10.95 Nous pré-sen-tons dans cette sec-tion les in-ter-faces gra-phiques dé-ve-lop-pées lors du deuxième
  []
 
-
-Overfull \hbox (5.48216pt too wide) in paragraph at lines 835--836
-[]\OT1/cmr/m/n/10.95 Nous pr^^Sesentons dans cette sec-tion les in-ter-faces gra-phiques d^^Sevelopp^^Sees lors du deuxi^^Reme
- []
-
-[136]
-<Chapitres/Figures/inter_contact.png, id=2078, 1431.09656pt x 684.30656pt>
+[128]
+<Chapitres/Figures/inter_contact.png, id=1955, 1431.09656pt x 684.30656pt>
 File: Chapitres/Figures/inter_contact.png Graphic file (type png)
 <use Chapitres/Figures/inter_contact.png>
-Package pdftex.def Info: Chapitres/Figures/inter_contact.png  used on input line 842.
+Package pdftex.def Info: Chapitres/Figures/inter_contact.png  used on input line 847.
 (pdftex.def)             Requested size: 371.30594pt x 177.55005pt.
-<Chapitres/Figures/inter_reservation.png, id=2079, 1428.83812pt x 683.55376pt>
+<Chapitres/Figures/inter_reservation.png, id=1956, 1428.83812pt x 683.55376pt>
 File: Chapitres/Figures/inter_reservation.png Graphic file (type png)
 <use Chapitres/Figures/inter_reservation.png>
-Package pdftex.def Info: Chapitres/Figures/inter_reservation.png  used on input line 852.
+Package pdftex.def Info: Chapitres/Figures/inter_reservation.png  used on input line 857.
 (pdftex.def)             Requested size: 371.30594pt x 177.62592pt.
-<Chapitres/Figures/inter_statsglobal.png, id=2080, 1429.59094pt x 683.55376pt>
+<Chapitres/Figures/inter_statsglobal.png, id=1957, 1429.59094pt x 683.55376pt>
 File: Chapitres/Figures/inter_statsglobal.png Graphic file (type png)
 <use Chapitres/Figures/inter_statsglobal.png>
-Package pdftex.def Info: Chapitres/Figures/inter_statsglobal.png  used on input line 862.
+Package pdftex.def Info: Chapitres/Figures/inter_statsglobal.png  used on input line 867.
 (pdftex.def)             Requested size: 371.30594pt x 177.53204pt.
- [137 <./Chapitres/Figures/inter_contact.png> <./Chapitres/Figures/inter_reservation.png>]
-<Chapitres/figures/score_test.png, id=2087, 670.75594pt x 660.21657pt>
+ [129 <./Chapitres/Figures/inter_contact.png> <./Chapitres/Figures/inter_reservation.png>]
+<Chapitres/figures/score_test.png, id=1964, 670.75594pt x 660.21657pt>
 File: Chapitres/figures/score_test.png Graphic file (type png)
 <use Chapitres/figures/score_test.png>
-Package pdftex.def Info: Chapitres/figures/score_test.png  used on input line 884.
+Package pdftex.def Info: Chapitres/figures/score_test.png  used on input line 889.
 (pdftex.def)             Requested size: 371.30594pt x 365.46748pt.
- [138 <./Chapitres/Figures/inter_statsglobal.png>]) [139 <./Chapitres/figures/score_test.png>]
+ [130 <./Chapitres/Figures/inter_statsglobal.png>]) [131 <./Chapitres/figures/score_test.png>]
 \openout2 = `Chapitres/Chapitre5.aux'.
 
- (Chapitres/Chapitre5.tex [140
+ (Chapitres/Chapitre5.tex [132
 
 
 
 
 ]
 Chapitre 5.
-<Chapitres/Figures/Laravel-Logo.png, id=2104, 3011.25pt x 2007.5pt>
+<Chapitres/Figures/Laravel-Logo.png, id=1981, 3011.25pt x 2007.5pt>
 File: Chapitres/Figures/Laravel-Logo.png Graphic file (type png)
 <use Chapitres/Figures/Laravel-Logo.png>
 Package pdftex.def Info: Chapitres/Figures/Laravel-Logo.png  used on input line 36.
 (pdftex.def)             Requested size: 29.86613pt x 19.91684pt.
-<Chapitres/Figures/React-logo.png, id=2105, 863.225pt x 820.06375pt>
+<Chapitres/Figures/React-logo.png, id=1982, 863.225pt x 820.06375pt>
 File: Chapitres/Figures/React-logo.png Graphic file (type png)
 <use Chapitres/Figures/React-logo.png>
 Package pdftex.def Info: Chapitres/Figures/React-logo.png  used on input line 38.
 (pdftex.def)             Requested size: 20.95622pt x 19.91684pt.
-<Chapitres/Figures/Mysql-logo.png, id=2106, 803.0pt x 803.0pt>
+<Chapitres/Figures/Mysql-logo.png, id=1983, 803.0pt x 803.0pt>
 File: Chapitres/Figures/Mysql-logo.png Graphic file (type png)
 <use Chapitres/Figures/Mysql-logo.png>
 Package pdftex.def Info: Chapitres/Figures/Mysql-logo.png  used on input line 40.
 (pdftex.def)             Requested size: 19.91075pt x 19.91684pt.
-<Chapitres/Figures/vite-logo.png, id=2107, 360.34625pt x 361.35pt>
+<Chapitres/Figures/vite-logo.png, id=1984, 360.34625pt x 361.35pt>
 File: Chapitres/Figures/vite-logo.png Graphic file (type png)
 <use Chapitres/Figures/vite-logo.png>
 Package pdftex.def Info: Chapitres/Figures/vite-logo.png  used on input line 42.
 (pdftex.def)             Requested size: 19.86034pt x 19.91684pt.
-<Chapitres/Figures/Tailwind-logo.png, id=2108, 361.35pt x 216.81pt>
+<Chapitres/Figures/Tailwind-logo.png, id=1985, 361.35pt x 216.81pt>
 File: Chapitres/Figures/Tailwind-logo.png Graphic file (type png)
 <use Chapitres/Figures/Tailwind-logo.png>
 Package pdftex.def Info: Chapitres/Figures/Tailwind-logo.png  used on input line 44.
 (pdftex.def)             Requested size: 33.19276pt x 19.91684pt.
 
-Overfull \hbox (7.13216pt too wide) in paragraph at lines 32--47
+Overfull \hbox (6.76123pt too wide) in paragraph at lines 32--47
  [][] 
  []
 
-[141]
-<Chapitres/Figures/lucid-logo.png, id=2113, 332.24126pt x 351.3125pt>
+[133]
+<Chapitres/Figures/lucid-logo.png, id=1990, 332.24126pt x 351.3125pt>
 File: Chapitres/Figures/lucid-logo.png Graphic file (type png)
 <use Chapitres/Figures/lucid-logo.png>
 Package pdftex.def Info: Chapitres/Figures/lucid-logo.png  used on input line 65.
 (pdftex.def)             Requested size: 18.83351pt x 19.91684pt.
-<Chapitres/Figures/vscode-logo.png, id=2114, 513.92pt x 513.92pt>
+<Chapitres/Figures/vscode-logo.png, id=1991, 513.92pt x 513.92pt>
 File: Chapitres/Figures/vscode-logo.png Graphic file (type png)
 <use Chapitres/Figures/vscode-logo.png>
 Package pdftex.def Info: Chapitres/Figures/vscode-logo.png  used on input line 67.
 (pdftex.def)             Requested size: 19.91026pt x 19.91684pt.
-<Chapitres/Figures/overleaf-logo.png, id=2115, 182.18062pt x 208.27812pt>
+<Chapitres/Figures/overleaf-logo.png, id=1992, 182.18062pt x 208.27812pt>
 File: Chapitres/Figures/overleaf-logo.png Graphic file (type png)
 <use Chapitres/Figures/overleaf-logo.png>
 Package pdftex.def Info: Chapitres/Figures/overleaf-logo.png  used on input line 69.
 (pdftex.def)             Requested size: 17.41852pt x 19.91684pt.
-<Chapitres/Figures/teams-logo.png, id=2116, 1003.75pt x 1003.75pt>
+<Chapitres/Figures/teams-logo.png, id=1993, 1003.75pt x 1003.75pt>
 File: Chapitres/Figures/teams-logo.png Graphic file (type png)
 <use Chapitres/Figures/teams-logo.png>
 Package pdftex.def Info: Chapitres/Figures/teams-logo.png  used on input line 71.
 (pdftex.def)             Requested size: 19.91075pt x 19.91684pt.
-<Chapitres/Figures/XAMPP-logo.png, id=2117, 224.84pt x 225.84375pt>
+<Chapitres/Figures/XAMPP-logo.png, id=1994, 224.84pt x 225.84375pt>
 File: Chapitres/Figures/XAMPP-logo.png Graphic file (type png)
 <use Chapitres/Figures/XAMPP-logo.png>
 Package pdftex.def Info: Chapitres/Figures/XAMPP-logo.png  used on input line 73.
 (pdftex.def)             Requested size: 19.82646pt x 19.91684pt.
-
-Underfull \hbox (badness 2351) in paragraph at lines 73--74
-[]|\OT1/cmr/m/n/10.95 Environnement lo-cal re-grou-pant Apache et PHP pour
- []
-
-<Chapitres/Figures/phpmyadmin-logo.png, id=2118, 863.225pt x 513.92pt>
+<Chapitres/Figures/phpmyadmin-logo.png, id=1995, 863.225pt x 513.92pt>
 File: Chapitres/Figures/phpmyadmin-logo.png Graphic file (type png)
 <use Chapitres/Figures/phpmyadmin-logo.png>
 Package pdftex.def Info: Chapitres/Figures/phpmyadmin-logo.png  used on input line 75.
 (pdftex.def)             Requested size: 33.44302pt x 19.91684pt.
-<Chapitres/Figures/github-logo.png, id=2119, 1204.5pt x 632.3625pt>
+<Chapitres/Figures/github-logo.png, id=1996, 1204.5pt x 632.3625pt>
 File: Chapitres/Figures/github-logo.png Graphic file (type png)
 <use Chapitres/Figures/github-logo.png>
 Package pdftex.def Info: Chapitres/Figures/github-logo.png  used on input line 77.
 (pdftex.def)             Requested size: 37.93459pt x 19.91684pt.
 
-Overfull \hbox (21.5897pt too wide) in paragraph at lines 61--80
+Overfull \hbox (21.06189pt too wide) in paragraph at lines 61--80
  [][] 
  []
 
-[142 <./Chapitres/Figures/Laravel-Logo.png> <./Chapitres/Figures/React-logo.png> <./Chapitres/Figures/Mysql-logo.png> <./Chapitres/Figures/vite-logo.png> <./Chapitres/Figures/Tailwind-logo.png>] [143 <./Chapitres/Figures/lucid-logo.png> <./Chapitres/Figures/vscode-logo.png> <./Chapitres/Figures/overleaf-logo.png> <./Chapitres/Figures/teams-logo.png> <./Chapitres/Figures/XAMPP-logo.png> <./Chapitres/Figures/phpmyadmin-logo.png> <./Chapitres/Figures/github-logo.png>]) [144]
+[134 <./Chapitres/Figures/Laravel-Logo.png> <./Chapitres/Figures/React-logo.png> <./Chapitres/Figures/Mysql-logo.png> <./Chapitres/Figures/vite-logo.png> <./Chapitres/Figures/Tailwind-logo.png>] [135 <./Chapitres/Figures/lucid-logo.png> <./Chapitres/Figures/vscode-logo.png> <./Chapitres/Figures/overleaf-logo.png> <./Chapitres/Figures/teams-logo.png> <./Chapitres/Figures/XAMPP-logo.png> <./Chapitres/Figures/phpmyadmin-logo.png> <./Chapitres/Figures/github-logo.png>]) [136]
 \openout2 = `Chapitres/Conclusion.aux'.
 
- (Chapitres/Conclusion.tex) [145
+ (Chapitres/Conclusion.tex) [137
 
 
 
@@ -2739,7 +2480,7 @@ Package biblatex Warning: Split bibliography detected.
 (biblatex)                '\BiblatexSplitbibDefernumbersWarningOff'.
 
 
-LaTeX Warning: Empty bibliography on input line 123.
+LaTeX Warning: Empty bibliography on input line 124.
 
 
 Package biblatex Warning: Split bibliography detected.
@@ -2750,7 +2491,7 @@ Package biblatex Warning: Split bibliography detected.
 (biblatex)                This warning can be suppressed with
 (biblatex)                '\BiblatexSplitbibDefernumbersWarningOff'.
 
-[146
+[138
 
 
 
@@ -2758,13 +2499,13 @@ Package biblatex Warning: Split bibliography detected.
 
 
 ]
-Overfull \hbox (5.68935pt too wide) in paragraph at lines 124--124
-[][]\OT1/cmr/m/sc/10.95 Cybermedian[]\OT1/cmr/m/n/10.95 . \OT1/cmr/m/it/10.95 de-tails se-quence dia-gram\OT1/cmr/m/n/10.95 . 2012. \OT1/cmr/m/sc/10.95 url \OT1/cmr/m/n/10.95 : []$\OT1/cmtt/m/n/10.95 https : / / www . cybermedian .
+Overfull \hbox (3.09662pt too wide) in paragraph at lines 125--125
+[][]\T1/cmr/m/sc/10.95 Cybermedian[]\T1/cmr/m/n/10.95 . \T1/cmr/m/it/10.95 de-tails se-quence dia-gram\T1/cmr/m/n/10.95 . 2012. \T1/cmr/m/sc/10.95 url \T1/cmr/m/n/10.95 : []$\T1/cmtt/m/n/10.95 https : / / www . cybermedian .
  []
 
-[147]
-Overfull \hbox (8.93143pt too wide) in paragraph at lines 124--124
-[][]\OT1/cmr/m/sc/10.95 scrumguides[]\OT1/cmr/m/n/10.95 . \OT1/cmr/m/it/10.95 Scrum\OT1/cmr/m/n/10.95 . 2016. \OT1/cmr/m/sc/10.95 url \OT1/cmr/m/n/10.95 : []$\OT1/cmtt/m/n/10.95 https : / / scrumguides . org / docs / scrumguide /
+[139]
+Overfull \hbox (5.6343pt too wide) in paragraph at lines 125--125
+[][]\T1/cmr/m/sc/10.95 scrumguides[]\T1/cmr/m/n/10.95 . \T1/cmr/m/it/10.95 Scrum\T1/cmr/m/n/10.95 . 2016. \T1/cmr/m/sc/10.95 url \T1/cmr/m/n/10.95 : []$\T1/cmtt/m/n/10.95 https : / / scrumguides . org / docs / scrumguide /
  []
 
 Package minitoc Info: I0009
@@ -2787,7 +2528,7 @@ Package minitoc(hints) Warning: W0024
 (minitoc(hints))                Some hints have been written 
 (minitoc(hints))                in the Thesis-report.log file.
 
-[148] (Thesis-report.aux (Chapitres/Declaration.aux) (Chapitres/dedication.aux) (Chapitres/Acknowledgements.aux) (Chapitres/Abstract.aux) (Chapitres/Introduction.aux) (Chapitres/Chapitre1.aux
+[140] (Thesis-report.aux (Chapitres/Declaration.aux) (Chapitres/dedication.aux) (Chapitres/Acknowledgements.aux) (Chapitres/Abstract.aux) (Chapitres/Introduction.aux) (Chapitres/Chapitre1.aux
 \renewcommand {\insertminitoc }{}
 ) (Chapitres/Chapitre2.aux) (Chapitres/Chapitre3.aux) (Chapitres/Chapitre4.aux) (Chapitres/Chapitre5.aux) (Chapitres/Conclusion.aux) (Chapitres/Webographie.aux))
  ***********
@@ -2799,23 +2540,23 @@ L3 programming layer <2026-01-19>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `Thesis-report.out' has not changed.
-(rerunfilecheck)             Checksum: B04BE74B9E8136312D65379245BC9CB6;49272.
+(rerunfilecheck)             Checksum: C5524523F1E3265993EC0DBB4D91DD2D;45999.
 Package logreq Info: Writing requests to 'Thesis-report.run.xml'.
 \openout1 = `Thesis-report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 41457 strings out of 467867
- 821323 string characters out of 5418818
- 1654166 words of memory out of 5000000
- 69135 multiletter control sequences out of 15000+600000
- 645436 words of font info for 103 fonts, out of 8000000 for 9000
+ 41510 strings out of 467867
+ 818250 string characters out of 5418818
+ 1648075 words of memory out of 5000000
+ 69212 multiletter control sequences out of 15000+600000
+ 647419 words of font info for 82 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 102i,17n,108p,1226b,3166s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy5.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb>
-Output written on Thesis-report.pdf (149 pages, 10329178 bytes).
+ 102i,17n,108p,1226b,3177s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1095.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1095.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbi1095.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1095.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1000.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1728.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1095.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1095.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2488.pk><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb>
+Output written on Thesis-report.pdf (141 pages, 10386748 bytes).
 PDF statistics:
- 2372 PDF objects out of 2487 (max. 8388607)
- 484 named destinations out of 1000 (max. 500000)
- 1892 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 2843 PDF objects out of 2984 (max. 8388607)
+ 456 named destinations out of 1000 (max. 500000)
+ 1788 words of extra memory for PDF output out of 10000 (max. 10000000)
 
