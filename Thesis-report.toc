@@ -51,7 +51,7 @@
 \contentsline {subsection}{\numberline {3.8.2}Analyse de cas d'utilisation «Gérer profil»}{64}{subsection.3.8.2}%
 \contentsline {subsubsection}{\numberline {3.8.2.1}Analyse de cas d'utilisation «Consulter profil»}{65}{subsubsection.3.8.2.1}%
 \contentsline {section}{\numberline {3.9}Analyse des cas d'utilisation de l'acteur «Administrateur»}{66}{section.3.9}%
-\contentsline {subsection}{\numberline {3.9.1}Analyse de cas d'utilisation «Consulter agences»}{66}{subsection.3.9.1}%
+\contentsline {subsection}{\numberline {3.9.1}Analyse de cas d'utilisation «Gérer agences»}{66}{subsection.3.9.1}%
 \contentsline {subsection}{\numberline {3.9.2}Analyse de cas d'utilisation «Ajouter agence»}{66}{subsection.3.9.2}%
 \contentsline {subsection}{\numberline {3.9.3}Analyse de cas d'utilisation «Bloquer/Débloquer agence»}{68}{subsection.3.9.3}%
 \contentsline {subsection}{\numberline {3.9.4}Analyse de cas d'utilisation «Consulter utilisateurs»}{70}{subsection.3.9.4}%
