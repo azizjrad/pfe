@@ -26,12 +26,6 @@ export const adminService = {
     }
   },
 
-  /** Get all users */
-  getUsers: async (params = {}) => {
-    const response = await http.get("/admin/users", { params });
-    return normalizeApiResponse(response);
-  },
-
   /** Update an agency */
   updateAgency: async (id, data) => {
     const response = await http.put(`/admin/agencies/${id}`, data);
@@ -50,35 +44,6 @@ export const adminService = {
    */
   suspendAgency: async (id, status) => {
     const response = await http.put(`/admin/agencies/${id}`, { status });
-    return normalizeApiResponse(response);
-  },
-
-  /** Update a user */
-  updateUser: async (id, data) => {
-    const response = await http.put(`/admin/users/${id}`, data);
-    return normalizeApiResponse(response);
-  },
-
-  /** Create a user */
-  createUser: async (data) => {
-    const response = await http.post("/admin/users", data);
-    return normalizeApiResponse(response);
-  },
-
-  /** Delete a user */
-  deleteUser: async (id) => {
-    const response = await http.delete(`/admin/users/${id}`);
-    return normalizeApiResponse(response);
-  },
-
-  /**
-   * Suspend or unsuspend a user.
-   * @param {boolean} suspend - true to suspend, false to unsuspend
-   */
-  suspendUser: async (id, suspend = true) => {
-    const response = await http.put(`/admin/users/${id}`, {
-      is_suspended: suspend,
-    });
     return normalizeApiResponse(response);
   },
 

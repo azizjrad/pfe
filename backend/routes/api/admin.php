@@ -20,16 +20,6 @@ Route::middleware(['auth:sanctum', 'not_suspended', 'password_changed', 'role:su
 
     Route::get('/admin/financial-stats', [AdminController::class, 'getFinancialStats']);
 
-    Route::get('/admin/users', [AdminController::class, 'getUsers']);
-    Route::get('/admin/users/{id}', [AdminController::class, 'getUserDetails']);
-    Route::get('/admin/users/{id}/reports-submitted', [ReportController::class, 'getUserReportsSubmitted']);
-    Route::get('/admin/users/{id}/reports-against', [ReportController::class, 'getUserReportsAgainst']);
-    Route::post('/admin/users', [AdminController::class, 'createUser']);
-    Route::post('/admin/users/{id}/suspend', [AdminController::class, 'suspendUser']);
-    Route::post('/admin/users/{id}/unsuspend', [AdminController::class, 'unsuspendUser']);
-    Route::put('/admin/users/{id}', [AdminController::class, 'updateUser']);
-    Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser']);
-
     Route::get('/admin/reports', [ReportController::class, 'index']);
     Route::get('/admin/reports/trashed', [ReportController::class, 'getTrashed']);
     Route::patch('/admin/reports/{id}/status', [ReportController::class, 'updateStatus']);

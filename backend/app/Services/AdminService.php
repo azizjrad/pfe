@@ -64,170 +64,6 @@ class AdminService
     }
 
     /**
-     * Get all users with optional filtering
-     */
-    public function getUsers(array $filters = [], int $perPage = 25)
-    {
-        $query = User::with('agency', 'reliabilityScore');
-
-        if (isset($filters['role'])) {
-            $query->where('role', $filters['role']);
-        }
-
-        if (isset($filters['search'])) {
-            $search = $filters['search'];
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%");
-            });
-        }
-
-        return $query->orderBy('created_at', 'desc')->paginate($perPage);
-    }
-
-    /**
-     * Get user activity details
-     */
-    public function getUserDetails(int $userId): array
-    {
-        $user = User::with('agency', 'reliabilityScore')->find($userId);
-
-        if (!$user) {
-            throw new NotFoundException(__('messages.resource_not_found'), 'USER_NOT_FOUND');
-        }
-
-        $reservationCount = $user->reservations()->count();
-        $completedReservations = $user->reservations()
-            ->where('status', ReservationStatus::COMPLETED->value)
-            ->count();
-
-        $totalSpent = $user->reservations()
-            ->where('status', ReservationStatus::COMPLETED->value)
-            ->sum('total_price');
-
-        return [
-            'user' => $user,
-            'total_reservations' => $reservationCount,
-            'completed_reservations' => $completedReservations,
-            'total_spent' => round($totalSpent, 2),
-            'join_date' => $user->created_at->format('Y-m-d'),
-            'last_reservation' => $user->reservations()
-                ->orderBy('created_at', 'desc')
-                ->first()?->created_at,
-        ];
-    }
-
-    /**
-     * Suspend user account (prevent logins, bookings)
-     */
-    public function suspendUser(int $userId, ?string $reason = null): User
-    {
-        $user = User::find($userId);
-
-        if (!$user) {
-            throw new NotFoundException('User not found', 'USER_NOT_FOUND');
-        }
-
-        DB::transaction(function () use ($user, $reason): void {
-            $user->update([
-                'is_suspended' => true,
-                'suspension_reason' => $reason,
-                'suspended_at' => now(),
-            ]);
-
-            if ($user->role === 'agency_admin' && !empty($user->agency_id)) {
-                Agency::where('id', $user->agency_id)->update([
-                    'status' => AgencyStatus::INACTIVE->value,
-                ]);
-            }
-
-            // Revoke all tokens
-            $user->tokens()->delete();
-        });
-
-        $user->refresh()->loadMissing('agency');
-
-        if ($this->brevoService !== null) {
-            try {
-                $this->brevoService->sendAccountStatusEmail($user, true, $reason);
-            } catch (\Throwable $e) {
-                logger()->error('AdminService: failed to send suspension email: ' . $e->getMessage());
-            }
-        }
-
-        return $user;
-    }
-
-    /**
-     * Unsuspend user account
-     */
-    public function unsuspendUser(int $userId): User
-    {
-        $user = User::find($userId);
-
-        if (!$user) {
-            throw new NotFoundException('User not found', 'USER_NOT_FOUND');
-        }
-
-        DB::transaction(function () use ($user): void {
-            $user->update([
-                'is_suspended' => false,
-                'suspension_reason' => null,
-                'suspended_at' => null,
-            ]);
-
-            if ($user->role === 'agency_admin' && !empty($user->agency_id)) {
-                Agency::where('id', $user->agency_id)->update([
-                    'status' => AgencyStatus::ACTIVE->value,
-                ]);
-            }
-        });
-
-        $user->refresh()->loadMissing('agency');
-
-        if ($this->brevoService !== null) {
-            try {
-                $this->brevoService->sendAccountStatusEmail($user, false, null);
-            } catch (\Throwable $e) {
-                logger()->error('AdminService: failed to send unsuspension email: ' . $e->getMessage());
-            }
-        }
-
-        return $user;
-    }
-
-    /**
-     * Delete user and associated data
-     */
-    public function deleteUser(int $userId, ?int $currentUserId = null): void
-    {
-        $user = User::find($userId);
-
-        if (!$user) {
-            throw new NotFoundException('User not found', 'USER_NOT_FOUND');
-        }
-
-        if ($currentUserId !== null && $user->id === $currentUserId) {
-            throw new BusinessRuleViolationException(__('auth.profile_delete_self_forbidden'), 400, 'SELF_DELETE_FORBIDDEN');
-        }
-
-        $hasActiveReservations = $user->reservations()
-            ->whereIn('status', ReservationStatus::activeValues())
-            ->exists();
-
-        if ($hasActiveReservations) {
-            throw new ConflictException(__('auth.cannot_delete_user_with_active_reservations'), 'USER_HAS_ACTIVE_RESERVATIONS');
-        }
-
-        // Revoke tokens
-        $user->tokens()->delete();
-
-        // Delete user
-        $user->delete();
-    }
-
-    /**
      * Get agency details for admin
      */
     public function getAgencyDetails(int $agencyId): array
@@ -251,6 +87,9 @@ class AdminService
             $query->where('agency_id', $agencyId);
         })->where('status', ReservationStatus::COMPLETED->value)->sum('total_price');
 
+        // Get the agency admin details (first admin associated with this agency)
+        $agencyAdmin = $agency->admins()->first();
+
         return [
             'agency' => $agency,
             'vehicle_count' => $vehicleCount,
@@ -258,6 +97,7 @@ class AdminService
             'completed_reservations' => $completedReservations,
             'total_revenue' => round($totalRevenue, 2),
             'admin_count' => $agency->admins()->count(),
+            'agency_admin' => $agencyAdmin,
             'avg_rating' => 0,
         ];
     }
@@ -366,59 +206,6 @@ class AdminService
      * Create a new agency
      */
     // Agency/user creation moved to AuthService (users) and AgencyService (agencies)
-
-    /**
-     * Update user attributes or toggle suspension
-     */
-    public function updateUser(int $userId, array $data)
-    {
-        $user = User::find($userId);
-
-        if (!$user) {
-            throw new NotFoundException('User not found', 'USER_NOT_FOUND');
-        }
-
-        // Handle suspension toggle
-        if (array_key_exists('is_suspended', $data)) {
-            $suspend = (bool) $data['is_suspended'];
-            if ($suspend) {
-                $this->suspendUser($userId, $data['suspension_reason'] ?? null);
-                // reload
-                $user = User::find($userId);
-                return $user;
-            } else {
-                $this->unsuspendUser($userId);
-                $user = User::find($userId);
-                return $user;
-            }
-        }
-
-        // Keep role and agency linkage consistent.
-        $nextRole = $data['role'] ?? $user->role;
-        $nextAgencyId = array_key_exists('agency_id', $data)
-            ? $data['agency_id']
-            : $user->agency_id;
-
-        if ($nextRole === 'agency_admin' && empty($nextAgencyId)) {
-            throw new BusinessRuleViolationException(
-                'Agency admin must be linked to an agency.',
-                422,
-                'user.agency_admin_requires_agency'
-            );
-        }
-
-        if ($nextRole !== 'agency_admin' && !array_key_exists('agency_id', $data)) {
-            $data['agency_id'] = null;
-        }
-
-        // Update allowed profile fields
-        $allowed = array_intersect_key($data, array_flip(['name','email','phone','role','agency_id']));
-        if (!empty($allowed)) {
-            $user->update($allowed);
-        }
-
-        return $user;
-    }
 
     /**
      * Get financial statistics for admin dashboard

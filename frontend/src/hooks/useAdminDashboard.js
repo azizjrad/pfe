@@ -5,8 +5,13 @@ import { clientService } from "../services/clientService";
 import { contactService } from "../services/contactService";
 import { reportService } from "../services/reportService";
 import { reservationService } from "../services/reservationService";
+import http from "../services/http";
 import { ROLES } from "../constants/roles";
-import { normalizeArray, normalizeReport } from "../utils/normalizers";
+import {
+  normalizeArray,
+  normalizeReport,
+  normalizeApiResponse,
+} from "../utils/normalizers";
 import { getUserFacingErrorMessage } from "../utils/errorMessages";
 
 const DEFAULT_PLATFORM_STATS = {
@@ -69,7 +74,6 @@ export default function useAdminDashboard({
   const { t } = useTranslation();
   const [platformStats, setPlatformStats] = useState(DEFAULT_PLATFORM_STATS);
   const [agencies, setAgencies] = useState([]);
-  const [users, setUsers] = useState([]);
   const [allReservations, setAllReservations] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -88,19 +92,16 @@ export default function useAdminDashboard({
   const fetchDashboardData = async () => {
     setLoading(true);
     try {
-      const [statsRes, agenciesRes, usersRes, reservationsRes] =
-        await Promise.all([
-          adminService.getDashboardStats(),
-          adminService.getAgencies(),
-          adminService.getUsers(),
-          reservationService.getAll(),
-        ]);
+      const [statsRes, agenciesRes, reservationsRes] = await Promise.all([
+        adminService.getDashboardStats(),
+        adminService.getAgencies(),
+        reservationService.getAll(),
+      ]);
 
       setPlatformStats(
         normalizePlatformStats(statsRes?.data) || DEFAULT_PLATFORM_STATS,
       );
       setAgencies(normalizeArray(agenciesRes));
-      setUsers(normalizeArray(usersRes));
       setAllReservations(normalizeArray(reservationsRes));
 
       await fetchNotifications();
@@ -201,37 +202,27 @@ export default function useAdminDashboard({
     await fetchFinancialStats(normalized);
   };
 
-  const fetchUserDetails = async (userId) => {
-    try {
-      const [reportsAgainst, reportsSubmitted] = await Promise.all([
-        reportService.getUserReportsAgainst(userId),
-        reportService.getUserReportsSubmitted(userId),
-      ]);
-
-      return {
-        reports: normalizeArray(reportsAgainst),
-        userReportsSubmitted: normalizeArray(reportsSubmitted),
-      };
-    } catch (error) {
-      console.error("Error fetching user details:", error);
-      return { reports: [], userReportsSubmitted: [] };
-    }
-  };
-
   const fetchAgencyDetails = async (agencyId) => {
     try {
-      const [reportsAgainst, vehiclesRes] = await Promise.all([
-        reportService.getAgencyReportsAgainst(agencyId),
-        adminService.getAgencyVehicles(agencyId),
-      ]);
+      // Fetch agency details (which now includes agency_admin), reports, and vehicles in parallel
+      const [agencyDetailsRes, reportsAgainst, vehiclesRes] = await Promise.all(
+        [
+          http.get(`/admin/agencies/${agencyId}`),
+          reportService.getAgencyReportsAgainst(agencyId),
+          adminService.getAgencyVehicles(agencyId),
+        ],
+      );
+
+      const agencyData = normalizeApiResponse(agencyDetailsRes);
 
       return {
+        agencyAdmin: agencyData?.agency_admin || null,
         reports: normalizeArray(reportsAgainst),
         vehicles: normalizeArray(vehiclesRes),
       };
     } catch (error) {
       console.error("Error fetching agency details:", error);
-      return { reports: [], vehicles: [] };
+      return { agencyAdmin: null, reports: [], vehicles: [] };
     }
   };
 
@@ -287,16 +278,6 @@ export default function useAdminDashboard({
     return updatedMessage;
   };
 
-  const handleDeleteUser = async (id) => {
-    await adminService.deleteUser(id);
-    setUsers((prev) => prev.filter((u) => u.id !== id));
-    setPlatformStats((prev) => ({
-      ...prev,
-      totalUsers: Math.max(0, (prev.totalUsers || 0) - 1),
-    }));
-    showToast?.(t("admin.users.deleteSuccess"), "success");
-  };
-
   const handleEditAgency = async (updatedData) => {
     if (!updatedData.id) {
       const response = await adminService.createAgency(updatedData);
@@ -326,63 +307,12 @@ export default function useAdminDashboard({
     showToast?.(t("admin.agencies.editSuccess"), "success");
   };
 
-  const handleEditUser = async (updatedData) => {
-    if (!updatedData.id) {
-      const response = await adminService.createUser(updatedData);
-      const created = response?.data;
-
-      if (created) {
-        setUsers((prev) => [created, ...prev]);
-        setPlatformStats((prev) => ({
-          ...prev,
-          totalUsers: (prev.totalUsers || 0) + 1,
-        }));
-      }
-
-      showToast?.(t("admin.users.createSuccess"), "success");
-      return;
-    }
-
-    const response = await adminService.updateUser(updatedData.id, updatedData);
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === updatedData.id ? { ...u, ...(response?.data || {}) } : u,
-      ),
-    );
-    showToast?.(t("admin.users.editSuccess"), "success");
-  };
-
   const handleSuspendAgency = async (agency) => {
     const newStatus = agency.status === "active" ? "inactive" : "active";
     await adminService.suspendAgency(agency.id, newStatus);
     setAgencies((prev) =>
       prev.map((a) => (a.id === agency.id ? { ...a, status: newStatus } : a)),
     );
-  };
-
-  const handleSuspendUser = async (targetUser) => {
-    const isSuspended =
-      targetUser?.is_suspended === true ||
-      targetUser?.is_suspended === 1 ||
-      targetUser?.is_suspended === "1";
-
-    await adminService.suspendUser(targetUser.id, !isSuspended);
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === targetUser.id ? { ...u, is_suspended: !isSuspended } : u,
-      ),
-    );
-
-    if (targetUser?.role === ROLES.AGENCY_ADMIN && targetUser?.agency_id) {
-      const nextStatus = !isSuspended ? "inactive" : "active";
-      setAgencies((prev) =>
-        prev.map((agency) =>
-          agency.id === targetUser.agency_id
-            ? { ...agency, status: nextStatus }
-            : agency,
-        ),
-      );
-    }
   };
 
   const handleResolveReport = async (report, notes) => {
@@ -454,7 +384,6 @@ export default function useAdminDashboard({
   return {
     platformStats,
     agencies,
-    users,
     allReservations,
     loading,
     reports,
@@ -469,16 +398,12 @@ export default function useAdminDashboard({
     financialFilters,
     refreshData,
     handleFinancialFiltersChange,
-    fetchUserDetails,
     fetchAgencyDetails,
     handleMarkMessageRead,
     handleDeleteContactMessage,
     handleReplyContactMessage,
-    handleDeleteUser,
     handleEditAgency,
-    handleEditUser,
     handleSuspendAgency,
-    handleSuspendUser,
     handleResolveReport,
     handleDismissReport,
     handleDeleteReport,

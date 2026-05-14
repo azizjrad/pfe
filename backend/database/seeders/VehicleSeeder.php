@@ -344,16 +344,13 @@ class VehicleSeeder extends Seeder
         foreach ($vehicles as $vehicle) {
             $agencyEmail = $vehicle['agency_email'];
             $agencyId = $agencyIds[$agencyEmail] ?? null;
-            $categoryName = $categoryByModel[$vehicle['model']] ?? 'Économique';
-            $categoryId = $categoryIds[$categoryName] ?? null;
 
-            if (!$agencyId || !$categoryId) {
+            if (!$agencyId) {
                 continue;
             }
 
             unset($vehicle['agency_email']);
             $vehicle['agency_id'] = $agencyId;
-            $vehicle['category_id'] = $categoryId;
             // Keep caution coherent for historical seed data created before caution field existed.
             $vehicle['caution_amount'] = isset($vehicle['caution_amount']) && (float) $vehicle['caution_amount'] > 0
                 ? (float) $vehicle['caution_amount']

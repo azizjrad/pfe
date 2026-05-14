@@ -52,6 +52,7 @@ const Dashboard = () => {
     reports: [],
     userReportsSubmitted: [],
     vehicles: [],
+    agencyAdmin: null,
   });
   const [, setReportDetailsModal] = useState({
     isOpen: false,
@@ -108,7 +109,6 @@ const Dashboard = () => {
 
   const platformStats = adminDashboard.platformStats;
   const agencies = adminDashboard.agencies;
-  const users = adminDashboard.users;
   const allReservations = adminDashboard.allReservations;
   const contactMessages = adminDashboard.contactMessages;
   const financialStats = adminDashboard.financialStats;
@@ -143,20 +143,6 @@ const Dashboard = () => {
     }
   };
 
-  const openUserDetailsModal = async (selectedUser) => {
-    try {
-      const details = await adminDashboard.fetchUserDetails(selectedUser.id);
-      setDetailsModal({
-        isOpen: true,
-        type: "user",
-        item: selectedUser,
-        ...details,
-      });
-    } catch (error) {
-      showToast(t("dashboard.messages.detailsOpenError"), "error");
-    }
-  };
-
   const openAgencyDetailsModal = async (agency) => {
     try {
       const details = await adminDashboard.fetchAgencyDetails(agency.id);
@@ -166,6 +152,7 @@ const Dashboard = () => {
         item: agency,
         reports: details.reports,
         vehicles: details.vehicles,
+        agencyAdmin: details.agencyAdmin,
         userReportsSubmitted: [],
       });
     } catch (error) {
@@ -179,7 +166,6 @@ const Dashboard = () => {
       case ROLES.SUPER_ADMIN:
         return [
           { id: "overview", label: t("dashboard.tabs.overview"), icon: "home" },
-          { id: "users", label: t("dashboard.tabs.users"), icon: "users" },
           {
             id: "agencies",
             label: t("dashboard.tabs.agencies"),
@@ -699,31 +685,6 @@ const Dashboard = () => {
                 item: agency,
               });
             }}
-            onDeleteUser={(id) => {
-              setDeleteModal({
-                isOpen: true,
-                type: "user",
-                item: users.find((u) => u.id === id),
-              });
-            }}
-            onEditUser={(item) => {
-              setEditModal({ isOpen: true, type: "user", item });
-            }}
-            onSuspendUser={(user) => {
-              setSuspendModal({
-                isOpen: true,
-                type: "user",
-                item: user,
-              });
-            }}
-            onViewUserDetails={async (user) => {
-              try {
-                await openUserDetailsModal(user);
-              } catch (error) {
-                console.error("Error viewing user details:", error);
-                showToast(t("dashboard.messages.detailsOpenError"), "error");
-              }
-            }}
             onViewAgencyDetails={async (agency) => {
               try {
                 await openAgencyDetailsModal(agency);
@@ -1081,9 +1042,6 @@ const Dashboard = () => {
           setDeleteModal({ isOpen: false, type: null, item: null })
         }
         onConfirm={() => {
-          if (deleteModal.type === "user") {
-            adminDashboard.handleDeleteUser(deleteModal.item.id);
-          }
           setDeleteModal({ isOpen: false, type: null, item: null });
         }}
         title={t("dashboard.modals.deleteUserTitle")}
@@ -1112,15 +1070,6 @@ const Dashboard = () => {
                   : t("dashboard.messages.agencyBlocked"),
                 "success",
               );
-            } else if (suspendModal.type === "user") {
-              const selectedUser = suspendModal.item;
-              await adminDashboard.handleSuspendUser(selectedUser);
-              showToast(
-                selectedUser.is_suspended
-                  ? t("dashboard.messages.userUnblocked")
-                  : t("dashboard.messages.userBlocked"),
-                "success",
-              );
             }
             await adminDashboard.refreshData();
           } catch (error) {
@@ -1138,9 +1087,7 @@ const Dashboard = () => {
             ? suspendModal.item?.status === "inactive"
               ? t("dashboard.modals.unblockAgencyTitle")
               : t("dashboard.modals.blockAgencyTitle")
-            : suspendModal.item?.is_suspended
-              ? t("dashboard.modals.unblockUserTitle")
-              : t("dashboard.modals.blockUserTitle")
+            : t("dashboard.modals.blockAgencyTitle")
         }
         message={
           suspendModal.type === "agency"
@@ -1151,28 +1098,22 @@ const Dashboard = () => {
               : t("dashboard.modals.blockAgencyDesc", {
                   name: suspendModal.item?.name,
                 })
-            : suspendModal.item?.is_suspended
-              ? t("dashboard.modals.unblockUserDesc", {
-                  name: suspendModal.item?.name,
-                })
-              : t("dashboard.modals.blockUserDesc", {
-                  name: suspendModal.item?.name,
-                })
+            : t("dashboard.modals.blockAgencyDesc", {
+                name: suspendModal.item?.name,
+              })
         }
         confirmText={
           suspendModal.type === "agency"
             ? suspendModal.item?.status === "inactive"
               ? t("dashboard.actionLabels.unblock")
               : t("dashboard.actionLabels.block")
-            : suspendModal.item?.is_suspended
-              ? t("dashboard.actionLabels.unblock")
-              : t("dashboard.actionLabels.block")
+            : t("dashboard.actionLabels.block")
         }
         cancelText={t("dashboard.actionLabels.cancel")}
         danger={
           suspendModal.type === "agency"
             ? suspendModal.item?.status === "active"
-            : !suspendModal.item?.is_suspended
+            : true
         }
       />
 
@@ -1182,8 +1123,6 @@ const Dashboard = () => {
         onSave={async (updatedData) => {
           if (editModal.type === "agency") {
             await adminDashboard.handleEditAgency(updatedData);
-          } else if (editModal.type === "user") {
-            await adminDashboard.handleEditUser(updatedData);
           }
           setEditModal({ isOpen: false, type: null, item: null });
         }}
@@ -1207,6 +1146,7 @@ const Dashboard = () => {
             reports: [],
             userReportsSubmitted: [],
             vehicles: [],
+            agencyAdmin: null,
           })
         }
         type={detailsModal.type}
@@ -1215,6 +1155,7 @@ const Dashboard = () => {
         reports={detailsModal.reports || []}
         userReportsSubmitted={detailsModal.userReportsSubmitted || []}
         vehicles={detailsModal.vehicles || []}
+        agencyAdmin={detailsModal.agencyAdmin || null}
         onEdit={(item) => {
           setDetailsModal({
             isOpen: false,
@@ -1223,6 +1164,7 @@ const Dashboard = () => {
             reports: [],
             userReportsSubmitted: [],
             vehicles: [],
+            agencyAdmin: null,
           });
           setEditModal({ isOpen: true, type: detailsModal.type, item });
         }}
@@ -1234,6 +1176,7 @@ const Dashboard = () => {
             reports: [],
             userReportsSubmitted: [],
             vehicles: [],
+            agencyAdmin: null,
           });
           setSuspendModal({
             isOpen: true,
