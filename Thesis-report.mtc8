@@ -1,59 +1,58 @@
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.1}Introduction}{\reset@font\mtcSfont 57}{section.3.1}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.2}Backlog produit du premier sprint}{\reset@font\mtcSfont 57}{section.3.2}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.3}Les prototypes des interfaces}{\reset@font\mtcSfont 59}{section.3.3}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.4}La spécification fonctionnelle des besoins}{\reset@font\mtcSfont 60}{section.3.4}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.5}Diagramme de cas d'utilisation du premier sprint}{\reset@font\mtcSfont 60}{section.3.5}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.6}Analyse des cas d'utilisation du premier sprint}{\reset@font\mtcSfont 61}{section.3.6}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.7}Analyse des cas d'utilisation de l'acteur «Internaute»}{\reset@font\mtcSfont 61}{section.3.7}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.7.1}Analyse de cas d'utilisation «S'inscrire»}{\reset@font\mtcSSfont 61}{subsection.3.7.1}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.8}Analyse des cas d'utilisation de l'acteur «Utilisateur»}{\reset@font\mtcSfont 62}{section.3.8}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.8.1}Analyse de cas d'utilisation «S'authentifier»}{\reset@font\mtcSSfont 62}{subsection.3.8.1}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.8.2}Analyse de cas d'utilisation «Gérer profil»}{\reset@font\mtcSSfont 64}{subsection.3.8.2}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.8.2.1}Analyse de cas d'utilisation «Consulter profil»}{\reset@font\mtcSSSfont 65}{subsubsection.3.8.2.1}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.1}Introduction}{\reset@font\mtcSfont 55}{section.3.1}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.2}Backlog produit du premier sprint}{\reset@font\mtcSfont 55}{section.3.2}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.3}Les prototypes des interfaces}{\reset@font\mtcSfont 57}{section.3.3}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.4}La spécification fonctionnelle des besoins}{\reset@font\mtcSfont 58}{section.3.4}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.5}Diagramme de cas d'utilisation du premier sprint}{\reset@font\mtcSfont 58}{section.3.5}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.6}Analyse des cas d'utilisation du premier sprint}{\reset@font\mtcSfont 59}{section.3.6}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.7}Analyse des cas d'utilisation de l'acteur «Internaute»}{\reset@font\mtcSfont 59}{section.3.7}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.7.1}Analyse de cas d'utilisation «S'inscrire»}{\reset@font\mtcSSfont 59}{subsection.3.7.1}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.8}Analyse des cas d'utilisation de l'acteur «Utilisateur»}{\reset@font\mtcSfont 60}{section.3.8}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.8.1}Analyse de cas d'utilisation «S'authentifier»}{\reset@font\mtcSSfont 60}{subsection.3.8.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.8.2}Analyse de cas d'utilisation «Gérer profil»}{\reset@font\mtcSSfont 62}{subsection.3.8.2}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.8.2.1}Analyse de cas d'utilisation «Modifier profil»}{\reset@font\mtcSSSfont 63}{subsubsection.3.8.2.1}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.8.2.2}Analyse de cas d'utilisation «Consulter profil»}{\reset@font\mtcSSSfont 65}{subsubsection.3.8.2.2}}
 {\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.9}Analyse des cas d'utilisation de l'acteur «Administrateur»}{\reset@font\mtcSfont 66}{section.3.9}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.9.1}Analyse de cas d'utilisation «Consulter agences»}{\reset@font\mtcSSfont 66}{subsection.3.9.1}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.9.2}Analyse de cas d'utilisation «Ajouter agence»}{\reset@font\mtcSSfont 66}{subsection.3.9.2}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.9.3}Analyse de cas d'utilisation «Bloquer/Débloquer agence»}{\reset@font\mtcSSfont 68}{subsection.3.9.3}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.9.4}Analyse de cas d'utilisation «Consulter utilisateurs»}{\reset@font\mtcSSfont 70}{subsection.3.9.4}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.9.5}Analyse de cas d'utilisation «Ajouter utilisateur»}{\reset@font\mtcSSfont 70}{subsection.3.9.5}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.9.6}Analyse de cas d'utilisation «Bloquer/ Débloquer utilisateur»}{\reset@font\mtcSSfont 72}{subsection.3.9.6}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.10}Analyse des cas d'utilisation de l'acteur «Agence»}{\reset@font\mtcSfont 74}{section.3.10}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.10.1}Analyse de cas d'utilisation «Gérer vitrine»}{\reset@font\mtcSSfont 74}{subsection.3.10.1}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.10.1.1}Analyse de cas d'utilisation «Consulter vitrine»}{\reset@font\mtcSSSfont 74}{subsubsection.3.10.1.1}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.10.2}Analyse de cas d'utilisation «Ajouter voiture»}{\reset@font\mtcSSfont 75}{subsection.3.10.2}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.10.2.1}Analyse de cas d'utilisation «Modifier informations voiture»}{\reset@font\mtcSSSfont 77}{subsubsection.3.10.2.1}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.11}Conception des cas d'utilisation}{\reset@font\mtcSfont 79}{section.3.11}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.11.1}Diagramme des classes participantes}{\reset@font\mtcSSfont 80}{subsection.3.11.1}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.11.1.1}Diagramme des classes participantes par acteur «Internaute»}{\reset@font\mtcSSSfont 80}{subsubsection.3.11.1.1}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.11.1.2}Diagramme des classes participantes par acteur «Utilisateur»}{\reset@font\mtcSSSfont 81}{subsubsection.3.11.1.2}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.11.1.3}Diagramme des classes participantes par acteur «Agence»}{\reset@font\mtcSSSfont 81}{subsubsection.3.11.1.3}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.11.1.4}Diagramme des classes participantes par acteur «Administrateur»}{\reset@font\mtcSSSfont 81}{subsubsection.3.11.1.4}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.12}Diagrammes de séquence détaillés du premier sprint}{\reset@font\mtcSfont 81}{section.3.12}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.12.1}Diagrammes de séquence détaillés de l’acteur Internaute}{\reset@font\mtcSSfont 82}{subsection.3.12.1}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.1.1}Diagrammes de séquence détaillé du cas d’utilisation « Consulter actualités »}{\reset@font\mtcSSSfont 82}{subsubsection.3.12.1.1}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.1.2}Diagrammes de séquence détaillé du cas d’utilisation « S’inscrire »}{\reset@font\mtcSSSfont 83}{subsubsection.3.12.1.2}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.12.2}Diagrammes de séquence détaillés de l’acteur Utilisateur}{\reset@font\mtcSSfont 84}{subsection.3.12.2}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.2.1}Diagrammes de séquence détaillé du cas d’utilisation « S’authentifier »}{\reset@font\mtcSSSfont 84}{subsubsection.3.12.2.1}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.2.2}Diagrammes de séquence détaillé du cas d’utilisation « Interagir avec Chatbot »}{\reset@font\mtcSSSfont 84}{subsubsection.3.12.2.2}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.2.3}Diagrammes de séquence détaillé du cas d’utilisation « Consulter profil »}{\reset@font\mtcSSSfont 85}{subsubsection.3.12.2.3}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.12.3}Diagrammes de séquence détaillés de l’acteur Administrateur}{\reset@font\mtcSSfont 85}{subsection.3.12.3}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.3.1}Diagrammes de séquence détaillé du cas d’utilisation « Ajouter agence »}{\reset@font\mtcSSSfont 85}{subsubsection.3.12.3.1}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.3.2}Diagrammes de séquence détaillé du cas d’utilisation « Bloquer/Débloquer agence »}{\reset@font\mtcSSSfont 86}{subsubsection.3.12.3.2}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.3.3}Diagrammes de séquence détaillé du cas d’utilisation « Ajouter utilisateur »}{\reset@font\mtcSSSfont 86}{subsubsection.3.12.3.3}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.3.4}Diagrammes de séquence détaillé du cas d’utilisation « Bloquer/Débloquer utilisateur »}{\reset@font\mtcSSSfont 87}{subsubsection.3.12.3.4}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.13}Diagramme de classe du premier sprint}{\reset@font\mtcSfont 88}{section.3.13}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.14}Implémentation}{\reset@font\mtcSfont 88}{section.3.14}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.14.1}Tables de la base de données}{\reset@font\mtcSSfont 88}{subsection.3.14.1}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.14.1.1}Tableau « users »}{\reset@font\mtcSSSfont 89}{subsubsection.3.14.1.1}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.14.1.2}Tableau « vehicles »}{\reset@font\mtcSSSfont 90}{subsubsection.3.14.1.2}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.14.2}Réalisation des interfaces du premier sprint}{\reset@font\mtcSSfont 90}{subsection.3.14.2}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.14.2.1}Interface d'inscription :}{\reset@font\mtcSSSfont 91}{subsubsection.3.14.2.1}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.14.2.2}Interface d'authentication :}{\reset@font\mtcSSSfont 91}{subsubsection.3.14.2.2}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.14.2.3}Interface profil :}{\reset@font\mtcSSSfont 92}{subsubsection.3.14.2.3}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.14.2.4}Interface chatbot :}{\reset@font\mtcSSSfont 92}{subsubsection.3.14.2.4}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.14.2.5}Interface vitrine :}{\reset@font\mtcSSSfont 93}{subsubsection.3.14.2.5}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.14.2.6}Interface bloquer/debloquer une agence :}{\reset@font\mtcSSSfont 93}{subsubsection.3.14.2.6}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.15}Test unitaire}{\reset@font\mtcSfont 93}{section.3.15}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.15.1}Test unitaire du cas d’utilisation «S’authentifier»}{\reset@font\mtcSSfont 93}{subsection.3.15.1}}
-{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.15.2}Test unitaire du cas d’utilisation «Bloquer ou Débloquer une agence»}{\reset@font\mtcSSfont 94}{subsection.3.15.2}}
-{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.16}Conclusion}{\reset@font\mtcSfont 95}{section.3.16}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.9.1}Analyse de cas d'utilisation «Gérer agences»}{\reset@font\mtcSSfont 66}{subsection.3.9.1}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.9.1.1}Analyse de cas d'utilisation «Modifier infos agence»}{\reset@font\mtcSSSfont 66}{subsubsection.3.9.1.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.9.2}Analyse de cas d'utilisation «Ajouter agence»}{\reset@font\mtcSSfont 68}{subsection.3.9.2}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.9.3}Analyse de cas d'utilisation «Bloquer/Débloquer agence»}{\reset@font\mtcSSfont 69}{subsection.3.9.3}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.10}Analyse des cas d'utilisation de l'acteur «Agence»}{\reset@font\mtcSfont 72}{section.3.10}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.10.1}Analyse de cas d'utilisation «Gérer vitrine»}{\reset@font\mtcSSfont 72}{subsection.3.10.1}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.10.1.1}Analyse de cas d'utilisation «Consulter vitrine»}{\reset@font\mtcSSSfont 72}{subsubsection.3.10.1.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.10.2}Analyse de cas d'utilisation «Ajouter voiture»}{\reset@font\mtcSSfont 73}{subsection.3.10.2}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.10.2.1}Analyse de cas d'utilisation «Modifier informations voiture»}{\reset@font\mtcSSSfont 74}{subsubsection.3.10.2.1}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.11}Conception des cas d'utilisation}{\reset@font\mtcSfont 76}{section.3.11}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.11.1}Diagramme des classes participantes}{\reset@font\mtcSSfont 77}{subsection.3.11.1}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.11.1.1}Diagramme des classes participantes par acteur «Internaute»}{\reset@font\mtcSSSfont 77}{subsubsection.3.11.1.1}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.11.1.2}Diagramme des classes participantes par acteur «Utilisateur»}{\reset@font\mtcSSSfont 78}{subsubsection.3.11.1.2}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.11.1.3}Diagramme des classes participantes par acteur «Agence»}{\reset@font\mtcSSSfont 78}{subsubsection.3.11.1.3}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.11.1.4}Diagramme des classes participantes par acteur «Administrateur»}{\reset@font\mtcSSSfont 78}{subsubsection.3.11.1.4}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.12}Diagrammes de séquence détaillés du premier sprint}{\reset@font\mtcSfont 78}{section.3.12}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.12.1}Diagrammes de séquence détaillés de l’acteur Internaute}{\reset@font\mtcSSfont 79}{subsection.3.12.1}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.1.1}Diagrammes de séquence détaillé du cas d’utilisation « Consulter actualités »}{\reset@font\mtcSSSfont 79}{subsubsection.3.12.1.1}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.1.2}Diagrammes de séquence détaillé du cas d’utilisation « S’inscrire »}{\reset@font\mtcSSSfont 80}{subsubsection.3.12.1.2}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.12.2}Diagrammes de séquence détaillés de l’acteur Utilisateur}{\reset@font\mtcSSfont 81}{subsection.3.12.2}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.2.1}Diagrammes de séquence détaillé du cas d’utilisation « S’authentifier »}{\reset@font\mtcSSSfont 81}{subsubsection.3.12.2.1}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.2.2}Diagrammes de séquence détaillé du cas d’utilisation « Interagir avec Chatbot »}{\reset@font\mtcSSSfont 81}{subsubsection.3.12.2.2}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.2.3}Diagrammes de séquence détaillé du cas d’utilisation « Consulter profil »}{\reset@font\mtcSSSfont 82}{subsubsection.3.12.2.3}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.12.3}Diagrammes de séquence détaillés de l’acteur Administrateur}{\reset@font\mtcSSfont 82}{subsection.3.12.3}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.3.1}Diagrammes de séquence détaillé du cas d’utilisation « Ajouter agence »}{\reset@font\mtcSSSfont 82}{subsubsection.3.12.3.1}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.3.2}Diagrammes de séquence détaillé du cas d’utilisation « Bloquer/Débloquer agence »}{\reset@font\mtcSSSfont 83}{subsubsection.3.12.3.2}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.3.3}Diagrammes de séquence détaillé du cas d’utilisation « Ajouter utilisateur »}{\reset@font\mtcSSSfont 83}{subsubsection.3.12.3.3}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.12.3.4}Diagrammes de séquence détaillé du cas d’utilisation « Bloquer/Débloquer utilisateur »}{\reset@font\mtcSSSfont 84}{subsubsection.3.12.3.4}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.13}Diagramme de classe du premier sprint}{\reset@font\mtcSfont 85}{section.3.13}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.14}Implémentation}{\reset@font\mtcSfont 85}{section.3.14}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.14.1}Tables de la base de données}{\reset@font\mtcSSfont 85}{subsection.3.14.1}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.14.1.1}Tableau « users »}{\reset@font\mtcSSSfont 86}{subsubsection.3.14.1.1}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.14.1.2}Tableau « vehicles »}{\reset@font\mtcSSSfont 87}{subsubsection.3.14.1.2}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.14.2}Réalisation des interfaces du premier sprint}{\reset@font\mtcSSfont 87}{subsection.3.14.2}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.14.2.1}Interface d'inscription :}{\reset@font\mtcSSSfont 88}{subsubsection.3.14.2.1}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.14.2.2}Interface d'authentication :}{\reset@font\mtcSSSfont 88}{subsubsection.3.14.2.2}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.14.2.3}Interface profil :}{\reset@font\mtcSSSfont 89}{subsubsection.3.14.2.3}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.14.2.4}Interface chatbot :}{\reset@font\mtcSSSfont 89}{subsubsection.3.14.2.4}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.14.2.5}Interface vitrine :}{\reset@font\mtcSSSfont 90}{subsubsection.3.14.2.5}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {3.14.2.6}Interface bloquer/debloquer une agence :}{\reset@font\mtcSSSfont 90}{subsubsection.3.14.2.6}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.15}Test unitaire}{\reset@font\mtcSfont 90}{section.3.15}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.15.1}Test unitaire du cas d’utilisation «S’authentifier»}{\reset@font\mtcSSfont 90}{subsection.3.15.1}}
+{\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {3.15.2}Test unitaire du cas d’utilisation «Bloquer ou Débloquer une agence»}{\reset@font\mtcSSfont 91}{subsection.3.15.2}}
+{\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {3.16}Conclusion}{\reset@font\mtcSfont 92}{section.3.16}}
