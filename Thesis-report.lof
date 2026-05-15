@@ -21,6 +21,7 @@
 \contentsline {figure}{\numberline {2.4}{\ignorespaces Sprint 1}}{53}{figure.caption.31}%
 \contentsline {figure}{\numberline {2.5}{\ignorespaces Diagramme de Gantt}}{53}{figure.caption.32}%
 \addvspace {10\p@ }
+<<<<<<< HEAD
 \contentsline {xchapter}{Réalisation du premier sprint}{55}{chapter.3}%
 \contentsline {figure}{\numberline {3.1}{\ignorespaces Prototypage de l'interface d'inscription}}{57}{figure.caption.34}%
 \contentsline {figure}{\numberline {3.2}{\ignorespaces Prototypage de l'interface «Utilisateur»}}{57}{figure.caption.35}%
@@ -60,6 +61,48 @@
 \contentsline {figure}{\numberline {3.36}{\ignorespaces Interface bloquer/débloquer une agence}}{90}{figure.caption.81}%
 \contentsline {figure}{\numberline {3.37}{\ignorespaces Test unitaire du cas d’utilisation «S’authentifier»}}{91}{figure.caption.83}%
 \contentsline {figure}{\numberline {3.38}{\ignorespaces Test unitaire du cas d’utilisation «Bloquer ou Débloquer un agence»}}{92}{figure.caption.85}%
+=======
+\contentsline {xchapter}{Réalisation du premier sprint}{57}{chapter.3}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Prototypage de l'interface d'inscription}}{59}{figure.caption.35}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Prototypage de l'interface «Utilisateur»}}{59}{figure.caption.36}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Diagramme de cas d'utilisation du premier sprint}}{60}{figure.caption.37}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Diagramme de séquence système de cas d'utilisation «S'inscrire»}}{62}{figure.caption.39}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Diagramme de séquence système de cas d'utilisation «S'authentifier»}}{64}{figure.caption.41}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Raffinement du cas d'utilisation «Gérer profil»}}{64}{figure.caption.42}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Consulter profil»}}{65}{figure.caption.44}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Raffinement du cas d'utilisation «Gérer agences»}}{66}{figure.caption.45}%
+\contentsline {figure}{\numberline {3.9}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Ajouter agence»}}{67}{figure.caption.47}%
+\contentsline {figure}{\numberline {3.10}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Bloquer agences»}}{69}{figure.caption.49}%
+\contentsline {figure}{\numberline {3.11}{\ignorespaces Raffinement du cas d'utilisation «Consulter utilisateurs»}}{70}{figure.caption.50}%
+\contentsline {figure}{\numberline {3.12}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Ajouter utilisateur»}}{71}{figure.caption.52}%
+\contentsline {figure}{\numberline {3.13}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Bloquer/Débloquer utilisateur»}}{73}{figure.caption.54}%
+\contentsline {figure}{\numberline {3.14}{\ignorespaces Raffinement du cas d'utilisation «Gérer vitrine»}}{74}{figure.caption.55}%
+\contentsline {figure}{\numberline {3.15}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Consulter vitrine»}}{75}{figure.caption.57}%
+\contentsline {figure}{\numberline {3.16}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Ajouter vitrine»}}{77}{figure.caption.59}%
+\contentsline {figure}{\numberline {3.17}{\ignorespaces Diagramme de séquence système de cas d'utilisation «Modifier infos voiture»}}{78}{figure.caption.61}%
+\contentsline {figure}{\numberline {3.18}{\ignorespaces Diagramme des classes participantes par acteur Internaute}}{80}{figure.caption.62}%
+\contentsline {figure}{\numberline {3.19}{\ignorespaces Diagramme des classes participantes par acteur Utilisateur}}{81}{figure.caption.63}%
+\contentsline {figure}{\numberline {3.20}{\ignorespaces Diagramme des classes participantes par acteur Agence}}{81}{figure.caption.64}%
+\contentsline {figure}{\numberline {3.21}{\ignorespaces Diagramme des classes participantes par acteur Administrateur}}{81}{figure.caption.65}%
+\contentsline {figure}{\numberline {3.22}{\ignorespaces Diagramme de séquence détaillé du cas d’utilisation « Consulter actualités »}}{82}{figure.caption.66}%
+\contentsline {figure}{\numberline {3.23}{\ignorespaces Diagramme de séquence détaillé du cas d’utilisation « S’inscrire »}}{83}{figure.caption.67}%
+\contentsline {figure}{\numberline {3.24}{\ignorespaces Diagramme de séquence détaillé du cas d’utilisation « S’authentifier »}}{84}{figure.caption.68}%
+\contentsline {figure}{\numberline {3.25}{\ignorespaces Diagramme de séquence détaillé du cas d’utilisation « Interagir avec Chatbot »}}{84}{figure.caption.69}%
+\contentsline {figure}{\numberline {3.26}{\ignorespaces Diagramme de séquence détaillé du cas d’utilisation « Consulter profil »}}{85}{figure.caption.70}%
+\contentsline {figure}{\numberline {3.27}{\ignorespaces Diagramme de séquence détaillé du cas d’utilisation « Ajouter agence »}}{85}{figure.caption.71}%
+\contentsline {figure}{\numberline {3.28}{\ignorespaces Diagramme de séquence détaillé du cas d’utilisation « Bloquer/Débloquer agence »}}{86}{figure.caption.72}%
+\contentsline {figure}{\numberline {3.29}{\ignorespaces Diagramme de séquence détaillé du cas d’utilisation « Ajouter utilisateur »}}{86}{figure.caption.73}%
+\contentsline {figure}{\numberline {3.30}{\ignorespaces Diagramme de séquence détaillé du cas d’utilisation « Bloquer/Débloquer utilisateur »}}{87}{figure.caption.74}%
+\contentsline {figure}{\numberline {3.31}{\ignorespaces Diagramme de classe du premier sprint}}{88}{figure.caption.75}%
+\contentsline {figure}{\numberline {3.32}{\ignorespaces Interface d'inscription}}{91}{figure.caption.78}%
+\contentsline {figure}{\numberline {3.33}{\ignorespaces Interface d'authentification}}{91}{figure.caption.79}%
+\contentsline {figure}{\numberline {3.34}{\ignorespaces Interface profil}}{92}{figure.caption.80}%
+\contentsline {figure}{\numberline {3.35}{\ignorespaces Interface chatbot}}{92}{figure.caption.81}%
+\contentsline {figure}{\numberline {3.36}{\ignorespaces Interface vitrine}}{93}{figure.caption.82}%
+\contentsline {figure}{\numberline {3.37}{\ignorespaces Interface bloquer/débloquer une agence}}{93}{figure.caption.83}%
+\contentsline {figure}{\numberline {3.38}{\ignorespaces Test unitaire du cas d’utilisation «S’authentifier»}}{94}{figure.caption.85}%
+\contentsline {figure}{\numberline {3.39}{\ignorespaces Test unitaire du cas d’utilisation «Bloquer ou Débloquer un agence»}}{95}{figure.caption.87}%
+>>>>>>> a2566680d315c3a82fd8829a6bf37246c977c619
 \addvspace {10\p@ }
 \contentsline {xchapter}{Réalisation du deuxième sprint}{93}{chapter.4}%
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Prototypage de l'interface "Effectuer réservation''}}{95}{figure.caption.87}%
