@@ -47,6 +47,12 @@ export const adminService = {
     return normalizeApiResponse(response);
   },
 
+  /** Get clients list with reliability scores */
+  getClients: async (params = {}) => {
+    const response = await http.get("/admin/clients", { params });
+    return normalizeApiResponse(response);
+  },
+
   /** Get financial statistics with monthly breakdown */
   getFinancialStats: async (params = {}) => {
     // Some deployments expose agency-level financial stats at /agency/financial-stats

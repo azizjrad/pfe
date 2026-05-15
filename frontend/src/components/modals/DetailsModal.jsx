@@ -479,9 +479,9 @@ export default function DetailsModal({
                 </div>
               )}
             </>
-          )}
+          ) : null}
         </div>
-              
+
         {/* Footer Actions */}
         <div className="sticky bottom-0 bg-white/70 backdrop-blur-xl border-t border-gray-100/80 px-5 py-4 rounded-b-3xl">
           <div className="flex gap-2.5">

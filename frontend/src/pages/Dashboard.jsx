@@ -5,7 +5,6 @@ import { useAuth } from "../contexts/AuthContext";
 import Footer from "../components/common/Footer";
 import DashboardHeader from "../components/dashboard/DashboardHeader";
 import ConfirmationModal from "../components/modals/ConfirmationModal";
-import EditModal from "../components/modals/EditModal";
 import Toast from "../components/common/Toast";
 import DetailsModal from "../components/modals/DetailsModal";
 import NotificationButton from "../components/dashboard/NotificationButton";
@@ -36,11 +35,6 @@ const Dashboard = () => {
     item: null,
   });
   const [suspendModal, setSuspendModal] = useState({
-    isOpen: false,
-    type: null,
-    item: null,
-  });
-  const [editModal, setEditModal] = useState({
     isOpen: false,
     type: null,
     item: null,
@@ -109,6 +103,7 @@ const Dashboard = () => {
 
   const platformStats = adminDashboard.platformStats;
   const agencies = adminDashboard.agencies;
+  const users = adminDashboard.users || [];
   const allReservations = adminDashboard.allReservations;
   const contactMessages = adminDashboard.contactMessages;
   const financialStats = adminDashboard.financialStats;
@@ -166,6 +161,11 @@ const Dashboard = () => {
       case ROLES.SUPER_ADMIN:
         return [
           { id: "overview", label: t("dashboard.tabs.overview"), icon: "home" },
+          {
+            id: "clients",
+            label: t("dashboard.tabs.clients"),
+            icon: "users",
+          },
           {
             id: "agencies",
             label: t("dashboard.tabs.agencies"),
@@ -247,6 +247,10 @@ const Dashboard = () => {
   };
 
   const { title, subtitle } = getDashboardTitle();
+  const showStatsCards =
+    user?.role === ROLES.SUPER_ADMIN
+      ? activeTab === "overview" || activeTab === "statistics"
+      : activeTab === "overview";
 
   // Get statistics cards based on role
   const getStatsCards = () => {
@@ -658,6 +662,7 @@ const Dashboard = () => {
             setStatisticsSubTab={setStatisticsSubTab}
             platformStats={platformStats}
             agencies={agencies}
+            clients={adminDashboard.clients}
             users={users}
             allReservations={allReservations}
             reports={adminDashboard.reports}
@@ -675,9 +680,7 @@ const Dashboard = () => {
             onFinancialFiltersChange={
               adminDashboard.handleFinancialFiltersChange
             }
-            onEditAgency={(item) => {
-              setEditModal({ isOpen: true, type: "agency", item });
-            }}
+            onFetchClients={adminDashboard.fetchClients}
             onSuspendAgency={(agency) => {
               setSuspendModal({
                 isOpen: true,
@@ -803,7 +806,7 @@ const Dashboard = () => {
           </div>
 
           {/* Statistics Cards */}
-          {statsCards.length > 0 && (
+          {showStatsCards && statsCards.length > 0 && (
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-5">
               {(() => {
                 const featuredCard = statsCards[0];
@@ -1117,25 +1120,6 @@ const Dashboard = () => {
         }
       />
 
-      <EditModal
-        isOpen={editModal.isOpen}
-        onClose={() => setEditModal({ isOpen: false, type: null, item: null })}
-        onSave={async (updatedData) => {
-          if (editModal.type === "agency") {
-            await adminDashboard.handleEditAgency(updatedData);
-          }
-          setEditModal({ isOpen: false, type: null, item: null });
-        }}
-        type={editModal.type}
-        item={editModal.item}
-        agencies={agencies}
-        userRole={user?.role}
-        userId={user?.id}
-        userReservations={allReservations.filter(
-          (r) => r.user_id === user?.id || r.client_id === user?.id,
-        )}
-      />
-
       <DetailsModal
         isOpen={detailsModal.isOpen}
         onClose={() =>
@@ -1156,18 +1140,6 @@ const Dashboard = () => {
         userReportsSubmitted={detailsModal.userReportsSubmitted || []}
         vehicles={detailsModal.vehicles || []}
         agencyAdmin={detailsModal.agencyAdmin || null}
-        onEdit={(item) => {
-          setDetailsModal({
-            isOpen: false,
-            type: null,
-            item: null,
-            reports: [],
-            userReportsSubmitted: [],
-            vehicles: [],
-            agencyAdmin: null,
-          });
-          setEditModal({ isOpen: true, type: detailsModal.type, item });
-        }}
         onSuspend={(item) => {
           setDetailsModal({
             isOpen: false,

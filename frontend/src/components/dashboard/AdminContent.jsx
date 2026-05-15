@@ -31,6 +31,7 @@ const AdminContent = ({
   setStatisticsSubTab,
   platformStats,
   agencies,
+  clients,
   users,
   allReservations,
   reports,
@@ -46,6 +47,7 @@ const AdminContent = ({
   financialFilters,
   user,
   onFinancialFiltersChange,
+  onFetchClients,
   onEditAgency,
   onSuspendAgency,
   onViewAgencyDetails,
@@ -95,6 +97,18 @@ const AdminContent = ({
       endDate: financialFilters?.endDate || "",
     });
   }, [financialFilters]);
+
+  // Reset pagination when tab changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeTab]);
+
+  // Fetch clients when clients tab is active
+  useEffect(() => {
+    if (activeTab === "clients" && onFetchClients) {
+      onFetchClients();
+    }
+  }, [activeTab, onFetchClients]);
 
   // Loading state
   if (loading) {
@@ -152,6 +166,7 @@ const AdminContent = ({
   const getUserCreatedDateLabel = (userItem) => {
     const createdDate = parseDate(
       userItem?.registeredAt ||
+        userItem?.joined_at ||
         userItem?.created_at ||
         userItem?.createdAt ||
         userItem?.join_date,
@@ -517,6 +532,201 @@ const AdminContent = ({
     );
   }
 
+  if (activeTab === "clients") {
+    const totalPages = Math.ceil((clients || []).length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedClients = (clients || []).slice(startIndex, endIndex);
+
+    return (
+      <div className="space-y-5">
+        <h2 className="text-xl font-bold text-gray-900">
+          {t("dashboard.manageClients")} ({(clients || []).length})
+        </h2>
+
+        {/* Mobile cards */}
+        <div className="md:hidden space-y-3">
+          {paginatedClients.map((client) => (
+            <div
+              key={client.id}
+              className={`rounded-xl border p-4 shadow-sm transition-colors ${
+                client.status === "inactive"
+                  ? "bg-gray-100 border-gray-300"
+                  : "bg-white border-gray-200"
+              }`}
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <p
+                    className={`font-semibold ${
+                      client.status === "inactive"
+                        ? "text-gray-600"
+                        : "text-gray-900"
+                    }`}
+                  >
+                    {client.name}
+                  </p>
+                  <p className="text-sm text-gray-500">{client.email}</p>
+                </div>
+                <span
+                  className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    client.risk_level === "high"
+                      ? "bg-red-100 text-red-600"
+                      : client.risk_level === "medium"
+                        ? "bg-yellow-100 text-yellow-600"
+                        : "bg-green-100 text-green-600"
+                  }`}
+                >
+                  {client.risk_level || "low"}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs text-gray-600 mb-3">
+                <div>
+                  <p className="text-gray-500 mb-1">Score de fiabilité</p>
+                  <p className="font-semibold text-gray-900">
+                    {client.reliability_score}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-500 mb-1">Réservations</p>
+                  <p className="font-semibold text-gray-900">
+                    {client.total_reservations}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-500 mb-1">Complétées</p>
+                  <p className="font-semibold text-gray-900">
+                    {client.completed_reservations}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-500 mb-1">Annulées</p>
+                  <p className="font-semibold text-gray-900">
+                    {client.cancelled_reservations}
+                  </p>
+                </div>
+              </div>
+              <div className="text-xs text-gray-600 pt-3 border-t border-gray-100">
+                <p>
+                  <span className="text-gray-500">Joiné le:</span>{" "}
+                  {getUserCreatedDateLabel(client)}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop table */}
+        <div className="hidden md:block overflow-x-auto">
+          <table className="min-w-full bg-white rounded-lg overflow-hidden">
+            <thead className="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  {t("dashboard.name")}
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Email
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Score de fiabilité
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Réservations
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Complétées
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Retards
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Risque
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Inscrit
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {paginatedClients.map((client) => (
+                <tr key={client.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="font-medium text-gray-900">
+                      {client.name}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {client.email}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="w-2 h-2 rounded-full"
+                        style={{
+                          backgroundColor:
+                            client.reliability_score >= 80
+                              ? "#10b981"
+                              : client.reliability_score >= 50
+                                ? "#f59e0b"
+                                : "#ef4444",
+                        }}
+                      />
+                      {client.reliability_score}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {client.total_reservations}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {client.completed_reservations}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        client.late_returns > 0
+                          ? "bg-orange-100 text-orange-600"
+                          : "bg-gray-100 text-gray-600"
+                      }`}
+                    >
+                      {client.late_returns}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        client.risk_level === "high"
+                          ? "bg-red-100 text-red-600"
+                          : client.risk_level === "medium"
+                            ? "bg-yellow-100 text-yellow-600"
+                            : "bg-green-100 text-green-600"
+                      }`}
+                    >
+                      {client.risk_level || "low"}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {getUserCreatedDateLabel(client)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+            itemsPerPage={itemsPerPage}
+            totalItems={(clients || []).length}
+          />
+        )}
+      </div>
+    );
+  }
+
   if (activeTab === "messages") {
     const formatMessageDate = (dateValue) => {
       if (!dateValue) return "-";
@@ -728,168 +938,193 @@ const AdminContent = ({
           </div>
         )}
 
-        {messageDetailsModal.isOpen && messageDetailsModal.message && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div
-              className="absolute inset-0 bg-black/40"
-              onClick={closeMessageDetails}
-            ></div>
-            <div className="relative bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-auto shadow-2xl p-6">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900">
-                    Detail du message
-                  </h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Recu le{" "}
-                    {formatMessageDate(messageDetailsModal.message.created_at)}
-                  </p>
-                </div>
-                <button
-                  onClick={closeMessageDetails}
-                  className="text-gray-500 hover:text-gray-700 text-xl leading-none"
-                >
-                  x
-                </button>
-              </div>
-
-              <div className="mt-6 space-y-4 text-sm">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="bg-gray-50 rounded-lg p-3">
-                    <p className="text-gray-500">Nom</p>
-                    <p className="font-medium text-gray-900">
-                      {messageDetailsModal.message.name}
+        {messageDetailsModal.isOpen &&
+          messageDetailsModal.message &&
+          typeof document !== "undefined" &&
+          createPortal(
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <div
+                className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                onClick={closeMessageDetails}
+              ></div>
+              <div className="relative w-full max-w-5xl max-h-[90vh] overflow-hidden rounded-3xl bg-white shadow-2xl border border-white/80">
+                <div className="flex items-start justify-between gap-4 border-b border-gray-100 px-6 py-5">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">
+                      Detail du message
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Recu le{" "}
+                      {formatMessageDate(
+                        messageDetailsModal.message.created_at,
+                      )}
                     </p>
                   </div>
-                  <div className="bg-gray-50 rounded-lg p-3">
-                    <p className="text-gray-500">Email</p>
-                    <p className="font-medium text-gray-900 break-all">
-                      {messageDetailsModal.message.email}
-                    </p>
-                  </div>
-                </div>
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="text-gray-500">Telephone</p>
-                  <p className="font-medium text-gray-900">
-                    {messageDetailsModal.message.phone || "-"}
-                  </p>
-                </div>
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="text-gray-500">Sujet</p>
-                  <p className="font-medium text-gray-900">
-                    {messageDetailsModal.message.subject}
-                  </p>
-                </div>
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="text-gray-500 mb-2">Message</p>
-                  <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
-                    {messageDetailsModal.message.message}
-                  </p>
+                  <button
+                    onClick={closeMessageDetails}
+                    className="grid h-9 w-9 place-items-center rounded-full bg-gray-100 text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-700"
+                  >
+                    x
+                  </button>
                 </div>
 
-                {messageDetailsModal.message.replies?.length > 0 && (
-                  <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
-                    <div className="flex items-center justify-between gap-3 mb-3">
-                      <p className="text-slate-700 font-semibold">
-                        Historique des reponses
-                      </p>
-                      <span className="text-xs font-medium text-slate-500">
-                        {messageDetailsModal.message.replies.length} reponse
-                        {messageDetailsModal.message.replies.length > 1
-                          ? "s"
-                          : ""}
-                      </span>
+                <div className="grid gap-0 md:grid-cols-[1.05fr_0.95fr] max-h-[calc(90vh-4.5rem)] overflow-hidden">
+                  <div className="space-y-4 overflow-y-auto p-6 text-sm md:border-r md:border-gray-100">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div className="rounded-2xl bg-gray-50 p-4">
+                        <p className="text-xs uppercase tracking-wide text-gray-500">
+                          Nom
+                        </p>
+                        <p className="mt-1 font-medium text-gray-900">
+                          {messageDetailsModal.message.name}
+                        </p>
+                      </div>
+                      <div className="rounded-2xl bg-gray-50 p-4">
+                        <p className="text-xs uppercase tracking-wide text-gray-500">
+                          Email
+                        </p>
+                        <p className="mt-1 font-medium break-all text-gray-900">
+                          {messageDetailsModal.message.email}
+                        </p>
+                      </div>
                     </div>
-                    <div className="space-y-3 max-h-72 overflow-auto pr-1">
-                      {messageDetailsModal.message.replies.map((reply) => (
-                        <div
-                          key={reply.id}
-                          className="rounded-lg border border-slate-200 bg-white p-3"
-                        >
-                          <div className="flex items-center justify-between gap-3 mb-2">
-                            <span className="text-xs font-semibold text-primary-700">
-                              {reply.replied_by_email || "Administration"}
-                            </span>
-                            <span className="text-xs text-slate-500">
-                              {formatMessageDate(
-                                reply.replied_at || reply.created_at,
-                              )}
-                            </span>
-                          </div>
-                          <p className="text-sm text-slate-700 whitespace-pre-wrap leading-relaxed">
-                            {reply.reply}
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div className="rounded-2xl bg-gray-50 p-4">
+                        <p className="text-xs uppercase tracking-wide text-gray-500">
+                          Telephone
+                        </p>
+                        <p className="mt-1 font-medium text-gray-900">
+                          {messageDetailsModal.message.phone || "-"}
+                        </p>
+                      </div>
+                      <div className="rounded-2xl bg-gray-50 p-4">
+                        <p className="text-xs uppercase tracking-wide text-gray-500">
+                          Sujet
+                        </p>
+                        <p className="mt-1 font-medium text-gray-900">
+                          {messageDetailsModal.message.subject}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="rounded-2xl bg-gray-50 p-4">
+                      <p className="text-xs uppercase tracking-wide text-gray-500 mb-2">
+                        Message
+                      </p>
+                      <p className="whitespace-pre-wrap leading-relaxed text-gray-800">
+                        {messageDetailsModal.message.message}
+                      </p>
+                    </div>
+
+                    {messageDetailsModal.message.replies?.length > 0 && (
+                      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                        <div className="mb-3 flex items-center justify-between gap-3">
+                          <p className="font-semibold text-slate-800">
+                            Historique des reponses
                           </p>
+                          <span className="text-xs font-medium text-slate-500">
+                            {messageDetailsModal.message.replies.length} reponse
+                            {messageDetailsModal.message.replies.length > 1
+                              ? "s"
+                              : ""}
+                          </span>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <div className="bg-blue-50 rounded-lg p-3 border border-blue-100">
-                  <div className="flex items-center justify-between gap-3 mb-2">
-                    <p className="text-blue-700 font-semibold">
-                      Ajouter une reponse
-                    </p>
-                    {messageDetailsModal.message.replied_at && (
-                      <p className="text-xs text-blue-700">
-                        Derniere reponse:{" "}
-                        {formatMessageDate(
-                          messageDetailsModal.message.replied_at,
-                        )}
-                      </p>
+                        <div className="space-y-3 max-h-72 overflow-auto pr-1">
+                          {messageDetailsModal.message.replies.map((reply) => (
+                            <div
+                              key={reply.id}
+                              className="rounded-xl border border-slate-200 bg-white p-3"
+                            >
+                              <div className="mb-2 flex items-center justify-between gap-3">
+                                <span className="text-xs font-semibold text-primary-700">
+                                  {reply.replied_by_email || "Administration"}
+                                </span>
+                                <span className="text-xs text-slate-500">
+                                  {formatMessageDate(
+                                    reply.replied_at || reply.created_at,
+                                  )}
+                                </span>
+                              </div>
+                              <p className="whitespace-pre-wrap leading-relaxed text-sm text-slate-700">
+                                {reply.reply}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     )}
                   </div>
-                  <textarea
-                    value={messageReply}
-                    onChange={(e) => setMessageReply(e.target.value)}
-                    rows={5}
-                    placeholder="Ecrivez ici une nouvelle reponse..."
-                    className="w-full rounded-lg border border-blue-200 px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500"
-                  />
-                  <div className="mt-3 flex items-center justify-between gap-3">
-                    <p className="text-xs text-gray-500">
-                      Le client recevra un email signe Elite Drive et la reponse
-                      sera ajoutee a l'historique.
-                    </p>
-                    <button
-                      onClick={async () => {
-                        const messageId = messageDetailsModal.message?.id;
-                        if (
-                          !messageId ||
-                          !messageReply.trim() ||
-                          sendingReply
-                        ) {
-                          return;
-                        }
 
-                        try {
-                          setSendingReply(true);
-                          const updatedMessage = await onReplyContactMessage?.(
-                            messageId,
-                            messageReply,
-                          );
+                  <div className="overflow-y-auto bg-gradient-to-b from-blue-50 to-white p-6">
+                    <div className="rounded-2xl border border-blue-100 bg-white p-4 shadow-sm">
+                      <div className="mb-3 flex items-center justify-between gap-3">
+                        <p className="font-semibold text-blue-700">
+                          Ajouter une reponse
+                        </p>
+                        {messageDetailsModal.message.replied_at && (
+                          <p className="text-xs text-blue-700">
+                            Derniere reponse:{" "}
+                            {formatMessageDate(
+                              messageDetailsModal.message.replied_at,
+                            )}
+                          </p>
+                        )}
+                      </div>
+                      <textarea
+                        value={messageReply}
+                        onChange={(e) => setMessageReply(e.target.value)}
+                        rows={10}
+                        placeholder="Ecrivez ici une nouvelle reponse..."
+                        className="w-full rounded-2xl border border-blue-200 bg-white px-4 py-3 text-sm text-gray-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-200"
+                      />
+                      <div className="mt-4 flex items-center justify-between gap-3">
+                        <p className="text-xs text-gray-500">
+                          Le client recevra un email signe Elite Drive et la
+                          reponse sera ajoutee a l'historique.
+                        </p>
+                        <button
+                          onClick={async () => {
+                            const messageId = messageDetailsModal.message?.id;
+                            if (
+                              !messageId ||
+                              !messageReply.trim() ||
+                              sendingReply
+                            ) {
+                              return;
+                            }
 
-                          if (updatedMessage) {
-                            setMessageDetailsModal({
-                              isOpen: true,
-                              message: updatedMessage,
-                            });
-                          }
-                        } finally {
-                          setSendingReply(false);
-                        }
-                      }}
-                      disabled={!messageReply.trim() || sendingReply}
-                      className="rounded-lg bg-primary-600 text-white px-4 py-2 text-sm font-semibold hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {sendingReply ? "Envoi..." : "Ajouter la reponse"}
-                    </button>
+                            try {
+                              setSendingReply(true);
+                              const updatedMessage =
+                                await onReplyContactMessage?.(
+                                  messageId,
+                                  messageReply,
+                                );
+
+                              if (updatedMessage) {
+                                setMessageDetailsModal({
+                                  isOpen: true,
+                                  message: updatedMessage,
+                                });
+                              }
+                            } finally {
+                              setSendingReply(false);
+                            }
+                          }}
+                          disabled={!messageReply.trim() || sendingReply}
+                          className="rounded-xl bg-primary-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          {sendingReply ? "Envoi..." : "Ajouter la reponse"}
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        )}
+            </div>,
+            document.body,
+          )}
 
         {totalPages > 1 && (
           <Pagination

@@ -20,7 +20,6 @@ const ForcePasswordChange = React.lazy(
 );
 const Register = React.lazy(() => import("./pages/auth/Register"));
 const ForgotPassword = React.lazy(() => import("./pages/auth/ForgotPassword"));
-const ResetPassword = React.lazy(() => import("./pages/auth/ResetPassword"));
 const TermsOfService = React.lazy(
   () => import("./pages/public/TermsOfService"),
 );
@@ -111,11 +110,7 @@ function App() {
               />
               <Route
                 path="/set-password"
-                element={
-                  <React.Suspense fallback={<PageLoader />}>
-                    <ResetPassword />
-                  </React.Suspense>
-                }
+                element={<Navigate to="/login" replace />}
               />
 
               {/* Static pages - accessible to non-admins */}

@@ -51,6 +51,19 @@ class AdminController extends Controller
     }
 
     /**
+     * Get clients list with reliability scores
+     */
+    public function getClients(Request $request)
+    {
+        $perPage = $this->resolvePerPage($request, 25, 100);
+        $clients = $this->adminService->getClients($perPage);
+
+        return $this->apiSuccessResponse(null, $clients->items(), 200, [
+            'pagination' => $this->paginationMeta($clients),
+        ]);
+    }
+
+    /**
      * Get financial statistics for platform
      */
     public function getFinancialStats(Request $request)

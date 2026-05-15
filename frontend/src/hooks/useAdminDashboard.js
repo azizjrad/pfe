@@ -7,11 +7,8 @@ import { reportService } from "../services/reportService";
 import { reservationService } from "../services/reservationService";
 import http from "../services/http";
 import { ROLES } from "../constants/roles";
-import {
-  normalizeArray,
-  normalizeReport,
-  normalizeApiResponse,
-} from "../utils/normalizers";
+import { normalizeArray, normalizeReport } from "../utils/normalizers";
+import { normalizeApiResponse } from "../services/apiResponse";
 import { getUserFacingErrorMessage } from "../utils/errorMessages";
 
 const DEFAULT_PLATFORM_STATS = {
@@ -74,6 +71,7 @@ export default function useAdminDashboard({
   const { t } = useTranslation();
   const [platformStats, setPlatformStats] = useState(DEFAULT_PLATFORM_STATS);
   const [agencies, setAgencies] = useState([]);
+  const [clients, setClients] = useState([]);
   const [allReservations, setAllReservations] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -161,6 +159,19 @@ export default function useAdminDashboard({
       setNotifications(response?.data || []);
     } catch (error) {
       console.error("Error fetching notifications:", error);
+    }
+  };
+
+  const fetchClients = async () => {
+    try {
+      const response = await adminService.getClients();
+      setClients(normalizeArray(response));
+    } catch (error) {
+      console.error("Error fetching clients:", error);
+      showToast?.(
+        getUserFacingErrorMessage(error, t("errors.loadData")),
+        "error",
+      );
     }
   };
 
@@ -384,6 +395,7 @@ export default function useAdminDashboard({
   return {
     platformStats,
     agencies,
+    clients,
     allReservations,
     loading,
     reports,
@@ -399,6 +411,7 @@ export default function useAdminDashboard({
     refreshData,
     handleFinancialFiltersChange,
     fetchAgencyDetails,
+    fetchClients,
     handleMarkMessageRead,
     handleDeleteContactMessage,
     handleReplyContactMessage,

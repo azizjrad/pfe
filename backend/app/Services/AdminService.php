@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Agency;
 use App\Models\Reservation;
 use App\Models\Vehicle;
+use App\Models\ClientReliabilityScore;
 use Illuminate\Support\Facades\DB;
 
 
@@ -28,8 +29,10 @@ class AdminService
      */
     public function getDashboardStats(): array
     {
-        $totalUsers = User::count();
-        $totalAgencies = Agency::count();
+        $clientCount = User::where('role', 'client')->count();
+        $agencyAdminCount = User::where('role', 'agency_admin')->count();
+        $totalUsers = $clientCount + $agencyAdminCount;
+        $totalAgencies = $agencyAdminCount;
         $totalVehicles = Vehicle::count();
         $totalReservations = Reservation::count();
         $completedReservations = Reservation::where('status', ReservationStatus::COMPLETED->value)->count();
@@ -40,14 +43,10 @@ class AdminService
             ->sum('total_price');
         $activeReservations = Reservation::whereIn('status', ReservationStatus::activeValues())->count();
 
-        $clientCount = User::where('role', 'client')->count();
-        $agencyAdminCount = User::where('role', 'agency_admin')->count();
-        $totalUsersExcludingAgencyAdmins = User::where('role', '!=', 'agency_admin')->count();
-
         return [
-            'total_users' => $totalUsersExcludingAgencyAdmins,
+            'total_users' => $clientCount,
             'total_user_accounts' => $totalUsers,
-            'total_users_excluding_agency_admins' => $totalUsersExcludingAgencyAdmins,
+            'total_users_excluding_agency_admins' => $clientCount,
             'client_count' => $clientCount,
             'agency_admin_count' => $agencyAdminCount,
             'total_agencies' => $totalAgencies,
@@ -100,6 +99,41 @@ class AdminService
             'agency_admin' => $agencyAdmin,
             'avg_rating' => 0,
         ];
+    }
+
+    /**
+     * Get list of clients with their reliability scores
+     */
+    public function getClients(int $perPage = 25)
+    {
+        $clients = User::where('role', 'client')
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
+
+        $result = $clients->getCollection()->map(function (User $client) {
+            $reliabilityScore = ClientReliabilityScore::where('user_id', $client->id)->first();
+
+            return [
+                'id' => $client->id,
+                'name' => $client->name,
+                'email' => $client->email,
+                'phone' => $client->phone,
+                'address' => $client->address,
+                'status' => $client->is_suspended ? 'inactive' : 'active',
+                'joined_at' => $client->created_at?->toIso8601String(),
+                'total_reservations' => $reliabilityScore?->total_reservations ?? 0,
+                'completed_reservations' => $reliabilityScore?->completed_reservations ?? 0,
+                'cancelled_reservations' => $reliabilityScore?->cancelled_reservations ?? 0,
+                'reliability_score' => $reliabilityScore?->reliability_score ?? 100,
+                'risk_level' => $reliabilityScore?->risk_level ?? 'low',
+                'late_returns' => $reliabilityScore?->late_returns ?? 0,
+                'payment_delays' => $reliabilityScore?->payment_delays ?? 0,
+                'damage_incidents' => $reliabilityScore?->damage_incidents ?? 0,
+                'total_unpaid_amount' => $reliabilityScore?->total_unpaid_amount ?? 0,
+            ];
+        });
+
+        return $clients->setCollection($result);
     }
 
     /**

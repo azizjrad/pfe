@@ -370,6 +370,7 @@
     "today": "Aujourd'hui",
     "reservationsProcessed": "{{count}} réservations traitées",
     "manageAgencies": "Gestion des Agences",
+    "manageClients": "Liste des Clients",
     "addAgency": "Ajouter une agence",
     "active": "Active",
     "inactive": "Inactive",
@@ -378,6 +379,7 @@
     "block": "Bloquer",
     "delete": "Supprimer",
     "agency": "Agence",
+    "name": "Nom",
     "location": "Localisation",
     "vehicles": "Véhicules",
     "revenue": "Revenu",
@@ -414,6 +416,7 @@
     "tabs": {
       "overview": "Vue d'ensemble",
       "agencies": "Agences",
+      "clients": "Clients",
       "users": "Utilisateurs",
       "vitrine": "Vitrine",
       "vehicles": "Véhicules",

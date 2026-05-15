@@ -18,6 +18,8 @@ Route::middleware(['auth:sanctum', 'not_suspended', 'password_changed', 'role:su
     Route::put('/admin/agencies/{id}', [AdminController::class, 'updateAgency']);
     Route::post('/admin/agencies', [AdminController::class, 'createAgency']);
 
+    Route::get('/admin/clients', [AdminController::class, 'getClients']);
+
     Route::get('/admin/financial-stats', [AdminController::class, 'getFinancialStats']);
 
     Route::get('/admin/reports', [ReportController::class, 'index']);
