@@ -371,6 +371,7 @@
     "reservationsProcessed": "{{count}} réservations traitées",
     "manageAgencies": "Gestion des Agences",
     "manageClients": "Liste des Clients",
+    "controlRoom": "Salle de Contrôle",
     "addAgency": "Ajouter une agence",
     "active": "Active",
     "inactive": "Inactive",

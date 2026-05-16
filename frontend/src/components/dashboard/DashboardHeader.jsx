@@ -98,7 +98,7 @@ const DashboardHeader = ({ title, subtitle, children }) => {
                 <div>
                   {showControlRoomLabel && (
                     <p className="hidden sm:block text-[10px] font-semibold uppercase tracking-[0.16em] text-primary-700/80 mb-0.5">
-                      Control Room
+                      {t("dashboard.controlRoom")}
                     </p>
                   )}
                   <h1 className="text-xl sm:text-[2.05rem] font-black leading-tight bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
