@@ -109,7 +109,7 @@ La figure suivante présente le diagramme des cas d'utilisation du premier sprin
 %figure
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/diag_cas_sprint1.png}
+    \includegraphics[width=1\textwidth]{Chapitres/Figures/use_case_s1.png}
     \caption{Diagramme de cas d'utilisation du premier sprint}
     \label{fig:Diag_use_case_S1}
 \end{figure}
@@ -226,7 +226,7 @@ Afin de mieux illustrer le déroulement du scénario, nous proposons ci‑après
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\newpage
 \subsection{Analyse de cas d'utilisation «Gérer profil»}
 \label{sec:gerer_profil}
 La section suivante présente le raffinement du cas d’utilisation «Gérer profil» de l’acteur \textit{Utilisateur}.
@@ -237,7 +237,53 @@ La section suivante présente le raffinement du cas d’utilisation «Gérer pro
     \label{fig:Diag_gerer_profil}
 \end{figure}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Analyse de cas d'utilisation «Consulter profil»}
+\label{sec:consulter_profil}
+La section suivante propose une description textuelle et un diagramme de séquence, auxquels s'ajoute l'analyse du cas d'utilisation \textbf{«Consulter profil»} de l'acteur \textbf{Utilisateur}.
+
+\begin{table}[htbp]
+\centering
+\caption{Description textuelle du cas d'utilisation «Consulter profil»}
+\label{tab:consulter_profil}
+\renewcommand{\arraystretch}{1.3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|p{11cm}|}
+\hline
+\textbf{Élément} & \textbf{Description} \\
+\hline
+Nom & Consulter profil \\
+\hline
+Acteur & Utilisateur \\
+\hline
+Description brève & Permet à un utilisateur de consulter son profil. \\
+\hline
+Précondition & 
+L'utilisateur est authentifié. \newline
+Le système est accessible. \\
+\hline
+Postcondition & 
+Ensemble des données affichés. \\
+\hline
+Enchaînement principal & 
+1. L'utilisateur clique sur «Profil». \newline
+2. Le système affiche les informations du profil. \\
+\hline
+Scénarios alternatifs & 
+Pas d'exceptions\\
+\hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Chapitres/Figures/diag_seq_consulter_profil.png}
+    \caption{Diagramme de séquence système de cas d'utilisation «Consulter profil»}
+    \label{fig:consulter_profil}
+\end{figure}
+
 \subsubsection{Analyse de cas d'utilisation «Modifier profil»}
 \label{sec:modifier_profil}
 La section suivante propose une description textuelle et un diagramme de séquence, auxquels s'ajoute l'analyse du cas d'utilisation \textbf{«Modifier profil»} de l'acteur \textbf{Utilisateur}.
@@ -284,44 +330,62 @@ Enchaînement principal &
 \end{table}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/diag_seq_modifier_profil.png}
+    \includegraphics[width=0.7\textwidth]{Chapitres/Figures/diag_seq_modifier_profil.png}
     \caption{Diagramme de séquence système de cas d'utilisation «Modifier profil»}
     \label{fig:modifier_profil}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%1111%%%%%%%%%
-\newpage 
-\subsubsection{Analyse de cas d'utilisation «Consulter profil»}
-\label{sec:consulter_profil}
-La section suivante propose une description textuelle et un diagramme de séquence, auxquels s'ajoute l'analyse du cas d'utilisation \textbf{«Consulter profil»} de l'acteur \textbf{Utilisateur}.
+
+
+%%%%%%%%%%44444444444%%%%%%%%%%%%%%%%%%%%%%%%
+\FloatBarrier
+\section{Analyse des cas d'utilisation de l'acteur «Administrateur»}
+\label{sec:acteur_admin}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Analyse de cas d'utilisation «Gérer agences»}
+\label{sec:gerer_agences}
+Afin de mieux illustrer le déroulement du scénario, nous proposons ci‑après un raffinement du cas d'utilisation \textbf{«Gérer agences»} de l'acteur \textit{Administrateur}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Chapitres/Figures/raf_gerer_agences.png}
+    \caption{Raffinement du cas d'utilisation «Gérer agences»}
+    \label{fig:raf_gerer_agences}
+\end{figure}
+%%%%%%%%%%%%%%
+\subsubsection{Analyse de cas d'utilisation «Consulter agences»}
+\label{sec:consulter_agences}
+La section suivante propose une description textuelle et un diagramme de séquence, auxquels s'ajoute l'analyse du cas d'utilisation \textbf{«Consulter agences»} de l'acteur \textbf{Administrateur}.
 
 \begin{table}[htbp]
 \centering
-\caption{Description textuelle du cas d'utilisation «Consulter profil»}
-\label{tab:consulter_profil}
+\caption{Description textuelle du cas d'utilisation «Consulter agences»}
+\label{tab:consulter_agences}
 \renewcommand{\arraystretch}{1.3}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|p{11cm}|}
 \hline
 \textbf{Élément} & \textbf{Description} \\
 \hline
-Nom & Consulter profil \\
+Nom & Consulter agences \\
 \hline
-Acteur & Utilisateur \\
+Acteur & Administrateur \\
 \hline
-Description brève & Permet à un utilisateur de consulter son profil. \\
+Description brève & Permet à un administrateur de consulter les informations des agences. \\
 \hline
 Précondition & 
-L'utilisateur est authentifié. \newline
+L'administrateur est authentifié. \newline
 Le système est accessible. \\
 \hline
 Postcondition & 
 Ensemble des données affichés. \\
 \hline
 Enchaînement principal & 
-1. L'utilisateur clique sur «Profil». \newline
-2. Le système affiche les informations du profil. \\
+1. L'administrateur clique sur «Agences». \newline
+2. Le système affiche les informations des agences. \\
 \hline
 Scénarios alternatifs & 
 Pas d'exceptions\\
@@ -332,33 +396,11 @@ Pas d'exceptions\\
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{Chapitres/Figures/diag_seq_consulter_profil.png}
-    \caption{Diagramme de séquence système de cas d'utilisation «Consulter profil»}
-    \label{fig:consulter_profil}
+    \includegraphics[width=0.7\textwidth]{Chapitres/Figures/diag_seq_consulter_agences.png}
+    \caption{Diagramme de séquence système de cas d'utilisation «Consulter agences»}
+    \label{fig:consulter_agences}
 \end{figure}
 
-
-%%%%%%%%%%44444444444%%%%%%%%%%%%%%%%%%%%%%%%
-\FloatBarrier
-\section{Analyse des cas d'utilisation de l'acteur «Administrateur»}
-\label{sec:acteur_admin}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Analyse de cas d'utilisation «Gérer agences»}
-<<<<<<< HEAD
-\label{sec:gerer_agences}
-=======
-\label{sec:gerer_agence}
->>>>>>> a2566680d315c3a82fd8829a6bf37246c977c619
-Afin de mieux illustrer le déroulement du scénario, nous proposons ci‑après un raffinement du cas d'utilisation \textbf{«Gérer agences»} de l'acteur \textit{Administrateur}.
-
-\begin{figure}[H]
-    \centering
-<<<<<<< HEAD
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/raf_gerer_agences.png}
-    \caption{Raffinement du cas d'utilisation «Gérer agences»}
-    \label{fig:raf_gerer_agences}
-\end{figure}
 %%%%%%%%%%%%%%
 \subsubsection{Analyse de cas d'utilisation «Modifier infos agence»}
 \label{sec:modifier_infos_agence}
@@ -406,17 +448,12 @@ Enchaînement principal &
 \end{table}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/diag_seq_modifier_infos_agences.png}
+    \includegraphics[width=0.7\textwidth]{Chapitres/Figures/diag_seq_modifier_infos_agences.png}
     \caption{Diagramme de séquence système de cas d'utilisation «Modifier infos agence»}
     \label{fig:modifier_infos_agences}
-=======
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/raf_consulter_agences.png}
-    \caption{Raffinement du cas d'utilisation «Gérer agences»}
-    \label{fig:raf_Gérer_agences}
->>>>>>> a2566680d315c3a82fd8829a6bf37246c977c619
 \end{figure}
 
-%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%    
 \FloatBarrier
 \subsection{Analyse de cas d'utilisation «Ajouter agence»}
 \label{sec:ajouter_agence}
@@ -467,7 +504,7 @@ Enchaînement principal &
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/dia_seq_ajouter_agence.png}
+    \includegraphics[width=1\textwidth]{Chapitres/Figures/Diag_seq_ajouter_agence.png}
     \caption{Diagramme de séquence système de cas d'utilisation «Ajouter agence»}
     \label{fig:ajouter_agence}
 \end{figure}
@@ -585,11 +622,63 @@ pas d'exceptions\\
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/Diag_seq_consulter_vitrine.png}
+    \includegraphics[width=0.7\textwidth]{Chapitres/Figures/Diag_seq_consulter_vitrine.png}
     \caption{Diagramme de séquence système de cas d'utilisation «Consulter vitrine»}
     \label{fig:consulter_vitrine}
 \end{figure}
+%%%%%%%%%%%%%%%%
+\subsubsection{Analyse de cas d'utilisation «Modifier informations voiture»}
+\label{sec:modifier_infos_voiture}
+La section suivante propose une description textuelle et un diagramme de séquence, auxquels s'ajoute l'analyse du cas d'utilisation \textbf{«Modifier informations voiture»} de l'acteur \textbf{Agence}.
 
+
+\begin{table}[htbp]
+\centering
+\caption{Description textuelle du cas d'utilisation «Modifier informations voiture»}
+\label{tab:modifier_infos_voiture}
+\renewcommand{\arraystretch}{1.3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|p{11cm}|}
+\hline
+\textbf{Élément} & \textbf{Description} \\
+\hline
+Nom & Modifier informations voiture \\
+\hline
+Acteur & Agence \\
+\hline
+Description brève & Permet à un Agence de consulter et de modifier ses informations voiture (nom, email, adresse, numéro de téléphone). \\
+\hline
+Précondition & 
+L'agence est authentifié. \newline
+Le système est accessible. \\
+\hline
+Postcondition & 
+Les informations du voiture sont mises à jour. \newline
+Les nouvelles données sont enregistrées. \\
+\hline
+Enchaînement principal & 
+1. L'agence accède à la page «vitrine». \newline
+2. Le système affiche les voiture actuelles. \newline
+3. L'agence modifie les informations d'une voiture. \newline
+4. Le système vérifie les données et effectue l'action. \newline
+5. Le système affiche un message de confirmation. \\
+\hline
+\multirow{4}{*}{\textbf{Scénarios alternatifs}} 
+& 4.1 Informations invalides. \\
+& \quad 4.1.1 Le système affiche un message d'erreur. \\
+& 5.1 Échec lors de l'enregistrement. \\
+& \quad 5.1.1 Le système affiche un message d'échec. \\
+\hline
+\end{tabular}%
+}
+\end{table}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Chapitres/Figures/Diag_seq_modifier_infos_voiture.png}
+    \caption{Diagramme de séquence système de cas d'utilisation «Modifier infos voiture»}
+    \label{fig:modifier_infos_voiture}
+\end{figure}
+%%%%%%%%%%%%%%%%%%
 \subsection{Analyse de cas d'utilisation «Ajouter voiture»}
 \label{sec:ajouter_voiture}
 Dans la suite, nous présentons unee description textuelle accompagnée d'une diagramme 
@@ -644,57 +733,7 @@ Enchaînement principal &
     \label{fig:ajouter_voiture}
 \end{figure}
 
-\subsubsection{Analyse de cas d'utilisation «Modifier informations voiture»}
-\label{sec:modifier_infos_voiture}
-La section suivante propose une description textuelle et un diagramme de séquence, auxquels s'ajoute l'analyse du cas d'utilisation \textbf{«Modifier informations voiture»} de l'acteur \textbf{Agence}.
 
-
-\begin{table}[htbp]
-\centering
-\caption{Description textuelle du cas d'utilisation «Modifier informations voiture»}
-\label{tab:modifier_infos_voiture}
-\renewcommand{\arraystretch}{1.3}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|p{11cm}|}
-\hline
-\textbf{Élément} & \textbf{Description} \\
-\hline
-Nom & Modifier informations voiture \\
-\hline
-Acteur & Agence \\
-\hline
-Description brève & Permet à un Agence de consulter et de modifier ses informations voiture (nom, email, adresse, numéro de téléphone). \\
-\hline
-Précondition & 
-L'agence est authentifié. \newline
-Le système est accessible. \\
-\hline
-Postcondition & 
-Les informations du voiture sont mises à jour. \newline
-Les nouvelles données sont enregistrées. \\
-\hline
-Enchaînement principal & 
-1. L'agence accède à la page «vitrine». \newline
-2. Le système affiche les voiture actuelles. \newline
-3. L'agence modifie les informations d'une voiture. \newline
-4. Le système vérifie les données et effectue l'action. \newline
-5. Le système affiche un message de confirmation. \\
-\hline
-\multirow{4}{*}{\textbf{Scénarios alternatifs}} 
-& 4.1 Informations invalides. \\
-& \quad 4.1.1 Le système affiche un message d'erreur. \\
-& 5.1 Échec lors de l'enregistrement. \\
-& \quad 5.1.1 Le système affiche un message d'échec. \\
-\hline
-\end{tabular}%
-}
-\end{table}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/Diag_seq_modifier_infos_voiture.png}
-    \caption{Diagramme de séquence système de cas d'utilisation «Modifier infos voiture»}
-    \label{fig:modifier_infos_voiture}
-\end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
