@@ -1,0 +1,36 @@
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.bcf
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.ilg
+*.ind
+*.idx
+*.run.xml
+*.synctex.gz
+*.pdf
+
+# Chapter auxiliary files
+Chapitres/*.aux
+
+# MacOS
+.DS_Store
+desktop.ini
+
+# IDE
+.vscode/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
