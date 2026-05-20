@@ -1620,12 +1620,12 @@ Overfull \hbox (65.47098pt too wide) in alignment at lines 226--229
 
 
 Underfull \hbox (badness 2744) in paragraph at lines 233--233
-[]|\T1/cmr/m/n/10.95 gérer mon pro-fil afin
+[]|\T1/cmr/m/n/10.95 gï¿½rer mon pro-fil afin
  []
 
 
 Underfull \hbox (badness 1655) in paragraph at lines 235--235
-[]|\T1/cmr/m/n/10.95 gérer les agences afin
+[]|\T1/cmr/m/n/10.95 gï¿½rer les agences afin
  []
 
 
@@ -1635,12 +1635,12 @@ Underfull \hbox (badness 3138) in paragraph at lines 235--235
 
 
 Underfull \hbox (badness 1365) in paragraph at lines 239--239
-[]|\T1/cmr/m/n/10.95 consulter mes ré-ser-va-
+[]|\T1/cmr/m/n/10.95 consulter mes rï¿½-ser-va-
  []
 
 
 Underfull \hbox (badness 1097) in paragraph at lines 240--240
-[]|\T1/cmr/m/n/10.95 traiter les ré-ser-va-tions
+[]|\T1/cmr/m/n/10.95 traiter les rï¿½-ser-va-tions
  []
 
 
@@ -1692,17 +1692,17 @@ Underfull \hbox (badness 2376) in paragraph at lines 72--72
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 72--72
-[]|\T1/cmr/m/n/10.95 Implémenter l'au-then-ti-fi-ca-
+[]|\T1/cmr/m/n/10.95 Implï¿½menter l'au-then-ti-fi-ca-
  []
 
 
 Underfull \hbox (badness 1292) in paragraph at lines 72--72
-[]|\T1/cmr/m/n/10.95 Implémenter la consul-ta-tion
+[]|\T1/cmr/m/n/10.95 Implï¿½menter la consul-ta-tion
  []
 
 
 Underfull \hbox (badness 1888) in paragraph at lines 72--72
-[]|\T1/cmr/m/n/10.95 Implémenter la ges-tion des
+[]|\T1/cmr/m/n/10.95 Implï¿½menter la ges-tion des
  []
 
 [55
@@ -1879,7 +1879,7 @@ Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajout
 (pdftex.def)             Requested size: 330.05322pt x 177.32965pt.
 
 Overfull \hbox (41.57454pt too wide) in paragraph at lines 851--851
-[]\T1/cmr/bx/n/10.95 Diagrammes de sé-quence dé-taillé du cas d'uti-li-sa-tion ^^S Blo-quer/Débloquer
+[]\T1/cmr/bx/n/10.95 Diagrammes de sï¿½-quence dï¿½-taillï¿½ du cas d'uti-li-sa-tion ^^S Blo-quer/Dï¿½bloquer
  []
 
 <Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_agence.png, id=1687, 432.11438pt x 182.18062pt>
@@ -1889,7 +1889,7 @@ Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloqu
 (pdftex.def)             Requested size: 330.05322pt x 139.15643pt.
 
 Underfull \hbox (badness 2229) in paragraph at lines 856--856
-[]\T1/cmr/m/sc/10.95 Figure 3.28 \T1/cmr/m/n/10.95 ^^U |Dia-gramme de sé-quence dé-taillé du cas d'uti-li-sa-tion ^^S Blo-
+[]\T1/cmr/m/sc/10.95 Figure 3.28 \T1/cmr/m/n/10.95 ^^U |Dia-gramme de sï¿½-quence dï¿½-taillï¿½ du cas d'uti-li-sa-tion ^^S Blo-
  []
 
 [82 <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_profil.png> <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_agence.png>]
@@ -1900,7 +1900,7 @@ Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajout
 (pdftex.def)             Requested size: 330.05322pt x 190.26984pt.
 
 Overfull \hbox (41.57454pt too wide) in paragraph at lines 869--869
-[]\T1/cmr/bx/n/10.95 Diagrammes de sé-quence dé-taillé du cas d'uti-li-sa-tion ^^S Blo-quer/Débloquer
+[]\T1/cmr/bx/n/10.95 Diagrammes de sï¿½-quence dï¿½-taillï¿½ du cas d'uti-li-sa-tion ^^S Blo-quer/Dï¿½bloquer
  []
 
 <Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_utilisateur.png, id=1695, 328.22626pt x 184.43906pt>
@@ -1910,7 +1910,7 @@ Package pdftex.def Info: Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloqu
 (pdftex.def)             Requested size: 330.05322pt x 185.46863pt.
 
 Underfull \hbox (badness 2229) in paragraph at lines 874--874
-[]\T1/cmr/m/sc/10.95 Figure 3.30 \T1/cmr/m/n/10.95 ^^U |Dia-gramme de sé-quence dé-taillé du cas d'uti-li-sa-tion ^^S Blo-
+[]\T1/cmr/m/sc/10.95 Figure 3.30 \T1/cmr/m/n/10.95 ^^U |Dia-gramme de sï¿½-quence dï¿½-taillï¿½ du cas d'uti-li-sa-tion ^^S Blo-
  []
 
 [83 <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_agence.png> <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_utilisateur.png>] [84 <./Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_utilisateur.png>]
@@ -1956,7 +1956,7 @@ Underfull \hbox (badness 1442) in paragraph at lines 998--998
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 998--998
-[]|\T1/cmr/m/n/10.95 L'état du vé-hi-cule
+[]|\T1/cmr/m/n/10.95 L'ï¿½tat du vï¿½-hi-cule
  []
 
 
@@ -2016,27 +2016,27 @@ Package pdftex.def Info: Chapitres/Figures/test2_code.png  used on input line 10
 Chapitre 4.
 
 Underfull \hbox (badness 4647) in paragraph at lines 107--107
-[]|\T1/cmr/m/n/10.95 Implémenter l'af-fi-chage des
+[]|\T1/cmr/m/n/10.95 Implï¿½menter l'af-fi-chage des
  []
 
 
 Underfull \hbox (badness 2189) in paragraph at lines 107--107
-[]|\T1/cmr/m/n/10.95 Effectuer une ré-ser-va-
+[]|\T1/cmr/m/n/10.95 Effectuer une rï¿½-ser-va-
  []
 
 
 Underfull \hbox (badness 6876) in paragraph at lines 107--107
-[]|\T1/cmr/m/n/10.95 Implémenter la ré-ser-va-tion
+[]|\T1/cmr/m/n/10.95 Implï¿½menter la rï¿½-ser-va-tion
  []
 
 
 Underfull \hbox (badness 3343) in paragraph at lines 107--107
-[]|\T1/cmr/m/n/10.95 Consulter les ré-ser-va-
+[]|\T1/cmr/m/n/10.95 Consulter les rï¿½-ser-va-
  []
 
 
 Underfull \hbox (badness 1292) in paragraph at lines 107--107
-[]|\T1/cmr/m/n/10.95 Implémenter la consul-ta-tion
+[]|\T1/cmr/m/n/10.95 Implï¿½menter la consul-ta-tion
  []
 
 
@@ -2046,17 +2046,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 107--107
 
 
 Underfull \hbox (badness 4647) in paragraph at lines 107--107
-[]|\T1/cmr/m/n/10.95 Implémenter l'af-fi-chage des
+[]|\T1/cmr/m/n/10.95 Implï¿½menter l'af-fi-chage des
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 107--107
-[]|\T1/cmr/m/n/10.95 Implémenter l'af-fi-chage du
+[]|\T1/cmr/m/n/10.95 Implï¿½menter l'af-fi-chage du
  []
 
 
 Underfull \hbox (badness 1888) in paragraph at lines 107--107
-[]|\T1/cmr/m/n/10.95 Implémenter la ges-tion des
+[]|\T1/cmr/m/n/10.95 Implï¿½menter la ges-tion des
  []
 
 
@@ -2066,7 +2066,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 107--107
 
 
 Underfull \hbox (badness 4647) in paragraph at lines 107--107
-[]|\T1/cmr/m/n/10.95 Implémenter l'af-fi-chage des
+[]|\T1/cmr/m/n/10.95 Implï¿½menter l'af-fi-chage des
  []
 
 [93
@@ -2105,12 +2105,12 @@ Package pdftex.def Info: Chapitres/Figures/Diag_seq_chatbot.png  used on input l
 (pdftex.def)             Requested size: 412.56496pt x 288.66339pt.
  [98 <./Chapitres/Figures/Diag_seq_consulter_act.png>]
 Underfull \hbox (badness 3058) in paragraph at lines 274--274
-[]|\T1/cmr/m/n/10.95 Enchaînement prin-
+[]|\T1/cmr/m/n/10.95 Enchaï¿½nement prin-
  []
 
 
 Underfull \hbox (badness 3514) in paragraph at lines 279--279
-[]|\T1/cmr/bx/n/10.95 Scénario al-ter-na-
+[]|\T1/cmr/bx/n/10.95 Scï¿½nario al-ter-na-
  []
 
 [99 <./Chapitres/Figures/Diag_seq_chatbot.png>]
@@ -2121,12 +2121,12 @@ Package pdftex.def Info: Chapitres/figures/diag_seq_voir_score_client.png  used 
 (pdftex.def)             Requested size: 412.56496pt x 294.60997pt.
  [100]
 Underfull \hbox (badness 3058) in paragraph at lines 329--329
-[]|\T1/cmr/m/n/10.95 Enchaînement prin-
+[]|\T1/cmr/m/n/10.95 Enchaï¿½nement prin-
  []
 
 
 Underfull \hbox (badness 3514) in paragraph at lines 340--340
-[]|\T1/cmr/bx/n/10.95 Scénario al-ter-na-
+[]|\T1/cmr/bx/n/10.95 Scï¿½nario al-ter-na-
  []
 
 [101 <./Chapitres/figures/diag_seq_voir_score_client.png>]
@@ -2137,12 +2137,12 @@ Package pdftex.def Info: Chapitres/figures/Diag_seq_effectuer_reservation.png  u
 (pdftex.def)             Requested size: 412.56496pt x 396.05756pt.
  [102]
 Underfull \hbox (badness 3058) in paragraph at lines 388--388
-[]|\T1/cmr/m/n/10.95 Enchaînement prin-
+[]|\T1/cmr/m/n/10.95 Enchaï¿½nement prin-
  []
 
 
 Underfull \hbox (badness 3514) in paragraph at lines 395--395
-[]|\T1/cmr/bx/n/10.95 Scénario al-ter-na-
+[]|\T1/cmr/bx/n/10.95 Scï¿½nario al-ter-na-
  []
 
 [103 <./Chapitres/figures/Diag_seq_effectuer_reservation.png>]
@@ -2153,12 +2153,12 @@ Package pdftex.def Info: Chapitres/figures/diag_seq_consulter_reservations_en_co
 (pdftex.def)             Requested size: 412.56496pt x 276.98854pt.
  [104]
 Underfull \hbox (badness 3058) in paragraph at lines 444--444
-[]|\T1/cmr/m/n/10.95 Enchaînement prin-
+[]|\T1/cmr/m/n/10.95 Enchaï¿½nement prin-
  []
 
 
 Underfull \hbox (badness 3514) in paragraph at lines 453--453
-[]|\T1/cmr/bx/n/10.95 Scénario al-ter-na-
+[]|\T1/cmr/bx/n/10.95 Scï¿½nario al-ter-na-
  []
 
 [105 <./Chapitres/figures/diag_seq_consulter_reservations_en_cours.png>]
@@ -2169,12 +2169,12 @@ Package pdftex.def Info: Chapitres/figures/seq_traiter_reservation.png  used on 
 (pdftex.def)             Requested size: 412.56496pt x 208.88496pt.
  [106]
 Underfull \hbox (badness 3058) in paragraph at lines 496--496
-[]|\T1/cmr/m/n/10.95 Enchaînement prin-
+[]|\T1/cmr/m/n/10.95 Enchaï¿½nement prin-
  []
 
 
 Underfull \hbox (badness 3514) in paragraph at lines 502--502
-[]|\T1/cmr/bx/n/10.95 Scénario al-ter-na-
+[]|\T1/cmr/bx/n/10.95 Scï¿½nario al-ter-na-
  []
 
 [107 <./Chapitres/figures/seq_traiter_reservation.png>]
@@ -2185,12 +2185,12 @@ Package pdftex.def Info: Chapitres/figures/seq_stats_agence.png  used on input l
 (pdftex.def)             Requested size: 412.56496pt x 276.3473pt.
  [108]
 Underfull \hbox (badness 3058) in paragraph at lines 549--549
-[]|\T1/cmr/m/n/10.95 Enchaînement prin-
+[]|\T1/cmr/m/n/10.95 Enchaï¿½nement prin-
  []
 
 
 Underfull \hbox (badness 3514) in paragraph at lines 558--558
-[]|\T1/cmr/bx/n/10.95 Scénario al-ter-na-
+[]|\T1/cmr/bx/n/10.95 Scï¿½nario al-ter-na-
  []
 
 [109 <./Chapitres/figures/seq_stats_agence.png>]
@@ -2201,17 +2201,17 @@ Package pdftex.def Info: Chapitres/figures/seq_gerer_messages.png  used on input
 (pdftex.def)             Requested size: 412.56496pt x 291.09073pt.
  [110]
 Underfull \hbox (badness 5563) in paragraph at lines 600--601
-[]|\T1/cmr/m/n/10.95 Les in-di-ca-teurs glo-baux sont af-fi-chés (nombre to-tal
+[]|\T1/cmr/m/n/10.95 Les in-di-ca-teurs glo-baux sont af-fi-chï¿½s (nombre to-tal
  []
 
 
 Underfull \hbox (badness 3058) in paragraph at lines 602--602
-[]|\T1/cmr/m/n/10.95 Enchaînement prin-
+[]|\T1/cmr/m/n/10.95 Enchaï¿½nement prin-
  []
 
 
 Underfull \hbox (badness 3514) in paragraph at lines 609--609
-[]|\T1/cmr/bx/n/10.95 Scénario al-ter-na-
+[]|\T1/cmr/bx/n/10.95 Scï¿½nario al-ter-na-
  []
 
 [111 <./Chapitres/figures/seq_gerer_messages.png>]
@@ -2306,7 +2306,7 @@ Underfull \hbox (badness 5022) in paragraph at lines 876--876
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 876--876
-[]|\T1/cmr/m/n/10.95 Réponse de l'ad-min
+[]|\T1/cmr/m/n/10.95 Rï¿½ponse de l'ad-min
  []
 
 [124]
@@ -2316,7 +2316,7 @@ Underfull \hbox (badness 5022) in paragraph at lines 921--921
 
 
 Overfull \hbox (3.33586pt too wide) in paragraph at lines 926--927
-[]\T1/cmr/m/n/10.95 Nous pré-sen-tons dans cette sec-tion les in-ter-faces gra-phiques dé-ve-lop-pées lors du deuxième
+[]\T1/cmr/m/n/10.95 Nous prï¿½-sen-tons dans cette sec-tion les in-ter-faces gra-phiques dï¿½-ve-lop-pï¿½es lors du deuxiï¿½me
  []
 
 [125]
