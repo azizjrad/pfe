@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.4.12)  16 MAY 2026 12:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.4.12)  16 MAY 2026 14:21
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1993,11 +1993,11 @@ File: Chapitres/Figures/inter_vitrine.png Graphic file (type png)
 Package pdftex.def Info: Chapitres/Figures/inter_vitrine.png  used on input line 1045.
 (pdftex.def)             Requested size: 371.30594pt x 116.53622pt.
  [89 <./Chapitres/Figures/inter_profil.png> <./Chapitres/Figures/inter_chatbot.png>]
-<Chapitres/Figures/inter_bloqAgence.png, id=1740, 1139.00531pt x 414.79968pt>
+<Chapitres/Figures/inter_bloqAgence.png, id=1740, 1139.75812pt x 504.38437pt>
 File: Chapitres/Figures/inter_bloqAgence.png Graphic file (type png)
 <use Chapitres/Figures/inter_bloqAgence.png>
 Package pdftex.def Info: Chapitres/Figures/inter_bloqAgence.png  used on input line 1054.
-(pdftex.def)             Requested size: 371.30594pt x 135.2197pt.
+(pdftex.def)             Requested size: 371.30594pt x 164.31548pt.
 <Chapitres/Figures/test1_code.png, id=1741, 677.53125pt x 505.89pt>
 File: Chapitres/Figures/test1_code.png Graphic file (type png)
 <use Chapitres/Figures/test1_code.png>
@@ -2519,7 +2519,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  102i,17n,108p,1226b,3177s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1095.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1095.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbi1095.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1095.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1000.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1728.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1095.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1095.pk> <C:\Users\AZIZ\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2488.pk><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/AZIZ/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb>
-Output written on Thesis-report.pdf (137 pages, 9765958 bytes).
+Output written on Thesis-report.pdf (137 pages, 9781320 bytes).
 PDF statistics:
  2832 PDF objects out of 2984 (max. 8388607)
  453 named destinations out of 1000 (max. 500000)
