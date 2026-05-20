@@ -16,6 +16,7 @@
 *.run.xml
 *.synctex.gz
 *.pdf
+!Chapitres/page_garde_BC.pdf
 
 # Chapter auxiliary files
 Chapitres/*.aux
