@@ -200,7 +200,7 @@ Le \textit{Product Backlog} constitue une liste hiérarchisée de tâches qui
 définissent les caractéristiques attendues d'un produit. Il s'agit d'un élément fondamental de la méthodologie Scrum \cite{scrum}. Dans le cadre de notre projet, le backlog est structuré autour des champs suivants :
 \begin{itemize}[noitemsep, topsep=3pt]
     \item \textbf{ID :} identifiant unique attribué à chaque \textit{User Story}, permettant de la distinguer et de la référencer facilement dans le backlog.
-    \item \textbf{Thème :} résumé synthétique décrivant la fonctionnalité concernée, servant de regroupement logique pour plusieurs \textit{User Stories} liées.
+    \item \textbf{Thème :} nom du cas d'utilisation ou de la fonctionnalité principale.
     \item \textbf{User Story :} description du contenu fonctionnel attendu, exprimée du point de vue de l'utilisateur, sous forme de scénario simple.
     \item \textbf{Priorité :} niveau d'importance défini par le \textit{Product Owner}, indiquant l’ordre de traitement et la valeur métier associée à la fonctionnalité.
 \end{itemize}
@@ -235,15 +235,15 @@ US04 & Gérer vitrine & Agence & gérer la vitrine afin de publier et mettre à 
 US05 & Gérer agences & Admin & gérer les agences afin de visualiser, ajouter, modifier ou bloquer les agences & Haute \\ \hline
 
 US06 & Consulter actualités & Internaute & consulter les actualités afin d'accéder aux informations publiées sur la plateforme & Haute \\ \hline
-US11 & Contacter administrateur & Internaute & contacter l'administrateur afin d'obtenir plus d'informations & Haute \\ \hline
-US12 & Gérer messages & Admin & gérer les messages afin de consulter et répondre aux utilisateurs & Haute \\ \hline
+US07 & Contacter administrateur & Internaute & contacter l'administrateur afin d'obtenir plus d'informations & Haute \\ \hline
+US08 & Gérer messages & Admin & gérer les messages afin de consulter et répondre aux utilisateurs & Haute \\ \hline
 
-US07 & Effectuer réservation & Client & effectuer une réservation afin de louer un véhicule auprès d'une agence & Moyenne \\ \hline
-US08 & Consulter réservations en cours & Client & consulter mes réservations en cours afin de suivre leur état & Moyenne \\ \hline
-US09 & Traiter réservations et reclamations & Agence & traiter les réservations et reclamations afin d'accepter/refuser les demandes et gérer les litiges & Moyenne \\ \hline
-US10 & Voir score client & Utilisateur & voir mon score client afin de connaître mon indice de fiabilité & Moyenne \\ \hline
-US13 & Consulter statistiques(Agence) & Agence & consulter les statistiques afin d'analyser les performances & Moyenne \\ \hline
-US14 & Consulter statistiques (Admin) & Admin & consulter les statistiques globales afin d'analyser les performances du système & Moyenne \\ \hline
+US09 & Effectuer réservation & Client & effectuer une réservation afin de louer un véhicule auprès d'une agence & Moyenne \\ \hline
+US10 & Consulter réservations en cours & Client & consulter mes réservations en cours afin de suivre leur état & Moyenne \\ \hline
+US11 & Traiter réservations et reclamations & Agence & traiter les réservations et reclamations afin d'accepter/refuser les demandes et gérer les litiges & Moyenne \\ \hline
+US12 & Voir score client & Utilisateur & voir mon score client afin de connaître mon indice de fiabilité & Moyenne \\ \hline
+US13 & Consulter statistiques-Agence & Agence & consulter les statistiques afin d'analyser les performances & Moyenne \\ \hline
+US14 & Consulter statistiques-Admin & Admin & consulter les statistiques globales afin d'analyser les performances du système & Moyenne \\ \hline
 US15 & Interagir avec chatbot & Internaute & interagir avec le chatbot afin d'obtenir des réponses automatiques & Moyenne \\ \hline
 
 \end{longtable}
@@ -261,28 +261,9 @@ La planification de sprint permet d'identifier les tâches qui seront accomplies
     \caption{Sprint 1}
     \label{fig:sprint_1}
 \end{figure}
-%\begin{figure}[H]
- %   \centering
-  %  \includegraphics[width=0.7\textwidth]{Chapitres/Figures/sprint_2.png}
-   % \caption{Sprint 2}
-    %\label{fig:sprint_2}
-%\end{figure}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Diagramme de Gantt}
-\label{section2.8}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Le diagramme de Gantt illustre la répartition temporelle des quatre phases du projet sur une durée totale de douze semaines.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/gantt.png}
-    \caption{Diagramme de Gantt}
-    \label{fig:gantt}
-\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Au cours de ce chapitre, nous avons identifié les parties prenantes et défini le backlog du produit en précisant les demandes fonctionnelles et techniques de notre projet.
 
