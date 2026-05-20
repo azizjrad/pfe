@@ -142,45 +142,6 @@ le scénario ainsi que les éventuelles situations exceptionnelles.
 \label{sec:acteur_internaute}
 %----------------------------------------------------------
 
-\subsection{Analyse de cas d'utilisation «Consulter actualités»}
-\label{sec:cons_act}
-Afin de mieux illustrer le déroulement du scénario, nous proposons ci‑après une description textuelle accompagnée du diagramme de séquence du cas d'utilisation \textbf{«Consulter actualités»}.
-\begin{table}[H]
-\centering
-\caption{Description textuelle du cas d'utilisation «Consulter actualités»}
-\label{tab:consulter_actualites}
-\renewcommand{\arraystretch}{1.3}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|p{11cm}|}
-\hline
-\textbf{Élément} & \textbf{Description} \\
-\hline
-Acteur & Internaute \\
-\hline
-Description & Permet à l’internaute de consulter les dernières actualités publiées sur la plateforme.\\
-\hline
-Précondition & L’internaute accède à la plateforme.\newline Des actualités sont disponibles. \\
-\hline
-Postcondition & L’internaute visualise les actualités.\newline Il peut accéder au détail d’une actualité. \\
-\hline
-Scénario nominal & L’internaute accède à la section actualités.\newline
-Le système affiche la liste des actualités.\newline
-L’internaute sélectionne une actualité.\newline
-Le système affiche le contenu détaillé. \\
-\hline
-Scénario alternatif & Si aucune actualité n’est disponible, un message informatif est affiché.\newline
-Si une erreur survient, le système affiche un message d’erreur. \\
-\hline
-\end{tabular}
-}
-\end{table}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/Diag_seq_consulter_act.png}
-    \caption{Diagramme de séquence système de cas d'utilisation «Consulter actualités»}
-    \label{fig:consulter_actualites}
-\end{figure}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Analyse de cas d'utilisation «Interagir avec Chatbot»}
 \label{sec:section_chatbot}
@@ -203,21 +164,20 @@ Précondition & L’internaute accède à la plateforme.\newline Le chatbot est 
 \hline
 Postcondition & L’internaute obtient une réponse pertinente à sa requête.\newline L’interaction peut être enregistrée pour amélioration du service. \\
 \hline
-Scénario nominal & L’internaute ouvre l’interface du chatbot.\newline
-Il saisit une question ou une demande.\newline
-Le chatbot analyse la requête.\newline
-Le chatbot génère une réponse adaptée.\newline
-La réponse est affichée à l’internaute. \\
+Scénario nominal & 1. L’internaute ouvre l’interface du chatbot.\newline
+2. L’internaute saisit une question ou une demande.\newline
+3. Le chatbot analyse la requête.\newline
+4. Le chatbot génère une réponse adaptée.\newline
+5. La réponse est affichée à l’internaute. \\
 \hline
-Scénario alternatif & Si la requête est incomprise, le chatbot demande une reformulation.\newline
-Si le chatbot est indisponible, un message d’erreur est affiché. \\
+Scénario alternatif & Pas d'exceptions\\
 \hline
 \end{tabular}%
 }
 \end{table}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{Chapitres/Figures/Diag_seq_chatbot.png}
+    \includegraphics[width=0.7\textwidth]{Chapitres/Figures/Diag_seq_chatbot.png}
     \caption{Diagramme de séquence système de cas d'utilisation «Interagir avec Chatbot»}
     \label{fig:chatbot}
 \end{figure}
@@ -268,7 +228,7 @@ Enchaînement principal &
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{Chapitres/figures/diag_seq_voir_score_client.png}
+    \includegraphics[width=0.7\textwidth]{Chapitres/figures/diag_seq_voir_score_client.png}
     \caption{Diagramme de séquence système de cas d'utilisation "Voir score client''}
     \label{fig:seq_voir_score}
 \end{figure}
@@ -298,7 +258,7 @@ Nom & Effectuer réservation \\
 \hline
 Acteur & Client \\
 \hline
-Description brève & Permet au client de réserver un véhicule disponible auprès d'une agence. \\
+Description brève & Permet au client de réserver une voiture disponible pour une période déterminée. \\
 \hline
 Précondition & Le client est authentifié. \newline
                Le système est accessible. \newline
@@ -308,37 +268,33 @@ Postcondition & La réservation est enregistrée et son statut est "~En attente~
                 Le client reçoit une confirmation de sa demande. \\
 \hline
 Enchaînement principal &
-1. Le client accède à la liste des véhicules disponibles. \newline
-2. Le client sélectionne un véhicule. \newline
-3. Le système affiche les détails du véhicule et le formulaire de réservation. \newline
-4. Le client renseigne les dates de début et de fin de location. \newline
-5. Le système calcule le montant total. \newline
-6. Le client confirme la réservation. \newline
-7. Le système vérifie la disponibilité du véhicule. \newline
-8. Le système enregistre la réservation. \newline
-9. Le système affiche un message de confirmation. \\
+1. Le client choisit une voiture à réserver.\newline
+2. Le système affiche les détails de la voiture.\newline
+3. Le client demande une réservation.\newline
+4. Le système affiche le formulaire de saisie des informations de réservation.\newline
+5. Le client saisit les informations de réservation (date, jours).\newline
+6. Le système vérifie les informations saisies.\newline
+7. Le système vérifie la disponibilité de la voiture.\newline
+8. Le système affiche un message de confirmation de réservation.\\
 \hline
 \textbf{Scénario alternatif} &
-4.1 Dates invalides ou incohérentes. \newline
-\quad 4.1.1 Le système affiche un message d'erreur. \newline
-\quad 4.1.2 Retour à l'étape~4 du scénario nominal. \newline
-7.1 Le véhicule n'est plus disponible. \newline
-\quad 7.1.1 Le système affiche un message d'indisponibilité. \newline
-\quad 7.1.2 Retour à l'étape~1 du scénario nominal. \newline
-8.1 Erreur lors de l'enregistrement. \newline
-\quad 8.1.1 Le système affiche un message d'échec. \\
+6.1 Champs incomplets.\newline
+\quad 6.1.1 Le système affiche un message d'erreur.\newline
+7.1 Voiture indisponible.\newline
+\quad 7.1.1 Le système affiche le message « La voiture est réservée pour la date saisie ».\\
 \hline
 \end{tabular}
 \end{table}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{Chapitres/figures/Diag_seq_effectuer_reservation.png}
+    \includegraphics[width=0.8\textwidth]{Chapitres/figures/Diag_seq_effectuer_reservation.png}
     \caption{Diagramme de séquence système de cas d'utilisation "Effectuer réservation''}
     \label{fig:seq_effectuer_reservation}
 \end{figure}
 
 %----------------------------------------------------------
+\newpage
 \subsection{Analyse de cas d'utilisation "Consulter réservations en cours''}
 \label{sec:consulter_reservations}
 
@@ -374,17 +330,14 @@ Enchaînement principal &
 5. Le système affiche les informations détaillées de la réservation. \\
 \hline
 \textbf{Scénario alternatif} &
-2.1 Aucune réservation disponible. \newline
-\quad 2.1.1 Le système affiche le message "Aucune réservation en cours''. \newline
-3.1 Erreur de chargement des données. \newline
-\quad 3.1.1 Le système affiche un message d'erreur et propose de réessayer. \\
+Pas d'exceptions \\
 \hline
 \end{tabular}
 \end{table}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{Chapitres/figures/diag_seq_consulter_reservations_en_cours.png}
+    \includegraphics[width=0.8\textwidth]{Chapitres/figures/diag_seq_consulter_reservations_en_cours.png}
     \caption{Diagramme de séquence système de cas d'utilisation "Consulter réservations en cours''}
     \label{fig:seq_consulter_reservations}
 \end{figure}
@@ -448,7 +401,7 @@ Enchaînement principal &
 \end{figure}
 
 %----------------------------------------------------------
-\subsection{Analyse de cas d'utilisation "Consulter statistiques (Agence)''}
+\subsection{Analyse de cas d'utilisation "Consulter statistiques-Agence''}
 \label{sec:stats_agence}
 
 Dans la suite, nous présentons une description textuelle accompagnée d'un diagramme
@@ -456,7 +409,7 @@ de séquence du cas d'utilisation "\textbf{Consulter statistiques}'' de l'acteur
 
 \begin{table}[H]
 \centering
-\caption{Description textuelle du cas d'utilisation "Consulter statistiques (Agence)''}
+\caption{Description textuelle du cas d'utilisation "Consulter statistiques-Agence''}
 \label{tab:stats_agence}
 \renewcommand{\arraystretch}{1.35}
 \begin{tabular}{|p{3.5cm}|p{10cm}|}
@@ -475,16 +428,13 @@ Précondition & L'agence est authentifiée. \newline
 Postcondition & Les indicateurs de performance sont affichés (nombre de réservations, taux d'occupation, chiffre d'affaires, satisfaction client). \\
 \hline
 Enchaînement principal &
-1. L'agence accède à la section "~Statistiques~''. \newline
+1. L'agence accède à "~Statistiques~''. \newline
 2. Le système collecte les données relatives à l'activité de l'agence. \newline
 3. Le système génère et affiche les indicateurs clés (graphiques, tableaux, synthèses). \newline
 4. L'agence consulte et analyse les données. \\
 \hline
 \textbf{Scénario alternatif} &
-2.1 Données insuffisantes pour générer des statistiques. \newline
-\quad 2.1.1 Le système affiche un message informatif. \newline
-3.1 Erreur de chargement. \newline
-\quad 3.1.1 Le système affiche un message d'erreur et propose de réessayer. \\
+Pas d'exceptions \\
 \hline
 \end{tabular}
 \end{table}
@@ -492,7 +442,7 @@ Enchaînement principal &
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{Chapitres/figures/seq_stats_agence.png}
-    \caption{Diagramme de séquence système de cas d'utilisation "Consulter statistiques (Agence)''}
+    \caption{Diagramme de séquence système de cas d'utilisation "Consulter statistiques-Agence''}
     \label{fig:seq_stats_agence}
 \end{figure}
 
@@ -501,59 +451,9 @@ Enchaînement principal &
 \label{sec:acteur_admin_s2}
 
 %----------------------------------------------------------
-\subsection{Analyse de cas d'utilisation "Gérer messages''}
-\label{sec:gerer_messages}
-
-Afin de mieux illustrer le déroulement du scénario, nous proposons ci-après une analyse
-du cas d'utilisation "\textbf{Gérer messages}'' de l'acteur Administrateur.
-
-\begin{table}[H]
-\centering
-\caption{Description textuelle du cas d'utilisation "Gérer messages''}
-\label{tab:gerer_messages}
-\renewcommand{\arraystretch}{1.35}
-\begin{tabular}{|p{3.5cm}|p{10cm}|}
-\hline
-\textbf{Élément} & \textbf{Description} \\
-\hline
-Nom & Gérer messages \\
-\hline
-Acteur & Administrateur \\
-\hline
-Description brève & Permet à l'administrateur de consulter les messages reçus des utilisateurs et d'y apporter une réponse. \\
-\hline
-Précondition & L'administrateur est authentifié. \newline
-               Le système est accessible. \\
-\hline
-Postcondition & Le message est traité et une réponse est envoyée à l'utilisateur concerné. \\
-\hline
-Enchaînement principal &
-1. L'administrateur accède à la section "~Messages~''. \newline
-2. Le système affiche la liste des messages reçus avec leur statut. \newline
-3. L'administrateur sélectionne un message. \newline
-4. Le système affiche le contenu du message et les informations de l'expéditeur. \newline
-5. L'administrateur rédige une réponse. \newline
-6. Le système enregistre et envoie la réponse. \newline
-7. Le système marque le message comme traité et affiche un message de confirmation. \\
-\hline
-\textbf{Scénario alternatif} &
-2.1 Aucun message disponible. \newline
-\quad 2.1.1 Le système affiche le message "~Aucun message reçu~''. \newline
-6.1 Erreur lors de l'envoi de la réponse. \newline
-\quad 6.1.1 Le système affiche un message d'échec. \\
-\hline
-\end{tabular}
-\end{table}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{Chapitres/figures/seq_gerer_messages.png}
-    \caption{Diagramme de séquence système de cas d'utilisation "Gérer messages''}
-    \label{fig:seq_gerer_messages}
-\end{figure}
 
 %----------------------------------------------------------
-\subsection{Analyse de cas d'utilisation "Consulter statistiques (Administrateur)''}
+\subsection{Analyse de cas d'utilisation "Consulter statistiques-Administrateur''}
 \label{sec:stats_admin}
 
 Dans la suite, nous présentons une description textuelle accompagnée d'un diagramme
@@ -562,7 +462,7 @@ l'acteur Administrateur.
 
 \begin{table}[H]
 \centering
-\caption{Description textuelle du cas d'utilisation "Consulter statistiques (Administrateur)''}
+\caption{Description textuelle du cas d'utilisation "Consulter statistiques-Administrateur''}
 \label{tab:stats_admin}
 \renewcommand{\arraystretch}{1.35}
 \begin{tabular}{|p{3.5cm}|p{10cm}|}
@@ -581,17 +481,14 @@ Précondition & L'administrateur est authentifié. \newline
 Postcondition & Les indicateurs globaux sont affichés (nombre total d'agences, de réservations, de clients, score moyen, anomalies détectées). \\
 \hline
 Enchaînement principal &
-1. L'administrateur accède à la section "~Tableau de bord~''. \newline
+1. L'administrateur accède à"~Statistiques~''. \newline
 2. Le système collecte les données globales de toutes les agences. \newline
 3. Le système génère et affiche les indicateurs clés de performance (KPI). \newline
 4. L'administrateur consulte les données. \newline
 5. L'administrateur peut filtrer les données par période ou par agence. \\
 \hline
 \textbf{Scénario alternatif} &
-2.1 Données insuffisantes. \newline
-\quad 2.1.1 Le système affiche un message informatif. \newline
-3.1 Erreur de chargement. \newline
-\quad 3.1.1 Le système affiche un message d'erreur et propose de réessayer. \\
+Pas d'exceptions \\
 \hline
 \end{tabular}
 \end{table}
@@ -599,7 +496,7 @@ Enchaînement principal &
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{Chapitres/figures/seq_stats_admin.png}
-    \caption{Diagramme de séquence système de cas d'utilisation "Consulter statistiques (Administrateur)''}
+    \caption{Diagramme de séquence système de cas d'utilisation "Consulter statistiques-Administrateur''}
     \label{fig:seq_stats_admin}
 \end{figure}
 
