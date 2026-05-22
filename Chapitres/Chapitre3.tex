@@ -663,8 +663,6 @@ Enchaînement principal &
 \multirow{4}{*}{\textbf{Scénario alternatif}} 
 & 5.1 Annulation de l'action. \\
 & \quad 5.1.1 Aucune modification n'est effectuée. \\
-& 6.1 Erreur lors du blocage/déblocage. \\
-& \quad 6.1.1 Le système affiche un message d'échec. \\
 \hline
 \end{tabular}
 \end{table}
@@ -712,8 +710,7 @@ Enchaînement principal &
 7. Le système marque le message comme traité et affiche un message de confirmation. \\
 \hline
 \textbf{Scénario alternatif} &
-6.1 Erreur lors de l'envoi de la réponse. \newline
-\quad 6.1.1 Le système affiche un message d'échec. \\
+Pas d'exceptions \\
 \hline
 \end{tabular}
 \end{table}
@@ -881,8 +878,6 @@ Enchaînement principal &
 \hline
 \multirow{6}{*}{\textbf{Scénario alternatif}} & 5.1 Informations invalides.\\
 & \quad 5.1.1 Le système affiche une message d'erreur. \\
-& 6.1 Erreur lors de l'enregistrement. \\
-& \quad 6.1.1 Le système affiche une message d'échec. \\
 \hline
 \end{tabular}%
 }
@@ -1020,14 +1015,7 @@ Ce diagramme repose généralement sur trois catégories principales de classes 
 \end{figure}
 
 
-\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Interagir avec Chatbot »}
-\label{sec:diag_seq_det_chatbot}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_chatbot.png}
-    \caption{Diagramme de séquence détaillé du cas d’utilisation « Interagir avec Chatbot »}
-    \label{fig:seq_det_chatbot}
-\end{figure}
+
 
 \subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Consulter profil »}
 \label{sec:diag_seq_det_consulter_profil}
@@ -1038,9 +1026,66 @@ Ce diagramme repose généralement sur trois catégories principales de classes 
     \label{fig:seq_det_consulter_profil}
 \end{figure}
 
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Modifier profil »}
+\label{sec:diag_seq_det_modifier_profil}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_modifier_profil.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « Modifier profil »}
+    \label{fig:seq_det_modifier_profil}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Diagrammes de séquence détaillés de l’acteur Agence}
+\label{sec:diag_seq_agence_s1}
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Consulter vitrine »}
+\label{sec:diag_seq_det_consulter_vitrine}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_vitrine.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « Consulter vitrine »}
+    \label{fig:seq_det_consulter_vitrine}
+\end{figure}
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Modifier informations voiture »}
+\label{sec:diag_seq_det_modifier_infos_voiture}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_modifier_infos_voiture.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « Modifier informations voiture »}
+    \label{fig:seq_det_modifier_infos_voiture}
+\end{figure}
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Ajouter voiture »}
+\label{sec:diag_seq_det_ajouter_voiture}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_voiture.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « Ajouter voiture »}
+    \label{fig:seq_det_ajouter_voiture}
+\end{figure}
+
 %====================================================
 \subsection{Diagrammes de séquence détaillés de l’acteur Administrateur}
 \label{sec:diag_seq_admin_s1}
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Consulter agences »}
+\label{sec:diag_seq_det_consulter_agences}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_consulter_agences.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « Consulter agences »}
+    \label{fig:seq_det_consulter_agences}
+\end{figure}
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Modifier informations agence »}
+\label{sec:diag_seq_det_modifier_infos_agence}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_modifier_infos_agence.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « Modifier informations agence »}
+    \label{fig:seq_det_modifier_infos_agence}
+\end{figure}
 
 \subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Ajouter agence »}
 \label{sec:diag_seq_det_ajouter_agence}
@@ -1060,22 +1105,15 @@ Ce diagramme repose généralement sur trois catégories principales de classes 
     \label{fig:seq_det_bloquer_agence}
 \end{figure}
 
-\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Ajouter utilisateur »}
-\label{sec:diag_seq_det_ajouter_utilisateur}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_ajouter_utilisateur.png}
-    \caption{Diagramme de séquence détaillé du cas d’utilisation « Ajouter utilisateur »}
-    \label{fig:seq_det_ajouter_utilisateur}
-\end{figure}
 
-\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Bloquer/Débloquer utilisateur »}
-\label{sec:diag_seq_det_bloquer_agence}
+
+\subsubsection{Diagrammes de séquence détaillé du cas d’utilisation « Gérer messages »}
+\label{sec:diag_seq_det_gerer_messages}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_bloquer_utilisateur.png}
-    \caption{Diagramme de séquence détaillé du cas d’utilisation « Bloquer/Débloquer utilisateur »}
-    \label{fig:seq_det_bloquer_utilisateur}
+    \includegraphics[width=0.8\textwidth]{Chapitres/figures/diag_seq_det/seq_det_s1/seq_det_gerer_messages.png}
+    \caption{Diagramme de séquence détaillé du cas d’utilisation « Gérer messages »}
+    \label{fig:seq_det_gerer_messages}
 \end{figure}
 
 \newpage
