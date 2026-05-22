@@ -1911,27 +1911,139 @@ const AdminContent = ({
       ].filter(Boolean).length;
 
       if (normalizedMonthlyRevenue.length === 0) {
-        // If the overall dashboard loading finished and we still have no
-        // monthly data, show a friendly empty state instead of an infinite spinner
-        if (!loading) {
-          return (
-            <div className="flex items-center justify-center h-64">
-              <div className="text-center">
-                <p className="text-gray-600">
-                  Aucune donnée financière disponible.
-                </p>
-              </div>
-            </div>
-          );
-        }
+        const resetFilters = {
+          agencyId: "",
+          startDate: "",
+          endDate: "",
+        };
 
         return (
-          <div className="flex items-center justify-center h-64">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
+          <div className="space-y-6 animate-fadeIn">
+            <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base font-semibold text-gray-900">
+                  Filtres des statistiques
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1.5">
+                    Agence
+                  </label>
+                  <select
+                    value={statsFiltersDraft.agencyId}
+                    onChange={(e) =>
+                      setStatsFiltersDraft((prev) => ({
+                        ...prev,
+                        agencyId: e.target.value,
+                      }))
+                    }
+                    className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  >
+                    <option value="">Toutes les agences</option>
+                    {(agencies || []).map((agency) => (
+                      <option key={agency.id} value={String(agency.id)}>
+                        {agency.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1.5">
+                    Date debut
+                  </label>
+                  <input
+                    type="date"
+                    value={statsFiltersDraft.startDate}
+                    onChange={(e) =>
+                      setStatsFiltersDraft((prev) => ({
+                        ...prev,
+                        startDate: e.target.value,
+                      }))
+                    }
+                    className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1.5">
+                    Date fin
+                  </label>
+                  <input
+                    type="date"
+                    value={statsFiltersDraft.endDate}
+                    onChange={(e) =>
+                      setStatsFiltersDraft((prev) => ({
+                        ...prev,
+                        endDate: e.target.value,
+                      }))
+                    }
+                    className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  />
+                </div>
+
+                <div className="flex items-end gap-2">
+                  <button
+                    onClick={() =>
+                      onFinancialFiltersChange?.(statsFiltersDraft)
+                    }
+                    disabled={
+                      !!statsFiltersDraft.startDate &&
+                      !!statsFiltersDraft.endDate &&
+                      statsFiltersDraft.endDate < statsFiltersDraft.startDate
+                    }
+                    className="flex-1 rounded-xl bg-primary-600 text-white px-3 py-2.5 text-sm font-semibold hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Appliquer
+                  </button>
+                  <button
+                    onClick={() => {
+                      setStatsFiltersDraft(resetFilters);
+                      onFinancialFiltersChange?.(resetFilters);
+                    }}
+                    className="flex-1 rounded-xl bg-gray-100 text-gray-700 px-3 py-2.5 text-sm font-semibold hover:bg-gray-200"
+                  >
+                    Reinitialiser
+                  </button>
+                </div>
+              </div>
+
+              {!!statsFiltersDraft.startDate &&
+                !!statsFiltersDraft.endDate &&
+                statsFiltersDraft.endDate < statsFiltersDraft.startDate && (
+                  <p className="mt-3 text-xs text-red-600">
+                    La date de fin doit etre superieure ou egale a la date
+                    debut.
+                  </p>
+                )}
+            </div>
+
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900">
+                Tableau de Bord Financier
+              </h2>
+              {appliedFiltersCount > 0 && (
+                <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+                  Filtres actifs: {appliedFiltersCount}
+                </span>
+              )}
+            </div>
+
+            <div className="bg-white rounded-xl p-10 text-center border border-gray-200">
               <p className="text-gray-600">
-                Chargement des données financières...
+                Aucune donnée financière disponible pour ces filtres.
               </p>
+              <button
+                onClick={() => {
+                  setStatsFiltersDraft(resetFilters);
+                  onFinancialFiltersChange?.(resetFilters);
+                }}
+                className="mt-4 inline-flex items-center rounded-xl bg-primary-600 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-700"
+              >
+                Réinitialiser les filtres
+              </button>
             </div>
           </div>
         );
