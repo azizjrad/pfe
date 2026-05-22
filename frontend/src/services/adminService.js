@@ -13,17 +13,8 @@ export const adminService = {
 
   /** Get all agencies with their statistics */
   getAgencies: async (params = {}) => {
-    // Try admin endpoint first; if missing, fall back to public agencies
-    try {
-      const response = await http.get("/admin/agencies", { params });
-      return normalizeApiResponse(response);
-    } catch (err) {
-      if (err.response?.status === 404) {
-        const resp = await http.get("/public/agencies", { params });
-        return normalizeApiResponse(resp);
-      }
-      throw err;
-    }
+    const response = await http.get("/admin/agencies", { params });
+    return normalizeApiResponse(response);
   },
 
   /** Update an agency */

@@ -320,10 +320,19 @@ const AdminContent = ({
   }
 
   if (activeTab === "agencies") {
-    const totalPages = Math.ceil((agencies || []).length / itemsPerPage);
+    const activeAgencies = (agencies || []).filter(
+      (agency) => agency?.status === "active",
+    );
+    const managedAgenciesCount = Number(platformStats?.totalAgencies ?? 0);
+    const visibleAgencies =
+      managedAgenciesCount > 0
+        ? activeAgencies.slice(0, managedAgenciesCount)
+        : activeAgencies;
+
+    const totalPages = Math.ceil(visibleAgencies.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const paginatedAgencies = (agencies || []).slice(startIndex, endIndex);
+    const paginatedAgencies = visibleAgencies.slice(startIndex, endIndex);
 
     return (
       <div className="space-y-5">

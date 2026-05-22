@@ -62,6 +62,8 @@ const normalizePlatformStats = (stats = {}) => ({
   ),
 });
 
+const isActiveAgency = (agency) => agency?.status === "active";
+
 export default function useAdminDashboard({
   user,
   activeTab,
@@ -99,7 +101,7 @@ export default function useAdminDashboard({
       setPlatformStats(
         normalizePlatformStats(statsRes?.data) || DEFAULT_PLATFORM_STATS,
       );
-      setAgencies(normalizeArray(agenciesRes));
+      setAgencies(normalizeArray(agenciesRes).filter(isActiveAgency));
       setAllReservations(normalizeArray(reservationsRes));
 
       await fetchNotifications();
@@ -295,7 +297,9 @@ export default function useAdminDashboard({
       const created = response?.data;
 
       if (created) {
-        setAgencies((prev) => [created, ...prev]);
+        setAgencies((prev) =>
+          created.status === "active" ? [created, ...prev] : prev,
+        );
         setPlatformStats((prev) => ({
           ...prev,
           totalAgencies: (prev.totalAgencies || 0) + 1,
@@ -311,9 +315,11 @@ export default function useAdminDashboard({
       updatedData,
     );
     setAgencies((prev) =>
-      prev.map((a) =>
-        a.id === updatedData.id ? { ...a, ...(response?.data || {}) } : a,
-      ),
+      response?.data?.status === "active"
+        ? prev.map((a) =>
+            a.id === updatedData.id ? { ...a, ...(response?.data || {}) } : a,
+          )
+        : prev.filter((a) => a.id !== updatedData.id),
     );
     showToast?.(t("admin.agencies.editSuccess"), "success");
   };
@@ -322,7 +328,11 @@ export default function useAdminDashboard({
     const newStatus = agency.status === "active" ? "inactive" : "active";
     await adminService.suspendAgency(agency.id, newStatus);
     setAgencies((prev) =>
-      prev.map((a) => (a.id === agency.id ? { ...a, status: newStatus } : a)),
+      newStatus === "active"
+        ? prev.map((a) =>
+            a.id === agency.id ? { ...a, status: newStatus } : a,
+          )
+        : prev.filter((a) => a.id !== agency.id),
     );
   };
 
