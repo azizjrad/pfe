@@ -50,11 +50,35 @@ class ReservationService
 
         $vehicle = Vehicle::findOrFail($data['vehicle_id']);
 
+        // Prevent race conditions: lock the vehicle row for update so concurrent
+        // bookings cannot bypass the availability check. This relies on the
+        // surrounding controller to run inside a DB transaction (it does), but
+        // locking here is protective if called elsewhere.
+        try {
+            $vehicle = Vehicle::where('id', $vehicle->id)->lockForUpdate()->first();
+        } catch (\Exception $e) {
+            // If locking is unsupported or fails, continue — availability checks remain.
+        }
+
         // Check vehicle availability
         if (!$this->checkAvailability($vehicle->id, $data['start_date'], $data['end_date'])) {
             throw new ConflictException(
                 'Véhicule indisponible pour les dates sélectionnées. Veuillez choisir d\'autres dates ou un autre véhicule.',
                 'VEHICLE_NOT_AVAILABLE'
+            );
+        }
+
+        // Enforce max active reservations per user
+        $maxActive = config('pfe.limits.max_active_reservations', 2);
+        $activeCount = Reservation::where('user_id', $user->id)
+            ->whereIn('status', ReservationStatus::activeValues())
+            ->count();
+
+        if ($activeCount >= $maxActive) {
+            throw new BusinessRuleViolationException(
+                "Vous avez atteint le nombre maximum de réservations actives ({$maxActive}). Merci d\'annuler une réservation existante avant d\'en créer une nouvelle.",
+                403,
+                'MAX_ACTIVE_RESERVATIONS_REACHED'
             );
         }
 
@@ -373,49 +397,78 @@ class ReservationService
      */
     public function returnVehicle(Reservation $reservation, array $returnData = []): Reservation
     {
-        if ($reservation->status !== ReservationStatus::ONGOING->value) {
+        // Allow recording a return if reservation is ONGOING, or if it's already
+        // COMPLETED but no return record exists (admin recording inspection after the fact).
+        if (!in_array($reservation->status, [ReservationStatus::ONGOING->value, ReservationStatus::COMPLETED->value], true)) {
             throw new BusinessRuleViolationException(
-                'Seules les réservations en cours peuvent être retournées.',
+                'Seules les réservations en cours ou terminées peuvent être traitées pour un retour.',
                 422,
                 'RESERVATION_RETURN_INVALID_STATE'
             );
         }
 
-        $additionalCharges = floatval($returnData['additional_charges'] ?? 0);
-
-        // If there are additional charges, recalculate commission
-        if ($additionalCharges > 0) {
-            $newTotal = $reservation->total_price + $additionalCharges;
-
-            // Recalculate commission on new total
-            $commissionRate = config('pfe.commission.platform_rate');
-            $minCommission = config('pfe.commission.min_commission');
-
-            $newPlatformCommission = max(
-                $newTotal * $commissionRate,
-                $minCommission
-            );
-            $newAgencyPayout = $newTotal - $newPlatformCommission;
-
-            // Update reservation with new financial details
-            $reservation->update([
-                'additional_charges' => $additionalCharges,
-                'total_price' => $newTotal,
-                'platform_commission' => $newPlatformCommission,
-                'agency_payout' => $newAgencyPayout,
-            ]);
+        // If a return record already exists, do not duplicate
+        if ($reservation->vehicleReturn) {
+            return $reservation;
         }
 
+        $additionalCharges = round(floatval($returnData['additional_charges'] ?? 0), 2);
+        $mileage = isset($returnData['mileage_on_return']) ? intval($returnData['mileage_on_return']) : null;
+        $returnedAt = isset($returnData['actual_return_date']) ? Carbon::parse($returnData['actual_return_date']) : now();
+        $vehicleCondition = $returnData['condition'] ?? ($returnData['vehicle_condition'] ?? 'good');
+
+        // Create returns record using expected column names
         $reservation->vehicleReturn()->create([
-            'mileage_on_return' => $returnData['mileage_on_return'] ?? 0,
-            'condition' => $returnData['condition'] ?? 'good',
-            'returned_at' => now(),
+            'reservation_id' => $reservation->id,
+            'return_date' => $returnedAt,
+            'return_mileage' => $mileage ?? 0,
+            'fuel_level' => $returnData['fuel_level'] ?? null,
+            'vehicle_condition' => $vehicleCondition,
+            'damage_description' => $returnData['damage_description'] ?? null,
+            'additional_charges' => $additionalCharges,
+            'damage_notes' => $returnData['damage_notes'] ?? null,
+            'inspection_notes' => $returnData['inspection_notes'] ?? null,
             'notes' => $returnData['notes'] ?? null,
         ]);
 
-        $reservation->update(['status' => ReservationStatus::COMPLETED->value]);
+        // Update reservation financials and return meta
+        $newTotal = $reservation->total_price + $additionalCharges;
+        $newRemaining = max(0, $reservation->remaining_amount + $additionalCharges);
+
+        $paymentStatus = $reservation->payment_status;
+        if ($newRemaining <= 0) {
+            $paymentStatus = ReservationPaymentStatus::PAID->value;
+        } elseif ($newRemaining < $reservation->total_price) {
+            $paymentStatus = ReservationPaymentStatus::PARTIALLY_PAID->value;
+        }
+
+        $isLate = false;
+        if ($reservation->end_date) {
+            $end = Carbon::parse($reservation->end_date)->endOfDay();
+            $isLate = $returnedAt->gt($end);
+        }
+
+        $reservation->update([
+            'additional_charges' => $reservation->additional_charges + $additionalCharges,
+            'total_price' => $newTotal,
+            'remaining_amount' => $newRemaining,
+            'payment_status' => $paymentStatus,
+            'actual_return_date' => $returnedAt->toDateString(),
+            'is_late_return' => $isLate,
+            'status' => ReservationStatus::COMPLETED->value,
+        ]);
+
         $this->updateVehicleLifecycleStatus($reservation, VehicleStatus::RETURNED->value);
-        return $reservation;
+
+        // If there are no other active reservations for the vehicle, reset status
+        $this->resetVehicleStatusIfNoActiveReservations($reservation);
+
+        // Recalculate client reliability score
+        if ($reservation->user && $reservation->user->role === 'client') {
+            $this->clientService->recalculateReliabilityScore($reservation->user);
+        }
+
+        return $reservation->fresh();
     }
 
     /**

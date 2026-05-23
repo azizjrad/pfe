@@ -357,8 +357,15 @@ const Dashboard = () => {
           },
           {
             title: t("dashboard.stats.reliabilityScore.title"),
-            value: `${clientStats?.reliabilityScore ?? 100}`,
-            change: null,
+            value: `${clientStats?.reliabilityScore ?? 100}${
+              (clientStats?.bonusPoints ?? 0) > 0
+                ? ` (+${clientStats?.bonusPoints} bonus)`
+                : ""
+            }`,
+            change:
+              (clientStats?.bonusPoints ?? 0) > 0
+                ? `Réservations clean: ${clientStats?.cleanCompletedReservations ?? 0}`
+                : null,
             trend: "up",
             icon: "star",
             color: "yellow",

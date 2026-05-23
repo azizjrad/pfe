@@ -31,6 +31,18 @@ class ClientService
             ->where('status', ReservationStatus::COMPLETED->value)
             ->sum('total_price');
 
+        $cleanCompletedReservations = $user->reservations()
+            ->where('status', ReservationStatus::COMPLETED->value)
+            ->where('is_late_return', false)
+            ->where('payment_status', ReservationPaymentStatus::PAID->value)
+            ->whereDoesntHave('vehicleReturn', function ($query) {
+                $query->whereIn('vehicle_condition', ['fair', 'damaged']);
+            })
+            ->count();
+
+        $bonusPerCleanReservation = (int) config('pfe.reliability_scoring.clean_completed_bonus', 2);
+        $bonusPoints = max(0, $cleanCompletedReservations * $bonusPerCleanReservation);
+
         $reliabilityScore = (int) ($score->reliability_score ?? 100);
 
         return [
@@ -40,6 +52,8 @@ class ClientService
             'completed_reservations' => $completedReservations,
             'total_spent' => round($totalSpent, 2),
             'reliability_score' => $reliabilityScore,
+            'clean_completed_reservations' => $cleanCompletedReservations,
+            'bonus_points' => $bonusPoints,
             'can_book' => $reliabilityScore >= 40,
             'risk_level' => $this->calculateRiskLevel($reliabilityScore),
         ];
@@ -174,9 +188,20 @@ class ClientService
                 $query->whereIn('vehicle_condition', ['fair', 'damaged']);
             })
             ->count();
+        $cleanCompletedReservations = (clone $reservationsQuery)
+            ->where('status', ReservationStatus::COMPLETED->value)
+            ->where('is_late_return', false)
+            ->where('payment_status', ReservationPaymentStatus::PAID->value)
+            ->whereDoesntHave('vehicleReturn', function ($query) {
+                $query->whereIn('vehicle_condition', ['fair', 'damaged']);
+            })
+            ->count();
         $totalUnpaidAmount = round((float) (clone $reservationsQuery)
             ->where('remaining_amount', '>', 0)
             ->sum('remaining_amount'), 2);
+
+        $bonusPerCleanReservation = (int) config('pfe.reliability_scoring.clean_completed_bonus', 2);
+        $bonusPoints = max(0, $cleanCompletedReservations * $bonusPerCleanReservation);
 
         $score->fill([
             'total_reservations' => $totalReservations,
@@ -188,7 +213,7 @@ class ClientService
             'total_unpaid_amount' => $totalUnpaidAmount,
         ]);
 
-        $score->calculateScore();
+        $score->calculateScore($bonusPoints);
 
         return $score->fresh();
     }

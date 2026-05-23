@@ -3,7 +3,6 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { useTranslation } from "react-i18next";
 import useScrollAnimation from "../../hooks/useScrollAnimation";
-import Toast from "../../components/common/Toast";
 
 const Login = () => {
   const formAnim = useScrollAnimation({ threshold: 0.2 });
@@ -47,20 +46,6 @@ const Login = () => {
     email: "",
     password: "",
   });
-
-  const [toast, setToast] = useState({
-    isVisible: false,
-    message: "",
-    type: "success",
-  });
-
-  const showToast = (message, type = "success") => {
-    setToast({ isVisible: true, message, type });
-  };
-
-  const hideToast = () => {
-    setToast({ isVisible: false, message: "", type: "success" });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -110,9 +95,21 @@ const Login = () => {
       }
       // Handle other errors
       else {
-        setLoginError(
-          err.response?.data?.message || t("auth.login.errorGeneric"),
-        );
+        const errorCode = err.response?.data?.error_code;
+
+        if (errorCode === "CLIENT_BLOCKED_LOW_SCORE") {
+          setLoginError(
+            "Accès refusé: votre compte est bloqué définitivement à cause d'un score client très faible.",
+          );
+        } else if (errorCode === "auth.account_suspended") {
+          setLoginError(
+            "Accès refusé: votre compte est bloqué par l'administrateur.",
+          );
+        } else {
+          setLoginError(
+            err.response?.data?.message || t("auth.login.errorGeneric"),
+          );
+        }
       }
     } finally {
       setLoading(false);
@@ -436,13 +433,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-
-      <Toast
-        isVisible={toast.isVisible}
-        message={toast.message}
-        type={toast.type}
-        onClose={hideToast}
-      />
     </div>
   );
 };

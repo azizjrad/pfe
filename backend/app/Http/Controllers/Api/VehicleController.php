@@ -83,7 +83,7 @@ class VehicleController extends Controller
     }
 
     /**
-     * Delete vehicle (agency admins can only delete their own vehicles)
+     * Make vehicle unavailable (keeps history and stats)
      */
     public function destroy($id)
     {
@@ -92,6 +92,6 @@ class VehicleController extends Controller
 
         $this->vehicleService->delete($id);
 
-        return $this->apiSuccessResponse('Vehicle deleted successfully');
+        return $this->apiSuccessResponse('Vehicle marked as unavailable successfully');
     }
 }

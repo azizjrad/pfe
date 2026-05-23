@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Domain\Enums\AgencyStatus;
+use App\Domain\Enums\ReservationPaymentStatus;
 use App\Domain\Enums\ReservationStatus;
 use App\Exceptions\Domain\BusinessRuleViolationException;
 use App\Exceptions\Domain\ConflictException;
@@ -113,6 +114,18 @@ class AdminService
         $result = $clients->getCollection()->map(function (User $client) {
             $reliabilityScore = ClientReliabilityScore::where('user_id', $client->id)->first();
 
+            $cleanCompletedReservations = $client->reservations()
+                ->where('status', ReservationStatus::COMPLETED->value)
+                ->where('is_late_return', false)
+                ->where('payment_status', ReservationPaymentStatus::PAID->value)
+                ->whereDoesntHave('vehicleReturn', function ($query) {
+                    $query->whereIn('vehicle_condition', ['fair', 'damaged']);
+                })
+                ->count();
+
+            $bonusPerCleanReservation = (int) config('pfe.reliability_scoring.clean_completed_bonus', 2);
+            $bonusPoints = max(0, $cleanCompletedReservations * $bonusPerCleanReservation);
+
             return [
                 'id' => $client->id,
                 'name' => $client->name,
@@ -130,6 +143,8 @@ class AdminService
                 'payment_delays' => $reliabilityScore?->payment_delays ?? 0,
                 'damage_incidents' => $reliabilityScore?->damage_incidents ?? 0,
                 'total_unpaid_amount' => $reliabilityScore?->total_unpaid_amount ?? 0,
+                'clean_completed_reservations' => $cleanCompletedReservations,
+                'bonus_points' => $bonusPoints,
             ];
         });
 

@@ -45,6 +45,12 @@ export const reservationService = {
   return: async (id, data) =>
     normalizeApiResponse(await http.post(`/reservations/${id}/return`, data)),
 
+  /** Record inspection notes for a returned reservation (agency admin only) */
+  inspection: async (id, data) =>
+    normalizeApiResponse(
+      await http.post(`/reservations/${id}/inspection`, data),
+    ),
+
   /** Cancel a reservation */
   cancel: async (id, reason = null) =>
     normalizeApiResponse(

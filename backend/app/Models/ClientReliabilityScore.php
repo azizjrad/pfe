@@ -44,7 +44,7 @@ class ClientReliabilityScore extends Model
     /**
      * Calculate reliability score based on user behavior.
      */
-    public function calculateScore()
+    public function calculateScore(int $bonusPoints = 0)
     {
         $penalties = config('pfe.reliability_scoring');
 
@@ -53,7 +53,7 @@ class ClientReliabilityScore extends Model
             ($this->late_returns * $penalties['late_return_penalty']) +
             ($this->payment_delays * $penalties['payment_delay_penalty']) +
             ($this->damage_incidents * $penalties['damage_penalty'])
-        );
+        ) + max(0, $bonusPoints);
 
         // Ensure score is between 0 and 100
         $this->reliability_score = max(0, min(100, $score));

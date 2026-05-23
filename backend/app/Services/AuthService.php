@@ -146,6 +146,27 @@ class AuthService
             throw new BusinessRuleViolationException(__('auth.account_suspended'), 403, 'auth.account_suspended');
         }
 
+        // Hard block website access for low-score clients (<= 29, i.e. < blocked_threshold 30).
+        if ($user->role === 'client') {
+            $scoreModel = $this->clientService->recalculateReliabilityScore($user);
+            $hardBlockThreshold = (int) config('pfe.reliability_scoring.blocked_threshold', 30);
+
+            if ((int) ($scoreModel->reliability_score ?? 100) < $hardBlockThreshold) {
+                Log::warning('Blocked login - Low-score client', [
+                    'user_id' => $user->id,
+                    'email' => $email,
+                    'score' => (int) ($scoreModel->reliability_score ?? 100),
+                    'threshold' => $hardBlockThreshold,
+                ]);
+
+                throw new BusinessRuleViolationException(
+                    __('auth.account_blocked_low_score'),
+                    403,
+                    'CLIENT_BLOCKED_LOW_SCORE'
+                );
+            }
+        }
+
         // Limit sessions to 3 devices
         if ($user->tokens()->count() >= 3) {
             $user->tokens()->oldest()->limit(1)->delete();

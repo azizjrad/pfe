@@ -9,6 +9,8 @@ const DEFAULT_CLIENT_STATS = {
   completedReservations: 0,
   totalSpend: 0,
   reliabilityScore: 100,
+  bonusPoints: 0,
+  cleanCompletedReservations: 0,
   riskLabel: "Excellent",
 };
 
@@ -25,6 +27,10 @@ const mapClientStats = (payload) => {
     totalSpend: Number(data.totalSpend ?? data.total_spent ?? 0),
     reliabilityScore: Number(
       data.reliabilityScore ?? data.reliability_score ?? 100,
+    ),
+    bonusPoints: Number(data.bonusPoints ?? data.bonus_points ?? 0),
+    cleanCompletedReservations: Number(
+      data.cleanCompletedReservations ?? data.clean_completed_reservations ?? 0,
     ),
     riskLabel: data.riskLabel ?? data.risk_level ?? "Excellent",
   };

@@ -23,4 +23,5 @@ Route::middleware(['auth:sanctum', 'not_suspended', 'password_changed', 'role:ag
     Route::patch('/reservations/{id}/status', [ReservationController::class, 'updateStatus']);
     Route::post('/reservations/{id}/pickup', [ReservationController::class, 'pickupVehicle']);
     Route::post('/reservations/{id}/return', [ReservationController::class, 'returnVehicle']);
+    Route::post('/reservations/{id}/inspection', [ReservationController::class, 'recordInspection']);
 });

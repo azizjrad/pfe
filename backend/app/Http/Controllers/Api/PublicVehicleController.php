@@ -24,8 +24,27 @@ class PublicVehicleController extends Controller
     public function index(Request $request)
     {
         $perPage = $this->resolvePerPage($request, 12, 100);
-        $vehicles = $this->vehicleService->getPublicVehicles($perPage)
-            ->appends($request->query());
+        $start = $request->query('start_date');
+        $end = $request->query('end_date');
+
+        if ($start && $end) {
+            try {
+                $startDate = new \DateTimeImmutable($start);
+                $endDate = new \DateTimeImmutable($end);
+
+                $vehicles = $this->vehicleService->getAvailableVehicles($startDate, $endDate, $request->only(['agency_id']), $perPage)
+                    ->appends($request->query());
+            } catch (\Exception $e) {
+                return $this->apiErrorMessageResponse(
+                    'Invalid date format for start_date or end_date. Use YYYY-MM-DD.',
+                    422,
+                    ['fields' => ['start_date', 'end_date']]
+                );
+            }
+        } else {
+            $vehicles = $this->vehicleService->getPublicVehicles($perPage)
+                ->appends($request->query());
+        }
 
         return $this->apiSuccessResponse(null, VehicleResource::collection($vehicles->items()), 200, [
             'pagination' => $this->paginationMeta($vehicles),

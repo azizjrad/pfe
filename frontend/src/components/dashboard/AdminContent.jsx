@@ -594,6 +594,11 @@ const AdminContent = ({
                   <p className="text-gray-500 mb-1">Score de fiabilité</p>
                   <p className="font-semibold text-gray-900">
                     {client.reliability_score}
+                    {(client.bonus_points || 0) > 0 && (
+                      <span className="ml-2 text-emerald-600 font-medium">
+                        +{client.bonus_points} bonus
+                      </span>
+                    )}
                   </p>
                 </div>
                 <div>
@@ -606,6 +611,12 @@ const AdminContent = ({
                   <p className="text-gray-500 mb-1">Complétées</p>
                   <p className="font-semibold text-gray-900">
                     {client.completed_reservations}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-500 mb-1">Bonus clean</p>
+                  <p className="font-semibold text-gray-900">
+                    +{client.bonus_points || 0}
                   </p>
                 </div>
                 <div>
@@ -681,6 +692,11 @@ const AdminContent = ({
                         }}
                       />
                       {client.reliability_score}
+                      {(client.bonus_points || 0) > 0 && (
+                        <span className="text-emerald-600 font-medium">
+                          +{client.bonus_points} bonus
+                        </span>
+                      )}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">

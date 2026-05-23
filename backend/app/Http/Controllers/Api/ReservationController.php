@@ -264,4 +264,44 @@ class ReservationController extends Controller
             ]);
         }
     }
+
+    /**
+     * Record inspection notes for a returned reservation (agency admin).
+     */
+    public function recordInspection($id, Request $request)
+    {
+        $reservation = Reservation::with(['vehicleReturn', 'user'])->findOrFail($id);
+
+        $this->authorize('return', $reservation);
+
+        // Only allow inspection recording for completed reservations
+        if ($reservation->status !== ReservationStatus::COMPLETED->value) {
+            return $this->apiErrorMessageResponse('L\'inspection ne peut être enregistrée que pour les réservations terminées.', 422);
+        }
+
+        $validated = $request->validate([
+            'inspection_notes' => ['nullable', 'string', 'max:2000'],
+        ]);
+
+        // Ensure a return record exists
+        $vehicleReturn = $reservation->vehicleReturn;
+        if (! $vehicleReturn) {
+            $vehicleReturn = $reservation->vehicleReturn()->create([
+                'reservation_id' => $reservation->id,
+                'return_date' => now(),
+                'return_mileage' => 0,
+                'vehicle_condition' => 'good',
+            ]);
+        }
+
+        $vehicleReturn->inspection_notes = $validated['inspection_notes'] ?? 'inspection_recorded';
+        $vehicleReturn->save();
+
+        // Recalculate client reliability score after inspection
+        if ($reservation->user && $reservation->user->role === 'client') {
+            app(\App\Services\ClientService::class)->recalculateReliabilityScore($reservation->user);
+        }
+
+        return $this->apiSuccessResponse('Inspection enregistrée avec succès.', new ReservationResource($reservation->fresh()->load(['vehicle', 'user', 'vehicleReturn'])));
+    }
 }

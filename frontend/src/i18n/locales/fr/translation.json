@@ -575,9 +575,9 @@
       "title": "Mes véhicules",
       "add": "Ajouter un véhicule",
       "edit": "Modifier le véhicule",
-      "delete": "Supprimer le véhicule",
-      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce véhicule ?",
-      "deleteSuccess": "Véhicule supprimé avec succès",
+      "delete": "Rendre le véhicule indisponible",
+      "deleteConfirm": "Êtes-vous sûr de vouloir rendre ce véhicule indisponible ?",
+      "deleteSuccess": "Véhicule rendu indisponible avec succès",
       "addSuccess": "Véhicule ajouté avec succès",
       "editSuccess": "Véhicule modifié avec succès",
       "noVehicles": "Aucun véhicule trouvé"
@@ -725,7 +725,9 @@
         "reportError": "Erreur lors de l'envoi du signalement. Veuillez réessayer.",
         "reservationSuccess": "Réservation confirmée! Vous recevrez un email de confirmation ou un appel de l'agence bientôt.",
         "authRequired": "Vous devez être connecté pour réserver un véhicule.",
-        "reservationError": "Erreur lors de la réservation. Veuillez réessayer."
+        "reservationError": "Erreur lors de la réservation. Veuillez réessayer.",
+        "maxActiveReservations": "Vous avez atteint le nombre maximum de réservations actives. Veuillez annuler une réservation existante avant d'en créer une nouvelle.",
+        "vehicleAlreadyBooked": "Désolé, ce véhicule vient d'être réservé par un autre client. Veuillez choisir un autre véhicule ou d'autres dates."
       }
     },
     "card": {

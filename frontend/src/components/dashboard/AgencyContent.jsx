@@ -58,6 +58,12 @@ const AgencyContent = ({
     isOpen: false,
     reservation: null,
   });
+  const [inspectionPrompt, setInspectionPrompt] = useState({
+    isOpen: false,
+    reservation: null,
+    notes: "",
+    loading: false,
+  });
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
   const [imageDragActive, setImageDragActive] = useState(false);
 
@@ -178,16 +184,22 @@ const AgencyContent = ({
     try {
       setDeletingVehicleId(vehicle.id);
       await vehicleService.delete(vehicle.id);
-      setVehicles((prev) => prev.filter((item) => item.id !== vehicle.id));
+      setVehicles((prev) =>
+        prev.map((item) =>
+          item.id === vehicle.id ? { ...item, status: "unavailable" } : item,
+        ),
+      );
       setToast({
         show: true,
-        message: "Véhicule supprimé avec succès",
+        message: "Véhicule rendu indisponible avec succès",
         type: "success",
       });
     } catch (error) {
       setToast({
         show: true,
-        message: error.response?.data?.message || "Erreur suppression véhicule",
+        message:
+          error.response?.data?.message ||
+          "Erreur lors du passage en indisponible",
         type: "error",
       });
     } finally {
@@ -266,6 +278,72 @@ const AgencyContent = ({
         type: "error",
       });
     }
+  };
+
+  const handleReservationClick = (reservation) => {
+    // If reservation is completed but no inspection recorded, prompt first
+    const isCompleted = reservation.status === RESERVATION_STATUS.COMPLETED;
+    const hasInspection = Boolean(
+      reservation.vehicleReturn && reservation.vehicleReturn.inspection_notes,
+    );
+
+    if (isCompleted && !hasInspection) {
+      setInspectionPrompt({
+        isOpen: true,
+        reservation,
+        notes: "",
+        loading: false,
+      });
+      return;
+    }
+
+    setDetailsModal({ isOpen: true, reservation });
+  };
+
+  const saveInspectionAndOpen = async () => {
+    const { reservation, notes } = inspectionPrompt;
+    if (!reservation) return;
+    try {
+      setInspectionPrompt((s) => ({ ...s, loading: true }));
+      await reservationService.inspection(reservation.id, {
+        inspection_notes: notes,
+      });
+      setToast({
+        show: true,
+        message: "Inspection enregistrée",
+        type: "success",
+      });
+      await fetchReservations();
+      setInspectionPrompt({
+        isOpen: false,
+        reservation: null,
+        notes: "",
+        loading: false,
+      });
+      // open details with fresh data
+      const refreshed =
+        reservations.find((r) => r.id === reservation.id) || reservation;
+      setDetailsModal({ isOpen: true, reservation: refreshed });
+    } catch (err) {
+      setToast({
+        show: true,
+        message:
+          err.response?.data?.message || "Erreur en enregistrant l'inspection",
+        type: "error",
+      });
+      setInspectionPrompt((s) => ({ ...s, loading: false }));
+    }
+  };
+
+  const skipInspectionAndOpen = () => {
+    const { reservation } = inspectionPrompt;
+    setInspectionPrompt({
+      isOpen: false,
+      reservation: null,
+      notes: "",
+      loading: false,
+    });
+    if (reservation) setDetailsModal({ isOpen: true, reservation });
   };
 
   const handlePickup = async (id, notes) => {
@@ -439,7 +517,7 @@ const AgencyContent = ({
               <div
                 key={reservation.id}
                 className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow cursor-pointer"
-                onClick={() => setDetailsModal({ isOpen: true, reservation })}
+                onClick={() => handleReservationClick(reservation)}
               >
                 <div className="flex justify-between items-start mb-4">
                   <div>
@@ -502,8 +580,88 @@ const AgencyContent = ({
               onStatusUpdate={handleStatusUpdate}
               onPickup={handlePickup}
               onReturn={handleReturn}
+              onInspection={async (id, notes) => {
+                try {
+                  await reservationService.inspection(id, {
+                    inspection_notes: notes,
+                  });
+                  setToast({
+                    show: true,
+                    message: "Inspection enregistrée",
+                    type: "success",
+                  });
+                  fetchReservations();
+                  setDetailsModal({ isOpen: false, reservation: null });
+                } catch (err) {
+                  setToast({
+                    show: true,
+                    message:
+                      err.response?.data?.message ||
+                      "Erreur en enregistrant l'inspection",
+                    type: "error",
+                  });
+                }
+              }}
               onCancel={handleCancelReservation}
             />,
+            document.body,
+          )}
+
+        {/* Inspection prompt when clicking a completed reservation without inspection */}
+        {inspectionPrompt.isOpen &&
+          createPortal(
+            <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/50">
+              <div className="bg-white rounded-2xl p-6 max-w-lg w-full">
+                <h3 className="text-lg font-semibold mb-2">
+                  Enregistrer l'inspection
+                </h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Cette réservation est marquée comme "Terminée" mais
+                  l'inspection n'a pas été enregistrée. Vous pouvez saisir des
+                  notes d'inspection maintenant.
+                </p>
+                <textarea
+                  value={inspectionPrompt.notes}
+                  onChange={(e) =>
+                    setInspectionPrompt((s) => ({
+                      ...s,
+                      notes: e.target.value,
+                    }))
+                  }
+                  placeholder="Notes d'inspection (optionnel)"
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 mb-4"
+                  rows={4}
+                />
+                <div className="flex gap-2 justify-end">
+                  <button
+                    onClick={() =>
+                      setInspectionPrompt({
+                        isOpen: false,
+                        reservation: null,
+                        notes: "",
+                        loading: false,
+                      })
+                    }
+                    className="px-4 py-2 rounded-lg border"
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    onClick={skipInspectionAndOpen}
+                    className="px-4 py-2 rounded-lg border bg-gray-100"
+                  >
+                    Ouvrir sans enregistrer
+                  </button>
+                  <button
+                    disabled={inspectionPrompt.loading}
+                    onClick={saveInspectionAndOpen}
+                    className="px-4 py-2 rounded-lg bg-primary-600 text-white"
+                  >
+                    Enregistrer et ouvrir
+                  </button>
+                </div>
+              </div>
+            </div>,
             document.body,
           )}
 
@@ -539,7 +697,7 @@ const AgencyContent = ({
               <div
                 key={reservation.id}
                 className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow cursor-pointer"
-                onClick={() => setDetailsModal({ isOpen: true, reservation })}
+                onClick={() => handleReservationClick(reservation)}
               >
                 <div className="flex justify-between items-start mb-4">
                   <div>
@@ -757,8 +915,8 @@ const AgencyContent = ({
                                   className="px-2 py-1 rounded border border-red-200 text-red-700 hover:bg-red-50 disabled:opacity-50"
                                 >
                                   {deletingVehicleId === vehicle.id
-                                    ? "Suppression..."
-                                    : "Supprimer"}
+                                    ? "Mise à jour..."
+                                    : "Rendre indisponible"}
                                 </button>
                                 <ConfirmationModal
                                   isOpen={confirmDelete.open}
@@ -769,9 +927,9 @@ const AgencyContent = ({
                                     })
                                   }
                                   onConfirm={confirmDeleteVehicle}
-                                  title="Confirmer la suppression"
-                                  message="Êtes-vous sûr de vouloir supprimer ce véhicule de la vitrine ? Cette action est irréversible."
-                                  confirmText="Supprimer"
+                                  title="Rendre le véhicule indisponible"
+                                  message="Ce véhicule sera retiré de la vitrine publique mais conservé pour l'historique et les statistiques."
+                                  confirmText="Confirmer"
                                   cancelText="Annuler"
                                   danger
                                 />

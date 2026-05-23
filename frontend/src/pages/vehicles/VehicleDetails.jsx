@@ -92,7 +92,20 @@ const VehicleDetails = () => {
     } catch (error) {
       console.error("Reservation error:", error);
 
-      if (error.response?.data?.message) {
+      // Specific backend business rules and conflict handling
+      const errorCode =
+        error.response?.data?.code || error.response?.data?.error_code || null;
+      if (errorCode === "MAX_ACTIVE_RESERVATIONS_REACHED") {
+        showToast(
+          t("vehicles.details.messages.maxActiveReservations"),
+          "error",
+        );
+      } else if (
+        error.response?.status === 409 ||
+        errorCode === "VEHICLE_NOT_AVAILABLE"
+      ) {
+        showToast(t("vehicles.details.messages.vehicleAlreadyBooked"), "error");
+      } else if (error.response?.data?.message) {
         showToast(error.response.data.message, "error");
       } else if (error.response?.status === 401) {
         showToast(t("vehicles.details.messages.authRequired"), "error");

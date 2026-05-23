@@ -11,6 +11,7 @@ export default function ReservationDetailsModal({
   onPickup,
   onReturn,
   onCancel,
+  onInspection,
 }) {
   const [activeAction, setActiveAction] = useState(null);
   const [returnData, setReturnData] = useState({
@@ -20,6 +21,12 @@ export default function ReservationDetailsModal({
   });
   const [pickupNotes, setPickupNotes] = useState("");
   const [cancelReason, setCancelReason] = useState("");
+  const [inspectionRecorded, setInspectionRecorded] = useState(
+    Boolean(reservation.vehicleReturn?.inspection_notes),
+  );
+  const [inspectionNotes, setInspectionNotes] = useState(
+    reservation.vehicleReturn?.inspection_notes || "",
+  );
 
   const handleDownloadContract = () => {
     openReservationContract(reservation);
@@ -190,6 +197,39 @@ export default function ReservationDetailsModal({
                   >
                     Enregistrer le retour
                   </button>
+                )}
+
+                {reservation.status === RESERVATION_STATUS.COMPLETED && (
+                  <div className="mt-3 flex items-center gap-4">
+                    <label className="inline-flex items-center gap-2 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={inspectionRecorded}
+                        onChange={async () => {
+                          if (inspectionRecorded) return;
+                          // call parent handler if provided
+                          if (onInspection) {
+                            await onInspection(reservation.id, inspectionNotes);
+                            setInspectionRecorded(true);
+                          }
+                        }}
+                        className="w-4 h-4"
+                      />
+                      <span>Enregistrer l'inspection</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Notes d'inspection (optionnel)"
+                      value={inspectionNotes}
+                      onChange={(e) => setInspectionNotes(e.target.value)}
+                      className="px-3 py-2 rounded-lg border border-gray-200 w-full max-w-md"
+                    />
+                    {inspectionRecorded && (
+                      <span className="text-sm text-green-600">
+                        Inspection enregistrée
+                      </span>
+                    )}
+                  </div>
                 )}
 
                 {/* Action Forms */}
@@ -483,6 +523,19 @@ export default function ReservationDetailsModal({
                     <p className="text-sm text-gray-600">Téléphone</p>
                     <p className="font-semibold text-gray-900">
                       {reservation.user?.phone || "N/A"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Score de fiabilité</p>
+                    <p className="font-semibold text-gray-900">
+                      {reservation.user?.reliability_score?.score ?? 100}
+                      {(reservation.user?.reliability_score?.bonus_points ||
+                        0) > 0 && (
+                        <span className="ml-2 text-emerald-600 font-medium">
+                          +{reservation.user?.reliability_score?.bonus_points}{" "}
+                          bonus
+                        </span>
+                      )}
                     </p>
                   </div>
                 </>

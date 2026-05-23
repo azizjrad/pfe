@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Domain\Enums\AgencyStatus;
 use App\Domain\Enums\ReservationStatus;
 use App\Domain\Enums\VehicleStatus;
-use App\Exceptions\Domain\ConflictException;
 use App\Models\Vehicle;
 
 class VehicleService
@@ -128,22 +127,16 @@ class VehicleService
     }
 
     /**
-     * Delete vehicle with active reservation check
+     * Archive vehicle from public listing by setting it unavailable.
+     * We keep the row for history/stats integrity.
      */
     public function delete(int $id): void
     {
         $vehicle = Vehicle::findOrFail($id);
 
-        // Check for active reservations
-        $activeCount = $vehicle->reservations()
-            ->whereIn('status', ReservationStatus::activeValues())
-            ->count();
-
-        if ($activeCount > 0) {
-            throw new ConflictException('Cannot delete vehicle with active reservations', 'VEHICLE_HAS_ACTIVE_RESERVATIONS');
-        }
-
-        $vehicle->delete();
+        $vehicle->update([
+            'status' => VehicleStatus::UNAVAILABLE->value,
+        ]);
     }
 
     /**
