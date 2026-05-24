@@ -14,6 +14,7 @@ import ClientContent from "../components/dashboard/ClientContent";
 import useAdminDashboard from "../hooks/useAdminDashboard";
 import useAgencyDashboard from "../hooks/useAgencyDashboard";
 import useClientDashboard from "../hooks/useClientDashboard";
+import { clientService } from "../services/clientService";
 import ErrorBoundary from "../components/common/ErrorBoundary";
 import { ROLES } from "../constants/roles";
 
@@ -91,13 +92,21 @@ const Dashboard = () => {
         : clientDashboard.notifications;
 
   const handleMarkAllNotificationsRead = async () => {
-    if (user?.role === ROLES.CLIENT) {
-      try {
-        await clientDashboard.markAllNotificationsAsRead();
-        showToast(t("dashboard.messages.notificationsMarkedRead"), "success");
-      } catch (error) {
-        showToast(t("dashboard.messages.notificationsMarkReadError"), "error");
+    try {
+      await clientService.markAllNotificationsRead();
+
+      // Refresh the relevant dashboard notifications
+      if (user?.role === ROLES.CLIENT) {
+        await clientDashboard.refreshData();
+      } else if (user?.role === ROLES.AGENCY_ADMIN) {
+        await agencyDashboard.refreshData();
+      } else if (user?.role === ROLES.SUPER_ADMIN) {
+        await adminDashboard.refreshData();
       }
+
+      // removed success toast for marking notifications read (UX change)
+    } catch (error) {
+      showToast(t("dashboard.messages.notificationsMarkReadError"), "error");
     }
   };
 

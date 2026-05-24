@@ -15,7 +15,6 @@ class VehicleReturn extends Model
         'fuel_level',
         'vehicle_condition',
         'damage_description',
-        'additional_charges',
         'damage_notes',
         'inspection_notes',
         'notes',
@@ -24,7 +23,6 @@ class VehicleReturn extends Model
     protected $casts = [
         'return_date' => 'datetime',
         'return_mileage' => 'integer',
-        'additional_charges' => 'decimal:2',
     ];
 
     /**
@@ -48,7 +46,7 @@ class VehicleReturn extends Model
      */
     public function hasAdditionalCharges()
     {
-        return $this->additional_charges > 0;
+        return false;
     }
 
     /**

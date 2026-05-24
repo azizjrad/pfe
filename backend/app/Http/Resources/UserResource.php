@@ -20,7 +20,6 @@ class UserResource extends JsonResource
         $cleanCompletedReservations = $this->reservations()
             ->where('status', \App\Domain\Enums\ReservationStatus::COMPLETED->value)
             ->where('is_late_return', false)
-            ->where('payment_status', \App\Domain\Enums\ReservationPaymentStatus::PAID->value)
             ->whereDoesntHave('vehicleReturn', function ($query) {
                 $query->whereIn('vehicle_condition', ['fair', 'damaged']);
             })

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Domain\Enums\ReservationPaymentStatus;
 use App\Domain\Enums\ReservationStatus;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
@@ -22,22 +21,14 @@ class Reservation extends Model
         'driver_birth_date',
         'driver_license_number',
         'driver_license_date',
-        'base_price',
-        'discount_amount',
-        'additional_charges',
         'total_price',
-        'platform_commission_rate',
         'platform_commission',
         'agency_payout',
-        'paid_amount',
-        'remaining_amount',
-        'payment_status',
         'status',
         'actual_return_date',
         'is_late_return',
         'cancellation_reason',
         'notes',
-        'pricing_details',
     ];
 
     protected $casts = [
@@ -47,17 +38,11 @@ class Reservation extends Model
         'client_birth_date' => 'date',
         'driver_birth_date' => 'date',
         'driver_license_date' => 'date',
-        'base_price' => 'decimal:2',
-        'discount_amount' => 'decimal:2',
-        'additional_charges' => 'decimal:2',
         'total_price' => 'decimal:2',
-        'platform_commission_rate' => 'decimal:4',
         'platform_commission' => 'decimal:2',
         'agency_payout' => 'decimal:2',
-        'paid_amount' => 'decimal:2',
-        'remaining_amount' => 'decimal:2',
+
         'is_late_return' => 'boolean',
-        'pricing_details' => 'array',
     ];
 
     /**
@@ -74,14 +59,6 @@ class Reservation extends Model
     public function vehicle()
     {
         return $this->belongsTo(Vehicle::class);
-    }
-
-    /**
-     * Get all payments for this reservation.
-     */
-    public function payments()
-    {
-        return $this->hasMany(Payment::class);
     }
 
     /**
@@ -108,7 +85,7 @@ class Reservation extends Model
      */
     public function isFullyPaid()
     {
-        return $this->payment_status === ReservationPaymentStatus::PAID->value;
+        return false;
     }
 
     /**
@@ -116,7 +93,12 @@ class Reservation extends Model
      */
     public function isOverdue()
     {
-        return $this->payment_status === ReservationPaymentStatus::OVERDUE->value;
+        if ($this->end_date && now()->gt(
+            \Carbon\Carbon::parse($this->end_date)->endOfDay()
+        )) {
+            return true;
+        }
+        return false;
     }
 
     /**

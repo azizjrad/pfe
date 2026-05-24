@@ -401,6 +401,55 @@ export default function DetailsModal({
                                 {st.label}
                               </span>
                             </div>
+                            {Array.isArray(vehicle.price_history) &&
+                              vehicle.price_history.length > 0 && (
+                                <div className="mt-3 rounded-xl border border-gray-100 bg-gray-50/80 p-3">
+                                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                                    Historique des prix
+                                  </p>
+                                  <div className="space-y-2">
+                                    {vehicle.price_history.map((entry) => {
+                                      const from = entry.effective_from
+                                        ? new Date(
+                                            entry.effective_from,
+                                          ).toLocaleDateString("fr-FR")
+                                        : "—";
+                                      const to = entry.effective_to
+                                        ? new Date(
+                                            entry.effective_to,
+                                          ).toLocaleDateString("fr-FR")
+                                        : "Actuel";
+                                      return (
+                                        <div
+                                          key={entry.id}
+                                          className="flex items-center justify-between gap-3 rounded-lg bg-white px-3 py-2 text-xs"
+                                        >
+                                          <div className="text-gray-500 text-xs">
+                                            <div>
+                                              Début:{" "}
+                                              <span className="font-medium text-gray-700">
+                                                {from}
+                                              </span>
+                                            </div>
+                                            <div>
+                                              Fin:{" "}
+                                              <span className="font-medium text-gray-700">
+                                                {to}
+                                              </span>
+                                            </div>
+                                          </div>
+                                          <div className="font-semibold text-gray-900">
+                                            {Number(entry.price || 0).toFixed(
+                                              2,
+                                            )}{" "}
+                                            DT
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              )}
                           </div>
                         );
                       },

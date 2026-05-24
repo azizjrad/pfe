@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Domain\Enums\ReservationPaymentStatus;
 use App\Domain\Enums\ReservationStatus;
 use App\Domain\Enums\VehicleStatus;
 use App\Exceptions\Domain\BusinessRuleViolationException;
@@ -106,11 +105,16 @@ class ReservationService
         $commissionRate = config('pfe.commission.platform_rate');
         $minCommission = config('pfe.commission.min_commission');
 
+        // Include vehicle caution in the stored total_price snapshot
+        $cautionAmount = isset($vehicle->caution_amount) ? (float) $vehicle->caution_amount : 0.0;
+        $totalWithCaution = $pricingBreakdown['total'] + $cautionAmount;
+
         $platformCommission = max(
             $pricingBreakdown['total'] * $commissionRate,
             $minCommission
         );
-        $agencyPayout = $pricingBreakdown['total'] - $platformCommission;
+        // Agency payout includes the caution (agency holds the caution, refundable later)
+        $agencyPayout = $totalWithCaution - $platformCommission;
 
         // Create reservation
         $reservation = Reservation::create([
@@ -126,18 +130,13 @@ class ReservationService
             'driver_birth_date' => $driverBirthDate,
             'driver_license_number' => $data['driver_license_number'] ?? null,
             'driver_license_date' => $data['driver_license_date'] ?? null,
-            'base_price' => $pricingBreakdown['base_total'],
-            'discount_amount' => 0,
-            'additional_charges' => $pricingBreakdown['total'] - $pricingBreakdown['base_total'],
-            'total_price' => $pricingBreakdown['total'],
-            'platform_commission_rate' => $commissionRate,
+            // legacy per-reservation discount/additional_charges removed
+            // Store total including caution so UI and summaries match what user paid/was charged
+            'total_price' => $totalWithCaution,
             'platform_commission' => $platformCommission,
             'agency_payout' => $agencyPayout,
-            'paid_amount' => 0,
-            'remaining_amount' => $pricingBreakdown['total'],
-            'payment_status' => ReservationPaymentStatus::UNPAID->value,
             'status' => ReservationStatus::PENDING->value,
-            'pricing_details' => $pricingBreakdown,
+            // pricing details are not stored on reservation; kept in logs/charges or external records
             'notes' => $data['notes'] ?? null,
         ]);
 
@@ -182,7 +181,7 @@ class ReservationService
             // Recalculate pricing if dates or options changed
             if (isset($data['start_date']) || isset($data['end_date']) || isset($data['options'])) {
                 $vehicle = $reservation->vehicle;
-                $options = $data['options'] ?? ($reservation->pricing_details['options'] ?? []);
+                $options = $data['options'] ?? [];
 
                 $pricingBreakdown = $this->calculatePrice(
                     $vehicle,
@@ -193,17 +192,18 @@ class ReservationService
 
                 $commissionRate = config('pfe.commission.platform_rate');
                 $minCommission = config('pfe.commission.min_commission');
-                $platformCommission = max($pricingBreakdown['total'] * $commissionRate, $minCommission);
-                $agencyPayout = $pricingBreakdown['total'] - $platformCommission;
+                // Include caution when recalculating totals
+                $cautionAmount = isset($vehicle->caution_amount) ? (float) $vehicle->caution_amount : 0.0;
+                $totalWithCaution = $pricingBreakdown['total'] + $cautionAmount;
 
-                $data['base_price'] = $pricingBreakdown['base_total'];
-                $data['discount_amount'] = 0;
-                $data['additional_charges'] = $pricingBreakdown['total'] - $pricingBreakdown['base_total'];
-                $data['total_price'] = $pricingBreakdown['total'];
+                $platformCommission = max($pricingBreakdown['total'] * $commissionRate, $minCommission);
+                $agencyPayout = $totalWithCaution - $platformCommission;
+
+                // discount_amount and additional_charges moved out of reservation columns
+                $data['total_price'] = $totalWithCaution;
                 $data['platform_commission'] = $platformCommission;
                 $data['agency_payout'] = $agencyPayout;
-                $data['remaining_amount'] = $pricingBreakdown['total'];
-                $data['pricing_details'] = $pricingBreakdown;
+                // pricing_details removed; payment tracking is no longer handled
             }
         }
 
@@ -412,7 +412,8 @@ class ReservationService
             return $reservation;
         }
 
-        $additionalCharges = round(floatval($returnData['additional_charges'] ?? 0), 2);
+        // additional_charges handling removed — not stored or applied at reservation level
+        $additionalCharges = 0;
         $mileage = isset($returnData['mileage_on_return']) ? intval($returnData['mileage_on_return']) : null;
         $returnedAt = isset($returnData['actual_return_date']) ? Carbon::parse($returnData['actual_return_date']) : now();
         $vehicleCondition = $returnData['condition'] ?? ($returnData['vehicle_condition'] ?? 'good');
@@ -425,22 +426,13 @@ class ReservationService
             'fuel_level' => $returnData['fuel_level'] ?? null,
             'vehicle_condition' => $vehicleCondition,
             'damage_description' => $returnData['damage_description'] ?? null,
-            'additional_charges' => $additionalCharges,
             'damage_notes' => $returnData['damage_notes'] ?? null,
             'inspection_notes' => $returnData['inspection_notes'] ?? null,
             'notes' => $returnData['notes'] ?? null,
         ]);
 
         // Update reservation financials and return meta
-        $newTotal = $reservation->total_price + $additionalCharges;
-        $newRemaining = max(0, $reservation->remaining_amount + $additionalCharges);
-
-        $paymentStatus = $reservation->payment_status;
-        if ($newRemaining <= 0) {
-            $paymentStatus = ReservationPaymentStatus::PAID->value;
-        } elseif ($newRemaining < $reservation->total_price) {
-            $paymentStatus = ReservationPaymentStatus::PARTIALLY_PAID->value;
-        }
+        $newTotal = $reservation->total_price;
 
         $isLate = false;
         if ($reservation->end_date) {
@@ -449,10 +441,7 @@ class ReservationService
         }
 
         $reservation->update([
-            'additional_charges' => $reservation->additional_charges + $additionalCharges,
             'total_price' => $newTotal,
-            'remaining_amount' => $newRemaining,
-            'payment_status' => $paymentStatus,
             'actual_return_date' => $returnedAt->toDateString(),
             'is_late_return' => $isLate,
             'status' => ReservationStatus::COMPLETED->value,
@@ -555,11 +544,13 @@ class ReservationService
         array $options = []
     ): array {
         $rentalDays = max(1, $startDate->diffInDays($endDate));
-        $basePrice = (float) ($vehicle->daily_price ?? $vehicle->daily_rate ?? $vehicle->price ?? 0);
+        $activePrice = $vehicle->priceForDate($startDate) ?? $vehicle->priceHistory()->first();
+        $basePrice = (float) ($activePrice?->price ?? $vehicle->currentPrice?->price ?? config('pfe.default_daily_price') ?? 0);
         $baseTotal = $basePrice * $rentalDays;
 
         $breakdown = [
-            'base_price' => $basePrice,
+            'applied_daily_price' => $basePrice,
+            'vehicle_price_id' => $activePrice?->id,
             'rental_days' => $rentalDays,
             'base_total' => $baseTotal,
             'options' => [],

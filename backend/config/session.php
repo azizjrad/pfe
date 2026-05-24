@@ -18,7 +18,8 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'database'),
+    // Default to file-based sessions so the database `sessions` table is not required.
+    'driver' => env('SESSION_DRIVER', 'file'),
 
     /*
     |--------------------------------------------------------------------------
@@ -86,7 +87,8 @@ return [
     |
     */
 
-    'table' => env('SESSION_TABLE', 'sessions'),
+    // When not using the `database` session driver this can be null.
+    'table' => env('SESSION_TABLE', null),
 
     /*
     |--------------------------------------------------------------------------

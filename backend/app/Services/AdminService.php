@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Domain\Enums\AgencyStatus;
-use App\Domain\Enums\ReservationPaymentStatus;
 use App\Domain\Enums\ReservationStatus;
 use App\Exceptions\Domain\BusinessRuleViolationException;
 use App\Exceptions\Domain\ConflictException;
@@ -117,7 +116,6 @@ class AdminService
             $cleanCompletedReservations = $client->reservations()
                 ->where('status', ReservationStatus::COMPLETED->value)
                 ->where('is_late_return', false)
-                ->where('payment_status', ReservationPaymentStatus::PAID->value)
                 ->whereDoesntHave('vehicleReturn', function ($query) {
                     $query->whereIn('vehicle_condition', ['fair', 'damaged']);
                 })

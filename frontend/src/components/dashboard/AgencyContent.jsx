@@ -550,8 +550,31 @@ const AgencyContent = ({
                       {t("agencyContent.amount")}:
                     </span>{" "}
                     <span className="font-semibold text-primary-600">
-                      {reservation.total_price} DT
+                      {(() => {
+                        const ms = 1000 * 60 * 60 * 24;
+                        const days = Math.max(
+                          1,
+                          Math.ceil(
+                            (new Date(reservation.end_date) -
+                              new Date(reservation.start_date)) /
+                              ms,
+                          ),
+                        );
+                        const rentalBase =
+                          Number(reservation.applied_daily_price || 0) * days;
+                        const stored = Number(reservation.total_price || 0);
+                        const deposit = Number(reservation.deposit_amount || 0);
+                        const displayed =
+                          stored <= rentalBase + 0.01
+                            ? stored + deposit
+                            : stored;
+                        return `${displayed} DT`;
+                      })()}
                     </span>
+                    <div className="text-sm text-gray-600 mt-1">
+                      Caution:{" "}
+                      {Number(reservation.deposit_amount || 0).toFixed(2)} DT
+                    </div>
                   </div>
                   <div>
                     <span className="text-gray-600">
@@ -1068,7 +1091,8 @@ const AgencyContent = ({
                         </div>
                         <div>
                           <label className="mb-1 block text-sm font-medium text-gray-700">
-                            Montant de la caution (DT)
+                            Montant de la caution (DT){" "}
+                            <span className="text-red-500">*</span>
                           </label>
                           <input
                             name="caution_amount"
@@ -1079,7 +1103,12 @@ const AgencyContent = ({
                             onChange={handleVehicleFormChange}
                             placeholder="Ex: 1000"
                             className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10"
+                            required
                           />
+                          <p className="mt-1 text-xs text-gray-500">
+                            Valeur définie manuellement par l&apos;agence et
+                            modifiable à tout moment.
+                          </p>
                         </div>
                         <div>
                           <label className="mb-1 block text-sm font-medium text-gray-700">

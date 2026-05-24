@@ -33,7 +33,7 @@ class ReservationController extends Controller
 
         $perPage = $this->resolvePerPage($request, 25, 100);
 
-        $reservations = Reservation::with(['vehicle.agency', 'user', 'payments'])
+        $reservations = Reservation::with(['vehicle.agency', 'user'])
             ->orderBy('created_at', 'desc')
             ->paginate($perPage)
             ->appends($request->query());
@@ -50,7 +50,7 @@ class ReservationController extends Controller
     {
         $perPage = $this->resolvePerPage($request, 20, 100);
 
-        $reservations = Reservation::with(['vehicle.agency', 'payments'])
+        $reservations = Reservation::with(['vehicle.agency'])
             ->where('user_id', auth()->id())
             ->orderBy('created_at', 'desc')
             ->paginate($perPage)
@@ -70,7 +70,7 @@ class ReservationController extends Controller
         $perPage = $this->resolvePerPage($request, 20, 100);
 
         // Get all vehicles belonging to this agency
-        $reservations = Reservation::with(['vehicle.agency', 'user', 'payments'])
+        $reservations = Reservation::with(['vehicle.agency', 'user'])
             ->whereHas('vehicle', function ($query) use ($user) {
                 $query->where('agency_id', $user->agency_id);
             })
@@ -114,7 +114,7 @@ class ReservationController extends Controller
      */
     public function show($id)
     {
-        $reservation = Reservation::with(['vehicle.agency', 'user', 'payments', 'vehicleReturn'])
+        $reservation = Reservation::with(['vehicle.agency', 'user', 'vehicleReturn'])
             ->findOrFail($id);
 
         $this->authorize('view', $reservation);
@@ -204,7 +204,7 @@ class ReservationController extends Controller
             $validated['status']
         );
 
-        return $this->apiSuccessResponse('Statut de la réservation mis à jour avec succès.', new ReservationResource($reservation->load(['vehicle', 'user', 'payments'])));
+        return $this->apiSuccessResponse('Statut de la réservation mis à jour avec succès.', new ReservationResource($reservation->load(['vehicle', 'user'])));
     }
 
     /**
@@ -223,7 +223,7 @@ class ReservationController extends Controller
 
             DB::commit();
 
-            return $this->apiSuccessResponse('Véhicule marqué comme retiré. La réservation est maintenant en cours.', new ReservationResource($updated->load(['vehicle', 'user', 'payments'])));
+            return $this->apiSuccessResponse('Véhicule marqué comme retiré. La réservation est maintenant en cours.', new ReservationResource($updated->load(['vehicle', 'user'])));
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -253,7 +253,7 @@ class ReservationController extends Controller
 
             DB::commit();
 
-            return $this->apiSuccessResponse('Véhicule retourné et réservation complétée.', new ReservationResource($updated->load(['vehicle', 'user', 'payments', 'vehicleReturn'])));
+            return $this->apiSuccessResponse('Véhicule retourné et réservation complétée.', new ReservationResource($updated->load(['vehicle', 'user', 'vehicleReturn'])));
 
         } catch (\Exception $e) {
             DB::rollBack();

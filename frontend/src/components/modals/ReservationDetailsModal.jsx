@@ -16,7 +16,6 @@ export default function ReservationDetailsModal({
   const [activeAction, setActiveAction] = useState(null);
   const [returnData, setReturnData] = useState({
     actual_return_date: new Date().toISOString().split("T")[0],
-    additional_charges: 0,
     notes: "",
   });
   const [pickupNotes, setPickupNotes] = useState("");
@@ -284,23 +283,7 @@ export default function ReservationDetailsModal({
                           className="w-full px-3 py-2 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                       </div>
-                      <div>
-                        <label className="block text-sm font-medium text-blue-900 mb-1">
-                          Frais supplémentaires (DT)
-                        </label>
-                        <input
-                          type="number"
-                          value={returnData.additional_charges}
-                          onChange={(e) =>
-                            setReturnData({
-                              ...returnData,
-                              additional_charges:
-                                parseFloat(e.target.value) || 0,
-                            })
-                          }
-                          className="w-full px-3 py-2 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
+                      {/* Additional charges removed — handled via payments/returns backend */}
                       <div>
                         <label className="block text-sm font-medium text-blue-900 mb-1">
                           Notes
@@ -616,31 +599,42 @@ export default function ReservationDetailsModal({
             </h4>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-gray-700">Prix de base</span>
+                <span className="text-gray-700">Prix journalier appliqué</span>
                 <span className="font-semibold text-gray-900">
-                  {reservation.base_price} DT
+                  {Number(reservation.applied_daily_price || 0).toFixed(2)} DT
                 </span>
               </div>
-              {reservation.discount_amount > 0 && (
-                <div className="flex justify-between items-center text-green-600">
-                  <span>Réduction</span>
-                  <span className="font-semibold">
-                    -{reservation.discount_amount} DT
-                  </span>
-                </div>
-              )}
-              {reservation.additional_charges > 0 && (
-                <div className="flex justify-between items-center text-red-600">
-                  <span>Frais supplémentaires</span>
-                  <span className="font-semibold">
-                    +{reservation.additional_charges} DT
-                  </span>
-                </div>
-              )}
+              <div className="flex justify-between items-center">
+                <span className="text-gray-700">Caution (dépôt)</span>
+                <span className="font-semibold text-gray-900">
+                  {Number(reservation.deposit_amount || 0).toFixed(2)} DT
+                </span>
+              </div>
+              {/* Per-reservation discount and additional_charges removed; show applied price and total only */}
               <div className="border-t-2 border-primary-300 pt-3 flex justify-between items-center">
                 <span className="text-lg font-bold text-gray-900">Total</span>
                 <span className="text-2xl font-bold text-primary-600">
-                  {reservation.total_price} DT
+                  {(() => {
+                    const ms = 1000 * 60 * 60 * 24;
+                    const days = Math.max(
+                      1,
+                      Math.ceil(
+                        (new Date(reservation.end_date) -
+                          new Date(reservation.start_date)) /
+                          ms,
+                      ),
+                    );
+                    const applied = Number(
+                      reservation.applied_daily_price || 0,
+                    );
+                    const rentalBase = applied * days;
+                    const stored = Number(reservation.total_price || 0);
+                    const deposit = Number(reservation.deposit_amount || 0);
+                    // If stored total is approximately equal to rental base (deposit not included), add deposit for display
+                    const displayed =
+                      stored <= rentalBase + 0.01 ? stored + deposit : stored;
+                    return `${displayed.toFixed(2)} DT`;
+                  })()}
                 </span>
               </div>
             </div>

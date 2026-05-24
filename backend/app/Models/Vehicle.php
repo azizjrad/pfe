@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Domain\Enums\ReservationStatus;
 use App\Domain\Enums\VehicleStatus;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
 
 class Vehicle extends Model
 {
@@ -13,7 +15,6 @@ class Vehicle extends Model
         'model',
         'year',
         'mileage',
-        'daily_price',
         'caution_amount',
         'license_plate',
         'color',
@@ -27,7 +28,6 @@ class Vehicle extends Model
     ];
 
     protected $casts = [
-        'daily_price' => 'decimal:2',
         'caution_amount' => 'decimal:2',
         'year' => 'integer',
         'mileage' => 'integer',
@@ -50,6 +50,40 @@ class Vehicle extends Model
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    /**
+     * Get the price history records for this vehicle.
+     */
+    public function priceHistory()
+    {
+        return $this->hasMany(VehiclePrice::class)->orderByDesc('start_date')->orderByDesc('id');
+    }
+
+    /**
+     * Get the active/current price record for this vehicle.
+     */
+    public function currentPrice()
+    {
+        return $this->hasOne(VehiclePrice::class)->latestOfMany('start_date');
+    }
+
+    /**
+     * Resolve the price active for a specific date.
+     */
+    public function priceForDate($date): ?VehiclePrice
+    {
+        $targetDate = $date instanceof \Carbon\CarbonInterface
+            ? $date->toDateString()
+            : \Carbon\Carbon::parse($date)->toDateString();
+
+        return $this->priceHistory()
+            ->where('start_date', '<=', $targetDate)
+            ->where(function ($query) use ($targetDate) {
+                $query->whereNull('end_date')
+                    ->orWhere('end_date', '>=', $targetDate);
+            })
+            ->first();
     }
 
     /**

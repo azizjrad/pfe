@@ -7,6 +7,7 @@ export default function NotificationButton({
   onMarkAllRead,
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [hasMarkedRead, setHasMarkedRead] = useState(false);
   const { t } = useTranslation();
   const unreadCount = notifications.filter((n) => !n.is_read).length;
 
@@ -67,25 +68,41 @@ export default function NotificationButton({
   const getTimeAgo = (date) => {
     const now = new Date();
     const notifDate = new Date(date);
-    const diffInMinutes = Math.floor((now - notifDate) / (1000 * 60));
+    const diffInSeconds = Math.floor((now - notifDate) / 1000);
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+    const diffInWeeks = Math.floor(diffInDays / 7);
+    const diffInMonths = Math.floor(diffInDays / 30);
+    const diffInYears = Math.floor(diffInDays / 365);
 
-    if (diffInMinutes < 1) return t("notifications.timeAgo.now");
-    if (diffInMinutes < 60)
-      return t("notifications.timeAgo.min", { count: diffInMinutes });
-    if (diffInMinutes < 1440)
-      return t("notifications.timeAgo.hour", {
-        count: Math.floor(diffInMinutes / 60),
-      });
-    return t("notifications.timeAgo.day", {
-      count: Math.floor(diffInMinutes / 1440),
-    });
+    if (diffInSeconds < 60)
+      return `${diffInSeconds <= 1 ? 1 : diffInSeconds} sec ago`;
+    if (diffInMinutes < 60) return `${diffInMinutes} min ago`;
+    if (diffInHours < 24)
+      return `${diffInHours} hour${diffInHours > 1 ? "s" : ""} ago`;
+    if (diffInDays < 7)
+      return `${diffInDays} day${diffInDays > 1 ? "s" : ""} ago`;
+    if (diffInWeeks < 5)
+      return `${diffInWeeks} week${diffInWeeks > 1 ? "s" : ""} ago`;
+    if (diffInMonths < 12)
+      return `${diffInMonths} month${diffInMonths > 1 ? "s" : ""} ago`;
+    return `${diffInYears} year${diffInYears > 1 ? "s" : ""} ago`;
   };
 
   return (
     <div className="relative">
       {/* Notification Button */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          const next = !isOpen;
+          setIsOpen(next);
+          if (next && unreadCount > 0 && !hasMarkedRead) {
+            // mark as read when opening
+            onMarkAllRead?.();
+            setHasMarkedRead(true);
+          }
+        }}
         className="relative p-2 text-gray-700 hover:bg-gray-100 rounded-xl transition-colors"
       >
         <svg
@@ -212,17 +229,7 @@ export default function NotificationButton({
               )}
             </div>
 
-            {/* Footer */}
-            {notifications.length > 0 && (
-              <div className="p-3 border-t border-gray-200 bg-gray-50">
-                <button
-                  onClick={() => onMarkAllRead?.()}
-                  className="w-full text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
-                >
-                  {t("notifications.markAllRead")}
-                </button>
-              </div>
-            )}
+            {/* Footer removed: notifications are marked read when opened */}
           </div>
         </>
       )}

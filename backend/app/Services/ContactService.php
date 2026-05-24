@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Mail\ContactReplyMail;
 use App\Models\ContactMessage;
 use App\Models\ContactMessageReply;
+use App\Models\User;
+use App\Models\UserNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
@@ -15,7 +17,7 @@ class ContactService
      */
     public function submit(array $data): ContactMessage
     {
-        return ContactMessage::create([
+        $message = ContactMessage::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone'] ?? null,
@@ -24,6 +26,28 @@ class ContactService
             'is_read' => false,
             'submitted_at' => now(),
         ]);
+
+        // Notify platform super admins about the new contact message so it appears
+        // in the admin dashboard notifications dropdown.
+        try {
+            $admins = User::where('role', 'super_admin')->get();
+            foreach ($admins as $admin) {
+                UserNotification::create([
+                    'user_id' => $admin->id,
+                    'type' => 'contact_message',
+                    'title' => 'Nouveau message de contact',
+                    'message' => "Nouveau message de {$message->name}: {$message->subject}",
+                    'data' => [
+                        'contact_message_id' => $message->id,
+                    ],
+                    'is_read' => false,
+                ]);
+            }
+        } catch (\Throwable $e) {
+            logger()->error('ContactService: failed to create admin notifications: ' . $e->getMessage());
+        }
+
+        return $message;
     }
 
     /**

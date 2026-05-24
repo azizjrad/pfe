@@ -19,14 +19,11 @@ class UserNotification extends Model
         'read_at',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'data' => 'array',
-            'is_read' => 'boolean',
-            'read_at' => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'data' => 'array',
+        'is_read' => 'boolean',
+        'read_at' => 'datetime',
+    ];
 
     public function user()
     {

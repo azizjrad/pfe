@@ -19,7 +19,12 @@ class ReservationResource extends JsonResource
             $days = max(1, $this->start_date->diffInDays($this->end_date));
         }
 
-        $dailyRate = $days > 0 ? ((float) $this->base_price / $days) : (float) $this->base_price;
+        $appliedDailyPrice = 0.0;
+        if ($this->relationLoaded('vehicle') && $this->vehicle) {
+            $appliedDailyPrice = (float) ($this->vehicle->priceForDate($this->start_date)?->price ?? $this->vehicle->daily_price ?? 0);
+        } elseif ($this->vehicle) {
+            $appliedDailyPrice = (float) ($this->vehicle->daily_price ?? 0);
+        }
 
         return [
             'id' => $this->id,
@@ -39,25 +44,19 @@ class ReservationResource extends JsonResource
             'driver_license_date' => $this->driver_license_date?->toDateString(),
             // Keep alias for legacy frontend keys.
             'return_location' => $this->dropoff_location,
-            'daily_rate' => (float) $dailyRate,
             'number_of_days' => (int) $days,
-            'subtotal' => (float) $this->base_price,
-            'base_price' => (float) $this->base_price,
-            'discount_amount' => (float) $this->discount_amount ?? 0,
-            'additional_charges' => (float) $this->additional_charges ?? 0,
+            'applied_daily_price' => (float) $appliedDailyPrice,
             'total_price' => (float) $this->total_price,
-            'paid_amount' => (float) $this->paid_amount ?? 0,
-            'remaining_amount' => (float) $this->remaining_amount ?? 0,
-            'payment_status' => $this->payment_status,
+            'paid_amount' => 0,
+            'payment_status' => 'unpaid',
             'platform_commission' => (float) $this->platform_commission ?? 0,
             'cancellation_reason' => $this->cancellation_reason,
             'notes' => $this->notes,
             // Keep alias for legacy frontend keys.
             'special_requests' => $this->notes,
-            'pricing_details' => $this->pricing_details,
+            // pricing_details removed from reservations; API no longer exposes it
             'user' => new UserResource($this->whenLoaded('user')),
             'vehicle' => new VehicleResource($this->whenLoaded('vehicle')),
-            'payments' => PaymentResource::collection($this->whenLoaded('payments')),
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
         ];

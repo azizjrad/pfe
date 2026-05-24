@@ -11,6 +11,9 @@ const normalizeAgencyVehicle = (vehicle, agency) => ({
     "https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=1400&q=80",
   category: vehicle.type || "Véhicule",
   price: Number(vehicle.daily_rate ?? vehicle.daily_price ?? 0),
+  price_history: Array.isArray(vehicle.price_history)
+    ? vehicle.price_history
+    : [],
   transmission: vehicle.transmission || "-",
   fuel: vehicle.fuel_type || vehicle.fuel || "-",
   seats: Number(vehicle.seating_capacity ?? vehicle.seats ?? 0),

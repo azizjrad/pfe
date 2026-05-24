@@ -21,6 +21,9 @@ const normalizeVehicle = (vehicle) => {
     category: vehicle.type || "Véhicule",
     price: Number(vehicle.daily_rate ?? vehicle.daily_price ?? 0),
     caution_amount: Number(vehicle.caution_amount ?? 0),
+    price_history: Array.isArray(vehicle.price_history)
+      ? vehicle.price_history
+      : [],
     transmission: vehicle.transmission || "-",
     fuel: vehicle.fuel_type || vehicle.fuel || "-",
     seats: Number(vehicle.seating_capacity ?? vehicle.seats ?? 0),

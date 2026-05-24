@@ -41,17 +41,18 @@
         </tr>
         <tr>
           <th>Options</th>
-          <td>
-            @if(!empty($reservation->pricing_details['options']))
-              <ul>
-                @foreach($reservation->pricing_details['options'] as $opt)
-                  <li>{{ $opt['name'] ?? '' }} — {{ number_format($opt['amount'] ?? 0, 2, ',', ' ') }} TND</li>
-                @endforeach
-              </ul>
-            @else
-              —
-            @endif
-          </td>
+            <td>
+              @php $opts = $reservation->pricing_details['options'] ?? ($reservation->pricing_details ?? null); @endphp
+              @if(!empty($opts))
+                <ul>
+                  @foreach($opts as $opt)
+                    <li>{{ $opt['name'] ?? '' }} — {{ number_format($opt['amount'] ?? 0, 2, ',', ' ') }} TND</li>
+                  @endforeach
+                </ul>
+              @else
+                —
+              @endif
+            </td>
         </tr>
       </table>
 

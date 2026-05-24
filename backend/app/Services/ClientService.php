@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Domain\Enums\ReservationPaymentStatus;
 use App\Domain\Enums\ReservationStatus;
 use App\Models\User;
 use App\Models\ClientReliabilityScore;
@@ -34,7 +33,6 @@ class ClientService
         $cleanCompletedReservations = $user->reservations()
             ->where('status', ReservationStatus::COMPLETED->value)
             ->where('is_late_return', false)
-            ->where('payment_status', ReservationPaymentStatus::PAID->value)
             ->whereDoesntHave('vehicleReturn', function ($query) {
                 $query->whereIn('vehicle_condition', ['fair', 'damaged']);
             })
@@ -180,9 +178,7 @@ class ClientService
         $lateReturns = (clone $reservationsQuery)
             ->where('is_late_return', true)
             ->count();
-        $paymentDelays = (clone $reservationsQuery)
-            ->where('payment_status', ReservationPaymentStatus::OVERDUE->value)
-            ->count();
+        $paymentDelays = 0;
         $damageIncidents = (clone $reservationsQuery)
             ->whereHas('vehicleReturn', function ($query) {
                 $query->whereIn('vehicle_condition', ['fair', 'damaged']);
@@ -191,14 +187,11 @@ class ClientService
         $cleanCompletedReservations = (clone $reservationsQuery)
             ->where('status', ReservationStatus::COMPLETED->value)
             ->where('is_late_return', false)
-            ->where('payment_status', ReservationPaymentStatus::PAID->value)
             ->whereDoesntHave('vehicleReturn', function ($query) {
                 $query->whereIn('vehicle_condition', ['fair', 'damaged']);
             })
             ->count();
-        $totalUnpaidAmount = round((float) (clone $reservationsQuery)
-            ->where('remaining_amount', '>', 0)
-            ->sum('remaining_amount'), 2);
+        $totalUnpaidAmount = 0.0;
 
         $bonusPerCleanReservation = (int) config('pfe.reliability_scoring.clean_completed_bonus', 2);
         $bonusPoints = max(0, $cleanCompletedReservations * $bonusPerCleanReservation);

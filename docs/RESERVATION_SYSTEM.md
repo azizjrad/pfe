@@ -19,28 +19,16 @@ Complete reservation system with dynamic pricing integration.
 - Vehicle availability checking (prevents double-booking)
 - Backend price recalculation for security validation
 - Price tolerance check (1% difference allowed)
-- Stores complete pricing breakdown in database
+- Price breakdown is calculated server-side for verification but not stored on the reservation record
+- Prices are versioned in `vehicle_prices` (effective_from/effective_to) and the reservation uses the price effective at its start date
 - Role-based authorization
 
-### 2. Database Migration
+### 2. Pricing and Storage
 
-**File:** `backend/database/migrations/2026_02_24_000000_add_pricing_details_to_reservations_table.php`
+Pricing is calculated server-side during reservation creation for security and validation. The system does not persist a full `pricing_details` JSON on the reservation record. Instead:
 
-Added `pricing_details` JSON column to store complete pricing breakdown including:
-
-- Base price
-- All 9 rule adjustments
-- Total price
-- Seasonal information
-- Selected options
-
-### 3. Reservation Model Update
-
-**File:** `backend/app/Models/Reservation.php`
-
-Added to fillable fields:
-
-- `pricing_details` (JSON cast to array)
+- Vehicle prices are stored and versioned in `vehicle_prices` (see migration `create_vehicle_prices_table`).
+- When a reservation is made, the price applicable at the reservation `start_date` is used to compute the snapshot `total_price`, `platform_commission`, and `agency_payout`.
 
 ### 4. API Routes
 

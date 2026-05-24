@@ -210,7 +210,30 @@ const ClientContent = ({
                       {getStatusText(reservation.status)}
                     </span>
                     <p className="text-lg font-bold text-primary-600 mt-3">
-                      {reservation.total_price} DT
+                      {(() => {
+                        const ms = 1000 * 60 * 60 * 24;
+                        const days = Math.max(
+                          1,
+                          Math.ceil(
+                            (new Date(reservation.end_date) -
+                              new Date(reservation.start_date)) /
+                              ms,
+                          ),
+                        );
+                        const rentalBase =
+                          Number(reservation.applied_daily_price || 0) * days;
+                        const stored = Number(reservation.total_price || 0);
+                        const deposit = Number(reservation.deposit_amount || 0);
+                        const displayed =
+                          stored <= rentalBase + 0.01
+                            ? stored + deposit
+                            : stored;
+                        return `${displayed} DT`;
+                      })()}
+                    </p>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Caution:{" "}
+                      {Number(reservation.deposit_amount || 0).toFixed(2)} DT
                     </p>
                     <div className="flex flex-col gap-2 mt-3">
                       <button

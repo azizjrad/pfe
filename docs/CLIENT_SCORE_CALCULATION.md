@@ -76,7 +76,7 @@ Counters are built from user reservations:
 - late returns (`is_late_return = true`)
 - payment delays (`payment_status = overdue`)
 - damage incidents (vehicle return condition in `fair` or `damaged`)
-- total unpaid amount (sum of `remaining_amount > 0`, stored only)
+- total unpaid amount (computed as the sum of `GREATEST(total_price - paid_amount, 0)` across reservations; not stored as `remaining_amount` anymore)
 
 After filling counters, service calls:
 

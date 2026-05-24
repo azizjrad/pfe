@@ -24,6 +24,34 @@ const ReservationModal = ({
   onSubmit,
   currentUser,
 }) => {
+  const resolveDailyPriceForDate = (vehicleData, startDate) => {
+    const fallbackPrice = Number(
+      vehicleData?.price ?? vehicleData?.daily_price ?? 0,
+    );
+    const history = Array.isArray(vehicleData?.price_history)
+      ? vehicleData.price_history
+      : [];
+
+    if (!startDate || history.length === 0) {
+      return fallbackPrice;
+    }
+
+    const targetDate = new Date(startDate);
+    const matchingHistory = history.find((entry) => {
+      const from = entry?.effective_from
+        ? new Date(entry.effective_from)
+        : null;
+      const to = entry?.effective_to ? new Date(entry.effective_to) : null;
+
+      if (!from) return false;
+      const startsAfterOrOn = targetDate >= from;
+      const endsBeforeOrOn = !to || targetDate <= to;
+      return startsAfterOrOn && endsBeforeOrOn;
+    });
+
+    return Number(matchingHistory?.price ?? fallbackPrice);
+  };
+
   // Pricing configuration fetched from backend
   const [pricingConfig, setPricingConfig] = useState(null);
   const [pricingConfigError, setPricingConfigError] = useState("");
@@ -98,11 +126,7 @@ const ReservationModal = ({
 
   // Simple pricing calculation using config-driven values
   const pricing = useMemo(() => {
-    if (
-      !vehicle?.price ||
-      !reservationData.startDate ||
-      !reservationData.endDate
-    ) {
+    if (!vehicle || !reservationData.startDate || !reservationData.endDate) {
       return null;
     }
 
@@ -110,7 +134,11 @@ const ReservationModal = ({
     const end = new Date(reservationData.endDate);
     const days = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
 
-    const basePrice = vehicle.price * days;
+    const dailyPrice = resolveDailyPriceForDate(
+      vehicle,
+      reservationData.startDate,
+    );
+    const basePrice = dailyPrice * days;
 
     const addOns = pricingConfig?.add_ons;
     if (!addOns) {
@@ -133,19 +161,23 @@ const ReservationModal = ({
         ? addOns.after_hours_pickup.value
         : 0;
 
+    const cautionAmount = Number(vehicle?.caution_amount ?? 0);
     const total = basePrice + airportDelivery + homeDelivery + afterHours;
+    const total_with_caution = total + cautionAmount;
 
     return {
       days,
-      base_price: vehicle.price,
+      applied_daily_price: dailyPrice,
       base_total: basePrice,
       airport_delivery: airportDelivery,
       home_delivery: homeDelivery,
       after_hours: afterHours,
       total,
+      caution: cautionAmount,
+      total_with_caution,
     };
   }, [
-    vehicle?.price,
+    vehicle,
     reservationData.startDate,
     reservationData.endDate,
     options,
@@ -704,6 +736,26 @@ const ReservationModal = ({
                           </span>
                         </div>
                       </div>
+                      {pricing.caution > 0 && (
+                        <div className="flex justify-between items-center text-sm">
+                          <span className="text-gray-600">
+                            Caution (remboursable)
+                          </span>
+                          <span className="font-medium text-gray-900">
+                            {pricing.caution.toFixed(2)} DT
+                          </span>
+                        </div>
+                      )}
+                      <div className="border-t border-primary-200 my-3 pt-3">
+                        <div className="flex justify-between items-center gap-3">
+                          <span className="text-lg font-bold text-gray-900">
+                            Total à payer
+                          </span>
+                          <span className="text-xl sm:text-2xl font-bold text-primary-600 text-right break-words">
+                            {pricing.total_with_caution.toFixed(2)} DT
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -938,7 +990,7 @@ const ReservationModal = ({
                 }`}
               >
                 {pricing
-                  ? `Réserver pour ${pricing.total.toFixed(2)} DT`
+                  ? `Réserver pour ${pricing.total_with_caution.toFixed(2)} DT`
                   : "Confirmer la réservation"}
               </button>
             </div>
