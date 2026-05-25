@@ -219,9 +219,6 @@ Scénario nominal &
 5.1 Données manquantes ou incorrectes. \\
 & \quad 5.1.1 Le système affiche un message d'erreur. \\
 & \quad 5.1.2 Retour à l'étape 4 du scénario nominal. \\
-& 5.2 Données invalides. \\
-& \quad 5.2.1 Le système affiche un message d'erreur. \\
-& \quad 5.2.2 Retour à l'étape 4 du scénario nominal. \\
 & 7.1 Internaute déjà inscrit. \\
 & \quad 7.1.1 Le système affiche un message d'erreur. \\
 & \quad 7.1.2 Retour à l'étape 4 du scénario nominal. \\
@@ -275,8 +272,6 @@ Scénario nominal &
 \multirow{4}{*}{\textbf{Scénarios alternatifs}} 
 & 5.1 Champs invalides ou incomplets. \\
 & \quad 5.1.1 Le système affiche un message d’erreur. \\
-& 6.1 Échec lors de l’envoi du message. \\
-& \quad 6.1.1 Le système affiche un message d’échec. \\
 \hline
 \end{tabular}%
 }
@@ -433,10 +428,10 @@ Enchaînement principal &
 5. Le système affiche un message de confirmation. \\
 \hline
 \multirow{4}{*}{\textbf{Scénarios alternatifs}} 
-& 4.1 Informations invalides. \\
+& 4.1 Champs incomplets. \\
 & \quad 4.1.1 Le système affiche un message d'erreur. \\
-& 5.1 Échec lors de l'enregistrement. \\
-& \quad 5.1.1 Le système affiche un message d'échec. \\
+& 4.1 Données invalides. \\
+& \quad 4.1.1 Le système affiche un message d'erreur. \\
 \hline
 \end{tabular}%
 }
@@ -551,17 +546,18 @@ Enchaînement principal &
 5. Le système affiche un message de confirmation. \\
 \hline
 \multirow{4}{*}{\textbf{Scénarios alternatifs}} 
-& 4.1 Informations invalides. \\
+& 4.1 Champs incomplets. \\
 & \quad 4.1.1 Le système affiche un message d'erreur. \\
-& 5.1 Échec lors de l'enregistrement. \\
-& \quad 5.1.1 Le système affiche un message d'échec. \\
+& 4.1 Données invalides. \\
+& \quad 4.1.1 Le système affiche un message d'erreur. \\
+
 \hline
 \end{tabular}%
 }
 \end{table}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{Chapitres/Figures/diag_seq_modifier_infos_agences.png}
+    \includegraphics[width=1\textwidth]{Chapitres/Figures/diag_seq_modifier_infos_agences.png}
     \caption{Diagramme de séquence système de cas d'utilisation «Modifier infos agence»}
     \label{fig:modifier_infos_agences}
 \end{figure}
@@ -606,10 +602,12 @@ Enchaînement principal &
 7. Le système enregistre l'agence. \newline
 8. Le système affiche un message de confirmation. \\
 \hline
-\multirow{6}{*}{\textbf{Scénario alternatif}} & 6.1 Informations invalides.\\
+\multirow{6}{*}{\textbf{Scénario alternatif}} & 6.1 Champs incomplets.\\
 & \quad 6.1.1 Le système affiche un message d'erreur. \\
-& 7.1 Erreur lors de l'enregistrement. \\
-& \quad 7.1.1 Le système affiche un message d'échec. \\
+& \quad 6.1.2 Retour à l'étape 5 du scénario nominal. \\
+& 6.1 Informations invalides.\\
+& \quad 6.1.1 Le système affiche un message d'erreur. \\
+& \quad 6.1.2 Retour à l'étape 5 du scénario nominal. \\
 \hline
 \end{tabular}%
 }
@@ -801,33 +799,33 @@ La section suivante propose une description textuelle et un diagramme de séquen
 \hline
 \textbf{Élément} & \textbf{Description} \\
 \hline
-Nom & Modifier informations voiture \\
-\hline
-Acteur & Agence \\
-\hline
-Description brève & Permet à un Agence de consulter et de modifier ses informations voiture (nom, email, adresse, numéro de téléphone). \\
-\hline
-Précondition & 
-L'agence est authentifié. \newline
-Le système est accessible. \\
-\hline
-Postcondition & 
-Les informations du voiture sont mises à jour. \newline
-Les nouvelles données sont enregistrées. \\
-\hline
-Enchaînement principal & 
-1. L'agence accède à la page «vitrine». \newline
-2. Le système affiche les voiture actuelles. \newline
-3. L'agence modifie les informations d'une voiture. \newline
-4. Le système vérifie les données et effectue l'action. \newline
-5. Le système affiche un message de confirmation. \\
-\hline
-\multirow{4}{*}{\textbf{Scénarios alternatifs}} 
-& 4.1 Informations invalides. \\
-& \quad 4.1.1 Le système affiche un message d'erreur. \\
-& 5.1 Échec lors de l'enregistrement. \\
-& \quad 5.1.1 Le système affiche un message d'échec. \\
-\hline
+    Nom & Modifier informations voiture \\
+    \hline
+    Acteur & Agence \\
+    \hline
+    Description brève & Permet à un Agence de consulter et de modifier ses informations voiture (nom, email, adresse, numéro de téléphone). \\
+    \hline
+    Précondition & 
+    L'agence est authentifié. \newline
+    Le système est accessible. \\
+    \hline
+    Postcondition & 
+    Les informations du voiture sont mises à jour. \newline
+    Les nouvelles données sont enregistrées. \\
+    \hline
+    Enchaînement principal & 
+    1. L'agence accède à la page «vitrine». \newline
+    2. Le système affiche les voiture actuelles. \newline
+    3. L'agence modifie les informations d'une voiture. \newline
+    4. Le système vérifie les données et effectue l'action. \newline
+    5. Le système affiche un message de confirmation. \\
+    \hline
+    \multirow{4}{*}{\textbf{Scénarios alternatifs}} 
+    & 4.1 Champs incomplets. \\
+    & \quad 4.1.1 Le système affiche un message d'erreur. \\
+    & 4.2 Données invalides. \\
+    & \quad 4.2.1 Le système affiche un message d'erreur. \\
+    \hline
 \end{tabular}%
 }
 \end{table}
@@ -876,8 +874,11 @@ Enchaînement principal &
 6. Le système enregistre l'voiture. \newline
 7. Le système affiche une message de confirmation. \\
 \hline
-\multirow{6}{*}{\textbf{Scénario alternatif}} & 5.1 Informations invalides.\\
+\multirow{6}{*}{\textbf{Scénario alternatif}} & 5.2 Champs incomplets.\\
+& \quad 5.2.1 Le système affiche une message d'erreur. \\
+& 5.1 Informations invalides.\\
 & \quad 5.1.1 Le système affiche une message d'erreur. \\
+
 \hline
 \end{tabular}%
 }
