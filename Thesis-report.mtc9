@@ -39,8 +39,9 @@
 {\reset@font\mtcSfont\mtc@string\contentsline{section}{\noexpand \leavevmode \numberline {4.15}Implémentation}{\reset@font\mtcSfont 130}{section.4.15}}
 {\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.15.1}Tables de la base de données}{\reset@font\mtcSSfont 131}{subsection.4.15.1}}
 {\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {4.15.1.1}Tableau « reservations »}{\reset@font\mtcSSSfont 131}{subsubsection.4.15.1.1}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {4.15.1.2}Tableau « contact\_messages »}{\reset@font\mtcSSSfont 132}{subsubsection.4.15.1.2}}
-{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {4.15.1.3}Tableau « client\_reliability\_scores »}{\reset@font\mtcSSSfont 132}{subsubsection.4.15.1.3}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {4.15.1.2}Tableau « vehicle\_prices »}{\reset@font\mtcSSSfont 131}{subsubsection.4.15.1.2}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {4.15.1.3}Tableau « contact\_messages »}{\reset@font\mtcSSSfont 132}{subsubsection.4.15.1.3}}
+{\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {4.15.1.4}Tableau « client\_reliability\_scores »}{\reset@font\mtcSSSfont 132}{subsubsection.4.15.1.4}}
 {\reset@font\mtcSSfont\mtc@string\contentsline{subsection}{\noexpand \leavevmode \numberline {4.15.2}Réalisation des interfaces du deuxième sprint}{\reset@font\mtcSSfont 133}{subsection.4.15.2}}
 {\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {4.15.2.1}Interface contact administrateur :}{\reset@font\mtcSSSfont 133}{subsubsection.4.15.2.1}}
 {\reset@font\mtcSSSfont\mtc@string\contentsline{subsubsection}{\noexpand \leavevmode \numberline {4.15.2.2}Interface formulaire réservation :}{\reset@font\mtcSSSfont 133}{subsubsection.4.15.2.2}}
