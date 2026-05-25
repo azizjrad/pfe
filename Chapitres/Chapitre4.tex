@@ -666,11 +666,11 @@ Le module d'implémentation du deuxième sprint présente la mise en œuvre tech
 \hline
 \textbf{Champs} & \textbf{Type} & \textbf{Libellé} & \textbf{Contraintes} \\
 \hline
-id & BigInt UNSIGNED & Identifiant unique de la réservation & PRIMARY KEY, AUTO\_INCREMENT, NOT NULL \\
+id & BigInt & Identifiant unique de la réservation & PRIMARY KEY, AUTO\_INCREMENT, NOT NULL \\
 \hline
-user\_id & BigInt UNSIGNED & Identifiant du client & FOREIGN KEY (users), NOT NULL \\
+user\_id & BigInt & Identifiant du client & FOREIGN KEY (users), NOT NULL \\
 \hline
-vehicle\_id & BigInt UNSIGNED & Identifiant du véhicule & FOREIGN KEY (vehicles), NOT NULL \\
+vehicle\_id & BigInt & Identifiant du véhicule & FOREIGN KEY (vehicles), NOT NULL \\
 \hline
 start\_date & Date & Date de début de location & NOT NULL \\
 \hline
@@ -680,28 +680,66 @@ pickup\_location & Varchar(255) & Lieu de récupération & NULLABLE \\
 \hline
 dropoff\_location & Varchar(255) & Lieu de retour & NULLABLE \\
 \hline
-base\_price & Decimal(10,2) & Coût base de location & NOT NULL \\
-\hline
-discount\_amount & Decimal(10,2) & Montant remise appliquée & NOT NULL, DEFAULT 0.00 \\
-\hline
-additional\_charges & Decimal(10,2) & Frais supplémentaires & NOT NULL, DEFAULT 0.00 \\
-\hline
 total\_price & Decimal(10,2) & Prix total à payer & NOT NULL \\
-\hline
-platform\_commission\_rate & Decimal(5,4) & Taux commission plateforme & NOT NULL, DEFAULT 0.0800 \\
 \hline
 platform\_commission & Decimal(10,2) & Commission plateforme & NOT NULL, DEFAULT 0.00 \\
 \hline
 agency\_payout & Decimal(10,2) & Paiement agence & NOT NULL, DEFAULT 0.00 \\
 \hline
-paid\_amount & Decimal(10,2) & Montant déjà payé & NOT NULL, DEFAULT 0.00 \\
+status & Enum('pending','confirmed','ongoing','completed') & Statut de la réservation & NOT NULL, DEFAULT 'pending' \\
 \hline
-remaining\_amount & Decimal(10,2) & Solde impayé & NOT NULL, DEFAULT 0.00 \\
+actual\_return\_date & Date & Date de retour effective & NULLABLE \\
+\hline
+is\_late\_return & Tinyint(1) & Indique si le retour est en retard & NOT NULL, DEFAULT 0 \\
+\hline
+cancellation\_reason & Text & Raison d'annulation & NULLABLE \\
+\hline
+notes & Text & Notes internes & NULLABLE \\
+\hline
+created\_at & Timestamp & Date de création & NULLABLE \\
+\hline
+updated\_at & Timestamp & Date de modification & NULLABLE \\
+\hline
+client\_birth\_date & Date & Date de naissance du client & NULLABLE \\
+\hline
+driver\_first\_name & Varchar(255) & Prénom du conducteur & NULLABLE \\
+\hline
+driver\_last\_name & Varchar(255) & Nom du conducteur & NULLABLE \\
+\hline
+driver\_birth\_date & Date & Date de naissance du conducteur & NULLABLE \\
+\hline
+driver\_license\_number & Varchar(255) & Numéro de permis conducteur & NULLABLE \\
+\hline
+driver\_license\_date & Date & Date d'émission du permis & NULLABLE \\
 \hline
 \end{tabular}%
 }
 \end{table}
 
+\subsubsection{Tableau « vehicle\_prices »}
+\begin{table}[H]
+\centering
+\caption{Tableau « vehicle\_prices »}
+\label{tab:vehicle_prices}
+\renewcommand{\arraystretch}{1.3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|p{4cm}|l|}
+\hline
+\textbf{Champs} & \textbf{Type} & \textbf{Libellé} & \textbf{Contraintes} \\
+\hline
+id & BigInt UNSIGNED & Identifiant unique & PRIMARY KEY, AUTO\_INCREMENT, NOT NULL \\
+\hline
+vehicle\_id & BigInt UNSIGNED & Identifiant du véhicule & FOREIGN KEY (vehicles), NOT NULL \\
+\hline
+price & Decimal(10,2) & Prix journalier appliqué & NOT NULL \\
+\hline
+start\_date & Date & Date de début de validité du tarif & NULLABLE \\
+\hline
+end\_date & Date & Date de fin de validité du tarif & NULLABLE \\
+\hline
+\end{tabular}%
+}
+\end{table}
 
 Le tableau suivant présente le dictionnaire des données du deuxième sprint, en précisant pour chaque table les attributs définis, leurs libellés ainsi que leurs types.
 
