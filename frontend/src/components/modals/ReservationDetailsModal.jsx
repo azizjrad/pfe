@@ -31,6 +31,9 @@ export default function ReservationDetailsModal({
     openReservationContract(reservation);
   };
 
+  const reservationNotes =
+    reservation.notes || reservation.special_requests || "";
+
   if (!reservation) return null;
 
   const getStatusBadge = (status) => {
@@ -389,6 +392,55 @@ export default function ReservationDetailsModal({
                 </div>
               </div>
             )}
+          </div>
+
+          {/* Reservation Notes */}
+          <div className="bg-gradient-to-br from-amber-50 via-white to-primary-50 rounded-2xl p-5 sm:p-6 border border-amber-100 shadow-lg">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-11 h-11 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center shadow-sm">
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M7 8h10M7 12h4m1 8h5a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v11a2 2 0 002 2h3l1 2z"
+                  />
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-3 mb-2">
+                  <h4 className="text-lg font-semibold text-gray-900">
+                    Notes / demandes spéciales
+                  </h4>
+                  {reservationNotes ? (
+                    <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-700">
+                      Renseigné
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-semibold text-gray-500">
+                      Aucun texte
+                    </span>
+                  )}
+                </div>
+
+                {reservationNotes ? (
+                  <div className="rounded-2xl border border-amber-100 bg-white/90 p-4 shadow-sm">
+                    <p className="whitespace-pre-line text-sm leading-6 text-gray-700">
+                      {reservationNotes}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="rounded-2xl border border-dashed border-amber-200 bg-white/70 p-4 text-sm text-gray-500">
+                    Aucune note n’a été ajoutée pour cette réservation.
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* Vehicle Information */}

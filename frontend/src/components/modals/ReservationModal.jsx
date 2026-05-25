@@ -91,6 +91,7 @@ const ReservationModal = ({
     client_birth_date: "",
     driver_license_number: "",
     driver_license_date: "",
+    notes: "",
   });
 
   useEffect(() => {
@@ -99,6 +100,7 @@ const ReservationModal = ({
     setReservationData((prev) => ({
       ...prev,
       ...getPrefilledPersonalData(),
+      notes: prev.notes, // Ensure notes are preserved
     }));
   }, [isOpen, currentUser]);
 
@@ -338,6 +340,7 @@ const ReservationModal = ({
       client_birth_date: "",
       driver_license_number: "",
       driver_license_date: "",
+      notes: "", // Initialize notes
     });
     setOptions({
       airport_delivery: false,
@@ -357,6 +360,7 @@ const ReservationModal = ({
       client_birth_date: "",
       driver_license_number: "",
       driver_license_date: "",
+      notes: "", // Initialize notes
     });
     setOptions({
       airport_delivery: false,
@@ -849,6 +853,20 @@ const ReservationModal = ({
                       </p>
                     )}
                   </div>
+                </div>
+
+                <div className="relative pt-1">
+                  <textarea
+                    name="notes"
+                    value={reservationData.notes}
+                    onChange={handleChange}
+                    rows={4}
+                    className="w-full min-h-[112px] px-4 py-3 border rounded-2xl border-gray-300 focus:border-primary-500 transition-all duration-300 bg-gray-50 focus:bg-white text-black peer focus:outline-none text-sm sm:text-base resize-y shadow-sm focus:shadow-md"
+                    placeholder=" "
+                  />
+                  <label className="absolute left-4 top-4 text-black text-sm transition-all duration-300 peer-focus:text-xs peer-focus:-top-2 peer-focus:left-2 peer-focus:bg-white peer-focus:px-2 peer-focus:text-primary-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:bg-white peer-[:not(:placeholder-shown)]:px-2 peer-[:not(:placeholder-shown)]:text-black pointer-events-none">
+                    Notes / demandes spéciales (optionnel)
+                  </label>
                 </div>
               </div>
             </div>
