@@ -1201,39 +1201,37 @@ updated\_at & Timestamp & Date de modification & NOT NULL \\
 \hline
 \textbf{Champs} & \textbf{Type} & \textbf{Libellé} & \textbf{Contraintes} \\
 \hline
-id & Int & Identifiant unique du véhicule & PRIMARY KEY, NOT NULL \\
+id & bigint(20) & Identifiant unique du véhicule & UNSIGNED, PRIMARY KEY, AUTO\_INCREMENT, NOT NULL \\
 \hline
-brand & String & La marque du véhicule & NOT NULL \\
+brand & varchar(255) & La marque du véhicule & NOT NULL \\
 \hline
-model & String & Le modèle du véhicule & NOT NULL \\
+model & varchar(255) & Le modèle du véhicule & NOT NULL \\
 \hline
-year & Int & L'année du véhicule & NOT NULL \\
+year & int(11) & L'année du véhicule & NOT NULL \\
 \hline
-mileage & Int & Le kilométrage du véhicule & NOT NULL \\
+mileage & int(11) & Le kilométrage du véhicule & NOT NULL \\
 \hline
-daily\_price & Decimal(8,2) & Le prix journalier de location & NOT NULL \\
+caution\_amount & decimal(10,2) & Le montant de la caution fixé par l'agence & NULLABLE \\
 \hline
-caution\_amount & Decimal(10,2) & Le montant de la caution fixé par l'agence & NULLABLE \\
+license\_plate & varchar(255) & La plaque d'immatriculation & NOT NULL, UNIQUE \\
 \hline
-license\_plate & String & La plaque d'immatriculation & NOT NULL, UNIQUE \\
+color & varchar(255) & La couleur du véhicule & NOT NULL \\
 \hline
-color & String & La couleur du véhicule & NOT NULL \\
+seats & int(11) & Le nombre de places & NOT NULL \\
 \hline
-seats & Int & Le nombre de places & NOT NULL \\
+transmission & enum('manual','automatic') & Le type de transmission & NOT NULL \\
 \hline
-transmission & Enum & Le type de transmission (manual / automatic) & NOT NULL \\
+fuel\_type & enum('petrol','diesel','electric','hybrid') & Le type de carburant & NOT NULL \\
 \hline
-fuel\_type & Enum & Le type de carburant (petrol / diesel / electric / hybrid) & NOT NULL \\
+status & enum('available','reserved','in\_use','returned') & L'état du véhicule & NOT NULL, DEFAULT available \\
 \hline
-status & Enum & L'état du véhicule (available / reserved / in\_use / returned) & NOT NULL, DEFAULT available \\
+agency\_id & bigint(20) & Identifiant unique de l'agence & UNSIGNED, FOREIGN KEY, NOT NULL \\
 \hline
-agency\_id & BigInt UNSIGNED & Identifiant unique de l'agence & FOREIGN KEY, NOT NULL \\
+created\_at & timestamp & Date de création & NULLABLE \\
 \hline
-created\_at & Timestamp & Date de création & NULLABLE \\
+updated\_at & timestamp & Date de modification & NULLABLE \\
 \hline
-updated\_at & Timestamp & Date de modification & NULLABLE \\
-\hline
-images & Text & Les images du véhicule & NULLABLE \\
+images & longtext & Les images du véhicule & utf8mb4_bin, NULLABLE \\
 \hline
 \end{tabular}%
 }
