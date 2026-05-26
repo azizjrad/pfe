@@ -27,13 +27,12 @@ Notre application web implique cinq acteurs principaux :
 
     \item \textbf{Agence :} L'agence est une entreprise de location de véhicules utilisant 
     la plateforme pour gérer son activité.Dès son authentification, elle peut créer et gérer sa vitrine automobile, 
-    suivre les réservations et les réclamations, valider ou refuser des demandes et accéder 
+    suivre les réservations, valider ou refuser des demandes et accéder 
     aux statistiques.
 
     \item \textbf{Administrateur :}Une fois authentifié, l'administrateur supervise l'ensemble de la plateforme 
     pour garantir son bon fonctionnement. Il peut gérer les agences et les utilisateurs, 
-    superviser les véhicules, consulter les KPI, détecter les anomalies et configurer les 
-    paramètres système.
+    superviser les véhicules etconsulter les KPI.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -83,51 +82,49 @@ hiérarchisées et quantifiées sous la forme de valeurs de performance attendue
     \item \textbf{Interagir avec chatbot :} L'internaute peut poser des questions et 
     obtenir des réponses automatiques.
     \item \textbf{Contacter administrateur :} L'internaute peut envoyer un message à 
-    l'administrateur pour obtenir plus d’informations .
+    l'administrateur pour obtenir plus d’informations.
 \end{itemize}
 
-\textbf{B. Les besoins fonctionnels de l'acteur "Utilisateur''}\\
-\hspace*{0.8cm}En plus des besoins de l’acteur "Utilisateur'':
+\vspace{0.2cm}
+\noindent\textbf{B. Les besoins fonctionnels de l'acteur "Utilisateur''}
 \begin{itemize}
     \item \textbf{S'authentifier :} L'utilisateur doit saisir un login et un mot de 
-    passe pour accéder aux fonctionnalités de système.
+    passe pour accéder aux fonctionnalités du système.
     \item \textbf{Gérer profil :} L'utilisateur peut modifier ses informations 
     personnelles et ses préférences.
     \item \textbf{Voir score client :} L'utilisateur peut consulter son indice de 
     fiabilité.
 \end{itemize}
 
-\textbf{C. Les besoins fonctionnels de l'acteur "Client''}\\
-\hspace*{0.8cm}En plus des besoins de l’acteur "Utilisateur'':
+\vspace{0.2cm}
+\noindent\textbf{C. Les besoins fonctionnels de l'acteur "Client''}
 \begin{itemize}
     \item \textbf{Effectuer réservation :} Le client peut réserver un véhicule 
     auprès d'une agence.
     \item \textbf{Consulter réservations en cours :} Le client peut suivre l'état 
     de ses réservations.
-    \item \textbf{Contacter agence :} Le client peut communiquer directement avec 
-    l'agence pour assistance ou négociation.
 \end{itemize}
 
-\textbf{D. Les besoins fonctionnels de l'acteur "Agence''}\\
-\hspace*{0.8cm}En plus des besoins de l’acteur "Utilisateur'':
+\vspace{0.2cm}
+\noindent\textbf{D. Les besoins fonctionnels de l'acteur "Agence''}
 \begin{itemize}
-    \item \textbf{Gérer vitrine :} L'agence peut publier et mettre à jour ses 
-    véhicules disponibles.
+    \item \textbf{Gérer vitrine :} L'agence peut publier et mettre à jour les 
+    véhicules disponibles dans son espace.
     \item \textbf{Traiter réservations :} L'agence peut accepter ou refuser les 
-    demandes de réservation ainsi que traiter les réclamations des clients..
+    demandes de réservation ainsi que traiter les réclamations des clients.
     \item \textbf{Consulter statistiques :} L'agence peut analyser ses performances via des indicateurs.
 \end{itemize}
 
-\textbf{E. Les besoins fonctionnels de l'acteur "Administrateur''}\\
-\hspace*{0.8cm}En plus des besoins de l’acteur "Utilisateur'':
+\vspace{0.2cm}
+\noindent\textbf{E. Les besoins fonctionnels de l'acteur "Administrateur''}
 \begin{itemize}
-    \item \textbf{Consulter agences :} L’administrateur peut visualiser la liste des agences ainsi que leurs informations détaillées. À partir de cette interface de consultation, il peut également effectuer des actions de gestion telles que l’ajout d’une nouvelle agence, la modification des informations ou le blocage d’une agence en cas de non-conformité.
-    \item \textbf{Consulter utilisateurs :} L’administrateur peut consulter les comptes la liste des utilisateurs ainsi que leurs informations. \\Depuis cette interface, il peut aussi gérer les utilisateurs en ajoutant de nouveaux comptes (en plus de l’inscription autonome), en modifiant leurs informations ou en bloquant leurs comptes si nécessaire.
+    \item \textbf{Gérer agences :} L’administrateur peut visualiser, ajouter, modifier ou bloquer les agences.
     \item \textbf{Gérer messages :} L’administrateur peut consulter les messages reçus et y répondre afin d’assurer un bon suivi de la communication.
-    \item \textbf{Consulter statistiques :} L’administrateur peut suivre les indicateurs de performance globaux afin de détecter les anomalies et d’améliorer le système.
+    \item \textbf{Consulter statistiques :} L’administrateur peut suivre les indicateurs de performance globaux.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 \subsection{Identification des besoins non fonctionnels}
 \label{section2.3.2}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

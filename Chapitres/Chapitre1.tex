@@ -159,12 +159,11 @@ Rent Centric est une plateforme cloud de référence dans le domaine de la gesti
 \subsubsection{Analyse de HQ Rental Software}
 HQ Rental Software est une solution complète de gestion de flotte de véhicules, conçue pour optimiser l'efficacité opérationnelle et améliorer l'expérience client. Elle offre une gamme étendue de fonctionnalités pour les entreprises de location de voitures de toutes tailles.\cite{hq_features}
 \begin{itemize}[noitemsep, topsep=0pt]
-    \item \textbf{Réservations et paiements en ligne :} Permet aux clients de réserver et de payer directement via un plugin de site web convivial, augmentant ainsi la portée du marché et améliorant l'expérience client.
+    \item \textbf{Réservations en ligne :} Permet aux clients de réserver directement via un plugin de site web convivial, augmentant ainsi la portée du marché et améliorant l'expérience client.
     \item \textbf{Gestion de flotte :} Offre des outils pour gérer la disponibilité des véhicules, les réparations et les finances, réduisant la dépendance aux feuilles de calcul manuelles.
     \item \textbf{Dématérialisation :} Génère des contrats de location personnalisables qui peuvent être signés numériquement, avec la possibilité de télécharger des photos du véhicule via l'application mobile HQ.
     \item \textbf{Solutions pour divers marchés de location :} S'adapte à la location de motos, de bateaux, d'équipements et propose des solutions pour la location à long terme et le leasing.
     \item \textbf{Rapports avancés :} Fournit des tableaux de bord personnalisés pour suivre les indicateurs de performance clés et exporter les données nécessaires.
-    \item \textbf{Paiements intégrés et comptabilité :} Automatise le processus de vente et la gestion des transactions financières.
     \item \textbf{Solution basée sur le cloud et accès mobile :} Accessible depuis n'importe quel appareil et n'importe où dans le monde, avec des applications Android et iOS dédiées.
 \end{itemize}
 \begin{figure}[H]
@@ -208,8 +207,8 @@ L'analyse du marché actuel révèle plusieurs insuffisances notables, résumée
     \item \textbf{Faible digitalisation des agences} : Malgré l’existence de plateformes d’information et de réservation en ligne, plusieurs agences continuent d’utiliser des outils traditionnels (Excel, registres papier). Cela limite l’automatisation des processus et engendre une perte d’efficacité opérationnelle \cite{drivotunisie}.
     \item \textbf{Absence de plateformes unifiées} : Contrairement à d’autres marchés, il existe peu de plateformes nationales intégrées permettant de centraliser les offres de plusieurs agences. Les solutions existantes sont souvent limitées à des vitrines ou à des sites informatifs sans réelle interconnexion des données.
     \item \textbf{Manque de visibilité globale} : Les plateformes locales disponibles ne proposent généralement pas de tableaux de bord analytiques avancés. Cela empêche les agences de suivre en temps réel leurs performances ou d’exploiter les données pour optimiser leur activité.
-    \item \textbf{Expérience utilisateur limitée} : Les systèmes actuels offrent une expérience client fragmentée (réservation, paiement, suivi). L’absence d’intégration complète (réservation en ligne, paiement sécurisé, suivi du véhicule) réduit l’attractivité des services proposés.
-    \item \textbf{Difficulté d’adaptation technologique} : Les agences rencontrent des difficultés à intégrer des technologies modernes (paiement en ligne, géolocalisation, gestion automatisée). Cela est dû au manque de solutions locales adaptées et au coût des alternatives internationales.
+    \item \textbf{Expérience utilisateur limitée} : Les systèmes actuels offrent une expérience client fragmentée (réservation, suivi). L’absence d’intégration complète (réservation en ligne, suivi du véhicule) réduit l’attractivité des services proposés.
+    \item \textbf{Difficulté d’adaptation technologique} : Les agences rencontrent des difficultés à intégrer des technologies modernes (géolocalisation, gestion automatisée). Cela est dû au manque de solutions locales adaptées et au coût des alternatives internationales.
 \end{itemize}
 
 \subsection{Critique des solutions existantes au niveau international}
@@ -232,17 +231,15 @@ L'analyse du marché actuel révèle plusieurs insuffisances notables, résumée
 Pour remédier aux limites identifiées dans l'analyse du marché actuel, nous proposons le développement d'une plateforme web intelligente de gestion de location de véhicules multi-agences, entièrement adaptée au contexte tunisien. Notre solution présentera plusieurs avantages distinctifs :
 
 \begin{itemize}[noitemsep, topsep=0pt]
-    \item \textbf{Une architecture multi-agences centralisée} permettant de gérer l'ensemble du système depuis une interface unique
+    \item \textbf{Une architecture avec espace dédié par agence} permettant à chaque agence de gérer son propre activité depuis son tableau de bord
     \item \textbf{Une gestion complète du processus de location} (véhicule disponible, réservé, en cours d'utilisation, retourné ou en maintenance)
-    \item \textbf{Une expérience utilisateur intégrée} couvrant l’ensemble du processus de location (recherche, réservation, paiement et suivi) via une interface intuitive et ergonomique
+    \item \textbf{Une expérience utilisateur intégrée} couvrant l’ensemble du processus de location (recherche, réservation et suivi) via une interface intuitive et ergonomique
     \item \textbf{Un système de sécurité renforcé} assurant l’authentification des utilisateurs, la gestion des accès et la protection des données sensibles
-    \item \textbf{Un système de paiement en ligne sécurisé} permettant aux clients d’effectuer leurs transactions directement via la plateforme
     \item \textbf{Une gestion automatisée des contrats de location} incluant leur génération, leur archivage et leur consultation
     \item \textbf{Un suivi du statut des réservations} avec un historique complet par agence et par client
     \item \textbf{Un système de score de fiabilité client} calculé automatiquement selon le comportement historique de chaque client (retards, annulations, incidents)
     \item \textbf{Des tableaux de bord analytiques} offrant une visibilité complète sur les indicateurs clés de performance
     \item \textbf{Une architecture ouverte} basée sur des API facilitant l’intégration avec des systèmes externes
-    \item \textbf{Une adaptation aux spécificités du contexte tunisien}, notamment en termes de réglementation et modes de paiement locaux
     \item \textbf{Une solution accessible et adaptée aux petites et moyennes agences} grâce à une conception optimisée et des coûts réduits
     \item \textbf{Une interface simple et facile à prendre en main} favorisant une adoption rapide par les agences
     \item \textbf{Une architecture modulaire et évolutive} basée sur des technologies modernes garantissant performance et maintenabilité
