@@ -354,6 +354,7 @@
       \strng{authornamehash}{0831ebf392685227f29806bf11ade668}
       \strng{authorfullhash}{0831ebf392685227f29806bf11ade668}
       \strng{authorfullhashraw}{0831ebf392685227f29806bf11ade668}
+      \field{extraname}{1}
       \field{sortinit}{L}
       \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
       \field{labelnamesource}{author}
@@ -369,6 +370,38 @@
       \endverb
       \verb{url}
       \verb https://www.lucidchart.com/pages/fr/diagramme-de-cas-dutilisation-uml
+      \endverb
+    \endentry
+    \entry{lucidchart-deploiement}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=0831ebf392685227f29806bf11ade668}{%
+           family={Lucidchart},
+           familyi={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{0831ebf392685227f29806bf11ade668}
+      \strng{fullhash}{0831ebf392685227f29806bf11ade668}
+      \strng{fullhashraw}{0831ebf392685227f29806bf11ade668}
+      \strng{bibnamehash}{0831ebf392685227f29806bf11ade668}
+      \strng{authorbibnamehash}{0831ebf392685227f29806bf11ade668}
+      \strng{authornamehash}{0831ebf392685227f29806bf11ade668}
+      \strng{authorfullhash}{0831ebf392685227f29806bf11ade668}
+      \strng{authorfullhashraw}{0831ebf392685227f29806bf11ade668}
+      \field{extraname}{2}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Diagramme de déploiement UML}
+      \field{urlday}{20}
+      \field{urlmonth}{5}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.lucidchart.com/pages/fr/diagramme-de-deploiementuml
+      \endverb
+      \verb{url}
+      \verb https://www.lucidchart.com/pages/fr/diagramme-de-deploiementuml
       \endverb
     \endentry
     \entry{letemps_news}{online}{}{}
