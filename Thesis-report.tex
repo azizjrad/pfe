@@ -1,5 +1,5 @@
 %
-\documentclass[11pt,titlepage,a4paper,openany]{book}
+\documentclass[11pt,titlepage,a4paper]{book}
 
 \usepackage{emptypage}
 \usepackage[T1]{fontenc}
@@ -70,11 +70,6 @@
 %%%%%%%%%%%%%%%%
 \setlength{\parskip}{0.5em}
 \setlength{\parindent}{1em}
-% Ensure explicit page breaks don't produce fully empty pages while preserving the \newpage tags.
-\makeatletter
-\let\Phs@Oldnewpage\newpage
-\renewcommand{\newpage}{\Phs@Oldnewpage\null\thispagestyle{empty}}
-\makeatother
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
