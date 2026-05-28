@@ -777,37 +777,39 @@ Le module d'implémentation du deuxième sprint présente la mise en œuvre tech
 \hline
 \textbf{Champs} & \textbf{Type} & \textbf{Libellé} & \textbf{Contraintes} \\
 \hline
-id & BigInt UNSIGNED & Identifiant unique de la réservation & PRIMARY KEY, AUTO\_INCREMENT, NOT NULL \\
+id & bigint(20) & Identifiant unique de la réservation & PRIMARY KEY, AUTO_INCREMENT, NOT NULL \\
 \hline
-user\_id & BigInt UNSIGNED & Identifiant du client & FOREIGN KEY (users), NOT NULL \\
+user_id & bigint(20) & Référence vers l'utilisateur (client) & FOREIGN KEY (users), NOT NULL \\
 \hline
-vehicle\_id & BigInt UNSIGNED & Identifiant du véhicule & FOREIGN KEY (vehicles), NOT NULL \\
+vehicle_id & bigint(20) & Référence vers le véhicule réservé & FOREIGN KEY (vehicles), NOT NULL \\
 \hline
-start\_date & Date & Date de début de location & NOT NULL \\
+start_date & date & Date de début de la location & NOT NULL \\
 \hline
-end\_date & Date & Date de fin de location & NOT NULL \\
+end_date & date & Date de fin de la location & NOT NULL \\
 \hline
-pickup\_location & Varchar(255) & Lieu de récupération & NULLABLE \\
+pickup_location & varchar(255) & Lieu où le client récupère le véhicule & NULLABLE \\
 \hline
-dropoff\_location & Varchar(255) & Lieu de retour & NULLABLE \\
+dropoff\_location & varchar(255) & Lieu de restitution du véhicule & NULLABLE \\
 \hline
-base\_price & Decimal(10,2) & Coût base de location & NOT NULL \\
+total\_price & decimal(10,2) & Montant total à payer & NOT NULL \\
 \hline
-discount\_amount & Decimal(10,2) & Montant remise appliquée & NOT NULL, DEFAULT 0.00 \\
+platform\_commission & decimal(10,2) & Commission prélevée par la plateforme & NOT NULL, DEFAULT 0.00 \\
 \hline
-additional\_charges & Decimal(10,2) & Frais supplémentaires & NOT NULL, DEFAULT 0.00 \\
+agency\_payout & decimal(10,2) & Somme versée à l'agence & NOT NULL, DEFAULT 0.00 \\
 \hline
-total\_price & Decimal(10,2) & Prix total à payer & NOT NULL \\
+status & enum('pending','confirmed','ongoing','completed','cancelled') & Statut de la réservation & NOT NULL, DEFAULT 'pending' \\
 \hline
-platform\_commission\_rate & Decimal(5,4) & Taux commission plateforme & NOT NULL, DEFAULT 0.0800 \\
+actual\_return\_date & date & Date effective de restitution & NULLABLE \\
 \hline
-platform\_commission & Decimal(10,2) & Commission plateforme & NOT NULL, DEFAULT 0.00 \\
+is\_late\_return & tinyint(1) & Indique si le retour est en retard (0 = non, 1 = oui) & NOT NULL, DEFAULT 0 \\
 \hline
-agency\_payout & Decimal(10,2) & Paiement agence & NOT NULL, DEFAULT 0.00 \\
+cancellation\_reason & text & Raison de l'annulation & NULLABLE \\
 \hline
-paid\_amount & Decimal(10,2) & Montant déjà payé & NOT NULL, DEFAULT 0.00 \\
+notes & text & Remarques supplémentaires & NULLABLE \\
 \hline
-remaining\_amount & Decimal(10,2) & Solde impayé & NOT NULL, DEFAULT 0.00 \\
+created\_at & timestamp & Date de création de l'enregistrement & NULLABLE \\
+\hline
+updated\_at & timestamp & Date de dernière mise à jour & NULLABLE \\
 \hline
 \end{tabular}%
 }

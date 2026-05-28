@@ -1240,8 +1240,32 @@ images & longtext & Les images du véhicule & utf8mb4\_bin, NULLABLE \\
 \end{tabular}%
 }
 \end{table}
-
 \newpage
+
+\subsubsection{Tableau « vehicle\_prices »}
+\begin{table}[H]
+\centering
+\caption{Tableau « vehicle\_prices »}
+\label{tab:vehicle_prices}
+\renewcommand{\arraystretch}{1.3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|p{4cm}|l|}
+\hline
+\textbf{Champs} & \textbf{Type} & \textbf{Libellé} & \textbf{Contraintes} \\
+\hline
+id & bigint(20) & Identifiant unique & PRIMARY KEY, AUTO\_INCREMENT, NOT NULL \\
+\hline
+vehicle\_id & bigint(20) & Référence vers le véhicule & FOREIGN KEY (vehicles), NOT NULL \\
+\hline
+price & decimal(10,2) & Prix appliqué pour la période & NOT NULL \\
+\hline
+start\_date & date & Début de validité du prix & NULLABLE \\
+\hline
+end\_date & date & Fin de validité du prix & NULLABLE \\
+\hline
+\end{tabular}%
+}
+\end{table}
 
 \subsection{Réalisation des interfaces du premier sprint}
 
