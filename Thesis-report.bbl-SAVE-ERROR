@@ -404,6 +404,39 @@
       \verb https://www.lucidchart.com/pages/fr/diagramme-de-deploiementuml
       \endverb
     \endentry
+    \entry{Code-Magazine}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=4841ba6fc515e6aeac3e8748f958a2e6}{%
+           family={Magazine},
+           familyi={M\bibinitperiod},
+           given={Code},
+           giveni={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{4841ba6fc515e6aeac3e8748f958a2e6}
+      \strng{fullhash}{4841ba6fc515e6aeac3e8748f958a2e6}
+      \strng{fullhashraw}{4841ba6fc515e6aeac3e8748f958a2e6}
+      \strng{bibnamehash}{4841ba6fc515e6aeac3e8748f958a2e6}
+      \strng{authorbibnamehash}{4841ba6fc515e6aeac3e8748f958a2e6}
+      \strng{authornamehash}{4841ba6fc515e6aeac3e8748f958a2e6}
+      \strng{authorfullhash}{4841ba6fc515e6aeac3e8748f958a2e6}
+      \strng{authorfullhashraw}{4841ba6fc515e6aeac3e8748f958a2e6}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{MVC Building a Laravel API with React SPA}
+      \field{urlday}{20}
+      \field{urlmonth}{5}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.codemag.com/Article/2205071/Building-MVC?utm_source=chatgpt.com
+      \endverb
+      \verb{url}
+      \verb https://www.codemag.com/Article/2205071/Building-MVC?utm_source=chatgpt.com
+      \endverb
+    \endentry
     \entry{letemps_news}{online}{}{}
       \name{author}{1}{}{%
         {{hash=f9a027736f3298032ce8e0f25166d820}{%
