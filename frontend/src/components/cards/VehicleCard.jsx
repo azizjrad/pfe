@@ -33,11 +33,28 @@ const VehicleCard = ({
         {/* Vehicle Image */}
         <div className="relative h-44 sm:h-52 mb-4 sm:mb-5 rounded-2xl overflow-hidden bg-slate-100 flex-shrink-0">
           <img
-            src={
-              vehicle.images && vehicle.images.length > 0
-                ? vehicle.images[0]
-                : vehicle.image || "/default-car.jpg"
-            }
+            src={(() => {
+              // Local API base (set via Vite env) e.g. http://127.0.0.1:8000/api
+              const apiBase =
+                import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+              // Strip any trailing /api or trailing slash
+              const apiHost = apiBase
+                .replace(/\/api\/?$/i, "")
+                .replace(/\/$/, "");
+
+              const candidate =
+                vehicle.images && vehicle.images.length > 0
+                  ? vehicle.images[0]
+                  : vehicle.image || "/default-car.jpg";
+
+              if (!candidate) return "/default-car.jpg";
+              // absolute URL already
+              if (/^https?:\/\//i.test(candidate)) return candidate;
+              // relative path starting with slash -> prefix with api host
+              if (candidate.startsWith("/")) return `${apiHost}${candidate}`;
+              // otherwise treat as relative to api host
+              return `${apiHost}/${candidate}`;
+            })()}
             alt={vehicle.name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
